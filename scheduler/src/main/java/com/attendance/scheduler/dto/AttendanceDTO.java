@@ -4,16 +4,15 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
 @NoArgsConstructor
-public class AdminDTO {
+public class AttendanceDTO {
 
     @NotNull
     private Long id;
 
     @NotNull
-    private String adminId;
-
-    @NotNull
-    private String adminPassword;
+    private LocalDateTime attendanceDate;
 }

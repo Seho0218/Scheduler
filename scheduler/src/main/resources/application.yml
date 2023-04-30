@@ -5,6 +5,7 @@ spring:
   sql:
     init:
       mode: always
+
   datasource: # jdbc
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://127.0.0.1/scheduler?characterEncoding=utf-8
@@ -16,22 +17,28 @@ spring:
     database-platform: org.hibernate.dialect.MySQLDialect
     database: mysql
     open-in-view: false
+
     hibernate:
       ddl-auto: create
+
     properties:
       format_sql: true
       show_sql: true
       hibernate.highlight_sql: true
       defer-datasource-initialization: true
+
+
   mvc:
     view:
       prefix: /WEB-INF/views/
       suffix: .html
 
+
   servlet: #fileupload
     multipart:
       max-file-size: 20MB
       enabled: true
+
 
   mail:
     host: smtp.gmail.com
@@ -45,15 +52,16 @@ spring:
           auth: true
 
 
+logging.level:
+  root: info
+  org.hibernate.SQL: debug
+
+
 mybatis:
   type-aliases-package: com.attendance.scheduler.dto
   mapper-locations: mapper/*Mapper.xml
   configuration:
     map-underscore-to-camel-case: true
-
-logging.level:
-  root: info
-  org.hibernate.SQL: debug
 
 
 

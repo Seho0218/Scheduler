@@ -13,7 +13,9 @@ public class Admin {
     @Id @GenericGenerator(name="system-uuid", strategy = "uuid")
     private Long id;
 
+    @Column(nullable = false)
     private String adminName;
 
+    @Column(nullable = false)
     private String adminTel;
 }

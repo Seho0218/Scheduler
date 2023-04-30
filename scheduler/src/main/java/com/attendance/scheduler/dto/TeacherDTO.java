@@ -9,5 +9,11 @@ import lombok.NoArgsConstructor;
 public class TeacherDTO {
 
     @NotNull
+    private Long id;
+
+    @NotNull
     private String teacherName;
+
+    @NotNull
+    private String teacherTel;
 }

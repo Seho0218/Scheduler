@@ -16,10 +16,13 @@ public class Teacher {
     @Column(name = "TEACHER_ID")
     private Long id;
 
+    @Column(nullable = false)
     private String teacherName;
+
+    @Column(nullable = false)
+    private String teacherTel;
 
     @OneToMany(mappedBy = "teacher", fetch = FetchType.EAGER)
     private List<Student> studentSet = new ArrayList<>();
 
-    private String teacherTel;
 }

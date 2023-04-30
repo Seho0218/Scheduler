@@ -9,5 +9,14 @@ import lombok.NoArgsConstructor;
 public class StudentDTO {
 
     @NotNull
+    private Long id;
+
+    @NotNull
     private String studentName;
+
+    @NotNull
+    private String studentTel;
+
+    @NotNull
+    private boolean attendanceChecked;
 }
