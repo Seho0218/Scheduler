@@ -64,6 +64,9 @@ dependencies {
 	implementation "com.querydsl:querydsl-apt:5.0.0:jakarta"
 	implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
 
+	//Mybatis
+	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.0'
+
 	//Annotation
 	annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jakarta"
 	annotationProcessor "jakarta.annotation:jakarta.annotation-api"
@@ -73,8 +76,8 @@ dependencies {
 	//Web
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-web-services'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
-	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.0'
 	implementation 'org.springframework.session:spring-session-core'
 
 	//Add-ons

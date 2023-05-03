@@ -1,5 +1,6 @@
 package com.attendance.scheduler.entity.Account;
 
+import com.attendance.scheduler.entity.Attendance;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;

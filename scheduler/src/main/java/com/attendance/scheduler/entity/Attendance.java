@@ -1,5 +1,6 @@
-package com.attendance.scheduler.entity.Account;
+package com.attendance.scheduler.entity;
 
+import com.attendance.scheduler.entity.Account.Student;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
