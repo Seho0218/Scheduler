@@ -1,6 +1,6 @@
 package com.attendance.scheduler.dto;
 
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -8,12 +8,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class TeacherDTO {
 
-    @NotNull
+    @NotEmpty
     private Long id;
 
-    @NotNull
+    @NotEmpty
     private String teacherName;
 
-    @NotNull
+    @NotEmpty
     private String teacherTel;
 }

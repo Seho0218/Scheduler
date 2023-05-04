@@ -1,13 +1,82 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
-<h1> 컨텐츠 데이터 출력하기 </h1>
+<div>
+<h1> 1학기 시간표 신청 </h1>
+    <form method="post" th:object="${classForm}" th:action="/submit">
+        <!--학생 이름-->
+        <p>학생 이름을 써주세요 :)</p>
+        <label for="studentName"></label>
+        <input type="text" id="studentName" name="studentName" placeholder="내 답변">
 
+        <!-- 수업 회수 -->
+        <p>주당 수업 횟수를 선택해 주세요</p>
+        <label>
+            <select name="counts" >
+                <option th:value="none">=== 선택 ===</option>
+                <option th:value="1">1회</option>
+                <option th:value="2">2회</option>
+                <option th:value="3">3회</option>
+                <option th:value="4">4회</option>
+                <option th:value="5">5회</option>
+            </select>
+        </label>
+<!--        요일-->
+        <p>월요일</p>
+        <label>
+            <input type = "radio" th:value="1" name = "Monday">오후 1시
+            <input type = "radio" th:value="3" name = "Monday">오후 3시
+            <input type = "radio" th:value="6" name = "Monday">오후 6시
+            <input type = "radio" th:value="none" name = "Monday">등교하지 않습니다.
+        </label>
+        <p>화요일</p>
+        <label>
+            <input type = "radio" th:value="1" name = "Tuesday">오후 1시
+            <input type = "radio" th:value="2" name = "Tuesday">오후 2시
+            <input type = "radio" th:value="3" name = "Tuesday">오후 3시
+            <input type = "radio" th:value="4" name = "Tuesday">오후 4시
+            <input type = "radio" th:value="5" name = "Tuesday">오후 5시
+            <input type = "radio" th:value="6" name = "Tuesday">오후 6시
+            <input type = "radio" th:value="none" name = "Tuesday">등교하지 않습니다.
+        </label>
+        <p>수요일</p>
+        <label>
+            <input type = "radio" th:value="1" name = "Wednesday">오후 1시
+            <input type = "radio" th:value="3" name = "Wednesday">오후 3시
+            <input type = "radio" th:value="5" name = "Wednesday">오후 5시
+            <input type = "radio" th:value="6" name = "Wednesday">오후 6시
+            <input type = "radio" th:value="none" name = "Wednesday">등교하지 않습니다.
+        </label>
+        <p>목요일</p>
+        <label>
+            <input type = "radio" th:value="1" name = "Thursday">오후 1시
+            <input type = "radio" th:value="3" name = "Thursday">오후 3시
+            <input type = "radio" th:value="4" name = "Thursday">오후 4시
+            <input type = "radio" th:value="5" name = "Thursday">오후 5시
+            <input type = "radio" th:value="6" name = "Thursday">오후 6시
+            <input type = "radio" th:value="none" name = "Thursday">등교하지 않습니다.
+        </label>
+        <p>금요일</p>
+        <label>
+            <input type = "radio" th:value="1" name = "Friday">오후 1시
+            <input type = "radio" th:value="2" name = "Friday">오후 2시
+            <input type = "radio" th:value="3" name = "Friday">오후 3시
+            <input type = "radio" th:value="6" name = "Friday">오후 6시
+            <input type = "radio" th:value="none" name = "Friday">등교하지 않습니다.
+        </label>
 
-
+        <div class="row">
+            <div class="col">
+                <button type="submit">확인</button>
+            </div>
+            <div class="col">
+                <button type="button">취소</button>
+            </div>
+        </div>
+    </form>
+</div>
 </body>
 </html>

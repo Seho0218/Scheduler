@@ -1,6 +1,6 @@
 package com.attendance.scheduler.dto;
 
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,9 +10,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class AttendanceDTO {
 
-    @NotNull
+    @NotEmpty
     private Long id;
 
-    @NotNull
+    @NotEmpty
     private LocalDateTime attendanceDate;
 }

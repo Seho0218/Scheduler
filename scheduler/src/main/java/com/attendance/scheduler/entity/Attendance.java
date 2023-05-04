@@ -8,14 +8,14 @@ import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDateTime;
 
-@Entity
+@Entity(name = "ATTENDANCE")
 @Getter
 @NoArgsConstructor
 @DiscriminatorValue("Attendance")
 public class Attendance {
 
     @Id @GenericGenerator(name="system-uuid", strategy = "uuid")
-    @Column(name = "ATTENDENCE_ID")
+    @Column(name = "ATTENDANCE_ID")
     private Long id;
 
     @Column(nullable = false)

@@ -1,6 +1,7 @@
 package com.attendance.scheduler.entity.Account;
 
 import com.attendance.scheduler.entity.Attendance;
+import com.attendance.scheduler.entity.ClassTable;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
@@ -35,6 +36,10 @@ public class Student {
     @JoinColumn(name = "TEACHER_ID")
     private Teacher teacher;
 
-    @OneToMany(mappedBy = "student", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
     private List<Attendance> studentSet = new ArrayList<>();
+
+    @OneToOne(mappedBy = "student")
+    private ClassTable classTable;
+
 }

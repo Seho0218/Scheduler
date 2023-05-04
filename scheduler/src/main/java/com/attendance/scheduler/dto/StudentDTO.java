@@ -1,6 +1,6 @@
 package com.attendance.scheduler.dto;
 
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -8,15 +8,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class StudentDTO {
 
-    @NotNull
+    @NotEmpty
     private Long id;
 
-    @NotNull
+    @NotEmpty
     private String studentName;
 
-    @NotNull
+    @NotEmpty
     private String studentTel;
 
-    @NotNull
+    @NotEmpty
     private boolean attendanceChecked;
 }
