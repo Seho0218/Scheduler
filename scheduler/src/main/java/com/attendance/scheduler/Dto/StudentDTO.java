@@ -1,22 +1,21 @@
-package com.attendance.scheduler.dto;
+package com.attendance.scheduler.Dto;
 
 import jakarta.validation.constraints.NotEmpty;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
+@ToString
 @NoArgsConstructor
 public class StudentDTO {
 
     @NotEmpty
     private Long id;
 
-    @NotEmpty
     private String studentName;
 
-    @NotEmpty
     private String studentTel;
 
-    @NotEmpty
     private boolean attendanceChecked;
+
 }

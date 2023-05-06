@@ -1,6 +1,6 @@
 package com.attendance.scheduler.Controller;
 
-import com.attendance.scheduler.dto.ClassDTO;
+import com.attendance.scheduler.Dto.ClassDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

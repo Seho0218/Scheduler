@@ -1,12 +1,13 @@
-package com.attendance.scheduler.dto;
+package com.attendance.scheduler.Dto;
 
 import jakarta.validation.constraints.NotEmpty;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Data
+@Getter
+@Setter
+@ToString
 @NoArgsConstructor
 public class AttendanceDTO {
 

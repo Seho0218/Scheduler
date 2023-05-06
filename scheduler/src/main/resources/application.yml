@@ -5,6 +5,10 @@ spring:
   sql:
     init:
       mode: always
+  security:
+    user:
+      name: user
+      password: 123
 
   datasource: # jdbc
     driver-class-name: com.mysql.cj.jdbc.Driver

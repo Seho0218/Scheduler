@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace = "com.attendance.scheduler.Repository.dao.ClassDAO">
+
+	<insert id="save">
+		insert into class_table
+		    (student_id, friday, monday, thursday, tuesday, wednesday, counts, student_name)
+		values
+		    (#{student_id}, #{friday}, #{monday}, #{thursday}, #{tuesday}, #{wednesday}, #{counts}, #{studentName})
+	</insert>
+
+</mapper>
