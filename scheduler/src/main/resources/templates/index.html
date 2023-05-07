@@ -6,7 +6,7 @@
 <body>
 <div>
 <h1> 1학기 시간표 신청 </h1>
-    <form method="get" action="/submit">
+    <form role = "form" action="/submit" method='post'>
         <!--학생 이름-->
         <p>학생 이름을 써주세요 :)</p>
         <label for="studentName"></label>
@@ -14,16 +14,15 @@
 
         <!-- 수업 회수 -->
         <p>주당 수업 횟수를 선택해 주세요</p>
-        <label>
-            <select name="counts" >
-                <option th:value="none">=== 선택 ===</option>
-                <option th:value="1">1회</option>
-                <option th:value="2">2회</option>
-                <option th:value="3">3회</option>
-                <option th:value="4">4회</option>
-                <option th:value="5">5회</option>
-            </select>
-        </label>
+        <label for = "counts"></label>
+        <select name="counts" id = "counts" >
+            <option th:value="none">=== 선택 ===</option>
+            <option th:value="1">1회</option>
+            <option th:value="2">2회</option>
+            <option th:value="3">3회</option>
+            <option th:value="4">4회</option>
+            <option th:value="5">5회</option>
+        </select>
 <!--        요일-->
         <p>월요일</p>
         <label>
@@ -69,9 +68,7 @@
         </label>
 
         <div class="row">
-            <div class="col">
-                <button type="submit">확인</button>
-            </div>
+            <button type="submit">확인</button>
         </div>
     </form>
 </div>

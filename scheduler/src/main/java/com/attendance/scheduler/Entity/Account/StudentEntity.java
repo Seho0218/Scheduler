@@ -1,35 +1,29 @@
 package com.attendance.scheduler.Entity.Account;
 
 import com.attendance.scheduler.Entity.AttendanceEntity;
-import com.attendance.scheduler.Entity.ClassEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.DynamicUpdate;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static lombok.AccessLevel.*;
-
 @Entity
 @Getter
-@NoArgsConstructor(access = PROTECTED)
-
+@DynamicUpdate
+@NoArgsConstructor
 @Table(name = "student")
 @DiscriminatorValue("student")
 public class StudentEntity {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "STUDENT_ID")
     private Long studentId;
 
     private String studentName;
 
     private String studentTel;
-
-    private boolean attendanceChecked;
-
-    private LocalDateTime attendanceTime;
 
     @ManyToOne
     @JoinColumn(name = "TEACHER_ID")
@@ -38,8 +32,15 @@ public class StudentEntity {
     @OneToMany(mappedBy = "studentEntity", fetch = FetchType.LAZY)
     private List<AttendanceEntity> studentSet = new ArrayList<>();
 
-    @OneToOne(mappedBy = "studentEntity")
-    private ClassEntity classEntity;
-
-
+//    @OneToOne(mappedBy = "studentEntity")
+//    private ClassEntity classEntity;
+//
+//    @Builder
+//    public StudentEntity(Long studentId, String studentName, String studentTel, ClassEntity classEntity) {
+//        this.studentId = studentId;
+//        this.studentName = studentName;
+//        this.studentTel = studentTel;
+//        this.classEntity = classEntity;
+//        this.classEntity.setStudentEntity(this);
+//    }
 }

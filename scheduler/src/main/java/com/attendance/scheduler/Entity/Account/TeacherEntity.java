@@ -5,6 +5,8 @@ import lombok.*;
 
 import java.util.*;
 
+import static jakarta.persistence.FetchType.*;
+import static jakarta.persistence.GenerationType.*;
 import static lombok.AccessLevel.*;
 
 @Entity
@@ -14,17 +16,17 @@ import static lombok.AccessLevel.*;
 @DiscriminatorValue("teacher")
 public class TeacherEntity {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = IDENTITY)
     @Column(name = "TEACHER_ID")
     private Long teacherId;
 
     @Column(nullable = false)
-    private String teacherName;
+    private String password;
 
     @Column(nullable = false)
-    private String teacherTel;
+    private String teacherName;
 
-    @OneToMany(mappedBy = "teacherEntity", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "teacherEntity", fetch = EAGER)
     private List<StudentEntity> studentEntitySet = new ArrayList<>();
 
 }

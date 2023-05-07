@@ -1,21 +1,22 @@
 package com.attendance.scheduler.Dto;
 
-import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 
-@Getter
-@Setter
+@Getter @Setter
 @ToString
 @NoArgsConstructor
 public class StudentDTO {
 
-    @NotEmpty
     private Long id;
 
     private String studentName;
 
     private String studentTel;
 
-    private boolean attendanceChecked;
-
+//    public StudentEntity toEntity(){
+//        return StudentEntity.builder()
+//                .studentName(studentName)
+//                .studentTel(studentTel)
+//                .build();
+//    }
 }

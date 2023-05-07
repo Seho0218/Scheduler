@@ -1,35 +1,39 @@
 package com.attendance.scheduler.Dto;
 
+import com.attendance.scheduler.Entity.ClassEntity;
 import lombok.*;
 
-@Getter
-@Setter
+import java.sql.Timestamp;
+
+@Getter @Setter
 @ToString
-@RequiredArgsConstructor
+@NoArgsConstructor
 public class ClassDTO {
 
-    private Long student_id;
-//    학생 이름
+    //    학생 이름
     private String studentName;
-//    수업 횟수
+    //    수업 횟수
     private int counts;
 
-//    수업 시간
+    //    수업 시간
     private int Monday;
     private int Tuesday;
     private int Wednesday;
     private int Thursday;
     private int Friday;
 
-    public ClassDTO(Long student_id, String studentName, int counts, int monday, int tuesday, int wednesday, int thursday, int friday) {
-        this.student_id = student_id;
-        this.studentName = studentName;
-        this.counts = counts;
-        Monday = monday;
-        Tuesday = tuesday;
-        Wednesday = wednesday;
-        Thursday = thursday;
-        Friday = friday;
-    }
+    private Timestamp updateTimeStamp;
 
+    public ClassEntity toEntity() {
+        return ClassEntity.builder()
+                .studentName(studentName)
+                .counts(counts)
+                .monday(Monday)
+                .tuesday(Tuesday)
+                .wednesday(Wednesday)
+                .thursday(Thursday)
+                .friday(Friday)
+                .updateTimeStamp(updateTimeStamp)
+                .build();
+    }
 }

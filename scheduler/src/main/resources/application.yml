@@ -23,16 +23,17 @@ spring:
     open-in-view: false
 
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
 
     properties:
-      format_sql: true
-      show_sql: true
+      hibernate:
+        format_sql: true
+        show_sql: true
       hibernate.highlight_sql: true
       defer-datasource-initialization: true
 
 
-  mvc:
+  mvc: #mvc structure
     view:
       prefix: /templates/
       suffix: .html
@@ -44,10 +45,10 @@ spring:
       enabled: true
 
 
-  mail:
+  mail: #email
     host: smtp.gmail.com
     port: 587
-    username: #email
+    username: #email_Id
     password: #appPassword
     properties:
       mail:

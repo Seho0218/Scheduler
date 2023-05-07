@@ -6,31 +6,36 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
-@RequiredArgsConstructor
-@RequestMapping("/")
 @Slf4j
+@Controller
+@RequestMapping("/*")
+@RequiredArgsConstructor
 public class BasicController {
 
     public final SubmitService submitService;
 
-    @GetMapping("/index")
+    @GetMapping("/")
     public String basic(){
-       return"/";
+       return "/index";
     }
 
-    @GetMapping("/submit")
-    public String submitForm(@ModelAttribute ClassDTO classDTO, BindingResult bindingResult){
+    @PostMapping("submit")
+    public String submitForm(@ModelAttribute ClassDTO classDTO,
+                             BindingResult bindingResult){
 
-        submitService.saveClassTable(classDTO);
-
-        if (bindingResult.hasErrors()) {
+        try {
+            submitService.saveClassTable(classDTO);
+            return "/completion";
+        }catch(Exception e){
+            e.printStackTrace();
             return "/";
         }
-        return "/index.html";
+    }
+
+    @GetMapping("/admin")
+    public String adminPage(){
+        return "/admin/manage";
     }
 }

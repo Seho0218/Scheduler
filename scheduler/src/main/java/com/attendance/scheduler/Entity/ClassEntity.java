@@ -1,21 +1,25 @@
 package com.attendance.scheduler.Entity;
 
-import com.attendance.scheduler.Entity.Account.StudentEntity;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.sql.Timestamp;
 
 import static lombok.AccessLevel.*;
 
 @Entity
-@Getter
+@Getter @Setter
+@DynamicUpdate
 @Table(name = "class_table")
 @NoArgsConstructor(access = PROTECTED)
 public class ClassEntity {
 
     @Id
-    private Long classId;
-
     private String studentName;
 
     private int counts;
@@ -26,10 +30,23 @@ public class ClassEntity {
     private int Thursday;
     private int Friday;
 
-    @MapsId
-    @OneToOne
-    @JoinColumn(name = "STUDENT_ID")
-    private StudentEntity studentEntity;
+    @UpdateTimestamp
+    private Timestamp updateTimeStamp;
 
-
+//    @MapsId
+//    @JoinColumn(name = "STUDENT_ID")
+//    @OneToOne
+//    private StudentEntity studentEntity;
+//
+    @Builder
+    public ClassEntity(String studentName, int counts, int monday, int tuesday, int wednesday, int thursday, int friday, Timestamp updateTimeStamp) {
+        this.studentName = studentName;
+        this.counts = counts;
+        Monday = monday;
+        Tuesday = tuesday;
+        Wednesday = wednesday;
+        Thursday = thursday;
+        Friday = friday;
+        this.updateTimeStamp = updateTimeStamp;
+    }
 }

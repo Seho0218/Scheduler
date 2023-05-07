@@ -1,9 +1,7 @@
 package com.attendance.scheduler.Service;
 
 import com.attendance.scheduler.Dto.ClassDTO;
-import com.attendance.scheduler.Repository.dao.ClassDAO;
-import com.attendance.scheduler.Repository.jpa.SaveClassRepository;
-import com.attendance.scheduler.Repository.jpa.SaveStudentRepository;
+import com.attendance.scheduler.Repository.ClassRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,19 +11,10 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class SubmitServiceImpl implements SubmitService {
 
-    public final SaveClassRepository saveClassRepository;
-    public final SaveStudentRepository saveStudentRepository;
-    public final ClassDAO classDAO;
+    public final ClassRepository classRepository;
 
     @Override
     public void saveClassTable(ClassDTO classDTO) {
-
-//        classDAO.save(classDTO);
-
-
-
-
-
-
+        classRepository.saveClassTable(classDTO.toEntity());
     }
 }

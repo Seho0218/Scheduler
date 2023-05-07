@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+import static jakarta.persistence.GenerationType.*;
 import static lombok.AccessLevel.PROTECTED;
 
 @Entity
@@ -16,7 +17,7 @@ import static lombok.AccessLevel.PROTECTED;
 @DiscriminatorValue("attendance")
 public class AttendanceEntity {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = IDENTITY)
     @Column(name = "ATTENDANCE_ID")
     private Long attendanceId;
 
