@@ -23,7 +23,8 @@ spring:
     open-in-view: false
 
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
+
 
     properties:
       hibernate:
@@ -60,13 +61,5 @@ spring:
 logging.level:
   root: info
   org.hibernate.SQL: debug
-
-
-mybatis:
-  type-aliases-package: com.attendance.scheduler.dto
-  mapper-locations: mapper/*Mapper.xml
-  configuration:
-    map-underscore-to-camel-case: true
-
 
 

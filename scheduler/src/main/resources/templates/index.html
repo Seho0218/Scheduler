@@ -1,71 +1,107 @@
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+
+    <style>
+
+        button[type="submit"] {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
 <div>
 <h1> 1학기 시간표 신청 </h1>
     <form role = "form" action="/submit" method='post'>
         <!--학생 이름-->
-        <p>학생 이름을 써주세요 :)</p>
-        <label for="studentName"></label>
-        <input type="text" id="studentName" name="studentName" placeholder="내 답변">
+        <div>
+            <p>1 : 00 ~ 7 : 00 (마지막수업 6시)
+                수업은 아이의 당일 학습능력에따라 50~60분동안 진행됩니다.
+            </p>
 
-        <!-- 수업 회수 -->
-        <p>주당 수업 횟수를 선택해 주세요</p>
-        <label for = "counts"></label>
-        <select name="counts" id = "counts" >
-            <option th:value="none">=== 선택 ===</option>
-            <option th:value="1">1회</option>
-            <option th:value="2">2회</option>
-            <option th:value="3">3회</option>
-            <option th:value="4">4회</option>
-            <option th:value="5">5회</option>
-        </select>
+            <p>학생 이름을 써주세요 :)</p>
+            <label for="studentName"></label>
+            <input type="text" id="studentName" name="studentName" placeholder="내 답변">
+
+            <!-- 수업 회수 -->
+            <p>주당 수업 횟수를 선택해 주세요</p>
+                <label for = "counts"></label>
+                <select name="counts" id ="counts" >
+                    <option th:value="none">=== 선택 ===</option>
+                    <option th:value="1">1회</option>
+                    <option th:value="2">2회</option>
+                    <option th:value="3">3회</option>
+                    <option th:value="4">4회</option>
+                    <option th:value="5">5회</option>
+                </select>
+        </div>
 <!--        요일-->
-        <p>월요일</p>
-        <label>
-            <input type = "radio" th:value="1" name = "Monday">오후 1시
-            <input type = "radio" th:value="3" name = "Monday">오후 3시
-            <input type = "radio" th:value="6" name = "Monday">오후 6시
-            <input type = "radio" th:value="none" name = "Monday">등교하지 않습니다.
-        </label>
-        <p>화요일</p>
-        <label>
-            <input type = "radio" th:value="1" name = "Tuesday">오후 1시
-            <input type = "radio" th:value="2" name = "Tuesday">오후 2시
-            <input type = "radio" th:value="3" name = "Tuesday">오후 3시
-            <input type = "radio" th:value="4" name = "Tuesday">오후 4시
-            <input type = "radio" th:value="5" name = "Tuesday">오후 5시
-            <input type = "radio" th:value="6" name = "Tuesday">오후 6시
-            <input type = "radio" th:value="none" name = "Tuesday">등교하지 않습니다.
-        </label>
-        <p>수요일</p>
-        <label>
-            <input type = "radio" th:value="1" name = "Wednesday">오후 1시
-            <input type = "radio" th:value="3" name = "Wednesday">오후 3시
-            <input type = "radio" th:value="5" name = "Wednesday">오후 5시
-            <input type = "radio" th:value="6" name = "Wednesday">오후 6시
-            <input type = "radio" th:value="none" name = "Wednesday">등교하지 않습니다.
-        </label>
-        <p>목요일</p>
-        <label>
-            <input type = "radio" th:value="1" name = "Thursday">오후 1시
-            <input type = "radio" th:value="3" name = "Thursday">오후 3시
-            <input type = "radio" th:value="4" name = "Thursday">오후 4시
-            <input type = "radio" th:value="5" name = "Thursday">오후 5시
-            <input type = "radio" th:value="6" name = "Thursday">오후 6시
-            <input type = "radio" th:value="none" name = "Thursday">등교하지 않습니다.
-        </label>
-        <p>금요일</p>
-        <label>
-            <input type = "radio" th:value="1" name = "Friday">오후 1시
-            <input type = "radio" th:value="2" name = "Friday">오후 2시
-            <input type = "radio" th:value="3" name = "Friday">오후 3시
-            <input type = "radio" th:value="6" name = "Friday">오후 6시
-            <input type = "radio" th:value="none" name = "Friday">등교하지 않습니다.
-        </label>
+        <div>
+        <table>
+            <tr>
+                <th>월요일</th>
+                <td th:each="num : ${#numbers.sequence(1,6)}">
+                    <label th:unless="${ClassInMondayList.contains(num)}">
+                        <input type="radio"
+                                  th:text="오후+'&nbsp;'+${numStat.count}+'시'"
+                                  th:value="${numStat.count}"
+                                  name="Monday"></label></td>
+
+                <td><label><input type="radio" th:value="0" name="Monday">등원하지 않습니다.</label></td>
+            </tr>
+            <tr>
+                <th>화요일</th>
+                <td th:each="num : ${#numbers.sequence(1,6)}">
+                    <label th:unless="${ClassInTuesdayList.contains(num)}">
+                        <input type="radio"
+                                  th:text="오후+'&nbsp;'+${numStat.count}+'시'"
+                                  th:value="${numStat.count}"
+                                  name = "Tuesday"></label></td>
+
+                <td><label><input type="radio" th:value="0" name="Tuesday">등원하지 않습니다.</label></td>
+            </tr>
+            <tr>
+                <th>수요일</th>
+                <td th:each="num : ${#numbers.sequence(1,6)}">
+                    <label th:unless="${ClassInWednesdayList.contains(num)}">
+                        <input type="radio"
+                                  th:text="오후+'&nbsp'+${numStat.count}+시"
+                                  th:value="${numStat.count}"
+                                  name = "Wednesday"></label></td>
+
+                 <td><label><input type="radio" th:value="0" name="Wednesday">등원하지 않습니다.</label></td>
+            </tr>
+            <tr>
+                <th>목요일</th>
+                <td th:each="num : ${#numbers.sequence(1,6)}">
+                    <label th:unless="${ClassInThursdayList.contains(num)}">
+                        <input type="radio"
+                                  th:text="오후+'&nbsp'+${numStat.count}+시"
+                                  th:value="${numStat.count}"
+                                  name = "Thursday"></label></td>
+
+                 <td><label><input type="radio" th:value="0" name="Thursday">등원하지 않습니다.</label></td>
+            </tr>
+            <tr>
+                <th>금요일</th>
+                <td th:each="num : ${#numbers.sequence(1,6)}">
+                    <label th:unless="${ClassInFridayList.contains(num)}">
+                        <input type="radio"
+                                  th:text="오후+'&nbsp'+${numStat.count}+시"
+                                  th:value="${numStat.count}"
+                                  name = "Friday"></label></td>
+
+                 <td><label><input type="radio" th:value="0" name="Friday">등원하지 않습니다.</label></td>
+            </tr>
+        </table>
+        </div>
 
         <div class="row">
             <button type="submit">확인</button>
