@@ -4,6 +4,23 @@
   <title>Title</title>
 </head>
 <body>
-
+<table>
+  <tr>
+    <th>월요일</th>
+    <th>화요일</th>
+    <th>수요일</th>
+    <th>목요일</th>
+    <th>금요일</th>
+  </tr>
+</table>
+    <span th:each="class : ${findClassTable}">
+      <label th:text="${class.getStudentName()}"></label>
+      <label th:text="${class.getMonday()}"></label>
+      <label th:text="${class.getTuesday()}"></label>
+      <label th:text="${class.getWednesday()}"></label>
+      <label th:text="${class.thursday}"></label>
+      <label th:text="${class.friday}"></label>
+      <label th:text="${class.getUpdateTimeStamp()}"></label><br>
+    </span>
 </body>
 </html>

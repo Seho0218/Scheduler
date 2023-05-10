@@ -1,6 +1,7 @@
 package com.attendance.scheduler.Controller;
 
 import com.attendance.scheduler.Dto.ClassDTO;
+import com.attendance.scheduler.Service.AdminService;
 import com.attendance.scheduler.Service.SearchNotEmptyClassService;
 import com.attendance.scheduler.Service.SubmitService;
 import lombok.RequiredArgsConstructor;
@@ -10,14 +11,17 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Slf4j
 @Controller
 @RequestMapping("/*")
 @RequiredArgsConstructor
 public class BasicController {
 
-    public final SubmitService submitService;
-    public final SearchNotEmptyClassService searchNotEmptyClassService;
+    private final SubmitService submitService;
+    private final SearchNotEmptyClassService searchNotEmptyClassService;
+    private final AdminService adminService;
 
     @GetMapping("/")
     public String basic(Model model){
@@ -62,7 +66,13 @@ public class BasicController {
     }
 
     @GetMapping("admin")
-    public String adminPage(){
+    public String adminPage(Model model){
+
+        List<ClassDTO> classTable = adminService.findClassTable();
+
+        model.addAttribute("findClassTable", classTable);
+        log.info("student = {} ", adminService.findClassTable());
+
         return "/admin/manage";
     }
 }

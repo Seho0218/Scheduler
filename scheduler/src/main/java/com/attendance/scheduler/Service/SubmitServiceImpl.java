@@ -11,10 +11,12 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class SubmitServiceImpl implements SubmitService {
 
-    public final ClassSaveRepository classSaveRepository;
+    private final ClassSaveRepository classSaveRepository;
 
     @Override
     public void saveClassTable(ClassDTO classDTO) {
-        classSaveRepository.save(classDTO.toEntity());
+        if(classDTO.getStudentName()!=null) {
+            classSaveRepository.save(classDTO.toEntity());
+        }
     }
 }
