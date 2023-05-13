@@ -1,7 +1,6 @@
 package com.attendance.scheduler.Dto;
 
 import com.attendance.scheduler.Entity.ClassEntity;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 
 import java.sql.Timestamp;
@@ -12,25 +11,15 @@ import java.sql.Timestamp;
 public class ClassDTO {
 
     //    학생 이름
-    @NotEmpty
     private String studentName;
     //    수업 횟수
     private int counts;
 
     //    수업 시간
-    @NotEmpty
     private Integer Monday;
-
-    @NotEmpty
     private Integer Tuesday;
-
-    @NotEmpty
     private Integer Wednesday;
-
-    @NotEmpty
     private Integer Thursday;
-
-    @NotEmpty
     private Integer Friday;
 
     private Timestamp updateTimeStamp;
