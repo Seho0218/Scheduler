@@ -20,16 +20,16 @@ public class ClassDTO {
     @NotNull(message="요일을 정확히 입력해 주세요")
     private Integer Monday;
 
-    @NotNull
+    @NotNull(message="요일을 정확히 입력해 주세요")
     private Integer Tuesday;
 
-    @NotNull
+    @NotNull(message="요일을 정확히 입력해 주세요")
     private Integer Wednesday;
 
-    @NotNull
+    @NotNull(message="요일을 정확히 입력해 주세요")
     private Integer Thursday;
 
-    @NotNull
+    @NotNull(message="요일을 정확히 입력해 주세요")
     private Integer Friday;
 
     private Timestamp updateTimeStamp;

@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -19,38 +20,23 @@ import java.util.List;
 @RequestMapping("/*")
 @RequiredArgsConstructor
 public class BasicController {
+    private final SearchNotEmptyClassService searchNotEmptyClassRepository;
 
     private final SubmitService submitService;
-    private final SearchNotEmptyClassService searchNotEmptyClassService;
     private final AdminService adminService;
 
     @GetMapping("/")
     public String basic(Model model){
 
-        model.addAttribute("ClassInMondayList",
-                searchNotEmptyClassService.findByMondayClassesOrderByAsc());
-        log.info("Monday = {}", searchNotEmptyClassService.findByMondayClassesOrderByAsc());
+        List<Object[]> classesOrderByAsc = searchNotEmptyClassRepository.findClassesOrderByAsc();
 
+        List<Integer> monday = new ArrayList<>();
+        List<Integer> tuesday = new ArrayList<>();
+        List<Integer> wednesday = new ArrayList<>();
+        List<Integer> thursday = new ArrayList<>();
+        List<Integer> friday = new ArrayList<>();
 
-        model.addAttribute("ClassInTuesdayList",
-                searchNotEmptyClassService.findByTuesdayClassesOrderByAsc());
-        log.info("Tuesday = {}", searchNotEmptyClassService.findByTuesdayClassesOrderByAsc());
-
-
-        model.addAttribute("ClassInWednesdayList",
-                searchNotEmptyClassService.findByWednesdayClassesOrderByAsc());
-        log.info("Wednesday = {}", searchNotEmptyClassService.findByWednesdayClassesOrderByAsc());
-
-
-        model.addAttribute("ClassInThursdayList",
-                searchNotEmptyClassService.findByThursdayClassesOrderByAsc());
-        log.info("Thursday = {}", searchNotEmptyClassService.findByThursdayClassesOrderByAsc());
-
-
-        model.addAttribute("ClassInFridayList",
-                searchNotEmptyClassService.findByFridayClassesOrderByAsc());
-        log.info("Friday = {}", searchNotEmptyClassService.findByFridayClassesOrderByAsc());
-
+        findClassDays(model, classesOrderByAsc, monday, tuesday, wednesday, thursday, friday);
 
         model.addAttribute("class", new ClassDTO());
 
@@ -61,31 +47,18 @@ public class BasicController {
     public String submitForm(@Validated @ModelAttribute("class") ClassDTO classDTO,
                              BindingResult bindingResult, Model model){
 
+        List<Object[]> classesOrderByAsc = searchNotEmptyClassRepository.findClassesOrderByAsc();
+
+        List<Integer> monday = new ArrayList<>();
+        List<Integer> tuesday = new ArrayList<>();
+        List<Integer> wednesday = new ArrayList<>();
+        List<Integer> thursday = new ArrayList<>();
+        List<Integer> friday = new ArrayList<>();
+
         if (bindingResult.hasErrors()) {
             log.info("errors={}", bindingResult);
-            model.addAttribute("ClassInMondayList",
-                    searchNotEmptyClassService.findByMondayClassesOrderByAsc());
-            log.info("Monday = {}", searchNotEmptyClassService.findByMondayClassesOrderByAsc());
 
-
-            model.addAttribute("ClassInTuesdayList",
-                    searchNotEmptyClassService.findByTuesdayClassesOrderByAsc());
-            log.info("Tuesday = {}", searchNotEmptyClassService.findByTuesdayClassesOrderByAsc());
-
-
-            model.addAttribute("ClassInWednesdayList",
-                    searchNotEmptyClassService.findByWednesdayClassesOrderByAsc());
-            log.info("Wednesday = {}", searchNotEmptyClassService.findByWednesdayClassesOrderByAsc());
-
-
-            model.addAttribute("ClassInThursdayList",
-                    searchNotEmptyClassService.findByThursdayClassesOrderByAsc());
-            log.info("Thursday = {}", searchNotEmptyClassService.findByThursdayClassesOrderByAsc());
-
-
-            model.addAttribute("ClassInFridayList",
-                    searchNotEmptyClassService.findByFridayClassesOrderByAsc());
-            log.info("Friday = {}", searchNotEmptyClassService.findByFridayClassesOrderByAsc());
+            findClassDays(model, classesOrderByAsc, monday, tuesday, wednesday, thursday, friday);
 
             return "index";
         }
@@ -93,6 +66,42 @@ public class BasicController {
         submitService.saveClassTable(classDTO);
 
         return "completion";
+    }
+
+    private static void findClassDays(Model model, List<Object[]> classesOrderByAsc, List<Integer> monday, List<Integer> tuesday, List<Integer> wednesday, List<Integer> thursday, List<Integer> friday) {
+        for (Object[] row : classesOrderByAsc) {
+
+            Integer mondayValue = (Integer) row[0];
+            monday.add(mondayValue);
+
+
+            Integer tuesdayValue = (Integer) row[1];
+            tuesday.add(tuesdayValue);
+
+
+            Integer wednesdayValue = (Integer) row[2];
+            wednesday.add(wednesdayValue);
+
+
+            Integer thursdayValue = (Integer) row[3];
+            thursday.add(thursdayValue);
+
+
+            Integer fridayValue = (Integer) row[4];
+            friday.add(fridayValue);
+
+        }
+
+        model.addAttribute("ClassInMondayList", monday);
+        log.info("monday = {}", monday);
+        model.addAttribute("ClassInTuesdayList", tuesday);
+        log.info("tuesday = {}", tuesday);
+        model.addAttribute("ClassInWednesdayList", wednesday);
+        log.info("wednesday = {}", wednesday);
+        model.addAttribute("ClassInThursdayList", thursday);
+        log.info("thursday = {}", thursday);
+        model.addAttribute("ClassInFridayList", friday);
+        log.info("friday = {}", friday);
     }
 
     @GetMapping("admin")

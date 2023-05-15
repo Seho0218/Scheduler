@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
     <meta charset="utf-8">
-<!--    <meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Bootstrap demo</title>
     <link th:href="@{/css/bootstrap.min.css}"
           href="../static/css/bootstrap.min.css" rel="stylesheet">
@@ -11,23 +11,11 @@
 <style>
 
     .container {
-        max-width: 560px;
+        max-width: 400px;
     }
 
     h1{
         text-align: center;
-    }
-
-    .date {
-        display: flex;
-        flex-direction: column;
-        margin-bottom: 20px;
-    }
-
-    .date p {
-        margin: 0 0 10px;
-        font-size: 20px;
-        font-weight: bold;
     }
 
     .form-check-label {
@@ -50,24 +38,25 @@
 <div class="container">
     <form role="form" action="/submit" th:object="${class}" method='post'>
 
-        <h1> 1학기 시간표 신청 </h1>
+
         <!--학생 이름-->
         <div class="py-5 text-container">
+
+            <h1> 1학기 시간표 신청 </h1>
             <p>1 : 00 ~ 7 : 00 (마지막수업 6시)
-                수업은 아이의 당일 학습능력에따라 50~60분동안 진행됩니다.
-            </p>
+                수업은 아이의 당일 학습능력에 따라 50~60분동안 진행됩니다.</p>
+
 
             <p>학생 이름을 써주세요 :)</p>
             <label for="studentName"></label>
             <input type="text" id="studentName" th:field="*{studentName}"
                   th:errorclass="field-error" class="form-control" placeholder="이름을 정확히 입력하세요">
             <div class="field-error" th:errors="*{studentName}">
-                필수 값입니다.
             </div>
         </div>
         <!--요일-->
-        <div class="py-5 text-center">
-            <div class="date">
+        <div class="py-2 text-center">
+            <div class="monday">
                 <p>월요일</p>
                 <div th:each="num : ${#numbers.sequence(1,6)}">
                     <label class="form-check-label"
@@ -88,11 +77,9 @@
                            th:errorclass="field-error"
                            name="Monday">등원하지 않습니다.
                 </label>
-                <div class="field-error" th:errors="*{monday}">
-                    필수값
-                </div>
-            </div>
-            <div class="date">
+                <div class="field-error" th:errors="*{monday}"></div>
+            </div><!--monday div ends-->
+            <div class="tuesday">
                 <p>화요일</p>
                 <div th:each="num : ${#numbers.sequence(1,6)}">
                     <label class="form-check-label"
@@ -115,7 +102,7 @@
                 </label>
                 <div class="field-error" th:errors="*{tuesday}"></div>
             </div>
-            <div class="date">
+            <div class="wednesday">
                 <p>수요일</p>
                 <div th:each="num : ${#numbers.sequence(1,6)}">
                     <label class="form-check-label"
@@ -138,7 +125,7 @@
                  </label>
                 <div class="field-error" th:errors="*{wednesday}"></div>
             </div>
-            <div class="date">
+            <div class="thursday">
                 <p>목요일</p>
                 <div th:each="num : ${#numbers.sequence(1,6)}">
                     <label class="form-check-label"
@@ -160,7 +147,7 @@
                 </label>
                 <div class="field-error" th:errors="*{thursday}"></div>
             </div>
-            <div class="date">
+            <div class="friday">
                 <p>금요일</p>
                 <div th:each="num : ${#numbers.sequence(1,6)}">
                     <label class="form-check-label"

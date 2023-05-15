@@ -15,28 +15,7 @@ public class SearchNotEmptyClassServiceImpl implements SearchNotEmptyClassServic
     private final SearchNotEmptyClassRepository searchNotEmptyClassRepository;
 
     @Override
-    public List<Integer> findByMondayClassesOrderByAsc() {
-        return searchNotEmptyClassRepository.findMondayClassesOrderByAsc();
+    public List<Object[]> findClassesOrderByAsc() {
+        return searchNotEmptyClassRepository.findClassesOrderByAsc();
     }
-
-    @Override
-    public List<Integer> findByTuesdayClassesOrderByAsc() {
-        return searchNotEmptyClassRepository.findTuesdayClassesOrderByAsc();
-    }
-
-    @Override
-    public List<Integer> findByWednesdayClassesOrderByAsc() {
-        return searchNotEmptyClassRepository.findWednesdayClassesOrderByAsc();
-    }
-
-    @Override
-    public List<Integer> findByThursdayClassesOrderByAsc() {
-        return searchNotEmptyClassRepository.findThursdayClassesOrderByAsc();
-    }
-
-    @Override
-    public List<Integer> findByFridayClassesOrderByAsc() {
-        return searchNotEmptyClassRepository.findFridayClassesOrderByAsc();
-    }
-
 }

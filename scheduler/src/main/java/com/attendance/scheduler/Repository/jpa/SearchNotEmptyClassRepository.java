@@ -8,19 +8,8 @@ import java.util.List;
 
 public interface SearchNotEmptyClassRepository extends JpaRepository<ClassEntity, String> {
 
-    @Query("SELECT c.Monday FROM ClassEntity c WHERE c.Monday <> 0 ORDER BY c.Monday ASC")
-    List<Integer> findMondayClassesOrderByAsc();
 
-    @Query("SELECT c.Tuesday FROM ClassEntity c WHERE c.Tuesday <> 0 ORDER BY c.Tuesday ASC")
-    List<Integer> findTuesdayClassesOrderByAsc();
-
-    @Query("SELECT c.Wednesday FROM ClassEntity c WHERE c.Wednesday <> 0 ORDER BY c.Wednesday ASC")
-    List<Integer> findWednesdayClassesOrderByAsc();
-
-    @Query("SELECT c.Thursday FROM ClassEntity c WHERE c.Thursday <> 0 ORDER BY c.Thursday ASC")
-    List<Integer> findThursdayClassesOrderByAsc();
-
-    @Query("SELECT c.Friday FROM ClassEntity c WHERE c.Friday <> 0 ORDER BY c.Friday ASC")
-    List<Integer> findFridayClassesOrderByAsc();
+    @Query("SELECT c.Monday, c.Tuesday, c.Wednesday, c.Thursday, c.Friday FROM ClassEntity c WHERE c.Monday <> 0 OR c.Tuesday <> 0 OR c.Wednesday <> 0 OR c.Thursday <> 0 OR c.Friday <> 0 ORDER BY c.Monday ASC, c.Tuesday ASC, c.Wednesday ASC, c.Thursday ASC, c.Friday ASC")
+    List<Object[]> findClassesOrderByAsc();
 
 }
