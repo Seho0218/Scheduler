@@ -1,8 +1,8 @@
 package com.attendance.scheduler.Service;
 
 
-import java.util.List;
+import com.attendance.scheduler.Dto.ClassListDTO;
 
 public interface SearchNotEmptyClassService {
-      List<Object[]> findClassesOrderByAsc();
+      ClassListDTO findClassesOrderByAsc();
 }

@@ -1,18 +1,22 @@
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <title>Title</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bootstrap demo</title>
+  <link th:href="@{/css/bootstrap.min.css}"
+        href=".../static" rel="stylesheet">
+
 </head>
 <body>
-<table>
-  <tr>
-    <th>월요일</th>
-    <th>화요일</th>
-    <th>수요일</th>
-    <th>목요일</th>
-    <th>금요일</th>
-  </tr>
-</table>
+<div class="container">
+
+    월요일
+    화요일
+    수요일
+    목요일
+    금요일
+
     <span th:each="class : ${findClassTable}">
       <label th:text="${class.getStudentName()}"></label>
       <label th:text="${class.getMonday()}"></label>
@@ -22,5 +26,6 @@
       <label th:text="${class.friday}"></label>
       <label th:text="${class.getUpdateTimeStamp()}"></label><br>
     </span>
+</div>
 </body>
 </html>

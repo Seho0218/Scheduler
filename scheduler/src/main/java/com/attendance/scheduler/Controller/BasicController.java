@@ -1,6 +1,7 @@
 package com.attendance.scheduler.Controller;
 
 import com.attendance.scheduler.Dto.ClassDTO;
+import com.attendance.scheduler.Dto.ClassListDTO;
 import com.attendance.scheduler.Service.AdminService;
 import com.attendance.scheduler.Service.SearchNotEmptyClassService;
 import com.attendance.scheduler.Service.SubmitService;
@@ -12,7 +13,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -20,23 +20,15 @@ import java.util.List;
 @RequestMapping("/*")
 @RequiredArgsConstructor
 public class BasicController {
-    private final SearchNotEmptyClassService searchNotEmptyClassRepository;
 
     private final SubmitService submitService;
     private final AdminService adminService;
+    private final SearchNotEmptyClassService searchNotEmptyClassService;
 
     @GetMapping("/")
     public String basic(Model model){
 
-        List<Object[]> classesOrderByAsc = searchNotEmptyClassRepository.findClassesOrderByAsc();
-
-        List<Integer> monday = new ArrayList<>();
-        List<Integer> tuesday = new ArrayList<>();
-        List<Integer> wednesday = new ArrayList<>();
-        List<Integer> thursday = new ArrayList<>();
-        List<Integer> friday = new ArrayList<>();
-
-        findClassDays(model, classesOrderByAsc, monday, tuesday, wednesday, thursday, friday);
+        GetClassList(model);
 
         model.addAttribute("class", new ClassDTO());
 
@@ -45,64 +37,41 @@ public class BasicController {
 
     @PostMapping("submit")
     public String submitForm(@Validated @ModelAttribute("class") ClassDTO classDTO,
-                             BindingResult bindingResult, Model model){
-
-        List<Object[]> classesOrderByAsc = searchNotEmptyClassRepository.findClassesOrderByAsc();
-
-        List<Integer> monday = new ArrayList<>();
-        List<Integer> tuesday = new ArrayList<>();
-        List<Integer> wednesday = new ArrayList<>();
-        List<Integer> thursday = new ArrayList<>();
-        List<Integer> friday = new ArrayList<>();
+                             BindingResult bindingResult, Model model) {
 
         if (bindingResult.hasErrors()) {
+
             log.info("errors={}", bindingResult);
-
-            findClassDays(model, classesOrderByAsc, monday, tuesday, wednesday, thursday, friday);
-
+            GetClassList(model);
             return "index";
         }
 
         submitService.saveClassTable(classDTO);
-
         return "completion";
     }
 
-    private static void findClassDays(Model model, List<Object[]> classesOrderByAsc, List<Integer> monday, List<Integer> tuesday, List<Integer> wednesday, List<Integer> thursday, List<Integer> friday) {
-        for (Object[] row : classesOrderByAsc) {
+    private void GetClassList(Model model) {
 
-            Integer mondayValue = (Integer) row[0];
-            monday.add(mondayValue);
+        ClassListDTO classesOrderByAsc = searchNotEmptyClassService.findClassesOrderByAsc();
 
+        List<Integer> mondayList = classesOrderByAsc.getClassInMondayList();
+        List<Integer> tuesdayList = classesOrderByAsc.getClassInTuesdayList();
+        List<Integer> wednesdayList = classesOrderByAsc.getClassInWednesdayList();
+        List<Integer> thursdayList = classesOrderByAsc.getClassInThursdayList();
+        List<Integer> fridayList = classesOrderByAsc.getClassInFridayList();
 
-            Integer tuesdayValue = (Integer) row[1];
-            tuesday.add(tuesdayValue);
-
-
-            Integer wednesdayValue = (Integer) row[2];
-            wednesday.add(wednesdayValue);
-
-
-            Integer thursdayValue = (Integer) row[3];
-            thursday.add(thursdayValue);
-
-
-            Integer fridayValue = (Integer) row[4];
-            friday.add(fridayValue);
-
-        }
-
-        model.addAttribute("ClassInMondayList", monday);
-        log.info("monday = {}", monday);
-        model.addAttribute("ClassInTuesdayList", tuesday);
-        log.info("tuesday = {}", tuesday);
-        model.addAttribute("ClassInWednesdayList", wednesday);
-        log.info("wednesday = {}", wednesday);
-        model.addAttribute("ClassInThursdayList", thursday);
-        log.info("thursday = {}", thursday);
-        model.addAttribute("ClassInFridayList", friday);
-        log.info("friday = {}", friday);
+        model.addAttribute("ClassInMondayList", mondayList);
+        log.info("monday = {}", mondayList);
+        model.addAttribute("ClassInTuesdayList", tuesdayList);
+        log.info("tuesday = {}", tuesdayList);
+        model.addAttribute("ClassInWednesdayList", wednesdayList);
+        log.info("wednesday = {}", wednesdayList);
+        model.addAttribute("ClassInThursdayList", thursdayList);
+        log.info("thursday = {}", thursdayList);
+        model.addAttribute("ClassInFridayList", fridayList);
+        log.info("friday = {}", fridayList);
     }
+
 
     @GetMapping("admin")
     public String adminPage(Model model){

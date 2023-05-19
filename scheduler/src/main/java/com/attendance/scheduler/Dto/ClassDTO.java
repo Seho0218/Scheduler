@@ -45,8 +45,4 @@ public class ClassDTO {
                 .updateTimeStamp(updateTimeStamp)
                 .build();
     }
-
-    public static ClassDTO classTableInstance(){
-        return new ClassDTO();
-    }
 }
