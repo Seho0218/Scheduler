@@ -18,10 +18,10 @@ public class SecurityConfig{
 				.csrf().disable()
 				.authorizeHttpRequests(request -> request
 						.requestMatchers("/", "/submit", "/completion",
-								"/login","/logout","/admin",
-								"/css/**")
+								"/login","/logout","/admin/*",
+								"/css/*")
 						.permitAll()
-//						.requestMatchers("/admin/**")
+//						.requestMatchers("/admin/*")
 //						.hasAnyRole("ADMIN")
 						.anyRequest().authenticated()
 				)

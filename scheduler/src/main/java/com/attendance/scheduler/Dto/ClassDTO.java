@@ -13,35 +13,35 @@ import java.sql.Timestamp;
 public class ClassDTO {
 
     //    학생 이름
-    @NotEmpty(message="학생 이름을 정확히 입력해 주세요")
+    @NotEmpty(message = "학생 이름을 정확히 입력해 주세요")
     private String studentName;
 
     //    수업 시간
-    @NotNull(message="요일을 정확히 입력해 주세요")
-    private Integer Monday;
+    @NotNull(message = "요일을 선택해 주세요")
+    private Integer monday;
 
-    @NotNull(message="요일을 정확히 입력해 주세요")
-    private Integer Tuesday;
+    @NotNull(message = "요일을 선택해 주세요")
+    private Integer tuesday;
 
-    @NotNull(message="요일을 정확히 입력해 주세요")
-    private Integer Wednesday;
+    @NotNull(message = "요일을 선택해 주세요")
+    private Integer wednesday;
 
-    @NotNull(message="요일을 정확히 입력해 주세요")
-    private Integer Thursday;
+    @NotNull(message = "요일을 선택해 주세요")
+    private Integer thursday;
 
-    @NotNull(message="요일을 정확히 입력해 주세요")
-    private Integer Friday;
+    @NotNull(message = "요일을 선택해 주세요")
+    private Integer friday;
 
     private Timestamp updateTimeStamp;
 
     public ClassEntity toEntity() {
         return ClassEntity.builder()
                 .studentName(studentName)
-                .monday(Monday)
-                .tuesday(Tuesday)
-                .wednesday(Wednesday)
-                .thursday(Thursday)
-                .friday(Friday)
+                .monday(monday)
+                .tuesday(tuesday)
+                .wednesday(wednesday)
+                .thursday(thursday)
+                .friday(friday)
                 .updateTimeStamp(updateTimeStamp)
                 .build();
     }

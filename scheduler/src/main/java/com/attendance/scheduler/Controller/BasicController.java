@@ -2,7 +2,6 @@ package com.attendance.scheduler.Controller;
 
 import com.attendance.scheduler.Dto.ClassDTO;
 import com.attendance.scheduler.Dto.ClassListDTO;
-import com.attendance.scheduler.Service.AdminService;
 import com.attendance.scheduler.Service.SearchNotEmptyClassService;
 import com.attendance.scheduler.Service.SubmitService;
 import lombok.RequiredArgsConstructor;
@@ -17,21 +16,18 @@ import java.util.List;
 
 @Slf4j
 @Controller
-@RequestMapping("/*")
+@RequestMapping("/")
 @RequiredArgsConstructor
 public class BasicController {
 
     private final SubmitService submitService;
-    private final AdminService adminService;
     private final SearchNotEmptyClassService searchNotEmptyClassService;
 
     @GetMapping("/")
     public String basic(Model model){
 
         GetClassList(model);
-
         model.addAttribute("class", new ClassDTO());
-
         return "index";
     }
 
@@ -40,15 +36,21 @@ public class BasicController {
                              BindingResult bindingResult, Model model) {
 
         if (bindingResult.hasErrors()) {
-
-            log.info("errors={}", bindingResult);
             GetClassList(model);
+            log.info("errors={}", bindingResult);
             return "index";
         }
 
         submitService.saveClassTable(classDTO);
-        return "completion";
+        return "redirect:/completion";
     }
+
+    @GetMapping("completion")
+    public String submitForm() {
+        return "/completion";
+    }
+
+
 
     private void GetClassList(Model model) {
 
@@ -70,17 +72,5 @@ public class BasicController {
         log.info("thursday = {}", thursdayList);
         model.addAttribute("ClassInFridayList", fridayList);
         log.info("friday = {}", fridayList);
-    }
-
-
-    @GetMapping("admin")
-    public String adminPage(Model model){
-
-        List<ClassDTO> classTable = adminService.findClassTable();
-
-        model.addAttribute("findClassTable", classTable);
-        log.info("student = {} ", adminService.findClassTable());
-
-        return "/admin/manage";
     }
 }

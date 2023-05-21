@@ -5,27 +5,84 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Bootstrap demo</title>
   <link th:href="@{/css/bootstrap.min.css}"
-        href=".../static" rel="stylesheet">
-
+        href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        input[type="checkbox"] {
+            width: 1.5em;
+            height: 1.5em;
+        }
+    </style>
 </head>
 <body>
 <div class="container">
-
-    월요일
-    화요일
-    수요일
-    목요일
-    금요일
-
-    <span th:each="class : ${findClassTable}">
-      <label th:text="${class.getStudentName()}"></label>
-      <label th:text="${class.getMonday()}"></label>
-      <label th:text="${class.getTuesday()}"></label>
-      <label th:text="${class.getWednesday()}"></label>
-      <label th:text="${class.thursday}"></label>
-      <label th:text="${class.friday}"></label>
-      <label th:text="${class.getUpdateTimeStamp()}"></label><br>
-    </span>
+    <div th:object="${classList}">
+        <table class="table caption-top table-responsive" id="jb-table">
+            <caption>List of users</caption>
+            <thead id="header">
+                <tr>
+                    <th scope="col"></th>
+                    <th scope="col">이름</th>
+                    <th scope="col">월요일</th>
+                    <th scope="col">화요일</th>
+                    <th scope="col">수요일</th>
+                    <th scope="col">목요일</th>
+                    <th scope="col">금요일</th>
+                    <th scope="col">수정시간</th>
+                    <th scope="col">삭제</th>
+                </tr>
+            </thead>
+            <tbody th:each="class : ${findClassTable}">
+                <tr>
+                    <td>
+                        <div class="form-check" id="multiChk">
+                            <label><input class="form-check-input" type="checkbox"
+                                          th:field="*{deleteClassList}"
+                                          th:value="${class.getStudentName()}"></label>
+                        </div>
+                    </td>
+                    <td th:text="${class.getStudentName()}"></td>
+                    <td th:text="오후+'&nbsp;'+${class.getMonday()}+'시'"></td>
+                    <td th:text="오후+'&nbsp;'+${class.getTuesday()}+'시'"></td>
+                    <td th:text="오후+'&nbsp;'+${class.getWednesday()}+'시'"></td>
+                    <td th:text="오후+'&nbsp;'+${class.thursday}+'시'"></td>
+                    <td th:text="오후+'&nbsp;'+${class.friday}+'시'"></td>
+                    <td th:text="${class.getUpdateTimeStamp()}"></td>
+                    <td>
+                        <button class="btn btn-primary delete-button"
+                                th:value="${class.getStudentName()}">삭제</button>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
 </div>
 </body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.delete-button').click(function() {
+            var studentName = $(this).attr('value');
+            var confirmation = confirm('정말로 ' + studentName + '을(를) 삭제하시겠습니까?');
+
+            if (confirmation) {
+                $.ajax({
+                    url: '/admin/delete',
+                    method: 'POST',
+                    data: { deleteClassList: studentName },
+                    success: function(response) {
+                        alert('삭제되었습니다.');
+                        location.reload();
+                    },
+                    error: function(xhr, status, error) {
+                        alert('삭제에 실패했습니다. 다시 시도해주세요.');
+                    }
+                });
+            }
+        });
+    });
+</script>
 </html>
