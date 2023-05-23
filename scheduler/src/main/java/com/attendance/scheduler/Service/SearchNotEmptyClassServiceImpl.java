@@ -1,6 +1,7 @@
 package com.attendance.scheduler.Service;
 
 import com.attendance.scheduler.Dto.ClassListDTO;
+import com.attendance.scheduler.Dto.StudentClassDTO;
 import com.attendance.scheduler.Repository.jpa.SearchNotEmptyClassRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -53,6 +54,11 @@ public class SearchNotEmptyClassServiceImpl implements SearchNotEmptyClassServic
         classListDTO.setClassInFridayList(friday);
 
         return classListDTO;
+    }
+
+    @Override
+    public StudentClassDTO findStudentClasses(StudentClassDTO studentClassDTO) {
+        return searchNotEmptyClassRepository.findByStudentName(studentClassDTO.getStudentName());
     }
 }
 

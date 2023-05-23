@@ -2,6 +2,7 @@ package com.attendance.scheduler.Controller;
 
 import com.attendance.scheduler.Dto.ClassDTO;
 import com.attendance.scheduler.Dto.ClassListDTO;
+import com.attendance.scheduler.Dto.StudentClassDTO;
 import com.attendance.scheduler.Service.SearchNotEmptyClassService;
 import com.attendance.scheduler.Service.SubmitService;
 import lombok.RequiredArgsConstructor;
@@ -31,8 +32,9 @@ public class BasicController {
         return "index";
     }
 
+//  제출
     @PostMapping("submit")
-    public String submitForm(@Validated @ModelAttribute("class") ClassDTO classDTO,
+    public String SubmitForm(@Validated @ModelAttribute("class") ClassDTO classDTO,
                              BindingResult bindingResult, Model model) {
 
         if (bindingResult.hasErrors()) {
@@ -44,11 +46,46 @@ public class BasicController {
         submitService.saveClassTable(classDTO);
         return "redirect:/completion";
     }
-
+//  제출 완료 폼
     @GetMapping("completion")
-    public String submitForm() {
+    public String SubmitForm() {
         return "/completion";
     }
+
+
+
+//  수업 조회 폼
+    @GetMapping("search")
+    public String SearchClass(Model model) {
+        model.addAttribute("class", new ClassDTO());
+        return "search";
+    }
+
+//   수업 조회
+    @PostMapping("findClass")
+    public String findClass(Model model, StudentClassDTO studentClassDTO) {
+        StudentClassDTO studentClasses = searchNotEmptyClassService.findStudentClasses(studentClassDTO);
+        model.addAttribute("class", studentClasses);
+        return "search";
+    }
+
+//  수업 수정
+//    @PostMapping("modify")
+    public String modifyClass(@Validated @ModelAttribute("class") ClassDTO classDTO,
+                              BindingResult bindingResult, Model model) {
+
+        if (bindingResult.hasErrors()) {
+            GetClassList(model);
+            log.info("errors={}", bindingResult);
+            return "search";
+        }
+//        model.addAttribute();
+
+        submitService.saveClassTable(classDTO);
+        return "completion";
+    }
+
+
 
 
 

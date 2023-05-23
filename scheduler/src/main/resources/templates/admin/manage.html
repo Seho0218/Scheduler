@@ -41,11 +41,11 @@
                         </div>
                     </td>
                     <td th:text="${class.getStudentName()}"></td>
-                    <td th:text="오후+'&nbsp;'+${class.getMonday()}+'시'"></td>
-                    <td th:text="오후+'&nbsp;'+${class.getTuesday()}+'시'"></td>
-                    <td th:text="오후+'&nbsp;'+${class.getWednesday()}+'시'"></td>
-                    <td th:text="오후+'&nbsp;'+${class.thursday}+'시'"></td>
-                    <td th:text="오후+'&nbsp;'+${class.friday}+'시'"></td>
+                    <td th:text="${class.getMonday() == 0 ? '결석' : '오후 ' + class.getMonday() + '시'}"></td>
+                    <td th:text="${class.getTuesday() == 0 ? '결석' : '오후 ' + class.getTuesday() + '시'}"></td>
+                    <td th:text="${class.getWednesday() == 0 ? '결석' : '오후 ' + class.getWednesday() + '시'}"></td>
+                    <td th:text="${class.getThursday() == 0 ? '결석' : '오후 ' + class.getThursday() + '시'}"></td>
+                    <td th:text="${class.getFriday() == 0 ? '결석' : '오후 ' + class.getFriday() + '시'}"></td>
                     <td th:text="${class.getUpdateTimeStamp()}"></td>
                     <td>
                         <button class="btn btn-primary delete-button"
