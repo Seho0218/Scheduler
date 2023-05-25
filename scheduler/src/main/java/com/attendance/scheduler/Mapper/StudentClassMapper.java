@@ -5,8 +5,8 @@ import com.attendance.scheduler.Entity.ClassEntity;
 import org.mapstruct.Mapper;
 import org.springframework.stereotype.Component;
 
-@Mapper(componentModel = "spring")
 @Component
+@Mapper(componentModel = "spring")
 public interface StudentClassMapper {
     StudentClassDTO toClassDTO(ClassEntity classEntity);
 }

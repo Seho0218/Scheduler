@@ -37,7 +37,7 @@ public class BasicController {
 
 //  제출
     @PostMapping("submit")
-    public String SubmitForm(@Validated @ModelAttribute ClassDTO classDTO,
+    public String SubmitForm(@Validated @ModelAttribute("class") ClassDTO classDTO,
                              BindingResult bindingResult, Model model) {
 
         if (bindingResult.hasErrors()) {
@@ -66,7 +66,7 @@ public class BasicController {
 
 //   수업 조회
     @PostMapping("findClass")
-    public String findClass(@Validated @ModelAttribute StudentClassDTO studentClassDTO,
+    public String findClass(@Validated @ModelAttribute("class") StudentClassDTO studentClassDTO,
                             BindingResult bindingResult, Model model) {
 
         StudentClassDTO studentClasses = searchNotEmptyClassService.findStudentClasses(studentClassDTO);
@@ -78,14 +78,14 @@ public class BasicController {
 
         log.info("studentClasses={}", studentClasses);
 
-        model.addAttribute("findClass", new StudentClassDTO());
+        model.addAttribute("class", new StudentClassDTO());
         model.addAttribute("classList", studentClasses);
         return "findClass";
     }
 
 //  수업 수정
     @PostMapping("modify")
-    public String modifyClass(@Validated @ModelAttribute("findClass") ClassDTO classDTO,
+    public String modifyClass(@Validated @ModelAttribute("class") ClassDTO classDTO,
                               BindingResult bindingResult) {
 
 

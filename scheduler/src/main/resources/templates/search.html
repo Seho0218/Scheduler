@@ -22,7 +22,7 @@
             margin: 1em;
             background-color: white;
         }
-        .board p, .monday p, .tuesday p, .wednesday p, .thursday p, .friday p {
+        .board p {
             text-align: center;
         }
 
@@ -38,7 +38,7 @@
     <form role="form" th:action="@{/findClass}" th:object="${class}" method='post'>
         <div class="py-2">
             <div class="header">
-
+                <br><br>
 
             </div>
         </div>
@@ -47,18 +47,17 @@
             <div class="board rounded-3 border border-2">
 
                 <h1> 시간표 조회 </h1>
-                <p>1 : 00 ~ 7 : 00 (마지막수업 6시)<br>
-                    수업은 아이의 당일 학습능력에 따라 50~60분동안 진행됩니다.</p>
                 <p>학생 이름을 써주세요 :)<br>
                     이름을 정확히 입력하시면<br>
                     다시 작성하실 때, 스케쥴을 번경하실 수 있습니다.</p>
                 <label for="studentName"></label>
                 <input type="text" id="studentName" th:field="*{studentName}"
                        th:errorclass="field-error" class="form-control" placeholder="이름을 정확히 입력해주세요">
-                <div class="field-error" th:errors="*{studentName}"></div>
-                <a href = "/search">
-                    <button class="btn btn-primary" type="submit">수업 조회</button>
-                </a><br><br>
+                <div class="field-error" th:errors="*{studentName}"></div><br>
+                <div class="text-end">
+                    <button class="btn btn-primary" type="submit">수업 조회</button></div>
+                <br><br>
+
             </div>
         </div>
     </form>
