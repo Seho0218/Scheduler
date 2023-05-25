@@ -17,24 +17,13 @@
             text-align: center;
         }
 
-        .board, .monday, .tuesday, .wednesday, .thursday, .friday {
+        .board{
             padding: 1em;
             margin: 1em;
             background-color: white;
         }
         .board p, .monday p, .tuesday p, .wednesday p, .thursday p, .friday p {
             text-align: center;
-        }
-
-        .form-check-label {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-            font-size: 16px;
-        }
-
-        .form-check-label input {
-            margin-right: 10px;
         }
 
         .field-error {
@@ -57,7 +46,7 @@
         <div class="py-2">
             <div class="board rounded-3 border border-2">
 
-                <h1> 1학기 시간표 신청 </h1>
+                <h1> 시간표 조회 </h1>
                 <p>1 : 00 ~ 7 : 00 (마지막수업 6시)<br>
                     수업은 아이의 당일 학습능력에 따라 50~60분동안 진행됩니다.</p>
                 <p>학생 이름을 써주세요 :)<br>
@@ -68,14 +57,9 @@
                        th:errorclass="field-error" class="form-control" placeholder="이름을 정확히 입력해주세요">
                 <div class="field-error" th:errors="*{studentName}"></div>
                 <a href = "/search">
-                    <button type="button" class="btn btn-primary">수업 조회</button>
+                    <button class="btn btn-primary" type="submit">수업 조회</button>
                 </a><br><br>
-                <div></div>
             </div>
-        </div>
-        <!--요일 끝-->
-        <div class="button">
-            <button type="submit" class="btn btn-primary">수정</button>
         </div>
     </form>
 </div><!-- container-->

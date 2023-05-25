@@ -11,7 +11,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
@@ -34,7 +37,7 @@ public class BasicController {
 
 //  제출
     @PostMapping("submit")
-    public String SubmitForm(@Validated @ModelAttribute("class") ClassDTO classDTO,
+    public String SubmitForm(@Validated @ModelAttribute ClassDTO classDTO,
                              BindingResult bindingResult, Model model) {
 
         if (bindingResult.hasErrors()) {
@@ -57,30 +60,40 @@ public class BasicController {
 //  수업 조회 폼
     @GetMapping("search")
     public String SearchClass(Model model) {
-        model.addAttribute("class", new ClassDTO());
+        model.addAttribute("class", new StudentClassDTO());
         return "search";
     }
 
 //   수업 조회
     @PostMapping("findClass")
-    public String findClass(Model model, StudentClassDTO studentClassDTO) {
+    public String findClass(@Validated @ModelAttribute StudentClassDTO studentClassDTO,
+                            BindingResult bindingResult, Model model) {
+
         StudentClassDTO studentClasses = searchNotEmptyClassService.findStudentClasses(studentClassDTO);
-        model.addAttribute("class", studentClasses);
-        return "search";
-    }
 
-//  수업 수정
-//    @PostMapping("modify")
-    public String modifyClass(@Validated @ModelAttribute("class") ClassDTO classDTO,
-                              BindingResult bindingResult, Model model) {
-
-        if (bindingResult.hasErrors()) {
-            GetClassList(model);
+        if (bindingResult.hasErrors() || studentClasses == null) {
             log.info("errors={}", bindingResult);
             return "search";
         }
-//        model.addAttribute();
 
+        log.info("studentClasses={}", studentClasses);
+
+        model.addAttribute("findClass", new StudentClassDTO());
+        model.addAttribute("classList", studentClasses);
+        return "findClass";
+    }
+
+//  수업 수정
+    @PostMapping("modify")
+    public String modifyClass(@Validated @ModelAttribute("findClass") ClassDTO classDTO,
+                              BindingResult bindingResult) {
+
+
+        log.info("studentInfo={}", classDTO.getStudentName());
+        if (bindingResult.hasErrors()) {
+            log.info("errors={}", bindingResult);
+            return "findClass";
+        }
         submitService.saveClassTable(classDTO);
         return "completion";
     }

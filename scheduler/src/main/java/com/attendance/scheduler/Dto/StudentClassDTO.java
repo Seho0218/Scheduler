@@ -1,7 +1,6 @@
 package com.attendance.scheduler.Dto;
 
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,6 +12,7 @@ import lombok.ToString;
 public class StudentClassDTO {
 
     //    학생 이름
+    @NotEmpty(message = "학생 이름을 정확히 입력해 주세요")
     private String studentName;
 
     //    수업 시간

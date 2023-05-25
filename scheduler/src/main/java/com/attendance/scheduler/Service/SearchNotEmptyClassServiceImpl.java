@@ -2,6 +2,8 @@ package com.attendance.scheduler.Service;
 
 import com.attendance.scheduler.Dto.ClassListDTO;
 import com.attendance.scheduler.Dto.StudentClassDTO;
+import com.attendance.scheduler.Entity.ClassEntity;
+import com.attendance.scheduler.Mapper.StudentClassMapper;
 import com.attendance.scheduler.Repository.jpa.SearchNotEmptyClassRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,7 @@ import java.util.List;
 public class SearchNotEmptyClassServiceImpl implements SearchNotEmptyClassService {
 
     private final SearchNotEmptyClassRepository searchNotEmptyClassRepository;
+    private final StudentClassMapper studentClassMapper;
 
     @Override
     public ClassListDTO findClassesOrderByAsc() {
@@ -58,7 +61,9 @@ public class SearchNotEmptyClassServiceImpl implements SearchNotEmptyClassServic
 
     @Override
     public StudentClassDTO findStudentClasses(StudentClassDTO studentClassDTO) {
-        return searchNotEmptyClassRepository.findByStudentName(studentClassDTO.getStudentName());
+        String studentName = studentClassDTO.getStudentName();
+        ClassEntity byStudentNameIs = searchNotEmptyClassRepository.findByStudentNameIs(studentName);
+        return studentClassMapper.toClassDTO(byStudentNameIs);
     }
 }
 

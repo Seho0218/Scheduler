@@ -1,6 +1,5 @@
 package com.attendance.scheduler.Repository.jpa;
 
-import com.attendance.scheduler.Dto.StudentClassDTO;
 import com.attendance.scheduler.Entity.ClassEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -17,6 +16,6 @@ public interface SearchNotEmptyClassRepository extends JpaRepository<ClassEntity
     List<Object[]> findClassesOrderByAsc();
 
 // 학생 수업 조회
-    StudentClassDTO findByStudentName(String studentName);
+    ClassEntity findByStudentNameIs(String studentName);
 
 }
