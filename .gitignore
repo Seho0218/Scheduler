@@ -32,6 +32,10 @@ out/
 /dist/
 /nbdist/
 /.nb-gradle/
+.jpb
 
 ### VS Code ###
 .vscode/
+
+### obsidian ###
+.obsidian
