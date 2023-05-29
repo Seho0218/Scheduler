@@ -1,5 +1,5 @@
 server:
-  port: 8090
+  port: 9090
 
 spring:
   sql:
@@ -18,9 +18,9 @@ spring:
 
   datasource: # jdbc
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1/scheduler?characterEncoding=utf-8
+    url: jdbc:mysql://seho0218.synology.me:3306/scheduler?characterEncoding=utf-8
     username: root
-    password: root1234
+    password: Root123!@#
 
 
   jpa:
@@ -29,7 +29,7 @@ spring:
     open-in-view: false
 
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: validate
 
 
     properties:

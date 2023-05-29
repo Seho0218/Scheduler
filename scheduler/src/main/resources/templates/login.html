@@ -1,0 +1,66 @@
+<!DOCTYPE HTML>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title>Bootstrap demo</title>
+    <link href="../static/css/bootstrap.min.css"
+          rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <style>
+        .container {
+            max-width: 80em;
+        }
+
+        body { background-color: lightgoldenrodyellow; }
+
+        h1{
+            text-align: center;
+        }
+
+        .board{
+            padding: 1em;
+            margin: 1em;
+            background-color: white;
+        }
+        .board p {
+            text-align: center;
+        }
+
+        .field-error {
+            border-color: #dc3545;
+            color: #dc3545;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <form method='post' role="form" th:action="@{/}" th:object="${login}">
+        <div class="py-2">
+            <div class="header">
+                <br><br>
+
+            </div>
+        </div>
+        <!--학생 이름-->
+        <div class="py-2">
+            <div class="board rounded-3 border border-2">
+
+                <h1> 시간표 조회 </h1>
+                <p>학생 이름을 써주세요 :)<br>
+                    이름을 정확히 입력하시면<br>
+                    다시 작성하실 때, 스케쥴을 번경하실 수 있습니다.</p>
+                <label for="adminId"></label>
+                <input class="form-control" id="adminId" placeholder="이름을 정확히 입력해주세요"
+                       th:errorclass="field-error" th:field="*{adminId}" type="text">
+                <div class="field-error" th:errors="*{adminId}"></div><br>
+                <div class="text-end">
+                    <button class="btn btn-primary" type="submit">로그인</button></div>
+                <br><br>
+
+            </div>
+        </div>
+    </form>
+</div><!-- container-->
+</body>
+</html>

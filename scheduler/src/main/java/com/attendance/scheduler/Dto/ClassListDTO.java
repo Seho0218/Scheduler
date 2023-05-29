@@ -19,7 +19,7 @@ public class ClassListDTO {
     private List<Integer> ClassInFridayList;
 
 
-    public static ClassListDTO classTableInstance(){
+    public static ClassListDTO getInstance(){
         return new ClassListDTO();
     }
 }

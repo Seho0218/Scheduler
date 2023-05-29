@@ -1,10 +1,12 @@
 package com.attendance.scheduler.Controller;
 
+import com.attendance.scheduler.Dto.AdminDTO;
 import com.attendance.scheduler.Dto.ClassDTO;
 import com.attendance.scheduler.Dto.ClassListDTO;
 import com.attendance.scheduler.Dto.StudentClassDTO;
 import com.attendance.scheduler.Service.SearchNotEmptyClassService;
 import com.attendance.scheduler.Service.SubmitService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -35,9 +37,22 @@ public class BasicController {
         return "index";
     }
 
-//  제출
+    @GetMapping("login")
+    public String login(Model model) {
+        model.addAttribute("login", new AdminDTO());
+        return "login";
+    }
+
+    @GetMapping("logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "/";
+    }
+
+
+    //  제출
     @PostMapping("submit")
-    public String SubmitForm(@Validated @ModelAttribute("class") ClassDTO classDTO,
+    public String submitForm(@Validated @ModelAttribute("class") ClassDTO classDTO,
                              BindingResult bindingResult, Model model) {
 
         if (bindingResult.hasErrors()) {
@@ -47,11 +62,11 @@ public class BasicController {
         }
 
         submitService.saveClassTable(classDTO);
-        return "redirect:/completion";
+        return "completion";
     }
 //  제출 완료 폼
     @GetMapping("completion")
-    public String SubmitForm() {
+    public String completeForm() {
         return "/completion";
     }
 
@@ -59,7 +74,7 @@ public class BasicController {
 
 //  수업 조회 폼
     @GetMapping("search")
-    public String SearchClass(Model model) {
+    public String searchClass(Model model) {
         model.addAttribute("class", new StudentClassDTO());
         return "search";
     }
@@ -97,8 +112,6 @@ public class BasicController {
         submitService.saveClassTable(classDTO);
         return "completion";
     }
-
-
 
 
 

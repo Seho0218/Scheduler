@@ -48,7 +48,7 @@ public class SearchNotEmptyClassServiceImpl implements SearchNotEmptyClassServic
             friday.add(fridayValue);
         }
 
-        ClassListDTO classListDTO = ClassListDTO.classTableInstance();
+        ClassListDTO classListDTO = ClassListDTO.getInstance();
 
         classListDTO.setClassInMondayList(monday);
         classListDTO.setClassInTuesdayList(tuesday);
