@@ -29,9 +29,9 @@ class CertServiceImplTest {
         certFindIdDTO.setAdminId("admin");
         certFindIdDTO.setAdminPassword("Root123!@#");
         certFindIdDTO.setAdminEmail("ghdtpgh8913@gmail.com");
+        adminRepository.save(certFindIdDTO.toEntity());
 
         //when
-        adminRepository.save(certFindIdDTO.toEntity());
         AdminEntity adminEntityByAdminEmail = adminRepository.findAdminEntityByAdminEmail(certFindIdDTO.getAdminEmail());
 
         //then
@@ -41,7 +41,7 @@ class CertServiceImplTest {
 
     @Test
     @DisplayName(" 비밀번호 변경 참 거짓 확인 ")
-    void pwdEditOk() {
+    void pwdEdit() {
 
         //given
         // 임의 관리자 객체생성
@@ -51,16 +51,34 @@ class CertServiceImplTest {
         //비밀번호 암호화
         String encodedPwd = passwordEncoder.encode("Root123!@#");
         adminCertDTO.setAdminPassword(encodedPwd);
-
-        //when
         adminRepository.save(adminCertDTO.toEntity());
 
-        //then
+        //when
         adminRepository.findAdminEntityByAdminId(adminCertDTO.getAdminId());
 
+        //then
         //비밀번호 검증
         boolean pwdMatch = passwordEncoder.matches("Root123!@#", adminCertDTO.getAdminPassword());
 
         assertTrue(pwdMatch);
+    }
+
+    @Test
+    @DisplayName("이메일 확인")
+    void emailCheck() {
+
+        //given
+        AdminCertDTO adminCertDTO = AdminCertDTO.getInstance();
+        adminCertDTO.setAdminId("김김김");
+        adminCertDTO.setAdminPassword("Root123!@#");
+        adminCertDTO.setAdminEmail("ghdtpgh8913@gmail.com");
+        adminRepository.save(adminCertDTO.toEntity());
+
+        //when
+        String result = adminRepository.checkUserExists(adminCertDTO.getAdminId(), adminCertDTO.getAdminEmail());
+        boolean equals = "1".equals(result);
+        //then
+        assertTrue(equals);
+
     }
 }

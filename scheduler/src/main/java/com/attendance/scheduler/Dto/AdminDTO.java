@@ -12,13 +12,16 @@ import lombok.ToString;
 @NoArgsConstructor
 public class AdminDTO {
 
-    @NotEmpty
+    @NotEmpty(message = "아이디를 입력해 주세요")
     private String adminId;
 
-    @NotEmpty
+    @NotEmpty(message = "이름을 입력해 주세요")
+    private String adminName;
+
+    @NotEmpty(message = "비밀번호를 입력해 주세요")
     private String adminPassword;
 
-    @NotEmpty
+    @NotEmpty(message = "이메일을 입력해 주세요")
     private String adminEmail;
 
     public static AdminDTO getInstance(){

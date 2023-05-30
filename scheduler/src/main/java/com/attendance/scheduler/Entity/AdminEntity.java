@@ -20,6 +20,8 @@ public class AdminEntity {
     @Id @GeneratedValue(strategy = IDENTITY)
     private Long Id;
 
+    private String adminName;
+
     private String adminId;
 
     private String adminPassword;
@@ -27,8 +29,9 @@ public class AdminEntity {
     private String adminEmail;
 
     @Builder
-    public AdminEntity( String adminId, String adminPassword, String adminEmail) {
+    public AdminEntity(String adminId, String adminName ,String adminPassword, String adminEmail) {
         this.adminId = adminId;
+        this.adminName = adminName;
         this.adminPassword = adminPassword;
         this.adminEmail = adminEmail;
     }

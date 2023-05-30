@@ -24,10 +24,25 @@ public class CertServiceImpl implements CertService {
 
 
 	@Override
-	public String FindId(AdminCertDTO adminCertDTO) {
+	public String findIdByEmail(AdminCertDTO adminCertDTO) {
 		AdminEntity adminEntityByAdminEmail =
 				adminRepository.findAdminEntityByAdminEmail(adminCertDTO.getAdminEmail());
 		return adminEntityByAdminEmail.getAdminId();
+	}
+
+	@Override
+	public void sendUserId(AdminCertDTO adminCertDTO) {
+		SimpleMailMessage simpleMailMessage = new  SimpleMailMessage();
+		simpleMailMessage.setTo(adminCertDTO.getAdminEmail());
+		simpleMailMessage.setSubject("아이디 찾기");
+
+		String sb = "가입하신 아이디는" +
+				System.lineSeparator() +
+				adminCertDTO.getAdminId() + "입니다";
+
+		simpleMailMessage.setText(sb);
+
+		new Thread(() -> mailSender.send(simpleMailMessage)).start();
 	}
 
 	@Override
@@ -42,41 +57,21 @@ public class CertServiceImpl implements CertService {
 		adminRepository.save(adminDTO.toEntity());
     }
 
+//////////////////////////////////////////////////////////////////////
+
+	//아이디 중복 체크
 	@Override
-	public void sendUserId(AdminCertDTO adminCertDTO) {
-		SimpleMailMessage simpleMailMessage = new  SimpleMailMessage();
-		simpleMailMessage.setTo(adminCertDTO.getAdminEmail());
-		simpleMailMessage.setSubject("아이디 찾기");
-
-		String sb = "가입하신 아이디는" +
-				System.lineSeparator() +
-				adminCertDTO.getAdminId() + "입니다";//genie_id.get(0)
-
-		simpleMailMessage.setText(sb);
-
-		new Thread(() -> mailSender.send(simpleMailMessage)).start();
+	public int overlapCheck(AdminCertDTO adminCertDTO) {
+		return adminRepository.countByAdminIdIs(adminCertDTO.getAdminId());
 	}
 
-//////////////////////////////////////////////////////////////////////
-//
-//	@Override
-//	public int overlapCheck(String value, String valueType) {
-//
-//		Map<String, String> map = new HashMap<>();
-//		map.put("value", value);
-//		map.put("valueType", valueType);
-//
-//		return cdao.overlapCheck(value, valueType);
-//	}
-//
-//	@Override
-//	public boolean emailCheck(AdminCertDTO adminCertDTO) {
-//		Map<String, Object> map = new HashMap<>();
-//		map.put("adminId", adminCertDTO.getAdminId());
-//		map.put("adminEmail", adminCertDTO.getAdminPassword());
-//		String result = cdao.emailCheck(map);
-//		return "1".equals(result);
-//	}
+	@Override
+	public boolean emailCheck(AdminCertDTO adminCertDTO) {
+		String adminId = adminCertDTO.getAdminId();
+		String adminEmail = adminCertDTO.getAdminEmail();
+		String result = adminRepository.checkUserExists(adminId, adminEmail);
+		return "1".equals(result);
+	}
 
 	@Override
 	public void sendAuthNum(String userEmail, String authNum) {

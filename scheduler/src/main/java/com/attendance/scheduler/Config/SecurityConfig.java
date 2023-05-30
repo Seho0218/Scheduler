@@ -14,6 +14,7 @@ public class SecurityConfig{
 	public static final String[] ENDPOINTS_WHITELIST = {
 			"/", "/submit", "/completion", // 제출 완료 페이지
 			"/search","/findClass","/modify", // 조회 및 수정
+			"/login", // 로그인
 			"/css/*" // css
 	};
 	public static final String DEFAULT_URL ="/";

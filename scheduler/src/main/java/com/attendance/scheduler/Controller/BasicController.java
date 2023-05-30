@@ -38,7 +38,7 @@ public class BasicController {
     }
 
     @GetMapping("login")
-    public String login(Model model) {
+    public String loginForm(Model model) {
         model.addAttribute("login", new AdminDTO());
         return "login";
     }
@@ -46,7 +46,7 @@ public class BasicController {
     @GetMapping("logout")
     public String logout(HttpSession session) {
         session.invalidate();
-        return "/";
+        return "/Index";
     }
 
 
