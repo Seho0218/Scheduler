@@ -46,7 +46,7 @@ spring:
       suffix: .html
 
   thymeleaf:
-    cache: false #운영시 true
+    cache: true #운영시 true
     enabled: true
 
 

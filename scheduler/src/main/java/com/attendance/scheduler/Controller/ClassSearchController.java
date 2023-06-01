@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,10 +35,14 @@ public class ClassSearchController {
         //학생 수업 조회
         StudentClassDTO studentClassesList = searchNotEmptyClassService.findStudentClasses(studentClassDTO);
 
-        if (bindingResult.hasErrors() || studentClassesList == null) {
+        if (bindingResult.hasErrors()) {
             log.info("errors={}", bindingResult);
             return "search";
-            // 오류 코드 넣기
+        }
+
+        if (studentClassesList == null) {
+            bindingResult.addError(new FieldError("studentClass", "nullStudentName", "등록되지 않은 이름입니다."));
+            return "search";
         }
 
         ClassListDTO classesOrderByAsc = searchNotEmptyClassService.findClassesOrderByAsc();

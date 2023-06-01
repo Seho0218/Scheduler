@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap demo</title>
+    <title>Scheduler</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <style>
         .container {
@@ -50,7 +50,8 @@
                 <label for="studentName"></label>
                 <input type="text" id="studentName" th:field="*{studentName}"
                        th:errorclass="field-error" class="form-control" placeholder="이름을 정확히 입력해주세요">
-                <div class="field-error" th:errors="*{studentName}"></div><br>
+                <div class="field-error" th:errors="*{studentName}"></div>
+                <div class="field-error" th:errors="*{nullStudentName}"></div><br>
                 <div class="text-end">
                     <button class="btn btn-primary" type="submit">수업 조회</button></div>
                 <br><br>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap demo</title>
+    <title>Scheduler</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <style>
         .container {
@@ -12,7 +12,7 @@
 
         body { background-color: lightgoldenrodyellow; }
 
-        h1{
+        h1, h2, h5{
             text-align: center;
         }
 
@@ -61,10 +61,9 @@
 
                 <h1> 1학기 시간표 신청 </h1>
                 <p>1 : 00 ~ 7 : 00 (마지막수업 6시)<br>
-                    수업은 아이의 당일 학습능력에 따라 50~60분동안 진행됩니다.</p>
-                <p>학생 이름을 써주세요 :)<br>
-                    이름을 정확히 입력하시면<br>
-                    다시 작성하실 때, 스케쥴을 변경하실 수 있습니다.</p>
+                    수업은 아이의 당일 학습능력에 따라 <br>
+                    50~60분동안 진행됩니다.</p>
+                <p>학생 이름을 써주세요 :)<br></p>
                 <label for="studentName"></label>
                 <input type="text" id="studentName" th:field="*{studentName}"
                       th:errorclass="field-error" class="form-control" placeholder="이름을 정확히 입력해주세요">
@@ -75,7 +74,7 @@
         <div class="py-2">
             <!--monday div start-->
             <div class="monday rounded-3 border border-2">
-                <p>월요일</p>
+                <h5>월요일</h5>
                 <div th:each="num : ${#numbers.sequence(1,6)}">
                     <label class="form-check-label"
                            th:if="${!classInMondayList.contains(num)}">
@@ -102,7 +101,7 @@
             <!--monday div ends-->
             <!--tuesday div start-->
             <div class="tuesday rounded-3 border border-2">
-                <p>화요일</p>
+                <h5>화요일</h5>
                 <div th:each="num : ${#numbers.sequence(1,6)}">
                     <label class="form-check-label"
                            th:if="${!classInTuesdayList.contains(num)}">
@@ -126,7 +125,7 @@
             <!--tuesday div ends-->
             <!--wednesday div start-->
             <div class="wednesday rounded-3 border border-2">
-                <p>수요일</p>
+                <h5>수요일</h5>
                 <div th:each="num : ${#numbers.sequence(1,6)}">
                     <label class="form-check-label"
                            th:if="${!classInWednesdayList.contains(num)}">
@@ -150,7 +149,7 @@
             <!--wednesday div ends-->
             <!--thursday div start-->
             <div class="thursday rounded-3 border border-2">
-                <p>목요일</p>
+                <h5>목요일</h5>
                 <div th:each="num : ${#numbers.sequence(1,6)}">
                     <label class="form-check-label"
                            th:if="${!classInThursdayList.contains(num)}">
@@ -173,7 +172,7 @@
             <!--thursday div ends-->
             <!--friday div start-->
             <div class="friday rounded-3 border border-2">
-                <p>금요일</p>
+                <h5>금요일</h5>
                 <div th:each="num : ${#numbers.sequence(1,6)}">
                     <label class="form-check-label"
                            th:if="${!classInFridayList.contains(num)}">

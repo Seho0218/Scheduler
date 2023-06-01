@@ -15,6 +15,7 @@ public class SecurityConfig{
 			"/", "/submit", "/completion", // 제출 완료 페이지
 			"/search", "/search/*", // 조회 및 수정
 			"/admin/manage",
+			"/admin/delete",
 			"/css/*" // css
 	};
 	public static final String DEFAULT_URL ="/";

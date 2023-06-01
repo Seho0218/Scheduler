@@ -15,6 +15,8 @@ public class StudentClassDTO {
     @NotEmpty(message = "학생 이름을 정확히 입력해 주세요")
     private String studentName;
 
+    private String nullStudentName;
+
     //    수업 시간
     private Integer monday;
 
