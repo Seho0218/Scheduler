@@ -28,17 +28,19 @@ public class ClassSearchController {
 
     //   수업 조회 TODO 오류 조회
     @PostMapping("findClass")
-    public String findClass(@Validated @ModelAttribute("class") StudentClassDTO studentClassDTO,
+    public String findClass(@Validated @ModelAttribute("studentClass") StudentClassDTO studentClassDTO,
                             BindingResult bindingResult, Model model) {
 
+        //학생 수업 조회
         StudentClassDTO studentClassesList = searchNotEmptyClassService.findStudentClasses(studentClassDTO);
-        ClassListDTO classesOrderByAsc = searchNotEmptyClassService.findClassesOrderByAsc();
 
         if (bindingResult.hasErrors() || studentClassesList == null) {
             log.info("errors={}", bindingResult);
             return "search";
             // 오류 코드 넣기
         }
+
+        ClassListDTO classesOrderByAsc = searchNotEmptyClassService.findClassesOrderByAsc();
 
         List<Integer> classInMondayList = classesOrderByAsc.getClassInMondayList();
         List<Integer> classInTuesdayList = classesOrderByAsc.getClassInTuesdayList();
@@ -64,8 +66,9 @@ public class ClassSearchController {
         log.info("thursday = {}", classInThursdayList);
         log.info("friday = {}", classInFridayList);
 
-        model.addAttribute("class", new StudentClassDTO());
+        model.addAttribute("studentClass", new StudentClassDTO());
         model.addAttribute("studentClassList", studentClassesList);
+
         return "findClass";
     }
 
