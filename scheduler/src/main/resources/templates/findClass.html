@@ -4,8 +4,7 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1" name="viewport">
     <title>Bootstrap demo</title>
-    <link href="../static/css/bootstrap.min.css"
-          rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <style>
         .container {
             max-width: 80em;
@@ -46,7 +45,7 @@
 </head>
 <body>
 <div class="container">
-    <form method='post' role="form" th:action="@{/modify}" th:object="${class}">
+    <form method='post' role="form" th:action="@{/search/modify}" th:object="${class}">
         <div class="py-2">
 
         </div>
@@ -54,9 +53,8 @@
         <div class="py-2">
             <div class="board rounded-3 border border-2">
                 <div class="header">
-                    <label class="student" th:text="${classList.getStudentName()}">
-                    </label>
-                    <input name="studentName" th:value="${classList.getStudentName()}" type="hidden">
+                    <p th:text="${studentClassList.getStudentName()}"></p>
+                    <input name="studentName" th:value="${studentClassList.getStudentName()}" type="hidden">
                 </div>
             </div>
         </div>
@@ -66,10 +64,11 @@
             <div class="monday rounded-3 border border-2">
                 <p>월요일</p>
                 <div th:each="num : ${#numbers.sequence(1,6)}">
-                    <label class="form-check-label">
+                    <label class="form-check-label"
+                           th:if="${!classInMondayList.contains(num)}">
                         <input class="form-check-input"
                                name="monday"
-                               th:checked="${numStat.count==classList.getMonday()}"
+                               th:checked="${numStat.count==studentClassList.getMonday()}"
                                th:errorclass="field-error"
                                th:text="오후+'&nbsp;'+${numStat.count}+'시'"
                                th:value="${numStat.count}"
@@ -79,8 +78,8 @@
                 <div>
                     <label class="form-check-label">
                         <input class="form-check-input"
-                               name=monday
-                               th:checked="${classList.getMonday()==0}"
+                               name="monday"
+                               th:checked="${studentClassList.getMonday()==0}"
                                th:errorclass="field-error"
                                th:value="0"
                                type="radio">
@@ -94,10 +93,11 @@
             <div class="tuesday rounded-3 border border-2">
                 <p>화요일</p>
                 <div th:each="num : ${#numbers.sequence(1,6)}">
-                    <label class="form-check-label">
+                    <label class="form-check-label"
+                           th:if="${!classInTuesdayList.contains(num)}">
                         <input class="form-check-input"
                                name="tuesday"
-                               th:checked="${numStat.count==classList.getTuesday()}"
+                               th:checked="${numStat.count==studentClassList.getTuesday()}"
                                th:errorclass="field-error"
                                th:text="오후+'&nbsp;'+${numStat.count}+'시'"
                                th:value="${numStat.count}"
@@ -107,7 +107,7 @@
                 <label class="form-check-label">
                     <input class="form-check-input"
                            name="tuesday"
-                           th:checked="${classList.getTuesday()==0}"
+                           th:checked="${studentClassList.getTuesday()==0}"
                            th:errorclass="field-error"
                            th:value="0"
                            type="radio">등원하지 않습니다.
@@ -119,10 +119,11 @@
             <div class="wednesday rounded-3 border border-2">
                 <p>수요일</p>
                 <div th:each="num : ${#numbers.sequence(1,6)}">
-                    <label class="form-check-label">
-                        <input class="form-check-input"
+                    <label class="form-check-label"
+                           th:if="${!classInWednesdayList.contains(num)}">
+                    <input class="form-check-input"
                                name="wednesday"
-                               th:checked="${numStat.count==classList.getWednesday()}"
+                               th:checked="${numStat.count==studentClassList.getWednesday()}"
                                th:errorclass="field-error"
                                th:text="오후+'&nbsp'+${numStat.count}+시"
                                th:value="${numStat.count}"
@@ -132,7 +133,7 @@
                 <label class="form-check-label">
                     <input class="form-check-input"
                            name="wednesday"
-                           th:checked="${classList.getWednesday()==0}"
+                           th:checked="${studentClassList.getWednesday()==0}"
                            th:errorclass="field-error"
                            th:value="0"
                            type="radio">등원하지 않습니다.
@@ -144,9 +145,11 @@
             <div class="thursday rounded-3 border border-2">
                 <p>목요일</p>
                 <div th:each="num : ${#numbers.sequence(1,6)}">
-                    <label class="form-check-label">
-                        <input class="form-check-input" name="thursday"
-                               th:checked="${numStat.count==classList.getThursday()}"
+                    <label class="form-check-label"
+                           th:if="${!classInThursdayList.contains(num)}">
+                    <input class="form-check-input"
+                               name="thursday"
+                               th:checked="${numStat.count==studentClassList.getThursday()}"
                                th:errorclass="field-error"
                                th:text="오후+'&nbsp'+${numStat.count}+시"
                                th:value="${numStat.count}"
@@ -156,7 +159,7 @@
                 <label class="form-check-label">
                     <input class="form-check-input"
                            name="thursday"
-                           th:checked="${classList.getThursday()==0}"
+                           th:checked="${studentClassList.getThursday()==0}"
                            th:errorclass="field-error"
                            th:value="0"
                            type="radio">등원하지 않습니다.
@@ -168,9 +171,11 @@
             <div class="friday rounded-3 border border-2">
                 <p>금요일</p>
                 <div th:each="num : ${#numbers.sequence(1,6)}">
-                    <label class="form-check-label">
-                        <input class="form-check-input" name="friday"
-                               th:checked="${numStat.count==classList.getFriday()}"
+                    <label class="form-check-label"
+                           th:if="${!classInFridayList.contains(num)}">
+                        <input class="form-check-input"
+                               name="friday"
+                               th:checked="${numStat.count==studentClassList.getFriday()}"
                                th:errorclass="field-error"
                                th:text="오후+'&nbsp'+${numStat.count}+시"
                                th:value="${numStat.count}"
@@ -181,7 +186,7 @@
                 <label class="form-check-label">
                     <input class="form-check-input"
                            name="friday"
-                           th:checked="${classList.getFriday()==0}"
+                           th:checked="${studentClassList.getFriday()==0}"
                            th:errorclass="field-error"
                            th:value="0"
                            type="radio">등원하지 않습니다.
@@ -190,7 +195,7 @@
             </div>
             <!--friday div ends-->
         </div>
-        <div class="button">
+        <div class="text-end">
             <button class="btn btn-primary" type="submit">확인</button>
         </div>
     </form>

@@ -18,8 +18,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.List;
-
 @Slf4j
 @Controller
 @RequestMapping("/")
@@ -32,7 +30,7 @@ public class BasicController {
     @GetMapping("/")
     public String basic(Model model){
 
-        GetClassList(model);
+        getClassList(model);
         model.addAttribute("class", new ClassDTO());
         return "index";
     }
@@ -46,7 +44,14 @@ public class BasicController {
     @GetMapping("logout")
     public String logout(HttpSession session) {
         session.invalidate();
-        return "/Index";
+        return "index";
+    }
+
+    //  수업 조회 폼
+    @GetMapping("search")
+    public String searchClass(Model model) {
+        model.addAttribute("studentClass", new StudentClassDTO());
+        return "search";
     }
 
 
@@ -56,7 +61,7 @@ public class BasicController {
                              BindingResult bindingResult, Model model) {
 
         if (bindingResult.hasErrors()) {
-            GetClassList(model);
+            getClassList(model);
             log.info("errors={}", bindingResult);
             return "index";
         }
@@ -64,76 +69,27 @@ public class BasicController {
         submitService.saveClassTable(classDTO);
         return "completion";
     }
+
 //  제출 완료 폼
     @GetMapping("completion")
     public String completeForm() {
-        return "/completion";
-    }
-
-
-
-//  수업 조회 폼
-    @GetMapping("search")
-    public String searchClass(Model model) {
-        model.addAttribute("class", new StudentClassDTO());
-        return "search";
-    }
-
-//   수업 조회
-    @PostMapping("findClass")
-    public String findClass(@Validated @ModelAttribute("class") StudentClassDTO studentClassDTO,
-                            BindingResult bindingResult, Model model) {
-
-        StudentClassDTO studentClasses = searchNotEmptyClassService.findStudentClasses(studentClassDTO);
-
-        if (bindingResult.hasErrors() || studentClasses == null) {
-            log.info("errors={}", bindingResult);
-            return "search";
-        }
-
-        log.info("studentClasses={}", studentClasses);
-
-        model.addAttribute("class", new StudentClassDTO());
-        model.addAttribute("classList", studentClasses);
-        return "findClass";
-    }
-
-//  수업 수정
-    @PostMapping("modify")
-    public String modifyClass(@Validated @ModelAttribute("class") ClassDTO classDTO,
-                              BindingResult bindingResult) {
-
-
-        log.info("studentInfo={}", classDTO.getStudentName());
-        if (bindingResult.hasErrors()) {
-            log.info("errors={}", bindingResult);
-            return "findClass";
-        }
-        submitService.saveClassTable(classDTO);
         return "completion";
     }
 
-
-
-    private void GetClassList(Model model) {
+    private void getClassList(Model model) {
 
         ClassListDTO classesOrderByAsc = searchNotEmptyClassService.findClassesOrderByAsc();
 
-        List<Integer> mondayList = classesOrderByAsc.getClassInMondayList();
-        List<Integer> tuesdayList = classesOrderByAsc.getClassInTuesdayList();
-        List<Integer> wednesdayList = classesOrderByAsc.getClassInWednesdayList();
-        List<Integer> thursdayList = classesOrderByAsc.getClassInThursdayList();
-        List<Integer> fridayList = classesOrderByAsc.getClassInFridayList();
+        model.addAttribute("classInMondayList", classesOrderByAsc.getClassInMondayList());
+        model.addAttribute("classInTuesdayList", classesOrderByAsc.getClassInTuesdayList());
+        model.addAttribute("classInWednesdayList", classesOrderByAsc.getClassInWednesdayList());
+        model.addAttribute("classInThursdayList", classesOrderByAsc.getClassInThursdayList());
+        model.addAttribute("classInFridayList", classesOrderByAsc.getClassInFridayList());
 
-        model.addAttribute("ClassInMondayList", mondayList);
-        log.info("monday = {}", mondayList);
-        model.addAttribute("ClassInTuesdayList", tuesdayList);
-        log.info("tuesday = {}", tuesdayList);
-        model.addAttribute("ClassInWednesdayList", wednesdayList);
-        log.info("wednesday = {}", wednesdayList);
-        model.addAttribute("ClassInThursdayList", thursdayList);
-        log.info("thursday = {}", thursdayList);
-        model.addAttribute("ClassInFridayList", fridayList);
-        log.info("friday = {}", fridayList);
+        log.info("monday = {}", classesOrderByAsc.getClassInMondayList());
+        log.info("tuesday = {}", classesOrderByAsc.getClassInTuesdayList());
+        log.info("wednesday = {}", classesOrderByAsc.getClassInWednesdayList());
+        log.info("thursday = {}", classesOrderByAsc.getClassInThursdayList());
+        log.info("friday = {}", classesOrderByAsc.getClassInFridayList());
     }
 }
