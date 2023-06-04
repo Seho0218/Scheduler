@@ -23,11 +23,11 @@ public class ClassEntity {
     @Id
     private String studentName;
 
-    private Integer Monday;
-    private Integer Tuesday;
-    private Integer Wednesday;
-    private Integer Thursday;
-    private Integer Friday;
+    private Integer monday;
+    private Integer tuesday;
+    private Integer wednesday;
+    private Integer thursday;
+    private Integer friday;
 
     @UpdateTimestamp
     private Timestamp updateTimeStamp;
@@ -38,13 +38,14 @@ public class ClassEntity {
 //    private StudentEntity studentEntity;
 //
     @Builder
-    public ClassEntity(String studentName, int monday, int tuesday, int wednesday, int thursday, int friday, Timestamp updateTimeStamp) {
+
+    public ClassEntity(String studentName, Integer monday, Integer tuesday, Integer wednesday, Integer thursday, Integer friday, Timestamp updateTimeStamp) {
         this.studentName = studentName;
-        Monday = monday;
-        Tuesday = tuesday;
-        Wednesday = wednesday;
-        Thursday = thursday;
-        Friday = friday;
+        this.monday = monday;
+        this.tuesday = tuesday;
+        this.wednesday = wednesday;
+        this.thursday = thursday;
+        this.friday = friday;
         this.updateTimeStamp = updateTimeStamp;
     }
 }

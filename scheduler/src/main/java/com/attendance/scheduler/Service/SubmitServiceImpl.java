@@ -15,7 +15,10 @@ public class SubmitServiceImpl implements SubmitService {
 
     @Override
     public void saveClassTable(ClassDTO classDTO) {
+
         if(classDTO.getStudentName()!=null) {
+            String trimmedStudentName = classDTO.getStudentName().trim();
+            classDTO.setStudentName(trimmedStudentName);
             classSaveRepository.save(classDTO.toEntity());
         }
     }

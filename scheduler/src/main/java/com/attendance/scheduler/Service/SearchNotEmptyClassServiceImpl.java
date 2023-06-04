@@ -61,7 +61,7 @@ public class SearchNotEmptyClassServiceImpl implements SearchNotEmptyClassServic
 
     @Override
     public StudentClassDTO findStudentClasses(StudentClassDTO studentClassDTO) {
-        String studentName = studentClassDTO.getStudentName();
+        String studentName = studentClassDTO.getStudentName().trim();
         ClassEntity byStudentNameIs = searchNotEmptyClassRepository.findByStudentNameIs(studentName);
         return studentClassMapper.toClassDTO(byStudentNameIs);
     }

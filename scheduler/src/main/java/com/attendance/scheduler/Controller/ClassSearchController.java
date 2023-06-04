@@ -27,7 +27,7 @@ public class ClassSearchController {
     private final SubmitService submitService;
     private final SearchNotEmptyClassService searchNotEmptyClassService;
 
-    //   수업 조회 TODO 오류 조회
+    //   수업 조회
     @PostMapping("findClass")
     public String findClass(@Validated @ModelAttribute("studentClass") StudentClassDTO studentClassDTO,
                             BindingResult bindingResult, Model model) {

@@ -6,9 +6,6 @@
     <title>Scheduler</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <style>
-        .container {
-            max-width: 80em;
-        }
 
         body { background-color: lightgoldenrodyellow; }
 
@@ -16,11 +13,16 @@
             text-align: center;
         }
 
-        .board, .monday, .tuesday, .wednesday, .thursday, .friday {
+        .board, .monday, .tuesday, .wednesday, .thursday, .friday{
             padding: 1em;
             margin: 1em;
             background-color: white;
         }
+
+        .text-end{
+            padding: 1em;
+        }
+
         .board p, .monday p, .tuesday p, .wednesday p, .thursday p, .friday p {
             text-align: center;
         }
@@ -194,9 +196,9 @@
                 <div class="field-error" th:errors="*{friday}"></div>
             </div>
             <!--friday div ends-->
-        </div>
-        <div class="text-end">
-            <button class="btn btn-primary" type="submit">확인</button>
+            <div class="text-end">
+                <button class="btn btn-primary" type="submit">제출하기</button><br><br><br>
+            </div>
         </div>
     </form>
 </div><!-- container-->
