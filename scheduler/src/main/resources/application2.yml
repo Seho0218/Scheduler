@@ -1,3 +1,5 @@
+#service
+
 server:
   port: 9090
 
@@ -20,7 +22,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://seho0218.synology.me:3306/scheduler?characterEncoding=utf-8
     username: root
-    password: Root123!@#
+    password: #Password
 
 
   jpa:

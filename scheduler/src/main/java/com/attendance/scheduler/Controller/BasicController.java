@@ -65,9 +65,13 @@ public class BasicController {
             log.info("errors={}", bindingResult);
             return "index";
         }
-
-        submitService.saveClassTable(classDTO);
-        return "completion";
+        try {
+            String msg = "<script>";
+            submitService.saveClassTable(classDTO);
+            return "completion";
+        }catch (Exception e){
+            return "completion";
+        }
     }
 
 //  제출 완료 폼
