@@ -1,8 +1,9 @@
 package com.attendance.scheduler.Controller;
 
+import com.attendance.scheduler.Dto.Admin.DeleteClassDTO;
 import com.attendance.scheduler.Dto.ClassDTO;
-import com.attendance.scheduler.Dto.DeleteClassDTO;
 import com.attendance.scheduler.Service.AdminService;
+import com.attendance.scheduler.Service.SearchClassService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -24,14 +25,18 @@ public class AdminController {
     // 관리자 로직
     private final AdminService adminService;
 
+    //수업 조회
+    private final SearchClassService searchClassService;
+
+
     // 조회
     @GetMapping("manage")
     public String adminPage(Model model){
 
-        List<ClassDTO> classTable = adminService.findClassTable();
+        List<ClassDTO> classTable = searchClassService.findClassTable();
         model.addAttribute("classList", new DeleteClassDTO());
         model.addAttribute("findClassTable", classTable);
-        log.info("student = {}", adminService.findClassTable());
+        log.info("student = {}", searchClassService.findClassTable());
         return "admin/manage";
     }
 

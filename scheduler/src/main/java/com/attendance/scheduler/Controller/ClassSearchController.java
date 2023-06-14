@@ -3,7 +3,7 @@ package com.attendance.scheduler.Controller;
 import com.attendance.scheduler.Dto.ClassDTO;
 import com.attendance.scheduler.Dto.ClassListDTO;
 import com.attendance.scheduler.Dto.StudentClassDTO;
-import com.attendance.scheduler.Service.SearchNotEmptyClassService;
+import com.attendance.scheduler.Service.SearchClassService;
 import com.attendance.scheduler.Service.SubmitService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +25,7 @@ import java.util.List;
 public class ClassSearchController {
 
     private final SubmitService submitService;
-    private final SearchNotEmptyClassService searchNotEmptyClassService;
+    private final SearchClassService searchClassService;
 
     //   수업 조회
     @PostMapping("findClass")
@@ -33,7 +33,7 @@ public class ClassSearchController {
                             BindingResult bindingResult, Model model) {
 
         //학생 수업 조회
-        StudentClassDTO studentClassesList = searchNotEmptyClassService.findStudentClasses(studentClassDTO);
+        StudentClassDTO studentClassesList = searchClassService.findStudentClasses(studentClassDTO);
 
         if (bindingResult.hasErrors()) {
             log.info("errors={}", bindingResult);
@@ -45,7 +45,7 @@ public class ClassSearchController {
             return "search";
         }
 
-        ClassListDTO classesOrderByAsc = searchNotEmptyClassService.findClassesOrderByAsc();
+        ClassListDTO classesOrderByAsc = searchClassService.findClassesOrderByAsc();
 
         List<Integer> classInMondayList = classesOrderByAsc.getClassInMondayList();
         List<Integer> classInTuesdayList = classesOrderByAsc.getClassInTuesdayList();

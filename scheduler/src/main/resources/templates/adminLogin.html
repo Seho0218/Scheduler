@@ -49,28 +49,27 @@
         <div class="py-2">
             <div class="board rounded-3 border border-2">
 
-                <h1> 교사 로그인 </h1>
+                <h1> 관리자 로그인 </h1>
 
-                <label for="teacherId"></label>
-                <input class="form-control" id="teacherId" placeholder="아이디를 입력해주세요"
-                       th:errorclass="field-error" th:field="*{teacherId}"
+                <label for="adminId"></label>
+                <input class="form-control" id="adminId" placeholder="아이디를 입력해주세요"
+                       th:errorclass="field-error" th:field="*{adminId}"
                        type="text">
-                <div class="field-error" th:errors="*{teacherId}"></div>
+                <div class="field-error" th:errors="*{adminId}"></div>
 
-                <label for="teacherPassword"></label>
-                <input class="form-control" id="teacherPassword" placeholder="비밀번호를 입력해 주세요"
-                       th:errorclass="field-error" th:field="*{teacherPassword}"
+                <label for="adminPassword"></label>
+                <input class="form-control" id="adminPassword" placeholder="비밀번호를 입력해 주세요"
+                       th:errorclass="field-error" th:field="*{adminPassword}"
                        type="password">
-                <div class="field-error" th:errors="*{teacherPassword}"></div><br>
+                <div class="field-error" th:errors="*{adminPassword}"></div><br>
 
                 <div class="text-end">
                     <button class="btn btn-primary" type="submit">로그인</button>
-                </div><br>
+                </div><br><br>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="#">아이디 찾기</a></li>
                             <li class="breadcrumb-item"><a href="#">비밀번호 찾기</a></li>
-                            <li class="breadcrumb-item"><a href="/join/teacher">회원가입</a></li>
                         </ol>
                     </nav>
             </div>

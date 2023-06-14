@@ -1,10 +1,11 @@
 package com.attendance.scheduler.Controller;
 
-import com.attendance.scheduler.Dto.AdminDTO;
+import com.attendance.scheduler.Dto.Admin.AdminDTO;
 import com.attendance.scheduler.Dto.ClassDTO;
 import com.attendance.scheduler.Dto.ClassListDTO;
 import com.attendance.scheduler.Dto.StudentClassDTO;
-import com.attendance.scheduler.Service.SearchNotEmptyClassService;
+import com.attendance.scheduler.Dto.Teacher.TeacherDTO;
+import com.attendance.scheduler.Service.SearchClassService;
 import com.attendance.scheduler.Service.SubmitService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class BasicController {
 
     private final SubmitService submitService;
-    private final SearchNotEmptyClassService searchNotEmptyClassService;
+    private final SearchClassService searchClassService;
 
     @GetMapping("/")
     public String basic(Model model){
@@ -37,8 +38,15 @@ public class BasicController {
 
     @GetMapping("login")
     public String loginForm(Model model) {
-        model.addAttribute("login", new AdminDTO());
+        model.addAttribute("login", new TeacherDTO());
         return "login";
+    }
+
+
+    @GetMapping("adminLogin")
+    public String adminLoginForm(Model model) {
+        model.addAttribute("login", new AdminDTO());
+        return "adminLogin";
     }
 
     @GetMapping("logout")
@@ -60,17 +68,19 @@ public class BasicController {
     public String submitForm(@Validated @ModelAttribute("class") ClassDTO classDTO,
                              BindingResult bindingResult, Model model) {
 
+
         if (bindingResult.hasErrors()) {
             getClassList(model);
             log.info("errors={}", bindingResult);
             return "index";
         }
+
         try {
-            String msg = "<script>";
             submitService.saveClassTable(classDTO);
             return "completion";
         }catch (Exception e){
-            return "completion";
+            getClassList(model);
+            return "index";
         }
     }
 
@@ -82,7 +92,7 @@ public class BasicController {
 
     private void getClassList(Model model) {
 
-        ClassListDTO classesOrderByAsc = searchNotEmptyClassService.findClassesOrderByAsc();
+        ClassListDTO classesOrderByAsc = searchClassService.findClassesOrderByAsc();
 
         model.addAttribute("classInMondayList", classesOrderByAsc.getClassInMondayList());
         model.addAttribute("classInTuesdayList", classesOrderByAsc.getClassInTuesdayList());

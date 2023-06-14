@@ -1,7 +1,7 @@
 package com.attendance.scheduler.Controller;
 
-import com.attendance.scheduler.Dto.AdminCertDTO;
-import com.attendance.scheduler.Dto.AdminDTO;
+import com.attendance.scheduler.Dto.Admin.AdminCertDTO;
+import com.attendance.scheduler.Dto.Admin.AdminDTO;
 import com.attendance.scheduler.Service.CertService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;

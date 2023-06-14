@@ -1,6 +1,7 @@
-package com.attendance.scheduler.Dto;
+package com.attendance.scheduler.Dto.Admin;
 
 import com.attendance.scheduler.Entity.AdminEntity;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,18 +10,22 @@ import lombok.ToString;
 @Getter @Setter
 @ToString
 @NoArgsConstructor
-public class AdminCertDTO {
+public class AdminDTO {
 
+    @NotEmpty(message = "아이디를 입력해 주세요")
     private String adminId;
 
+    @NotEmpty(message = "비밀번호를 입력해 주세요")
     private String adminPassword;
 
-    private String changedPwd;
+    @NotEmpty(message = "이름을 입력해 주세요")
+    private String adminName;
 
+    @NotEmpty(message = "이메일을 입력해 주세요")
     private String adminEmail;
 
-    public static AdminCertDTO getInstance(){
-        return new AdminCertDTO();
+    public static AdminDTO getInstance(){
+        return new AdminDTO();
     }
 
     public AdminEntity toEntity(){
@@ -30,4 +35,5 @@ public class AdminCertDTO {
                 .adminEmail(adminEmail)
                 .build();
     }
+
 }

@@ -1,6 +1,6 @@
 package com.attendance.scheduler.Service;
 
-import com.attendance.scheduler.Dto.AdminCertDTO;
+import com.attendance.scheduler.Dto.Admin.AdminCertDTO;
 
 public interface CertService {
 
