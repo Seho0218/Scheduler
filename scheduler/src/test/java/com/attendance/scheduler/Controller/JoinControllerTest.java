@@ -18,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class JoinControllerTest {
 
     private static final String duplicateErrorMessage = "중복된 아이디 입니다.";
+
     @Autowired
     private TeacherService teacherService;
 

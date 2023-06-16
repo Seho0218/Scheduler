@@ -42,7 +42,6 @@ class BasicControllerTest {
     void teacherLogin() {
 
         //Given
-
         LoginTeacherDTO loginTeacherDTO = new LoginTeacherDTO();
         loginTeacherDTO.setTeacherId("testTeacher");
         loginTeacherDTO.setTeacherPassword("123");
