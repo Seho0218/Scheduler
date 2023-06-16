@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -12,13 +13,14 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig{
 
 	public static final String[] ENDPOINTS_WHITELIST = {
-			"/", "/submit", "/completion", // 제출 완료 페이지
-			"/search", "/search/*", // 조회 및 수정
-			"/join/teacher",
-			"/login",
-			"/admin/manage",
-			"/admin/delete",
-			"/css/*" // css
+//			"/", "/submit", "/completion", // 제출 완료 페이지
+//			"/search", "/search/*", // 조회 및 수정
+//			"/join/teacher",
+//			"/login",
+//			"/admin/manage",
+//			"/admin/delete",
+//			"/css/*" // css
+			"/**"
 	};
 	public static final String DEFAULT_URL ="/";
 
@@ -45,7 +47,7 @@ public class SecurityConfig{
 	}
 
 	@Bean
-	public BCryptPasswordEncoder encodePwd() {
+	public PasswordEncoder encodePwd() {
 		return new BCryptPasswordEncoder();
 	}
 }

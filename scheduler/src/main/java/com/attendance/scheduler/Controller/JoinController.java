@@ -1,8 +1,7 @@
 package com.attendance.scheduler.Controller;
 
 import com.attendance.scheduler.Dto.Teacher.JoinTeacherDTO;
-import com.attendance.scheduler.Dto.Teacher.TeacherDTO;
-import com.attendance.scheduler.Service.AdminService;
+import com.attendance.scheduler.Service.TeacherService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -20,7 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequiredArgsConstructor
 public class JoinController {
 
-    private final AdminService adminService;
+    private static final String duplicateErrorMessage = "중복된 아이디 입니다.";
+    private final TeacherService teacherService;
 
     @GetMapping("teacher")
     public String joinForm(Model model) {
@@ -29,17 +29,28 @@ public class JoinController {
     }
 
     @PostMapping("approved")
-    public String approved(@Validated @ModelAttribute("join") JoinTeacherDTO joinTeacherDTO, BindingResult bindingResult) {
-
+    public String approved(@Validated @ModelAttribute("join") JoinTeacherDTO joinTeacherDTO, BindingResult bindingResult,
+                           Model model) {
 
         if (bindingResult.hasErrors()) {
             log.info("errors={}", bindingResult);
-            return "join/teacher";
+            return "join";
         }
-        TeacherDTO duplicateTeacherId = adminService.findDuplicateTeacherId(joinTeacherDTO);
-        if (duplicateTeacherId.getTeacherId() != null) {
 
+        JoinTeacherDTO duplicateTeacherId = teacherService.findDuplicateTeacherId(joinTeacherDTO);
+
+        if (duplicateTeacherId != null) {
+            log.info("teacherId={}", duplicateTeacherId.getTeacherId());
+            model.addAttribute("errorMessage", duplicateErrorMessage);
+            return "join";
         }
-        return null;
+
+        try {
+            teacherService.joinTeacher(joinTeacherDTO);
+            return "login";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "join";
+        }
     }
 }

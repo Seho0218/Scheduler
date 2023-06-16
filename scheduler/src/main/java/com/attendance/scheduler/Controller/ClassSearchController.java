@@ -10,7 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,7 +40,8 @@ public class ClassSearchController {
         }
 
         if (studentClassesList == null) {
-            bindingResult.addError(new FieldError("studentClass", "nullStudentName", "등록되지 않은 이름입니다."));
+            String errorMessage = "등록된 이름이 없습니다.";
+            model.addAttribute("nullStudentName", errorMessage);
             return "search";
         }
 
@@ -80,7 +80,7 @@ public class ClassSearchController {
     //  수업 수정
     @PostMapping("modify")
     public String modifyClass(@Validated @ModelAttribute("class") ClassDTO classDTO,
-                              BindingResult bindingResult) {
+                              BindingResult bindingResult, Model model) {
 
 
         log.info("studentInfo={}", classDTO.getStudentName());
@@ -88,7 +88,13 @@ public class ClassSearchController {
             log.info("errors={}", bindingResult);
             return "findClass";
         }
-        submitService.saveClassTable(classDTO);
-        return "completion";
+        try{
+            submitService.saveClassTable(classDTO);
+            return "completion";
+
+        }catch(Exception e){
+            model.addAttribute("errorMessage", e.getMessage());
+            return "findClass";
+        }
     }
 }

@@ -42,7 +42,6 @@ public class BasicController {
         return "login";
     }
 
-
     @GetMapping("adminLogin")
     public String adminLoginForm(Model model) {
         model.addAttribute("login", new AdminDTO());
@@ -62,12 +61,10 @@ public class BasicController {
         return "search";
     }
 
-
     //  제출
     @PostMapping("submit")
     public String submitForm(@Validated @ModelAttribute("class") ClassDTO classDTO,
                              BindingResult bindingResult, Model model) {
-
 
         if (bindingResult.hasErrors()) {
             getClassList(model);
