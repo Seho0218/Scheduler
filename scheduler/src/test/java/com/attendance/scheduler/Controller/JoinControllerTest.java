@@ -1,6 +1,7 @@
 package com.attendance.scheduler.Controller;
 
 import com.attendance.scheduler.Dto.Teacher.JoinTeacherDTO;
+import com.attendance.scheduler.Dto.Teacher.LoginTeacherDTO;
 import com.attendance.scheduler.Dto.Teacher.TeacherDTO;
 import com.attendance.scheduler.Service.TeacherService;
 import jakarta.transaction.Transactional;
@@ -38,9 +39,9 @@ class JoinControllerTest {
         /*
             로그인 검증
          */
-        TeacherDTO teacherDTO = new TeacherDTO();
-        teacherDTO.setTeacherId("teacher");
-        teacherDTO.setTeacherPassword("123");
+        LoginTeacherDTO loginTeacherDTO = new LoginTeacherDTO();
+        loginTeacherDTO.setTeacherId("teacher");
+        loginTeacherDTO.setTeacherPassword("123");
 
 
         //When
@@ -53,8 +54,8 @@ class JoinControllerTest {
             assertEquals("중복된 아이디 입니다.", duplicateErrorMessage);
         }
 
-        TeacherDTO teacher = teacherService.loginTeacher(teacherDTO);
-        assertEquals("teacher", teacher.getTeacherId());
+        TeacherDTO loginTeacher = teacherService.loginTeacher(loginTeacherDTO);
+        assertEquals("teacher", loginTeacher.getTeacherId());
 
     }
 }

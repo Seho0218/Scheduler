@@ -1,6 +1,7 @@
 package com.attendance.scheduler.Service;
 
 import com.attendance.scheduler.Dto.Teacher.JoinTeacherDTO;
+import com.attendance.scheduler.Dto.Teacher.LoginTeacherDTO;
 import com.attendance.scheduler.Dto.Teacher.TeacherDTO;
 
 public interface TeacherService {
@@ -12,5 +13,5 @@ public interface TeacherService {
     JoinTeacherDTO findDuplicateTeacherId(JoinTeacherDTO joinTeacherDTO);
 
     //TODO 교사 로그인
-    TeacherDTO loginTeacher(TeacherDTO teacherDTO);
+    TeacherDTO loginTeacher(LoginTeacherDTO loginTeacherDTO);
 }

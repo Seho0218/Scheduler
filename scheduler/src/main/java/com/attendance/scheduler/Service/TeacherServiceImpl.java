@@ -1,6 +1,7 @@
 package com.attendance.scheduler.Service;
 
 import com.attendance.scheduler.Dto.Teacher.JoinTeacherDTO;
+import com.attendance.scheduler.Dto.Teacher.LoginTeacherDTO;
 import com.attendance.scheduler.Dto.Teacher.TeacherDTO;
 import com.attendance.scheduler.Entity.TeacherEntity;
 import com.attendance.scheduler.Mapper.JoinTeacherMapper;
@@ -30,15 +31,15 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public JoinTeacherDTO findDuplicateTeacherId(JoinTeacherDTO joinTeacherDTO) {
-        TeacherEntity byTeacherIdIs = teacherRepository.findByTeacherIdIs(joinTeacherDTO.getTeacherId());
+        final TeacherEntity byTeacherIdIs = teacherRepository.findByTeacherIdIs(joinTeacherDTO.getTeacherId());
         return joinTeacherMapper.toJoinTeacherDTO(byTeacherIdIs);
     }
 
     @Override
-    public TeacherDTO loginTeacher(TeacherDTO teacherDTO) {
-        TeacherEntity byTeacherIdIs = teacherRepository.findByTeacherIdIs(teacherDTO.getTeacherId());
-        boolean matches = passwordEncoder.matches(teacherDTO.getTeacherPassword(), byTeacherIdIs.getTeacherPassword());
-
+    public TeacherDTO loginTeacher(LoginTeacherDTO loginTeacherDTO) {
+        //final 붙인 이유. 변수값을 더이상 변경하지 않기 위해서
+        final TeacherEntity byTeacherIdIs = teacherRepository.findByTeacherIdIs(loginTeacherDTO.getTeacherId());
+        boolean matches = passwordEncoder.matches(loginTeacherDTO.getTeacherPassword(), byTeacherIdIs.getTeacherPassword());
         if (matches) {
             return loginTeacherMapper.toTeacherDTO(byTeacherIdIs);
         }

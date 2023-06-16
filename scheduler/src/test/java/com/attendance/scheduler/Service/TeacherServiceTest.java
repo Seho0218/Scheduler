@@ -1,6 +1,7 @@
 package com.attendance.scheduler.Service;
 
 import com.attendance.scheduler.Dto.Teacher.JoinTeacherDTO;
+import com.attendance.scheduler.Dto.Teacher.LoginTeacherDTO;
 import com.attendance.scheduler.Dto.Teacher.TeacherDTO;
 import com.attendance.scheduler.Entity.TeacherEntity;
 import com.attendance.scheduler.Repository.jpa.TeacherRepository;
@@ -64,14 +65,13 @@ class TeacherServiceTest {
     @Test
     void loginTeacher() {
         //Given
-        TeacherDTO teacherDTO = new TeacherDTO();
-        teacherDTO.setTeacherId("testTeacher");
-        teacherDTO.setTeacherPassword("123");
-        teacherDTO.setTeacherEmail("ghdtpgh8913@gmail.com");
-        teacherDTO.setTeacherName("김교사");
+        LoginTeacherDTO loginTeacherDTO = new LoginTeacherDTO();
+        loginTeacherDTO.setTeacherId("testTeacher");
+        loginTeacherDTO.setTeacherPassword("123");
+
 
         //when
-        TeacherDTO loginTeacher = teacherService.loginTeacher(teacherDTO);
+        TeacherDTO loginTeacher = teacherService.loginTeacher(loginTeacherDTO);
 
         //then
         assertEquals("testTeacher", loginTeacher.getTeacherId());

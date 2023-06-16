@@ -4,9 +4,11 @@ import com.attendance.scheduler.Dto.Admin.AdminDTO;
 import com.attendance.scheduler.Dto.ClassDTO;
 import com.attendance.scheduler.Dto.ClassListDTO;
 import com.attendance.scheduler.Dto.StudentClassDTO;
+import com.attendance.scheduler.Dto.Teacher.LoginTeacherDTO;
 import com.attendance.scheduler.Dto.Teacher.TeacherDTO;
 import com.attendance.scheduler.Service.SearchClassService;
 import com.attendance.scheduler.Service.SubmitService;
+import com.attendance.scheduler.Service.TeacherService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +30,12 @@ public class BasicController {
     private final SubmitService submitService;
     private final SearchClassService searchClassService;
 
+    private static final String loginError = "아이디 또는 비밀번호를 확인해주세요.";
+    private static final String approved = "관리자의 승인을 기다려주세요";
+
+    //로그인
+    private final TeacherService teacherService;
+
     @GetMapping("/")
     public String basic(Model model){
 
@@ -36,12 +44,40 @@ public class BasicController {
         return "index";
     }
 
+    //교사 로그인 폼
     @GetMapping("login")
     public String loginForm(Model model) {
         model.addAttribute("login", new TeacherDTO());
         return "login";
     }
 
+    //교사 로그인
+    @PostMapping("teacherLogin")
+    public String teacherLogin(@Validated @ModelAttribute("login") LoginTeacherDTO loginTeacherDTO, BindingResult bindingResult,
+                               HttpSession httpSession, Model model){
+
+        if (bindingResult.hasErrors()) {
+            return "login";
+        }
+
+        try {
+            TeacherDTO loginTeacher = teacherService.loginTeacher(loginTeacherDTO);
+            if(loginTeacher.isApproved()) {
+                httpSession.setAttribute("logId", loginTeacher.getTeacherId());
+                httpSession.setAttribute("logName", loginTeacher.getTeacherName());
+                return "admin/manage";
+            }
+            model.addAttribute("login", new TeacherDTO());
+            model.addAttribute("approved", approved);
+            return "login";
+        } catch (Exception e) {
+            model.addAttribute("login", new TeacherDTO());
+            model.addAttribute("loginError", loginError);
+            return "login";
+        }
+    }
+
+    //관리자 로그인 폼
     @GetMapping("adminLogin")
     public String adminLoginForm(Model model) {
         model.addAttribute("login", new AdminDTO());

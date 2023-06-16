@@ -38,7 +38,7 @@
 </head>
 <body>
 <div class="container">
-    <form method='post' role="form" th:action="@{/admin/teacherLogin}" th:object="${login}">
+    <form method='post' role="form" th:action="@{/teacherLogin}" th:object="${login}">
         <div class="py-2">
             <div class="header">
                 <br><br>
@@ -62,7 +62,8 @@
                        th:errorclass="field-error" th:field="*{teacherPassword}"
                        type="password">
                 <div class="field-error" th:errors="*{teacherPassword}"></div>
-                <div class="field-error" th:text="${approved}"></div><br>
+                <div class="field-error" th:text="${approved}"></div>
+                <div class="field-error" th:text="${loginError}"></div><br>
 
                 <div class="text-end">
                     <button class="btn btn-primary" type="submit">로그인</button>
