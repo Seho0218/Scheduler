@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class AdminServiceImpl implements AdminService {
+public class ManageServiceImpl implements ManageService {
 
     private final ClassTableRepository classTableRepository;
 

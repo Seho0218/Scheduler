@@ -21,7 +21,7 @@ public class SubmitServiceImpl implements SubmitService {
     @Override
     public void saveClassTable(ClassDTO classDTO) {
 
-        classValidator(classDTO);
+//        classValidator(classDTO);
 
         if(classDTO.getStudentName()!=null) {
             String trimmedStudentName = classDTO.getStudentName().trim();

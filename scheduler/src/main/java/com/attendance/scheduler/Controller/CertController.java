@@ -34,7 +34,7 @@ public class CertController {
     @GetMapping("findId")
     public String findId(Model model) {
         model.addAttribute("login", new AdminDTO());
-        return "/cert/FindId";
+        return "/findId";
     }
 
     // 메일로 아이디 보내기

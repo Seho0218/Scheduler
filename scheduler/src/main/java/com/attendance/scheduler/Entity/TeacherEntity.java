@@ -35,7 +35,6 @@ public class TeacherEntity {
     private boolean approved;
 
     @Builder
-
     public TeacherEntity(Long id, String teacherId, String teacherName, String teacherPassword, String teacherEmail, boolean approved) {
         Id = id;
         this.teacherId = teacherId;

@@ -2,7 +2,7 @@ package com.attendance.scheduler.Controller;
 
 import com.attendance.scheduler.Dto.Admin.DeleteClassDTO;
 import com.attendance.scheduler.Dto.ClassDTO;
-import com.attendance.scheduler.Service.AdminService;
+import com.attendance.scheduler.Service.ManageService;
 import com.attendance.scheduler.Service.SearchClassService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,32 +18,32 @@ import java.util.List;
 
 @Slf4j
 @Controller
-@RequestMapping("/manage/*")
+@RequestMapping("/manage")
 @RequiredArgsConstructor
 public class ManageController {
 
     // 관리자 로직
-    private final AdminService adminService;
+    private final ManageService manageService;
 
     //수업 조회
     private final SearchClassService searchClassService;
 
     // 조회
-    @GetMapping("manage")
+    @GetMapping("class")
     public String adminPage(Model model){
 
         List<ClassDTO> classTable = searchClassService.findClassTable();
         model.addAttribute("classList", new DeleteClassDTO());
         model.addAttribute("findClassTable", classTable);
         log.info("student = {}", searchClassService.findClassTable());
-        return "admin/manage";
+        return "/class/manage";
     }
 
     // 삭제
     @PostMapping("delete")
     public ResponseEntity<String> deleteSchedule(@ModelAttribute("classList") DeleteClassDTO deleteClassDTO){
 
-        adminService.deleteClass(deleteClassDTO);
+        manageService.deleteClass(deleteClassDTO);
         log.info("delete_List={}", deleteClassDTO.getDeleteClassList());
         return ResponseEntity.ok("삭제되었습니다.");
     }

@@ -1,7 +1,7 @@
 package com.attendance.scheduler.Controller;
 
 import com.attendance.scheduler.Dto.Teacher.JoinTeacherDTO;
-import com.attendance.scheduler.Service.TeacherService;
+import com.attendance.scheduler.Service.JoinService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -15,19 +15,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Slf4j
 @Controller
-@RequestMapping("/join/*")
+@RequestMapping("/join")
 @RequiredArgsConstructor
 public class JoinController {
 
     private static final String duplicateErrorMessage = "중복된 아이디 입니다.";
-    private final TeacherService teacherService;
+    private final JoinService joinService;
 
+    //회원가입 폼
     @GetMapping("teacher")
     public String joinForm(Model model) {
         model.addAttribute("join", new JoinTeacherDTO());
         return "join";
     }
 
+    //회원가입 완료
     @PostMapping("approved")
     public String approved(@Validated @ModelAttribute("join") JoinTeacherDTO joinTeacherDTO, BindingResult bindingResult,
                            Model model) {
@@ -37,7 +39,7 @@ public class JoinController {
             return "join";
         }
 
-        JoinTeacherDTO duplicateTeacherId = teacherService.findDuplicateTeacherId(joinTeacherDTO);
+        JoinTeacherDTO duplicateTeacherId = joinService.findDuplicateTeacherId(joinTeacherDTO);
 
         if (duplicateTeacherId != null) {
             log.info("teacherId={}", duplicateTeacherId.getTeacherId());
@@ -46,8 +48,9 @@ public class JoinController {
         }
 
         try {
-            teacherService.joinTeacher(joinTeacherDTO);
-            return "login";
+            joinService.joinTeacher(joinTeacherDTO);
+            model.addAttribute("login", new JoinTeacherDTO());
+            return "redirect:login";
         } catch (Exception e) {
             e.printStackTrace();
             return "join";

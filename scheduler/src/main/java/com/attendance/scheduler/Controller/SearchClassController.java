@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,12 +20,19 @@ import java.util.List;
 
 @Slf4j
 @Controller
-@RequestMapping("/search/*")
+@RequestMapping("/search")
 @RequiredArgsConstructor
-public class ClassSearchController {
+public class SearchClassController {
 
     private final SubmitService submitService;
     private final SearchClassService searchClassService;
+
+    //  수업 조회 폼
+    @GetMapping("")
+    public String searchClass(Model model) {
+        model.addAttribute("studentClass", new StudentClassDTO());
+        return "/class/search";
+    }
 
     //   수업 조회
     @PostMapping("findClass")
@@ -36,13 +44,13 @@ public class ClassSearchController {
 
         if (bindingResult.hasErrors()) {
             log.info("errors={}", bindingResult);
-            return "search";
+            return "/class/search";
         }
 
         if (studentClassesList == null) {
             String errorMessage = "등록된 이름이 없습니다.";
             model.addAttribute("nullStudentName", errorMessage);
-            return "search";
+            return "/class/search";
         }
 
         ClassListDTO classesOrderByAsc = searchClassService.findClassesOrderByAsc();
@@ -74,7 +82,27 @@ public class ClassSearchController {
         model.addAttribute("studentClass", new StudentClassDTO());
         model.addAttribute("studentClassList", studentClassesList);
 
-        return "findClass";
+        return "/class/findClass";
+    }
+
+    //제출
+    @PostMapping("submit")
+    public String submitForm(@Validated @ModelAttribute("class") ClassDTO classDTO,
+                             BindingResult bindingResult, Model model) {
+
+        if (bindingResult.hasErrors()) {
+            getClassList(model);
+            log.info("errors={}", bindingResult);
+            return "index";
+        }
+
+        try {
+            submitService.saveClassTable(classDTO);
+            return "redirect:/completion";
+        }catch (Exception e){
+            getClassList(model);
+            return "redirect:/index";
+        }
     }
 
     //  수업 수정
@@ -82,19 +110,35 @@ public class ClassSearchController {
     public String modifyClass(@Validated @ModelAttribute("class") ClassDTO classDTO,
                               BindingResult bindingResult, Model model) {
 
-
         log.info("studentInfo={}", classDTO.getStudentName());
         if (bindingResult.hasErrors()) {
             log.info("errors={}", bindingResult);
-            return "findClass";
+            return "/class/findClass";
         }
         try{
             submitService.saveClassTable(classDTO);
-            return "completion";
+            return "redirect:/completion";
 
         }catch(Exception e){
             model.addAttribute("errorMessage", e.getMessage());
-            return "findClass";
+            return "/class/findClass";
         }
+    }
+
+    private void getClassList(Model model) {
+
+        ClassListDTO classesOrderByAsc = searchClassService.findClassesOrderByAsc();
+
+        model.addAttribute("classInMondayList", classesOrderByAsc.getClassInMondayList());
+        model.addAttribute("classInTuesdayList", classesOrderByAsc.getClassInTuesdayList());
+        model.addAttribute("classInWednesdayList", classesOrderByAsc.getClassInWednesdayList());
+        model.addAttribute("classInThursdayList", classesOrderByAsc.getClassInThursdayList());
+        model.addAttribute("classInFridayList", classesOrderByAsc.getClassInFridayList());
+
+        log.info("monday = {}", classesOrderByAsc.getClassInMondayList());
+        log.info("tuesday = {}", classesOrderByAsc.getClassInTuesdayList());
+        log.info("wednesday = {}", classesOrderByAsc.getClassInWednesdayList());
+        log.info("thursday = {}", classesOrderByAsc.getClassInThursdayList());
+        log.info("friday = {}", classesOrderByAsc.getClassInFridayList());
     }
 }

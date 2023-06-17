@@ -18,6 +18,8 @@ public class TeacherDTO {
 
     private String teacherEmail;
 
+    private String role;
+
     private boolean approved;
 
 }

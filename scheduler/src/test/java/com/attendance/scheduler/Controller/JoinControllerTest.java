@@ -3,7 +3,8 @@ package com.attendance.scheduler.Controller;
 import com.attendance.scheduler.Dto.Teacher.JoinTeacherDTO;
 import com.attendance.scheduler.Dto.Teacher.LoginTeacherDTO;
 import com.attendance.scheduler.Dto.Teacher.TeacherDTO;
-import com.attendance.scheduler.Service.TeacherService;
+import com.attendance.scheduler.Service.JoinService;
+import com.attendance.scheduler.Service.LoginService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.DisplayName;
@@ -20,7 +21,10 @@ class JoinControllerTest {
     private static final String duplicateErrorMessage = "중복된 아이디 입니다.";
 
     @Autowired
-    private TeacherService teacherService;
+    private JoinService joinService;
+
+    @Autowired
+    private LoginService loginService;
 
     @Test
     @Transactional
@@ -38,7 +42,7 @@ class JoinControllerTest {
         joinTeacherDTO.setTeacherName("김교사");
 
         /*
-            로그인 검증
+            로그인
          */
         LoginTeacherDTO loginTeacherDTO = new LoginTeacherDTO();
         loginTeacherDTO.setTeacherId("teacher");
@@ -46,8 +50,8 @@ class JoinControllerTest {
 
 
         //When
-        JoinTeacherDTO duplicateTeacherId = teacherService.findDuplicateTeacherId(joinTeacherDTO);
-        teacherService.joinTeacher(joinTeacherDTO);
+        joinService.joinTeacher(joinTeacherDTO);
+        JoinTeacherDTO duplicateTeacherId = joinService.findDuplicateTeacherId(joinTeacherDTO);
 
 
         //Then
@@ -55,8 +59,7 @@ class JoinControllerTest {
             assertEquals("중복된 아이디 입니다.", duplicateErrorMessage);
         }
 
-        TeacherDTO loginTeacher = teacherService.loginTeacher(loginTeacherDTO);
+        TeacherDTO loginTeacher = loginService.loginTeacher(loginTeacherDTO);
         assertEquals("teacher", loginTeacher.getTeacherId());
-
     }
 }

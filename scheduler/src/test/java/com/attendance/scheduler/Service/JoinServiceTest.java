@@ -17,10 +17,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest
 @Transactional
 @RequiredArgsConstructor
-class TeacherServiceTest {
+class JoinServiceTest {
 
     @Autowired
-    private TeacherService teacherService;
+    private JoinService joinService;
+
+    @Autowired
+    private LoginService loginService;
 
     @Autowired
     private TeacherRepository teacherRepository;
@@ -36,7 +39,7 @@ class TeacherServiceTest {
         joinTeacherDTO.setTeacherName("김교사");
 
         //When
-        teacherService.joinTeacher(joinTeacherDTO);
+        joinService.joinTeacher(joinTeacherDTO);
 
         //Then
         TeacherEntity byTeacherIdIs = teacherRepository.findByTeacherIdIs("teacher");
@@ -55,8 +58,8 @@ class TeacherServiceTest {
         joinTeacherDTO.setTeacherName("김교사");
 
         //when
-        teacherService.joinTeacher(joinTeacherDTO);
-        String teacherId = teacherService.findDuplicateTeacherId(joinTeacherDTO).getTeacherId();
+        joinService.joinTeacher(joinTeacherDTO);
+        String teacherId = joinService.findDuplicateTeacherId(joinTeacherDTO).getTeacherId();
 
         //then
         assertEquals("teacher", teacherId);
@@ -71,7 +74,7 @@ class TeacherServiceTest {
 
 
         //when
-        TeacherDTO loginTeacher = teacherService.loginTeacher(loginTeacherDTO);
+        TeacherDTO loginTeacher = loginService.loginTeacher(loginTeacherDTO);
 
         //then
         assertEquals("testTeacher", loginTeacher.getTeacherId());

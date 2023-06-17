@@ -2,7 +2,7 @@ package com.attendance.scheduler.Controller;
 
 import com.attendance.scheduler.Dto.Teacher.LoginTeacherDTO;
 import com.attendance.scheduler.Dto.Teacher.TeacherDTO;
-import com.attendance.scheduler.Service.TeacherService;
+import com.attendance.scheduler.Service.LoginService;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class BasicControllerTest {
 
     @Autowired
-    private TeacherService teacherService;
+    private LoginService loginService;
 
 //    @Test
 //    void submitForm() {
@@ -47,7 +47,7 @@ class BasicControllerTest {
         loginTeacherDTO.setTeacherPassword("123");
 
         //When
-        TeacherDTO teacher = teacherService.loginTeacher(loginTeacherDTO);
+        TeacherDTO teacher = loginService.loginTeacher(loginTeacherDTO);
 
         //Then
         assertEquals("testTeacher", teacher.getTeacherId());
