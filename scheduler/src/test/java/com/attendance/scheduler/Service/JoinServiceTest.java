@@ -1,15 +1,18 @@
 package com.attendance.scheduler.Service;
 
+import com.attendance.scheduler.Dto.LoginDTO;
 import com.attendance.scheduler.Dto.Teacher.JoinTeacherDTO;
-import com.attendance.scheduler.Dto.Teacher.LoginTeacherDTO;
-import com.attendance.scheduler.Dto.Teacher.TeacherDTO;
 import com.attendance.scheduler.Entity.TeacherEntity;
 import com.attendance.scheduler.Repository.jpa.TeacherRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -23,12 +26,13 @@ class JoinServiceTest {
     private JoinService joinService;
 
     @Autowired
-    private LoginService loginService;
+    private AuthenticationManager authenticationManager;
 
     @Autowired
     private TeacherRepository teacherRepository;
 
     @Test
+    @DisplayName("교사 회원가입")
     void joinTeacher() {
 
         //Given
@@ -48,6 +52,7 @@ class JoinServiceTest {
     }
 
     @Test
+    @DisplayName("아이디 중복 확인")
     void findDuplicateTeacherId() {
 
         //given
@@ -66,17 +71,19 @@ class JoinServiceTest {
     }
 
     @Test
+    @DisplayName("교사 로그인")
     void loginTeacher() {
         //Given
-        LoginTeacherDTO loginTeacherDTO = new LoginTeacherDTO();
-        loginTeacherDTO.setTeacherId("testTeacher");
-        loginTeacherDTO.setTeacherPassword("123");
+        LoginDTO loginDTO = new LoginDTO();
+        loginDTO.setId("testTeacher");
+        loginDTO.setPassword("123");
 
 
         //when
-        TeacherDTO loginTeacher = loginService.loginTeacher(loginTeacherDTO);
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(loginDTO.getId(), loginDTO.getPassword()));
 
         //then
-        assertEquals("testTeacher", loginTeacher.getTeacherId());
+        assertEquals("testTeacher", authentication.getName());
     }
 }

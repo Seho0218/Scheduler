@@ -18,7 +18,7 @@ import java.util.List;
 
 @Slf4j
 @Controller
-@RequestMapping("/manage")
+@RequestMapping("/manage/*")
 @RequiredArgsConstructor
 public class ManageController {
 
@@ -30,13 +30,13 @@ public class ManageController {
 
     // 조회
     @GetMapping("class")
-    public String adminPage(Model model){
+    public String managePage(Model model){
 
         List<ClassDTO> classTable = searchClassService.findClassTable();
         model.addAttribute("classList", new DeleteClassDTO());
         model.addAttribute("findClassTable", classTable);
         log.info("student = {}", searchClassService.findClassTable());
-        return "/class/manage";
+        return "manage/class";
     }
 
     // 삭제

@@ -2,6 +2,7 @@ package com.attendance.scheduler.Controller;
 
 import com.attendance.scheduler.Dto.Admin.AdminCertDTO;
 import com.attendance.scheduler.Dto.Admin.AdminDTO;
+import com.attendance.scheduler.Dto.Teacher.FindIdDTO;
 import com.attendance.scheduler.Service.CertService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -9,7 +10,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -27,34 +31,45 @@ public class CertController {
 
     private final CertService certService;
 
+    private static final String errorMessage = "등록된 이메일이 없습니다.";
+
+
     /*
     아이디 찾기
      */
     // 아이디 찾기 폼
     @GetMapping("findId")
     public String findId(Model model) {
-        model.addAttribute("login", new AdminDTO());
-        return "/findId";
+        model.addAttribute("account", new FindIdDTO());
+        return "/cert/findId";
     }
 
     // 메일로 아이디 보내기
     @PostMapping("sendUserId")
-    public ResponseEntity<Object> sendEmail(AdminCertDTO adminCertDTO) {
+    public String sendEmail(@Validated @ModelAttribute("account") FindIdDTO findIdDTO,
+                                            BindingResult bindingResult, Model model) {
 
-        String adminId = certService.findIdByEmail(adminCertDTO);
+        if (bindingResult.hasErrors()) {
+            return "/cert/findId";
+        }
+        String idByEmail = certService.findIdByEmail(findIdDTO);
+        log.info("email={}", idByEmail);
 
-        if (adminId.isEmpty()) {
-            return new ResponseEntity<>("등록된 정보가 없습니다.",BAD_REQUEST);
+        if (idByEmail == null) {
+            model.addAttribute("errorMessage", errorMessage);
+            model.addAttribute("account", new FindIdDTO());
+            return "/cert/findId";
         }
 
-        String adminEmail = adminCertDTO.getAdminEmail();
-        AdminCertDTO certDTO = AdminCertDTO.getInstance();
+        FindIdDTO findIdDTOs = new FindIdDTO();
+        String email = findIdDTO.getEmail();
+        findIdDTOs.setId(idByEmail);
+        findIdDTOs.setEmail(email);
 
-        certDTO.setAdminId(adminId);
-        certDTO.setAdminEmail(adminEmail);
-        certService.sendUserId(certDTO);
+        String sendUserIdMessage = certService.sendUserId(findIdDTOs);
+        model.addAttribute("sendUserIdMessage", sendUserIdMessage);
 
-        return new ResponseEntity<>("등록하신 이메일로 아이디가 전송되었습니다.",OK);
+        return "/cert/findId";
     }
 
     /*
@@ -68,16 +83,16 @@ public class CertController {
         return "/cert/FindPassword";
     }
 
-    @GetMapping("overlapCheck")
-    public int overlapCheck(AdminCertDTO adminCertDTO) {
-        return certService.overlapCheck(adminCertDTO);
-    }
-
-    @GetMapping("emailCheck")
-    public ResponseEntity<Boolean> emailCheck(AdminCertDTO adminCertDTO){
-        boolean emailCheck = certService.emailCheck(adminCertDTO);
-        return new ResponseEntity<>(emailCheck, OK);
-    }
+//    @GetMapping("overlapCheck")
+//    public int overlapCheck(AdminCertDTO adminCertDTO) {
+//        return certService.overlapCheck(adminCertDTO);
+//    }
+//
+//    @GetMapping("emailCheck")
+//    public ResponseEntity<Boolean> emailCheck(AdminCertDTO adminCertDTO){
+//        boolean emailCheck = certService.emailCheck(adminCertDTO);
+//        return new ResponseEntity<>(emailCheck, OK);
+//    }
 
 
     // 인증번호 보내기 페이지

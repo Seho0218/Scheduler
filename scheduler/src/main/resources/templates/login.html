@@ -48,29 +48,28 @@
         <!--학생 이름-->
         <div class="py-2">
             <div class="board rounded-3 border border-2">
-
                 <h1> 교사 로그인 </h1>
-
                 <label for="teacherId"></label>
                 <input class="form-control" id="teacherId" placeholder="아이디를 입력해주세요"
-                       th:errorclass="field-error" th:field="*{teacherId}"
+                       th:errorclass="field-error" th:field="*{id}"
                        type="text">
-                <div class="field-error" th:errors="*{teacherId}"></div>
 
                 <label for="teacherPassword"></label>
                 <input class="form-control" id="teacherPassword" placeholder="비밀번호를 입력해 주세요"
-                       th:errorclass="field-error" th:field="*{teacherPassword}"
+                       th:errorclass="field-error" th:field="*{password}"
                        type="password">
-                <div class="field-error" th:errors="*{teacherPassword}"></div>
-                <div class="field-error" th:text="${approved}"></div>
-                <div class="field-error" th:text="${loginError}"></div><br>
+
+                <div class="error-message" th:if="${loginError}">
+                    <p th:text="${loginError}"></p>
+                </div>
+                <br>
 
                 <div class="text-end">
                     <button class="btn btn-primary" type="submit">로그인</button>
                 </div><br>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="#">아이디 찾기</a></li>
+                            <li class="breadcrumb-item"><a href="/cert/findId">아이디 찾기</a></li>
                             <li class="breadcrumb-item"><a href="#">비밀번호 찾기</a></li>
                             <li class="breadcrumb-item"><a href="/join/teacher">회원가입</a></li>
                         </ol>

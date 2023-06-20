@@ -1,13 +1,14 @@
 package com.attendance.scheduler.Controller;
 
-import com.attendance.scheduler.Dto.Teacher.LoginTeacherDTO;
-import com.attendance.scheduler.Dto.Teacher.TeacherDTO;
-import com.attendance.scheduler.Service.LoginService;
+import com.attendance.scheduler.Dto.LoginDTO;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -16,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class BasicControllerTest {
 
     @Autowired
-    private LoginService loginService;
+    private AuthenticationManager authenticationManager;
 
 //    @Test
 //    void submitForm() {
@@ -42,15 +43,16 @@ class BasicControllerTest {
     void teacherLogin() {
 
         //Given
-        LoginTeacherDTO loginTeacherDTO = new LoginTeacherDTO();
-        loginTeacherDTO.setTeacherId("testTeacher");
-        loginTeacherDTO.setTeacherPassword("123");
+        LoginDTO loginDTO = new LoginDTO();
+        loginDTO.setId("testTeacher");
+        loginDTO.setPassword("123");
 
         //When
-        TeacherDTO teacher = loginService.loginTeacher(loginTeacherDTO);
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(loginDTO.getId(), loginDTO.getPassword()));
 
         //Then
-        assertEquals("testTeacher", teacher.getTeacherId());
+        assertEquals("testTeacher", authentication.getName());
 
     }
 }

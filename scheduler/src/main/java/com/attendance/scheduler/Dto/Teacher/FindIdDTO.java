@@ -9,11 +9,10 @@ import lombok.ToString;
 @Getter @Setter
 @ToString
 @NoArgsConstructor
-public class LoginTeacherDTO {
+public class FindIdDTO {
 
-    @NotEmpty(message = "아이디를 입력해 주세요")
-    private String teacherId;
+    @NotEmpty(message = "이메일을 입력해 주세요")
+    private String email;
 
-    @NotEmpty(message = "비밀번호를 입력해 주세요")
-    private String teacherPassword;
+    private String id;
 }
