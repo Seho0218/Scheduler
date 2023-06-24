@@ -23,7 +23,7 @@ public class TeacherDetails implements UserDetails {
 
     @Override
     public String getPassword() {
-        return teacherEntity.getTeacherPassword();
+        return teacherEntity.getPassword();
     }
 
     @Override

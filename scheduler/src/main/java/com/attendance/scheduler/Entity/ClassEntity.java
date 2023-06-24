@@ -38,7 +38,6 @@ public class ClassEntity {
 //    private StudentEntity studentEntity;
 //
     @Builder
-
     public ClassEntity(String studentName, Integer monday, Integer tuesday, Integer wednesday, Integer thursday, Integer friday, Timestamp updateTimeStamp) {
         this.studentName = studentName;
         this.monday = monday;

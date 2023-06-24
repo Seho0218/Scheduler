@@ -1,8 +1,8 @@
 package com.attendance.scheduler.Controller;
 
-import com.attendance.scheduler.Dto.Admin.AdminCertDTO;
-import com.attendance.scheduler.Dto.Admin.AdminDTO;
 import com.attendance.scheduler.Dto.Teacher.FindIdDTO;
+import com.attendance.scheduler.Dto.Teacher.FindPasswordDTO;
+import com.attendance.scheduler.Dto.Teacher.TeacherDTO;
 import com.attendance.scheduler.Service.CertService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -31,16 +31,17 @@ public class CertController {
 
     private final CertService certService;
 
-    private static final String errorMessage = "등록된 이메일이 없습니다.";
-
+    private static final String emailErrorMessage = "등록된 이메일이 없습니다.";
+    private static final String idErrorMessage = "등록된 아이디가 없습니다.";
 
     /*
     아이디 찾기
      */
+
     // 아이디 찾기 폼
     @GetMapping("findId")
     public String findId(Model model) {
-        model.addAttribute("account", new FindIdDTO());
+        model.addAttribute("account", new TeacherDTO());
         return "/cert/findId";
     }
 
@@ -56,7 +57,7 @@ public class CertController {
         log.info("email={}", idByEmail);
 
         if (idByEmail == null) {
-            model.addAttribute("errorMessage", errorMessage);
+            model.addAttribute("errorMessage", emailErrorMessage);
             model.addAttribute("account", new FindIdDTO());
             return "/cert/findId";
         }
@@ -79,48 +80,45 @@ public class CertController {
     // 비밀번호 찾기 폼
     @GetMapping("findPassword")
     public String findPassword(Model model) {
-        model.addAttribute("login", new AdminDTO());
-        return "/cert/FindPassword";
+        model.addAttribute("account", new TeacherDTO());
+        return "/cert/findPwd";
     }
-
-//    @GetMapping("overlapCheck")
-//    public int overlapCheck(AdminCertDTO adminCertDTO) {
-//        return certService.overlapCheck(adminCertDTO);
-//    }
-//
-//    @GetMapping("emailCheck")
-//    public ResponseEntity<Boolean> emailCheck(AdminCertDTO adminCertDTO){
-//        boolean emailCheck = certService.emailCheck(adminCertDTO);
-//        return new ResponseEntity<>(emailCheck, OK);
-//    }
-
 
     // 인증번호 보내기 페이지
     @GetMapping("FindPwd_auth")
-    public String auth(AdminCertDTO adminCertDTO, HttpSession session) {
+    public String idEmailConfirm(@Validated @ModelAttribute("account") FindPasswordDTO findPasswordDTO,
+                       BindingResult bindingResult, Model model) {
 
-        String adminId = adminCertDTO.getAdminId();
+        if (bindingResult.hasErrors()) {
+            return "/cert/findPwd";
+        }
 
-        Map<String, Object> authStatus = (Map<String, Object>) session.getAttribute("authStatus");
-        if(authStatus == null || !adminId.equals(authStatus.get("adminId"))) {
+        if(certService.idConfirmation(findPasswordDTO)){
+            model.addAttribute("idErrorMessage", idErrorMessage);
+            model.addAttribute("account", new TeacherDTO());
+            return "/cert/FindPwd";
+        }
+        if(certService.emailConfirmation(findPasswordDTO)) {
+            model.addAttribute("emailErrorMessage", emailErrorMessage);
+            model.addAttribute("account", new TeacherDTO());
             return "/cert/FindPwd";
         }
         return "/cert/FindPwd_auth";
     }
 
     @PostMapping("FindPwd_auth")
-    public ResponseEntity<Object> authenticateUser(AdminCertDTO adminCertDTO, HttpSession session) {
+    public ResponseEntity<Object> authenticateUser(FindPasswordDTO findPasswordDTO, HttpSession session) {
 
         Map<String, Object> authStatus = new HashMap<>();
-        String adminId = adminCertDTO.getAdminId();
+        String TeacherId = findPasswordDTO.getTeacherId();
 
-        authStatus.put("adminId", adminId);
+        authStatus.put("TeacherId", TeacherId);
         authStatus.put("status", false);
 
         session.setMaxInactiveInterval(300);
         session.setAttribute("authStatus", authStatus);
 
-        return new ResponseEntity<>(adminId, OK);
+        return new ResponseEntity<>(TeacherId, OK);
     }
 
 

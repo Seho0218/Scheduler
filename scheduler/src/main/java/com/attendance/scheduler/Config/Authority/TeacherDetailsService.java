@@ -17,11 +17,11 @@ public class TeacherDetailsService implements UserDetailsService {
     private final TeacherRepository teacherRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
-        final TeacherEntity byTeacherIdIs = teacherRepository.findByTeacherIdIs(id);
+    public UserDetails loadUserByUsername(String teacherId) throws UsernameNotFoundException {
+        final TeacherEntity byTeacherIdIs = teacherRepository.findByTeacherIdIs(teacherId);
         if(byTeacherIdIs != null){
             return new TeacherDetails(byTeacherIdIs);
         }
-        return null;
+        throw new UsernameNotFoundException("User not found with username");
     }
 }

@@ -44,12 +44,12 @@ class BasicControllerTest {
 
         //Given
         LoginDTO loginDTO = new LoginDTO();
-        loginDTO.setId("testTeacher");
+        loginDTO.setTeacherId("testTeacher");
         loginDTO.setPassword("123");
 
         //When
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginDTO.getId(), loginDTO.getPassword()));
+                new UsernamePasswordAuthenticationToken(loginDTO.getTeacherId(), loginDTO.getPassword()));
 
         //Then
         assertEquals("testTeacher", authentication.getName());

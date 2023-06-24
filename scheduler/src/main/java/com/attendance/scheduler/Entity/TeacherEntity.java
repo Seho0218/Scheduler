@@ -21,26 +21,26 @@ import static lombok.AccessLevel.PROTECTED;
 public class TeacherEntity {
 
     @Id @GeneratedValue(strategy = IDENTITY)
-    private Long Id;
+    private Long id;
 
     private String teacherId;
 
-    private String teacherName;
+    private String name;
 
-    private String teacherPassword;
+    private String password;
 
-    private String teacherEmail;
+    private String email;
 
     @Column(columnDefinition = "boolean default '0'")
     private boolean approved;
 
     @Builder
-    public TeacherEntity(Long id, String teacherId, String teacherName, String teacherPassword, String teacherEmail, boolean approved) {
-        Id = id;
+    public TeacherEntity(Long id, String teacherId, String name, String password, String email, boolean approved) {
+        this.id = id;
         this.teacherId = teacherId;
-        this.teacherName = teacherName;
-        this.teacherPassword = teacherPassword;
-        this.teacherEmail = teacherEmail;
+        this.name = name;
+        this.password = password;
+        this.email = email;
         this.approved = approved;
     }
 }

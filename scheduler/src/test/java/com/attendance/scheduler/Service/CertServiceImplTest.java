@@ -16,10 +16,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class CertServiceImplTest {
 
     @Autowired
-    AdminRepository adminRepository;
+    private AdminRepository adminRepository;
 
     @Autowired
-    PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
     @Test
     @DisplayName("아이디 찾을 때, 이메일 검증")

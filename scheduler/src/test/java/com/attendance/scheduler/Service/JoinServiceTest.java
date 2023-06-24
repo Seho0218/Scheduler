@@ -38,9 +38,9 @@ class JoinServiceTest {
         //Given
         JoinTeacherDTO joinTeacherDTO = new JoinTeacherDTO();
         joinTeacherDTO.setTeacherId("teacher");
-        joinTeacherDTO.setTeacherPassword("123");
-        joinTeacherDTO.setTeacherEmail("ghdtpgh8913@gmail.com");
-        joinTeacherDTO.setTeacherName("김교사");
+        joinTeacherDTO.setPassword("123");
+        joinTeacherDTO.setEmail("ghdtpgh8913@gmail.com");
+        joinTeacherDTO.setName("김교사");
 
         //When
         joinService.joinTeacher(joinTeacherDTO);
@@ -58,9 +58,9 @@ class JoinServiceTest {
         //given
         JoinTeacherDTO joinTeacherDTO = new JoinTeacherDTO();
         joinTeacherDTO.setTeacherId("teacher");
-        joinTeacherDTO.setTeacherPassword("123");
-        joinTeacherDTO.setTeacherEmail("ghdtpgh8913@gmail.com");
-        joinTeacherDTO.setTeacherName("김교사");
+        joinTeacherDTO.setPassword("123");
+        joinTeacherDTO.setEmail("ghdtpgh8913@gmail.com");
+        joinTeacherDTO.setName("김교사");
 
         //when
         joinService.joinTeacher(joinTeacherDTO);
@@ -73,17 +73,25 @@ class JoinServiceTest {
     @Test
     @DisplayName("교사 로그인")
     void loginTeacher() {
-        //Given
-        LoginDTO loginDTO = new LoginDTO();
-        loginDTO.setId("testTeacher");
-        loginDTO.setPassword("123");
 
+        //Given
+        JoinTeacherDTO joinTeacherDTO = new JoinTeacherDTO();
+        joinTeacherDTO.setTeacherId("teacher");
+        joinTeacherDTO.setPassword("123");
+        joinTeacherDTO.setEmail("ghdtpgh8913@gmail.com");
+        joinTeacherDTO.setName("김교사");
+        joinService.joinTeacher(joinTeacherDTO);
+
+
+        LoginDTO loginDTO = new LoginDTO();
+        loginDTO.setTeacherId("teacher");
+        loginDTO.setPassword("123");
 
         //when
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginDTO.getId(), loginDTO.getPassword()));
+                new UsernamePasswordAuthenticationToken(loginDTO.getTeacherId(), loginDTO.getPassword()));
 
         //then
-        assertEquals("testTeacher", authentication.getName());
+        assertEquals("teacher", authentication.getName());
     }
 }

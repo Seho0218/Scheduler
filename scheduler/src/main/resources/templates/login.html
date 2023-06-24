@@ -29,10 +29,6 @@
             display: flex;
             justify-content: center;
         }
-        .field-error {
-            border-color: #dc3545;
-            color: #dc3545;
-        }
 
     </style>
 </head>
@@ -51,7 +47,7 @@
                 <h1> 교사 로그인 </h1>
                 <label for="teacherId"></label>
                 <input class="form-control" id="teacherId" placeholder="아이디를 입력해주세요"
-                       th:errorclass="field-error" th:field="*{id}"
+                       th:errorclass="field-error" th:field="*{teacherId}"
                        type="text">
 
                 <label for="teacherPassword"></label>
@@ -59,8 +55,8 @@
                        th:errorclass="field-error" th:field="*{password}"
                        type="password">
 
-                <div class="error-message" th:if="${loginError}">
-                    <p th:text="${loginError}"></p>
+                <div class="error-message" th:if="${errorMessage}">
+                    <p th:text="${errorMessage}"></p>
                 </div>
                 <br>
 
@@ -70,7 +66,7 @@
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="/cert/findId">아이디 찾기</a></li>
-                            <li class="breadcrumb-item"><a href="#">비밀번호 찾기</a></li>
+                            <li class="breadcrumb-item"><a href="/cert/findPassword">비밀번호 찾기</a></li>
                             <li class="breadcrumb-item"><a href="/join/teacher">회원가입</a></li>
                         </ol>
                     </nav>

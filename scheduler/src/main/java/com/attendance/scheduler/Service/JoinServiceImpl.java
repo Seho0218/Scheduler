@@ -20,8 +20,8 @@ public class JoinServiceImpl implements JoinService {
 
     @Override
     public void joinTeacher(JoinTeacherDTO joinTeacherDTO) {
-        String encode = passwordEncoder.encode(joinTeacherDTO.getTeacherPassword());
-        joinTeacherDTO.setTeacherPassword(encode);
+        String encode = passwordEncoder.encode(joinTeacherDTO.getPassword());
+        joinTeacherDTO.setPassword(encode);
         teacherRepository.save(joinTeacherDTO.toEntity());
     }
 

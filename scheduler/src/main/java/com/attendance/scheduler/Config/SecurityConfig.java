@@ -21,6 +21,9 @@ import java.util.Collection;
 @EnableWebSecurity
 public class SecurityConfig{
 
+	@Autowired
+	private CustomAuthenticationFailureHandler authenticationFailureHandler;
+
 	public static final String[] ENDPOINTS_WHITELIST = {
 //			"/", "/submit", "/completion", // 제출 완료 페이지
 //			"/search/**", // 조회 및 수정
@@ -29,33 +32,32 @@ public class SecurityConfig{
 //			"/css/*" // css
 			"/**"
 	};
-	@Autowired
-	private CustomAuthenticationFailureHandler authenticationFailureHandler;
+
+
 	public static final String DEFAULT_URL ="/";
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		http.
-			httpBasic().disable()
+		http
+			.httpBasic().disable()
 			.csrf().disable()
-				.authorizeHttpRequests(request -> request
-					.requestMatchers(ENDPOINTS_WHITELIST).permitAll()
-					.requestMatchers("/manage/*").hasRole("TEACHER")
-					.anyRequest().authenticated())
+			.authorizeHttpRequests(request -> request
+				.requestMatchers(ENDPOINTS_WHITELIST).permitAll()
+				.requestMatchers("/manage/*").hasRole("TEACHER")
+				.anyRequest().authenticated())
 
-				.formLogin(form -> form
-						.loginPage(DEFAULT_URL) // 인증 필요한 페이지 접근시 이동페이지
-						.loginProcessingUrl("/login/Login")
-						.defaultSuccessUrl("/manage/class")
-						.usernameParameter("id")
-						.failureHandler(authenticationFailureHandler)
-				)
+			.formLogin(form -> form
+				.loginPage(DEFAULT_URL) // 인증 필요한 페이지 접근시 이동페이지
+				.loginProcessingUrl("/login/Login")
+				.usernameParameter("teacherId")
+				.defaultSuccessUrl("/manage/class")
+				.failureHandler(authenticationFailureHandler))
 
-				.logout(logout -> logout
-						.logoutUrl("/logout")
-						.invalidateHttpSession(true)
-						.deleteCookies("JSESSIONID")
-						.logoutSuccessUrl("/"));
+			.logout(logout -> logout
+				.logoutUrl("/logout")
+				.invalidateHttpSession(true)
+				.deleteCookies("JSESSIONID")
+				.logoutSuccessUrl("/"));
 		return http.build();
 	}
 

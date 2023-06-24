@@ -16,13 +16,13 @@ public class JoinTeacherDTO {
     private String teacherId;
 
     @NotEmpty(message = "비밀번호를 입력해 주세요")
-    private String teacherPassword;
+    private String password;
 
     @NotEmpty(message = "이름을 입력해 주세요")
-    private String teacherName;
+    private String name;
 
     @NotEmpty(message = "이메일을 입력해 주세요")
-    private String teacherEmail;
+    private String email;
 
     private boolean approved;
 
@@ -33,9 +33,9 @@ public class JoinTeacherDTO {
     public TeacherEntity toEntity(){
         return TeacherEntity.builder()
                 .teacherId(teacherId)
-                .teacherName(teacherName)
-                .teacherPassword(teacherPassword)
-                .teacherEmail(teacherEmail)
+                .password(password)
+                .email(email)
+                .name(name)
                 .approved(approved)
                 .build();
     }

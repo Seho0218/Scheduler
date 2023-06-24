@@ -35,7 +35,7 @@
 </head>
 <body>
 <div class="container">
-    <form method='post' role="form" th:action="@{/cert/sendUserId}" th:object="${account}">
+    <form method='post' role="form" th:action="@{/cert/FindPwd_auth}" th:object="${account}">
         <div class="py-2">
             <div class="header">
                 <br><br>
@@ -46,14 +46,21 @@
         <div class="py-2">
             <div class="board rounded-3 border border-2">
 
-                <h1> 아이디 찾기 </h1>
+                <h1> 비밀번호 찾기 </h1>
 
                 <label for="email"></label>
                 <input class="form-control" id="email" placeholder="이메일을 입력해주세요"
                        th:errorclass="field-error" th:field="*{email}"
-                       type="email">
-                <div class="field-error" th:errors="*{email}"></div>
-                <div class="field-error" th:text="${errorMessage}"></div>
+                       type="text">
+
+                <label for="teacherId"></label>
+                <input class="form-control" id="teacherId" placeholder="아이디를 입력해 주세요"
+                       th:errorclass="field-error" th:field="*{teacherId}"
+                       type="password">
+
+                <div class="error-message" th:if="${loginError}">
+                    <p th:text="${loginError}"></p>
+                </div>
                 <br>
 
                 <div class="text-end">

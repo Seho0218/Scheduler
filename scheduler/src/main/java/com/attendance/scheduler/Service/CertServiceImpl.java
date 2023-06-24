@@ -1,12 +1,12 @@
 package com.attendance.scheduler.Service;
 
 import com.attendance.scheduler.Dto.Teacher.FindIdDTO;
+import com.attendance.scheduler.Dto.Teacher.FindPasswordDTO;
 import com.attendance.scheduler.Entity.TeacherEntity;
 import com.attendance.scheduler.Repository.jpa.TeacherRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,8 +17,6 @@ public class CertServiceImpl implements CertService {
 
 	private final JavaMailSender mailSender;
 
-	private final PasswordEncoder passwordEncoder;
-
 	private final TeacherRepository teacherRepository;
 
 
@@ -26,7 +24,7 @@ public class CertServiceImpl implements CertService {
 	public String findIdByEmail(FindIdDTO findIdDTO) {
 
 		TeacherEntity byTeacherIdIs
-				= teacherRepository.findByTeacherEmail(findIdDTO.getEmail());
+				= teacherRepository.findByEmailIs(findIdDTO.getEmail());
 
 		if(byTeacherIdIs==null){
 			return null;
@@ -54,6 +52,20 @@ public class CertServiceImpl implements CertService {
 		}
 	}
 
+	@Override
+	public boolean idConfirmation(FindPasswordDTO findPasswordDTO) {
+		TeacherEntity byTeacherIdIs
+				= teacherRepository.findByTeacherIdIs(findPasswordDTO.getTeacherId());
+		return byTeacherIdIs != null;
+	}
+
+	@Override
+	public boolean emailConfirmation(FindPasswordDTO findPasswordDTO) {
+		TeacherEntity byTeacherIdIs
+				= teacherRepository.findByEmailIs(findPasswordDTO.getEmail());
+		return byTeacherIdIs != null;
+	}
+
 //	@Override
 //	public void PwdEdit(AdminCertDTO adminCertDTO) {
 //
@@ -65,22 +77,6 @@ public class CertServiceImpl implements CertService {
 //
 //		adminRepository.save(adminDTO.toEntity());
 //    }
-
-//////////////////////////////////////////////////////////////////////
-
-//	//아이디 중복 체크
-//	@Override
-//	public int overlapCheck(AdminCertDTO adminCertDTO) {
-//		return adminRepository.countByAdminIdIs(adminCertDTO.getAdminId());
-//	}
-//
-//	@Override
-//	public boolean emailCheck(AdminCertDTO adminCertDTO) {
-//		String adminId = adminCertDTO.getAdminId();
-//		String adminEmail = adminCertDTO.getAdminEmail();
-//		String result = adminRepository.checkUserExists(adminId, adminEmail);
-//		return "1".equals(result);
-//	}
 
 	@Override
 	public void sendAuthNum(String userEmail, String authNum) {

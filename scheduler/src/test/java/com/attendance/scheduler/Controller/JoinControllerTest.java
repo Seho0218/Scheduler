@@ -38,16 +38,16 @@ class JoinControllerTest {
          */
         JoinTeacherDTO joinTeacherDTO = new JoinTeacherDTO();
         joinTeacherDTO.setTeacherId("teacher");
-        joinTeacherDTO.setTeacherPassword("123");
-        joinTeacherDTO.setTeacherEmail("ghdtpgh8913@gmail.com");
-        joinTeacherDTO.setTeacherName("김교사");
+        joinTeacherDTO.setPassword("123");
+        joinTeacherDTO.setEmail("ghdtpgh8913@gmail.com");
+        joinTeacherDTO.setEmail("김교사");
         joinTeacherDTO.setApproved(true);
 
         /*
             로그인
          */
         LoginDTO loginDTO = new LoginDTO();
-        loginDTO.setId("teacher");
+        loginDTO.setTeacherId("teacher");
         loginDTO.setPassword("123");
 
 
@@ -62,7 +62,7 @@ class JoinControllerTest {
         }
 
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginDTO.getId(), loginDTO.getPassword()));
+                new UsernamePasswordAuthenticationToken(loginDTO.getTeacherId(), loginDTO.getPassword()));
         assertEquals("teacher", authentication.getName());
     }
 }

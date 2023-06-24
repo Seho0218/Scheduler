@@ -12,11 +12,11 @@ public class TeacherDTO {
 
     private String teacherId;
 
-    private String teacherPassword;
+    private String password;
 
-    private String teacherName;
+    private String name;
 
-    private String teacherEmail;
+    private String email;
 
     private String role;
 

@@ -1,5 +1,6 @@
 package com.attendance.scheduler.Controller;
 
+import com.attendance.scheduler.Config.CustomAuthenticationFailureHandler;
 import com.attendance.scheduler.Dto.LoginDTO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,7 +13,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,7 +28,7 @@ import java.io.IOException;
 public class LoginController {
 
     private final AuthenticationManager authenticationManager;
-    private final AuthenticationFailureHandler authenticationFailureHandler;
+    private final CustomAuthenticationFailureHandler authenticationFailureHandler;
 
     //교사 로그인 폼
     @GetMapping("")
@@ -43,12 +43,16 @@ public class LoginController {
                                Model model) throws ServletException, IOException {
         try {
             Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(loginDTO.getId(), loginDTO.getPassword()));
+                    new UsernamePasswordAuthenticationToken(loginDTO.getTeacherId(), loginDTO.getPassword()));
             SecurityContextHolder.getContext().setAuthentication(authentication);
             return "redirect:/manage/class"; // 절대경로
         } catch (AuthenticationException e) {
+
             authenticationFailureHandler.onAuthenticationFailure(request, response, e);
-            return "/login";
+            String errorMessage = (String) request.getAttribute("errorMessage");
+            model.addAttribute("errorMessage", errorMessage);
+            System.out.println("errorMessage = " + errorMessage);
+            return "login";
         }
     }
 
@@ -62,6 +66,6 @@ public class LoginController {
     @GetMapping("logout")
     public String logout(HttpSession session) {
         session.invalidate();
-        return "redirect:index";
+        return "redirect:/index";
     }
 }
