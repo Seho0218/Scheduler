@@ -50,7 +50,7 @@ public class JoinController {
         try {
             joinService.joinTeacher(joinTeacherDTO);
             model.addAttribute("login", new JoinTeacherDTO());
-            return "redirect:login";
+            return "redirect:/login";
         } catch (Exception e) {
             e.printStackTrace();
             return "join";

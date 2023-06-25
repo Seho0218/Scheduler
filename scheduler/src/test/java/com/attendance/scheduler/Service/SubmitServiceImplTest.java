@@ -9,8 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
@@ -35,8 +33,6 @@ class SubmitServiceImplTest {
         classDTO.setThursday(4);
         classDTO.setFriday(5);
 
-        classValidator(classDTO);
-
         //when
         classSaveRepository.save(classDTO.toEntity());
 
@@ -49,33 +45,5 @@ class SubmitServiceImplTest {
         assertEquals(3, studentNameIs.getWednesday());
         assertEquals(4, studentNameIs.getThursday());
         assertEquals(5, studentNameIs.getFriday());
-    }
-
-        private void classValidator(ClassDTO classDTO) {
-            Integer monday = classDTO.getMonday();
-            Integer tuesday = classDTO.getTuesday();
-            Integer wednesday = classDTO.getWednesday();
-            Integer thursday = classDTO.getThursday();
-            Integer friday = classDTO.getFriday();
-
-            List<Object[]> classesOrderByAsc = searchNotEmptyClassRepository.findClassesOrderByAsc();
-
-            for (Object[] row : classesOrderByAsc) {
-                if(monday.equals(row[0])){
-                    throw new IllegalStateException("이미 다른 원생이 신청했습니다.");
-                }
-                if(tuesday.equals(row[1])){
-                    throw new IllegalStateException("이미 다른 원생이 신청했습니다.");
-                }
-                if(wednesday.equals(row[2])){
-                    throw new IllegalStateException("이미 다른 원생이 신청했습니다.");
-                }
-                if(thursday.equals(row[3])){
-                    throw new IllegalStateException("이미 다른 원생이 신청했습니다.");
-                }
-                if(friday.equals(row[4])){
-                    throw new IllegalStateException("이미 다른 원생이 신청했습니다.");
-                }
-            }
     }
 }

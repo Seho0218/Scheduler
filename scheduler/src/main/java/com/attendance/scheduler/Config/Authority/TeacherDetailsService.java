@@ -22,6 +22,6 @@ public class TeacherDetailsService implements UserDetailsService {
         if(byTeacherIdIs != null){
             return new TeacherDetails(byTeacherIdIs);
         }
-        throw new UsernameNotFoundException("User not found with username");
+        return null;
     }
 }

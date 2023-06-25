@@ -29,6 +29,7 @@ public class SecurityConfig{
 //			"/search/**", // 조회 및 수정
 //			"/join/**",
 //			"/login/**",
+//			"/cert/**",
 //			"/css/*" // css
 			"/**"
 	};

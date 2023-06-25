@@ -1,9 +1,6 @@
 package com.attendance.scheduler.Entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,7 +28,10 @@ public class TeacherEntity {
 
     private String email;
 
-    @Column(columnDefinition = "boolean default '0'")
+    @Transient
+    private String role;
+
+    @Column(columnDefinition = "boolean default '1'")
     private boolean approved;
 
     @Builder

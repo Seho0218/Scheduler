@@ -20,7 +20,7 @@ import java.util.List;
 
 @Slf4j
 @Controller
-@RequestMapping("/search")
+@RequestMapping("/search/*")
 @RequiredArgsConstructor
 public class SearchClassController {
 
@@ -31,7 +31,7 @@ public class SearchClassController {
     @GetMapping("")
     public String searchClass(Model model) {
         model.addAttribute("studentClass", new StudentClassDTO());
-        return "/class/search";
+        return "class/search";
     }
 
     //   수업 조회
@@ -44,13 +44,13 @@ public class SearchClassController {
 
         if (bindingResult.hasErrors()) {
             log.info("errors={}", bindingResult);
-            return "/class/search";
+            return "class/search";
         }
 
         if (studentClassesList == null) {
             String errorMessage = "등록된 이름이 없습니다.";
             model.addAttribute("nullStudentName", errorMessage);
-            return "/class/search";
+            return "class/search";
         }
 
         ClassListDTO classesOrderByAsc = searchClassService.findClassesOrderByAsc();
@@ -82,7 +82,7 @@ public class SearchClassController {
         model.addAttribute("studentClass", new StudentClassDTO());
         model.addAttribute("studentClassList", studentClassesList);
 
-        return "/class/findClass";
+        return "class/findClass";
     }
 
     //제출
@@ -101,7 +101,7 @@ public class SearchClassController {
             return "redirect:/completion";
         }catch (Exception e){
             getClassList(model);
-            return "redirect:/index";
+            return "index";
         }
     }
 
@@ -113,7 +113,7 @@ public class SearchClassController {
         log.info("studentInfo={}", classDTO.getStudentName());
         if (bindingResult.hasErrors()) {
             log.info("errors={}", bindingResult);
-            return "/class/findClass";
+            return "class/findClass";
         }
         try{
             submitService.saveClassTable(classDTO);
@@ -121,7 +121,7 @@ public class SearchClassController {
 
         }catch(Exception e){
             model.addAttribute("errorMessage", e.getMessage());
-            return "/class/findClass";
+            return "class/findClass";
         }
     }
 

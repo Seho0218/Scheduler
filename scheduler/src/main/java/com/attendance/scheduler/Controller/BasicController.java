@@ -18,7 +18,7 @@ public class BasicController {
 
     private final SearchClassService searchClassService;
 
-    @GetMapping("/")
+    @GetMapping("")
     public String basic(Model model){
 
         getClassList(model);
@@ -29,7 +29,7 @@ public class BasicController {
 //  제출 완료 폼
     @GetMapping("completion")
     public String completeForm() {
-        return "/class/completion";
+        return "class/completion";
     }
 
     private void getClassList(Model model) {

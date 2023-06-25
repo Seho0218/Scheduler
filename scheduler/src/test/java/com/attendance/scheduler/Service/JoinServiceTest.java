@@ -80,6 +80,7 @@ class JoinServiceTest {
         joinTeacherDTO.setPassword("123");
         joinTeacherDTO.setEmail("ghdtpgh8913@gmail.com");
         joinTeacherDTO.setName("김교사");
+        joinTeacherDTO.setApproved(true);
         joinService.joinTeacher(joinTeacherDTO);
 
 

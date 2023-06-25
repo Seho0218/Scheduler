@@ -3,6 +3,7 @@ package com.attendance.scheduler.Service;
 import com.attendance.scheduler.Dto.Admin.AdminCertDTO;
 import com.attendance.scheduler.Entity.AdminEntity;
 import com.attendance.scheduler.Repository.jpa.AdminRepository;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
+@Transactional
 class CertServiceImplTest {
 
     @Autowired

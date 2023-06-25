@@ -11,11 +11,8 @@ public interface CertService {
     boolean idConfirmation(FindPasswordDTO findPasswordDTO);
     boolean emailConfirmation(FindPasswordDTO findPasswordDTO);
 
-//    void PwdEdit(AdminCertDTO adminCertDTO);
-//
-//    int overlapCheck(AdminCertDTO adminCertDTO);
-//    boolean emailCheck(AdminCertDTO adminCertDTO);
     void sendAuthNum(String userEmail, String authNum);
+    //    void PwdEdit(AdminCertDTO adminCertDTO);
 
 }
  

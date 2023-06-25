@@ -30,12 +30,15 @@
             border-color: #dc3545;
             color: #dc3545;
         }
+        .error-message{
+            color: #dc3545;
+        }
 
     </style>
 </head>
 <body>
 <div class="container">
-    <form method='post' role="form" th:action="@{/cert/FindPwd_auth}" th:object="${account}">
+    <form method='post' role="form" th:action="@{/cert/findPwd}" th:object="${account}">
         <div class="py-2">
             <div class="header">
                 <br><br>
@@ -45,21 +48,22 @@
         <!--학생 이름-->
         <div class="py-2">
             <div class="board rounded-3 border border-2">
-
                 <h1> 비밀번호 찾기 </h1>
-
                 <label for="email"></label>
                 <input class="form-control" id="email" placeholder="이메일을 입력해주세요"
                        th:errorclass="field-error" th:field="*{email}"
                        type="text">
+                <div class="field-error" th:errors="*{email}"></div>
 
                 <label for="teacherId"></label>
                 <input class="form-control" id="teacherId" placeholder="아이디를 입력해 주세요"
                        th:errorclass="field-error" th:field="*{teacherId}"
-                       type="password">
+                       type="text">
+                <div class="field-error" th:errors="*{teacherId}"></div>
 
-                <div class="error-message" th:if="${loginError}">
-                    <p th:text="${loginError}"></p>
+
+                <div class="error-message" th:if="${errorMessage}">
+                    <p th:text="${errorMessage}"></p>
                 </div>
                 <br>
 

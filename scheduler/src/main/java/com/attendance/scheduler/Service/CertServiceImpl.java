@@ -66,18 +66,6 @@ public class CertServiceImpl implements CertService {
 		return byTeacherIdIs != null;
 	}
 
-//	@Override
-//	public void PwdEdit(AdminCertDTO adminCertDTO) {
-//
-//		AdminDTO adminDTO = AdminDTO.getInstance();
-//		String enPw=passwordEncoder.encode(adminCertDTO.getChangedPwd());
-//
-//		adminDTO.setAdminId(adminDTO.getAdminId());
-//		adminDTO.setAdminPassword(enPw);
-//
-//		adminRepository.save(adminDTO.toEntity());
-//    }
-
 	@Override
 	public void sendAuthNum(String userEmail, String authNum) {
 		SimpleMailMessage simpleMailMessage = new  SimpleMailMessage();
