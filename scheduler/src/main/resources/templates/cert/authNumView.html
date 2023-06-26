@@ -38,7 +38,7 @@
 </head>
 <body>
 <div class="container">
-    <form method='post' role="form" th:action="@{/cert/authNum}" th:object="${account}">
+    <form method='post' role="form" th:action="@{/cert/authNumCheck}" th:object="${auth}">
         <div class="py-2">
             <div class="header">
                 <br><br>
@@ -49,27 +49,23 @@
         <div class="py-2">
             <div class="board rounded-3 border border-2">
                 <h1> 비밀번호 찾기 </h1>
-                <label for="email"></label>
-                <input class="form-control" id="email" placeholder="이메일을 입력해주세요"
-                       th:errorclass="field-error" th:field="*{email}"
-                       type="text">
-                <div class="field-error" th:errors="*{email}"></div>
-
                 <label for="teacherId"></label>
-                <input class="form-control" id="teacherId" placeholder="아이디를 입력해 주세요"
-                       th:errorclass="field-error" th:field="*{teacherId}"
+                <input id="teacherId"
+                       name="teacherId" th:type="hidden"
+                       th:value="${teacherId.getTeacherId()}"/>
+
+                <label for="authNum"></label>
+                <input class="form-control" id="authNum" placeholder="인증번호를 입력해 주세요"
+                       th:errorclass="field-error" th:field="*{authNum}"
                        type="text">
-                <div class="field-error" th:errors="*{teacherId}"></div>
-
-
+                <div class="field-error" th:errors="*{authNum}"></div>
                 <div class="error-message" th:if="${errorMessage}">
                     <p th:text="${errorMessage}"></p>
-                </div>
-                <br>
+                </div><br>
 
                 <div class="text-end">
                     <button class="btn btn-primary" type="submit">
-                        비밀번호 찾기
+                        제출
                     </button>
                 </div>
                 <br>

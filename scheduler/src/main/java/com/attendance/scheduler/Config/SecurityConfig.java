@@ -25,13 +25,13 @@ public class SecurityConfig{
 	private CustomAuthenticationFailureHandler authenticationFailureHandler;
 
 	public static final String[] ENDPOINTS_WHITELIST = {
-//			"/", "/submit", "/completion", // 제출 완료 페이지
-//			"/search/**", // 조회 및 수정
-//			"/join/**",
-//			"/login/**",
-//			"/cert/**",
-//			"/css/*" // css
-			"/**"
+			"/", "/submit", "/completion", // 제출 완료 페이지
+			"/search/**", // 조회 및 수정
+			"/join/**",
+			"/login/**",
+			"/cert/**",
+			"/css/*" // css
+//			"/**"
 	};
 
 

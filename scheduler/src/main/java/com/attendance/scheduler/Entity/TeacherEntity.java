@@ -43,4 +43,8 @@ public class TeacherEntity {
         this.email = email;
         this.approved = approved;
     }
+
+    public void updatePassword(String newPassword) {
+        this.password = newPassword;
+    }
 }

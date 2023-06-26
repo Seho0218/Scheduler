@@ -1,13 +1,10 @@
 package com.attendance.scheduler.Controller;
 
-import com.attendance.scheduler.Dto.Teacher.FindIdDTO;
-import com.attendance.scheduler.Dto.Teacher.FindPasswordDTO;
-import com.attendance.scheduler.Dto.Teacher.TeacherDTO;
+import com.attendance.scheduler.Dto.Teacher.*;
 import com.attendance.scheduler.Service.CertService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,10 +14,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.HashMap;
+import java.time.LocalDateTime;
 import java.util.Map;
-
-import static org.springframework.http.HttpStatus.OK;
 
 @Slf4j
 @Controller
@@ -60,20 +55,18 @@ public class CertController {
         log.info("email={}", idByEmail);
 
         if (idByEmail == null) {
-            model.addAttribute("errorMessage", emailErrorMessage);
             model.addAttribute("account", new FindIdDTO());
+            model.addAttribute("errorMessage", emailErrorMessage);
             return "cert/findId";
         }
 
-        FindIdDTO findIdDTOs = new FindIdDTO();
-        String email = findIdDTO.getEmail();
-        findIdDTOs.setId(idByEmail);
-        findIdDTOs.setEmail(email);
+        try {
+            certService.sendUserId(findIdDTO);
+        } catch (Exception e) {
+            log.info("send Id error = {}", e.getMessage());
+        }
 
-        String sendUserIdMessage = certService.sendUserId(findIdDTOs);
-        model.addAttribute("sendUserIdMessage", sendUserIdMessage);
-
-        return "cert/findId";
+        return "cert/idCompletion";
     }
 
 /*
@@ -110,91 +103,79 @@ public class CertController {
             model.addAttribute("account", new TeacherDTO());
             return "cert/FindPwd";
         }
-        return "cert/FindPwd_auth";
+        return "cert/authNumView";
+//        return "redirect:/cert/authNumView";
     }
 
     /*
-    * SetTeacher Temporarily AuthNum
-    * */
+     * Set and Send teacher AuthNum
+     * */
     @PostMapping("authNum")
-    private ResponseEntity<String> authNum(FindPasswordDTO findPasswordDTO, HttpSession session){
-
-        String email = findPasswordDTO.getEmail();
-
-        StringBuilder authNum = new StringBuilder();
-        for(int i=0;i<6;i++) {
-            authNum.append((int) (Math.random() * 10));
+    private String authNum(FindPasswordDTO findPasswordDTO, Model model, HttpSession session){
+        log.info("findPasswordDTO={}", findPasswordDTO);
+        try {
+            model.addAttribute("auth", new CertDTO());
+            model.addAttribute("teacherId", findPasswordDTO);
+            certService.setupAuthNum(findPasswordDTO, session);
+            return "cert/authNumView";
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return "cert/findPwd";
         }
-
-        log.info("인증번호={}", authNum);
-        log.info("이메일={} ", email);
-
-        certService.sendAuthNum(email, authNum.toString());
-
-        Map<String, Object> authNumMap = new HashMap<>();
-
-        long createTime = System.currentTimeMillis();
-        long endTime = createTime + (300 *1000);
-
-        authNumMap.put("createTime", createTime);
-        authNumMap.put("endTime", endTime);
-        authNumMap.put("authNum", authNum.toString());
-
-        session.setMaxInactiveInterval(300);
-        session.setAttribute("authNum", authNumMap);
-
-        return new ResponseEntity<>("인증번호가 전송되었습니다", OK);
     }
 
-//    // 인증번호가 맞는지 확인
-//    @PostMapping("authNumCheck")
-//    private ResponseEntity<String> authNumCheck(String authNum, HttpSession session){
-//
-//        Map<String, Object> sessionAuthNumMap = (Map<String, Object>) session.getAttribute("authNum");
-//        String msg;
-//
-//        if(sessionAuthNumMap == null) {
-//            msg = "인증번호를 전송해주세요";
-//            return new ResponseEntity<>(msg, BAD_REQUEST);
-//        }
-//
-//        // 인증번호 만료시간
-//        long endTime = (long) sessionAuthNumMap.get("endTime");
-//
-//        // 현재시간이 만료시간이 지났다면
-//        if(System.currentTimeMillis() > endTime) {
-//            msg = "인증시간이 만료되었습니다";
-//            session.setAttribute(authNum, null);
-//            session.setMaxInactiveInterval(0);
-//            return new ResponseEntity<>(msg, BAD_REQUEST);
-//        }
-//
-//        // 인증번호
-//        String sessionAuthNum = (String) sessionAuthNumMap.get("authNum");
-//        if(!authNum.equals(sessionAuthNum)) {
-//            msg = "인증번호가 일치하지 않습니다";
-//            return new ResponseEntity<>(msg, BAD_REQUEST);
-//        } else {
-//            // 인증번호가 일치하면
-//            return new ResponseEntity<>(OK);
-//        }
-//    }
-//
-//    // 인증 완료 후
-//    @PostMapping("authCOM")
-//    public ResponseEntity<String> authCompletion(HttpSession session) {
-//        Map<String, Object> authStatus = (Map<String, Object>) session.getAttribute("authStatus");
-//        if(authStatus == null) {
-//            return new ResponseEntity<>("인증시간이 만료되었습니다", BAD_REQUEST);
-//        }
-//        authStatus.put("status", true);
-//        return new ResponseEntity<>(OK);
-//    }
+    /*
+     * AuthNum Check
+     * */
+    @PostMapping("authNumCheck")
+    private String authNumCheck(Model model, CertDTO certDTO, HttpSession session) {
+        log.info("CertDTO={}", certDTO);
 
-    //TODO 비밀번호 변경 페이지
+        Map<String, Object> sessionAuthNumMap = (Map<String, Object>) session.getAttribute(certDTO.getTeacherId());
+        String teacherId = certDTO.getTeacherId();
+        String authNum = certDTO.getAuthNum();
+
+        if (sessionAuthNumMap.isEmpty()) {
+            model.addAttribute("auth", new CertDTO());
+            model.addAttribute("teacherId", certDTO);
+            model.addAttribute("errorMessage","인증번호를 전송해주세요");
+            return "cert/authNumView";
+        }
 
 
+        // 현재시간이 만료시간이 지났다면
+        if (LocalDateTime.now().isAfter((LocalDateTime)sessionAuthNumMap.get("endTime"))) {
+            model.addAttribute("auth", new CertDTO());
+            model.addAttribute("errorMessage","인증시간이 만료되었습니다");
+            session.setAttribute(authNum, null);
+            session.setMaxInactiveInterval(0);
+            return "cert/authNumView";
+        }
 
-    //TODO 비밀번호 변경
-
+        // 인증번호
+        String sessionAuthNum = (String) sessionAuthNumMap.get(teacherId);
+        if (!authNum.equals(sessionAuthNum)) {
+            model.addAttribute("auth", new CertDTO());
+            model.addAttribute("teacherId", certDTO);
+            model.addAttribute("errorMessage","인증번호가 일치하지 않습니다");
+            return "cert/authNumView";
+        } else {
+            // 인증번호가 일치하면
+            model.addAttribute("pwdEdit", new PwdEditDTO());
+            model.addAttribute("teacherId", certDTO);
+            return "cert/updatePassword";
+        }
+    }
+    // 인증 완료 후
+    @PostMapping("updatePassword")
+    public String authCompletion(Model model, PwdEditDTO pwdEditDTO) {
+        model.addAttribute("teacherId", pwdEditDTO);
+        try {
+            certService.PwdEdit(pwdEditDTO);
+            return "cert/pwdCompletion";
+        }catch (Exception e) {
+            log.info("send Id error = {}", e.getMessage());
+            return "/";
+        }
+    }
 }
