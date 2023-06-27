@@ -61,6 +61,7 @@ public class CertController {
         }
 
         try {
+            findIdDTO.setId(idByEmail);
             certService.sendUserId(findIdDTO);
         } catch (Exception e) {
             log.info("send Id error = {}", e.getMessage());

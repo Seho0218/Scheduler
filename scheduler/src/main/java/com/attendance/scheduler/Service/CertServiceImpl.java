@@ -116,6 +116,7 @@ public class CertServiceImpl implements CertService {
 	public void sendAuthNum(String userEmail, String authNum) {
 
 		SimpleMailMessage simpleMailMessage = new  SimpleMailMessage();
+		simpleMailMessage.setFrom("ghdtpgh8913@gmail.com");
 		simpleMailMessage.setTo(userEmail);
 		simpleMailMessage.setSubject("비밀번호 찾기 인증번호");
 
