@@ -5,7 +5,9 @@
 # 프로젝트 개요
 
 학생들의 수강 신청을 위한 플랫폼.
+
 Link : http://seho0218.synology.me:3205/
+
 로그인 링크 : http://seho0218.synology.me:3205/login
 
 ## 기본정보
