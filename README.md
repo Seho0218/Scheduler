@@ -31,8 +31,153 @@ Link : http://seho0218.synology.me:3205/
 - SpringSecurity
 - JPA
 - MySQL
+-
+## 프로젝트 구조
+```bash
+프로젝트 루트/
+  ├── scheduler/
+  │   ├── Config/
+  │   │   ├── Authority
+  │   │         └── TeacherDetails.java
+  │   │         └── TeacherDetailsService.java
+  │   │   └── CustomAuthenticationFailureHandler.java
+  │   │   └── SecurityConfig.java
+  │   │
+  │   ├── Controller/
+  │   │   └── BasicController.java
+  │   │   └── CertController.java
+  │   │   └── JoinController.java
+  │   │   └── LoginController.java
+  │   │   └── ManageController.java
+  │   │   └── SearchClassController.java
+  │   │
+  │   ├── Dto/
+  │   │   ├── Admin
+  │   │   │     └── AdminCertDTO.java
+  │   │   │     └── AdminDTO.java
+  │   │   │     └── DeleteClassDTO.java
+  │   │   ├── Teacher
+  │   │   │     └── CertDTO.java
+  │   │   │     └── FindIdDTO.java
+  │   │   │     └── FindPasswordDTO.java
+  │   │   │     └── JoinTeacherDTO.java
+  │   │   │     └── PwdEditDTO.java
+  │   │   │     └── TeacherDTO.java
+  │   │   ├── ClassDTO.java
+  │   │   ├── ClassListDTO.java
+  │   │   ├── LoginDTO.java
+  │   │   └── StudentClassDTO.java
+  │   │
+  │   ├── Entity/
+  │   │   ├── AdminEntity.java
+  │   │   ├── ClassEntity.java
+  │   │   └── TeacherEntity.java
+  │   │
+  │   ├── Mapper/
+  │   │   ├── ClassMapper.java
+  │   │   ├── JoinTeacherMapper.java
+  │   │   ├── LoginTeacherMapper.java
+  │   │   └── StudentClassMapper.java
+  │   │
+  │   ├── Repository/
+  │   │   └── jpa
+  │   │         └── AdminRepository.java
+  │   │         └── ClassSaveRepository.java
+  │   │         └── ClassTableRepository.java
+  │   │         └── SearchNotEmptyClassRepository.java
+  │   │         └── TeacherRepository.java
+  │   │
+  │   └── Service/
+  │       ├── CertService.java
+  │       ├── CertServiceImpl.java
+  │       ├── JoinService.java
+  │       ├── JoinServiceImpl.java
+  │       ├── ManageService.java
+  │       ├── ManageServiceImpl.java
+  │       ├── SearchClassService.java
+  │       ├── SearchClassServiceImpl.java
+  │       ├── SubmitService.java
+  │       └── SubmitServiceImpl.java
+  └── README.md
+  ```
+
+
+**scheduler**: 스케줄러 모듈의 루트 디렉토리입니다.
+
+- **Config**: 스케줄러의 설정과 관련된 클래스들을 포함하는 디렉토리입니다.
+      - **Config**
+    - `CustomAuthenticationFailureHandler.java`: 로그인 했을시 발생하는 오류를 반환하는 클래스입니다.
+    - `SecurityConfig.java`: 스프링 시큐리티를 설정하고 규칙을 정의하는 클래스입니다.
+
+  - **Controller**: 스케줄러와 관련된 API 엔드포인트를 처리하는 컨트롤러 클래스를 포함하는 디렉토리입니다.
+    - `BasicController.java`: 기본 API 엔드포인트를 처리하는 컨트롤러 클래스입니다.
+    - `CertController.java`: 아이디찾기 및 비밀번호찾기 API 엔드포인트를 처리하는 컨트롤러 클래스입니다.
+    - `JoinController.java`: 교사 회원가입 API 엔드포인트를 처리하는 컨트롤러 클래스입니다.
+    - `LoginController.java`: 로그인 API 엔드포인트를 처리하는 컨트롤러 클래스입니다.
+    - `ManageController.java`: 관리 API 엔드포인트를 처리하는 컨트롤러 클래스입니다.
+    - `ManageContrSearchClassControlleroller.java`: 스케줄러 API 엔드포인트를 처리하는 컨트롤러 클래스입니다.
+
+  - **Dto**: 데이터 전송 객체(DTO)를 포함하는 디렉토리입니다.
+    - **Admin**
+      - `AdminCertDTO.java`: 관리자 인증을 위한 DTO 클래스입니다.
+      - `AdminDTO.java`: 관리자 정보를 가진 DTO 클래스입니다.
+      - `DeleteClassDTO.java`: 수업정보 삭제를 위한 DTO 클래스입니다.
+    - **Teacher**
+      - `CertDTO.java`: 임시 인증번호 위한 DTO 클래스입니다.
+      - `FindIdDTO.java`: 아이디를 가진 DTO 클래스입니다.
+      - `FindPasswordDTO.java`: 비밀번호 찾기를 위한 DTO 클래스입니다.
+      - `JoinTeacherDTO.java`: 교사 회원가입을 위한 DTO 클래스입니다.
+      - `PwdEditDTO.java`: 비밀번호 변경을 위한 DTO 클래스입니다.
+      - `TeacherDTO.java`: 교사 정보를 위한 DTO 클래스입니다.
+    - `ClassDTO.java`: 수업 정보를 위한 DTO 클래스입니다.
+    - `ClassListDTO.java`: 수업 리스트를 위한 DTO 클래스입니다.
+    - `LoginDTO.java`: 로그인 데이터 전송을 위한 DTO 클래스입니다.
+    - `StudentClassDTO.java`: 학생 수업 정보를 위한 DTO 클래스입니다.
+
+  - **Entity**: 스케줄 엔티티 클래스를 포함하는 디렉토리입니다.
+    - `AdminEntity.java`: 관리자 정보를 담고 있는 엔티티 클래스입니다.
+    - `ClassEntity.java`: 수업 스케쥴 정보를 담고 있는 엔티티 클래스입니다.
+    - `TeacherEntity.java`: 교사 정보를 담고 있는 엔티티 클래스입니다.
+
+  - **Mapper**: 엔티티와 DTO 간의 매핑을 처리하는 매퍼 클래스를 포함하는 디렉토리입니다.
+    - `ClassMapper.java`: 클래스 엔티티에서 DTO로 가는 매핑을 담당하는 매퍼 클래스입니다.
+    - `JoinTeacherMapper.java`: 클래스 엔티티에서 DTO로 가는 매핑을 담당하는 매퍼 클래스입니다.
+    - `LoginTeacherMapper.java`: 교사 엔티티에서 DTO로 가는 매핑을 담당하는 매퍼 클래스입니다.
+    - `StudentClassMapper.java`: 학생이 신청한 수강목록 엔티티에서 DTO로 가는 매핑을 담당하는 매퍼 클래스입니다.
+
+  - **Repository**: 스케줄 데이터에 접근하기 위한 리포지토리 인터페이스를 포함하는 디렉토리입니다.
+      **jpa**
+      - `AdminRepository.java`: 관리자 데이터를 관리하기 위한 리포지토리 인터페이스입니다.
+      - `ClassSaveRepository.java`: 스케줄 데이터를 관리하기 위한 리포지토리 인터페이스입니다.
+      - `ClassTableRepository.java`: 수업 관리하기 위한 리포지토리 인터페이스입니다.
+      - `SearchNotEmptyClassRepository.java`: 수업 조회 위한 리포지토리 인터페이스입니다.
+      - `TeacherRepository.java`: 교사 데이터를 관리하기 위한 리포지토리 인터페이스입니다.
+
+  - **Service**: 스케줄러 비즈니스 로직을 처리하는 서비스 인터페이스와 구현체를 포함하는 디렉토리입니다.
+    - `CertService.java`: 아이디와 비밀번호 찾기 등의 비즈니스 로직을 담당하는 서비스 인터페이스입니다.
+    - `CertServiceImpl.java`: CertService 인터페이스의 구현체입니다.
+    - `JoinService.java`: 교사 회원가입 비즈니스 로직을 담당하는 서비스 인터페이스입니다.
+    - `JoinServiceImpl.java`: 교사 회원가입 인터페이스의 구현체입니다.
+    - `ManageService.java`: 수업 관련 로직을 담당하는 서비스 인터페이스입니다.
+    - `ManageServiceImpl.java`: 수업 관리 서비스 인터페이스의 구현체입니다.
+    - `SearchClassService.java`: 수업조회 로직을 담당하는 서비스 인터페이스입니다.
+    - `SearchClassServiceImpl.java`: 수업조회 인터페이스의 구현체입니다.
+    - `SubmitService.java`: 수강신청 및 수정 로직을 담당하는 서비스 인터페이스입니다.
+    - `SubmitServiceImpl.java`: 수강신청 및 수정 인터페이스의 구현체입니다.
+
+- **README.md**: 프로젝트에 대한 설명과 사용 방법을 기술한 마크다운 파일입니다.
+
 
 ## 스크린샷
+
+![스크린샷 2023-06-27 오후 5.35.06.png](..%2F..%2F..%2F..%2F..%2Fvar%2Ffolders%2Fgf%2F0d1bhn4s2tv37q3sqhvj9t_w0000gn%2FT%2FTemporaryItems%2FNSIRD_screencaptureui_VZZyTd%2F%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202023-06-27%20%EC%98%A4%ED%9B%84%205.35.06.png)
+![스크린샷 2023-06-27 오후 5.34.35.png](..%2F..%2F..%2F..%2F..%2Fvar%2Ffolders%2Fgf%2F0d1bhn4s2tv37q3sqhvj9t_w0000gn%2FT%2FTemporaryItems%2FNSIRD_screencaptureui_52GncK%2F%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202023-06-27%20%EC%98%A4%ED%9B%84%205.34.35.png)
+![스크린샷 2023-06-27 오후 5.35.24.png](..%2F..%2F..%2F..%2F..%2Fvar%2Ffolders%2Fgf%2F0d1bhn4s2tv37q3sqhvj9t_w0000gn%2FT%2FTemporaryItems%2FNSIRD_screencaptureui_Nu3LQU%2F%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202023-06-27%20%EC%98%A4%ED%9B%84%205.35.24.png)
+
+## 개선여지 및 추가적으로 진행해야할 부분
+ - 관리자 account 생성 및 부여
+ - JWT Token
+ - 코드 간의 응집력 높이기
 
 ## 개발 기록
 
