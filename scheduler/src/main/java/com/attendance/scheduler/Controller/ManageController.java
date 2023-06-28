@@ -1,7 +1,7 @@
 package com.attendance.scheduler.Controller;
 
-import com.attendance.scheduler.Dto.Admin.DeleteClassDTO;
 import com.attendance.scheduler.Dto.ClassDTO;
+import com.attendance.scheduler.Dto.Teacher.DeleteClassDTO;
 import com.attendance.scheduler.Service.ManageService;
 import com.attendance.scheduler.Service.SearchClassService;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ import java.util.List;
 
 @Slf4j
 @Controller
-@RequestMapping("/manage/*")
+@RequestMapping("/manage/")
 @RequiredArgsConstructor
 public class ManageController {
 

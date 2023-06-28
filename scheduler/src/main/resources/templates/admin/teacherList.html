@@ -1,0 +1,58 @@
+<!DOCTYPE HTML>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title>Scheduler</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <style>
+
+        body { background-color: lightgoldenrodyellow; }
+
+        h1, h2, h5{
+            text-align: center;
+        }
+
+        .text-end{
+            padding: 1em;
+        }
+
+        .board {
+            padding: 1em;
+            margin: 1em;
+            background-color: white;
+        }
+        .board p, .monday p, .tuesday p, .wednesday p, .thursday p, .friday p {
+            text-align: center;
+        }
+
+        .form-check-label input {
+            margin-right: 10px;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <form method='post' role="form" th:action="@{/search/submit}" th:object="${}">
+        <div class="py-2">
+            <div class="header">
+
+
+            </div>
+        </div>
+        <!--학생 이름-->
+        <div class="py-2">
+            <div class="board rounded-3 border border-2">
+
+            </div>
+        </div>
+        <!--요일-->
+        <div class="text-end">
+            <button class="btn btn-primary" type="submit">제출하기</button><br><br><br>
+        </div>
+
+    </form>
+</div><!-- container-->
+</body>
+</html>

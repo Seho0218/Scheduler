@@ -19,7 +19,7 @@ import java.util.Map;
 
 @Slf4j
 @Controller
-@RequestMapping("/cert/*")
+@RequestMapping("/cert/")
 @RequiredArgsConstructor
 public class CertController {
 
@@ -176,7 +176,7 @@ public class CertController {
             return "cert/pwdCompletion";
         }catch (Exception e) {
             log.info("send Id error = {}", e.getMessage());
-            return "/";
+            return "index";
         }
     }
 }

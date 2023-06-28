@@ -20,7 +20,7 @@ import java.util.List;
 
 @Slf4j
 @Controller
-@RequestMapping("/search/*")
+@RequestMapping("/search/")
 @RequiredArgsConstructor
 public class SearchClassController {
 

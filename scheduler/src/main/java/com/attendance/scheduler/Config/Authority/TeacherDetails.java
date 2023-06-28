@@ -14,7 +14,6 @@ public class TeacherDetails implements UserDetails {
 
     private final TeacherEntity teacherEntity;
 
-    @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> collection = new ArrayList<>();
         collection.add(new SimpleGrantedAuthority("ROLE_TEACHER"));

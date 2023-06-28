@@ -1,6 +1,6 @@
 package com.attendance.scheduler.Service;
 
-import com.attendance.scheduler.Dto.Admin.DeleteClassDTO;
+import com.attendance.scheduler.Dto.Teacher.DeleteClassDTO;
 import com.attendance.scheduler.Repository.jpa.ClassTableRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

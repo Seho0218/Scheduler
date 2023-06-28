@@ -1,28 +1,27 @@
 package com.attendance.scheduler.Config;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig{
 
-	@Autowired
-	private CustomAuthenticationFailureHandler authenticationFailureHandler;
+	private final CustomAuthenticationFailureHandler authenticationFailureHandler;
 
 	public static final String[] ENDPOINTS_WHITELIST = {
 			"/", "/submit", "/completion", // 제출 완료 페이지
@@ -54,6 +53,13 @@ public class SecurityConfig{
 				.defaultSuccessUrl("/manage/class")
 				.failureHandler(authenticationFailureHandler))
 
+			.formLogin(form -> form
+				.loginPage(DEFAULT_URL) // 인증 필요한 페이지 접근시 이동페이지
+				.loginProcessingUrl("/admin/Login")
+				.usernameParameter("adminId")
+				.defaultSuccessUrl("/manage/class")
+				.failureHandler(authenticationFailureHandler))
+
 			.logout(logout -> logout
 				.logoutUrl("/logout")
 				.invalidateHttpSession(true)
@@ -67,12 +73,15 @@ public class SecurityConfig{
 		return new BCryptPasswordEncoder();
 	}
 
+
 	@Bean
-	//여러개의 권한을 가질 수 있기에 이렇게 함.
-	public Collection<? extends GrantedAuthority> getTeacherRole() {
-		Collection<GrantedAuthority> authorities = new ArrayList<>();
-		authorities.add(new SimpleGrantedAuthority("TEACHER"));
-		return authorities;
+	public UserDetailsService userDetailsService(){
+		UserDetails admin = User.builder()
+				.username("admin")
+				.password(encodePwd().encode("Root123!@#"))
+				.roles("TEACHER", "ADMIN")
+				.build();
+		return new InMemoryUserDetailsManager(admin);
 	}
 
 	@Bean

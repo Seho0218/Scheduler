@@ -2,7 +2,6 @@ package com.attendance.scheduler.Service;
 
 import com.attendance.scheduler.Dto.ClassDTO;
 import com.attendance.scheduler.Repository.jpa.ClassTableRepository;
-import com.attendance.scheduler.Repository.jpa.SearchNotEmptyClassRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,7 +15,6 @@ import java.util.List;
 public class SubmitServiceImpl implements SubmitService {
 
     private final ClassTableRepository classTableRepository;
-    private final SearchNotEmptyClassRepository searchNotEmptyClassRepository;
 
     @Override
     public void saveClassTable(ClassDTO classDTO) {
@@ -32,7 +30,7 @@ public class SubmitServiceImpl implements SubmitService {
 
     private void classValidator(ClassDTO classDTO) {
 
-        List<Object[]> classesOrderByAsc = searchNotEmptyClassRepository.findClassesOrderByAsc();
+        List<Object[]> classesOrderByAsc = classTableRepository.findClassesOrderByAsc();
 
         Integer[] daysOfWeek = {
                 classDTO.getMonday(),

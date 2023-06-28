@@ -106,8 +106,8 @@ Link : http://seho0218.synology.me:3205/
 
 - **Config**: 스케줄러의 설정과 관련된 클래스들을 포함하는 디렉토리입니다.
       - **Authority**
-            -  'TeacherDetails.java': 유저 정보를 조회합니다.
-            -  'TeacherDetailsService.java' : DB에서 구체적인 유저의 정보를 조회합니다.
+            -  `TeacherDetails.java`: 유저 정보를 조회합니다.
+            -  `TeacherDetailsService.java` : DB에서 구체적인 유저의 정보를 조회합니다.
     - `CustomAuthenticationFailureHandler.java`: 로그인 했을시 발생하는 오류를 반환하는 클래스입니다.
     - `SecurityConfig.java`: 스프링 시큐리티를 설정하고 규칙을 정의하는 클래스입니다.
 
@@ -149,8 +149,7 @@ Link : http://seho0218.synology.me:3205/
   - **Repository**: 스케줄 데이터에 접근하기 위한 리포지토리 인터페이스를 포함하는 디렉토리입니다.
       **jpa**
       - `AdminRepository.java`: 관리자 데이터를 관리하기 위한 리포지토리 인터페이스입니다.
-      - `ClassTableRepository.java`: 수업 관리하기 위한 리포지토리 인터페이스입니다.
-      - `SearchNotEmptyClassRepository.java`: 수업 조회 위한 리포지토리 인터페이스입니다.
+      - `ClassTableRepository.java`: 수업 조회, 저장 및 관리하기 위한 리포지토리 인터페이스입니다.
       - `TeacherRepository.java`: 교사 데이터를 관리하기 위한 리포지토리 인터페이스입니다.
 
   - **Service**: 스케줄러 비즈니스 로직을 처리하는 서비스 인터페이스와 구현체를 포함하는 디렉토리입니다.
@@ -169,12 +168,12 @@ Link : http://seho0218.synology.me:3205/
 
 
 ## 실제 작동 사진
+
  Link
 
 ## 개선여지 및 추가적으로 진행해야할 부분
- - 관리자 account 생성 및 부여
+ - 관리자 Account 생성 및 부여
  - JWT Token
- - 코드 간의 응집력 높이기
 
 ## 개발 기록
 

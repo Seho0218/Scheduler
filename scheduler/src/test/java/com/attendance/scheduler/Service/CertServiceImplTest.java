@@ -1,8 +1,8 @@
 package com.attendance.scheduler.Service;
 
-import com.attendance.scheduler.Dto.Admin.AdminCertDTO;
-import com.attendance.scheduler.Entity.AdminEntity;
-import com.attendance.scheduler.Repository.jpa.AdminRepository;
+import com.attendance.scheduler.Dto.Teacher.JoinTeacherDTO;
+import com.attendance.scheduler.Entity.TeacherEntity;
+import com.attendance.scheduler.Repository.jpa.TeacherRepository;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class CertServiceImplTest {
 
     @Autowired
-    private AdminRepository adminRepository;
+    private TeacherRepository teacherRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -27,17 +27,17 @@ class CertServiceImplTest {
     @DisplayName("아이디 찾을 때, 이메일 검증")
     void findId() {
         //given
-        AdminCertDTO certFindIdDTO = AdminCertDTO.getInstance();
-        certFindIdDTO.setAdminId("admin");
-        certFindIdDTO.setAdminPassword("Root123!@#");
-        certFindIdDTO.setAdminEmail("ghdtpgh8913@gmail.com");
-        adminRepository.save(certFindIdDTO.toEntity());
+        JoinTeacherDTO joinTeacherDTO = new JoinTeacherDTO();
+        joinTeacherDTO.setTeacherId("testTeacher");
+        joinTeacherDTO.setPassword("Root123!@#");
+        joinTeacherDTO.setEmail("ghdtpgh8913@gmail.com");
+        teacherRepository.save(joinTeacherDTO.toEntity());
 
         //when
-        AdminEntity adminEntityByAdminEmail = adminRepository.findAdminEntityByAdminEmail(certFindIdDTO.getAdminEmail());
+        TeacherEntity teacherEntity = teacherRepository.findByEmailIs(joinTeacherDTO.getEmail());
 
         //then
-        assertEquals("ghdtpgh8913@gmail.com", adminEntityByAdminEmail.getAdminEmail());
+        assertEquals("ghdtpgh8913@gmail.com", teacherEntity.getEmail());
 
     }
 
@@ -47,40 +47,21 @@ class CertServiceImplTest {
 
         //given
         // 임의 관리자 객체생성
-        AdminCertDTO adminCertDTO = AdminCertDTO.getInstance();
-        adminCertDTO.setAdminId("admin");
+        JoinTeacherDTO joinTeacherDTO = new JoinTeacherDTO();
+        joinTeacherDTO.setTeacherId("testTeacher");
 
         //비밀번호 암호화
         String encodedPwd = passwordEncoder.encode("Root123!@#");
-        adminCertDTO.setAdminPassword(encodedPwd);
-        adminRepository.save(adminCertDTO.toEntity());
+        joinTeacherDTO.setPassword(encodedPwd);
+        teacherRepository.save(joinTeacherDTO.toEntity());
 
         //when
-        adminRepository.findAdminEntityByAdminId(adminCertDTO.getAdminId());
+        teacherRepository.findByTeacherIdIs(joinTeacherDTO.getTeacherId());
 
         //then
         //비밀번호 검증
-        boolean pwdMatch = passwordEncoder.matches("Root123!@#", adminCertDTO.getAdminPassword());
+        boolean pwdMatch = passwordEncoder.matches("Root123!@#", joinTeacherDTO.getPassword());
 
         assertTrue(pwdMatch);
-    }
-
-    @Test
-    @DisplayName("이메일 확인")
-    void emailCheck() {
-
-        //given
-        AdminCertDTO adminCertDTO = AdminCertDTO.getInstance();
-        adminCertDTO.setAdminId("김김김");
-        adminCertDTO.setAdminPassword("Root123!@#");
-        adminCertDTO.setAdminEmail("ghdtpgh8913@gmail.com");
-        adminRepository.save(adminCertDTO.toEntity());
-
-        //when
-        String result = adminRepository.checkUserExists(adminCertDTO.getAdminId(), adminCertDTO.getAdminEmail());
-        boolean equals = "1".equals(result);
-        //then
-        assertTrue(equals);
-
     }
 }

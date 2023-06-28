@@ -7,7 +7,6 @@ import com.attendance.scheduler.Entity.ClassEntity;
 import com.attendance.scheduler.Mapper.ClassMapper;
 import com.attendance.scheduler.Mapper.StudentClassMapper;
 import com.attendance.scheduler.Repository.jpa.ClassTableRepository;
-import com.attendance.scheduler.Repository.jpa.SearchNotEmptyClassRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,10 +20,9 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class SearchClassServiceImpl implements SearchClassService {
 
-    private final SearchNotEmptyClassRepository searchNotEmptyClassRepository;
+    private final ClassTableRepository classTableRepository;
     private final StudentClassMapper studentClassMapper;
 
-    private final ClassTableRepository classTableRepository;
     private final ClassMapper classMapper;
 
     @Override
@@ -40,7 +38,7 @@ public class SearchClassServiceImpl implements SearchClassService {
     @Override
     public ClassListDTO findClassesOrderByAsc() {
 
-        List<Object[]> classesOrderByAsc = searchNotEmptyClassRepository.findClassesOrderByAsc();
+        List<Object[]> classesOrderByAsc = classTableRepository.findClassesOrderByAsc();
 
         List<Integer> monday = new ArrayList<>();
         List<Integer> tuesday = new ArrayList<>();
@@ -79,7 +77,7 @@ public class SearchClassServiceImpl implements SearchClassService {
     @Override
     public StudentClassDTO findStudentClasses(StudentClassDTO studentClassDTO) {
         String studentName = studentClassDTO.getStudentName().trim();
-        ClassEntity byStudentNameIs = searchNotEmptyClassRepository.findByStudentNameIs(studentName);
+        ClassEntity byStudentNameIs = classTableRepository.findByStudentNameIs(studentName);
         return studentClassMapper.toClassDTO(byStudentNameIs);
     }
 }

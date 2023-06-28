@@ -32,13 +32,6 @@ public class LoginController {
 
     }
 
-    //관리자 로그인 폼
-    @GetMapping("adminLogin")
-    public String adminLoginForm(Model model) {
-        model.addAttribute("login", new LoginDTO());
-        return "adminLogin";
-    }
-
     @GetMapping("logout")
     public String logout(HttpSession session) {
         session.invalidate();

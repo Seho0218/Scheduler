@@ -1,5 +1,6 @@
 package com.attendance.scheduler.Service;
 
+import com.attendance.scheduler.Config.Authority.TeacherDetailsService;
 import com.attendance.scheduler.Dto.LoginDTO;
 import com.attendance.scheduler.Dto.Teacher.JoinTeacherDTO;
 import com.attendance.scheduler.Entity.TeacherEntity;
@@ -10,11 +11,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 @SpringBootTest
@@ -26,10 +27,13 @@ class JoinServiceTest {
     private JoinService joinService;
 
     @Autowired
-    private AuthenticationManager authenticationManager;
+    private TeacherDetailsService teacherDetailsService;
 
     @Autowired
     private TeacherRepository teacherRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Test
     @DisplayName("교사 회원가입")
@@ -81,6 +85,7 @@ class JoinServiceTest {
         joinTeacherDTO.setEmail("ghdtpgh8913@gmail.com");
         joinTeacherDTO.setName("김교사");
         joinTeacherDTO.setApproved(true);
+
         joinService.joinTeacher(joinTeacherDTO);
 
 
@@ -89,10 +94,15 @@ class JoinServiceTest {
         loginDTO.setPassword("123");
 
         //when
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginDTO.getTeacherId(), loginDTO.getPassword()));
+
+        UserDetails userDetails = teacherDetailsService
+                .loadUserByUsername(loginDTO.getTeacherId());
 
         //then
-        assertEquals("teacher", authentication.getName());
+        boolean matches = passwordEncoder
+                .matches(loginDTO.getPassword(), userDetails.getPassword());
+        assertEquals("teacher", userDetails.getUsername());
+        assertTrue(matches);
+
     }
 }

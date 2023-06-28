@@ -1,6 +1,6 @@
 package com.attendance.scheduler.Service;
 
-import com.attendance.scheduler.Dto.Admin.DeleteClassDTO;
+import com.attendance.scheduler.Dto.Teacher.DeleteClassDTO;
 
 public interface ManageService {
 

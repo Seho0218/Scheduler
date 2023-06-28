@@ -41,12 +41,6 @@ spring:
       hibernate.highlight_sql: true
       defer-datasource-initialization: true
 
-
-  mvc: #mvc structure
-    view:
-      prefix: /templates/
-      suffix: .html
-
   thymeleaf:
     cache: true #운영시 true
     enabled: true

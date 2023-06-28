@@ -1,4 +1,4 @@
-package com.attendance.scheduler.Dto.Admin;
+package com.attendance.scheduler.Dto.Teacher;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
