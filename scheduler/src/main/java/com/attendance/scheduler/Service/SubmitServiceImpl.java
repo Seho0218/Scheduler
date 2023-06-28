@@ -1,7 +1,7 @@
 package com.attendance.scheduler.Service;
 
 import com.attendance.scheduler.Dto.ClassDTO;
-import com.attendance.scheduler.Repository.jpa.ClassSaveRepository;
+import com.attendance.scheduler.Repository.jpa.ClassTableRepository;
 import com.attendance.scheduler.Repository.jpa.SearchNotEmptyClassRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SubmitServiceImpl implements SubmitService {
 
-    private final ClassSaveRepository classSaveRepository;
+    private final ClassTableRepository classTableRepository;
     private final SearchNotEmptyClassRepository searchNotEmptyClassRepository;
 
     @Override
@@ -26,7 +26,7 @@ public class SubmitServiceImpl implements SubmitService {
         if(classDTO.getStudentName()!=null) {
             String trimmedStudentName = classDTO.getStudentName().trim();
             classDTO.setStudentName(trimmedStudentName);
-            classSaveRepository.save(classDTO.toEntity());
+            classTableRepository.save(classDTO.toEntity());
         }
     }
 

@@ -105,7 +105,9 @@ Link : http://seho0218.synology.me:3205/
 **scheduler**: 스케줄러 모듈의 루트 디렉토리입니다.
 
 - **Config**: 스케줄러의 설정과 관련된 클래스들을 포함하는 디렉토리입니다.
-      - **Config**
+      - **Authority**
+            -  'TeacherDetails.java': 유저 정보를 조회합니다.
+            -  'TeacherDetailsService.java' : DB에서 구체적인 유저의 정보를 조회합니다.
     - `CustomAuthenticationFailureHandler.java`: 로그인 했을시 발생하는 오류를 반환하는 클래스입니다.
     - `SecurityConfig.java`: 스프링 시큐리티를 설정하고 규칙을 정의하는 클래스입니다.
 
@@ -115,7 +117,7 @@ Link : http://seho0218.synology.me:3205/
     - `JoinController.java`: 교사 회원가입 API 엔드포인트를 처리하는 컨트롤러 클래스입니다.
     - `LoginController.java`: 로그인 API 엔드포인트를 처리하는 컨트롤러 클래스입니다.
     - `ManageController.java`: 관리 API 엔드포인트를 처리하는 컨트롤러 클래스입니다.
-    - `ManageContrSearchClassControlleroller.java`: 스케줄러 API 엔드포인트를 처리하는 컨트롤러 클래스입니다.
+    - `SearchClassController.java`: 스케줄러 API 엔드포인트를 처리하는 컨트롤러 클래스입니다.
 
   - **Dto**: 데이터 전송 객체(DTO)를 포함하는 디렉토리입니다.
     - **Admin**
@@ -142,13 +144,11 @@ Link : http://seho0218.synology.me:3205/
   - **Mapper**: 엔티티와 DTO 간의 매핑을 처리하는 매퍼 클래스를 포함하는 디렉토리입니다.
     - `ClassMapper.java`: 클래스 엔티티에서 DTO로 가는 매핑을 담당하는 매퍼 클래스입니다.
     - `JoinTeacherMapper.java`: 클래스 엔티티에서 DTO로 가는 매핑을 담당하는 매퍼 클래스입니다.
-    - `LoginTeacherMapper.java`: 교사 엔티티에서 DTO로 가는 매핑을 담당하는 매퍼 클래스입니다.
     - `StudentClassMapper.java`: 학생이 신청한 수강목록 엔티티에서 DTO로 가는 매핑을 담당하는 매퍼 클래스입니다.
 
   - **Repository**: 스케줄 데이터에 접근하기 위한 리포지토리 인터페이스를 포함하는 디렉토리입니다.
       **jpa**
       - `AdminRepository.java`: 관리자 데이터를 관리하기 위한 리포지토리 인터페이스입니다.
-      - `ClassSaveRepository.java`: 스케줄 데이터를 관리하기 위한 리포지토리 인터페이스입니다.
       - `ClassTableRepository.java`: 수업 관리하기 위한 리포지토리 인터페이스입니다.
       - `SearchNotEmptyClassRepository.java`: 수업 조회 위한 리포지토리 인터페이스입니다.
       - `TeacherRepository.java`: 교사 데이터를 관리하기 위한 리포지토리 인터페이스입니다.
@@ -168,11 +168,8 @@ Link : http://seho0218.synology.me:3205/
 - **README.md**: 프로젝트에 대한 설명과 사용 방법을 기술한 마크다운 파일입니다.
 
 
-## 스크린샷
-
-![스크린샷 2023-06-27 오후 5.35.06.png](..%2F..%2F..%2F..%2F..%2Fvar%2Ffolders%2Fgf%2F0d1bhn4s2tv37q3sqhvj9t_w0000gn%2FT%2FTemporaryItems%2FNSIRD_screencaptureui_VZZyTd%2F%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202023-06-27%20%EC%98%A4%ED%9B%84%205.35.06.png)
-![스크린샷 2023-06-27 오후 5.34.35.png](..%2F..%2F..%2F..%2F..%2Fvar%2Ffolders%2Fgf%2F0d1bhn4s2tv37q3sqhvj9t_w0000gn%2FT%2FTemporaryItems%2FNSIRD_screencaptureui_52GncK%2F%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202023-06-27%20%EC%98%A4%ED%9B%84%205.34.35.png)
-![스크린샷 2023-06-27 오후 5.35.24.png](..%2F..%2F..%2F..%2F..%2Fvar%2Ffolders%2Fgf%2F0d1bhn4s2tv37q3sqhvj9t_w0000gn%2FT%2FTemporaryItems%2FNSIRD_screencaptureui_Nu3LQU%2F%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202023-06-27%20%EC%98%A4%ED%9B%84%205.35.24.png)
+## 실제 작동 사진
+ Link
 
 ## 개선여지 및 추가적으로 진행해야할 부분
  - 관리자 account 생성 및 부여
