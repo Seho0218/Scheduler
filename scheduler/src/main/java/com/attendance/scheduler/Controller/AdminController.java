@@ -1,6 +1,7 @@
 package com.attendance.scheduler.Controller;
 
 import com.attendance.scheduler.Dto.Admin.AdminDTO;
+import com.attendance.scheduler.Dto.Admin.ApproveTeacherDTO;
 import com.attendance.scheduler.Service.AdminService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -41,8 +42,8 @@ public class AdminController {
      * TODO grant Teacher Auth
      * */
     @PostMapping("grant")
-    public ResponseEntity<String> grantAuth(Model model) {
-
+    public ResponseEntity<String> grantAuth(ApproveTeacherDTO approveTeacherDTO) {
+        adminService.approveTeacher(approveTeacherDTO);
         return ResponseEntity.ok("승인되었습니다.");
     }
 }

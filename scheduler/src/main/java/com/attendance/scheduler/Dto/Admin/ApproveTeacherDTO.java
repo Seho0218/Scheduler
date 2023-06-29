@@ -8,14 +8,8 @@ import lombok.ToString;
 @Getter @Setter
 @ToString
 @NoArgsConstructor
-public class AdminCertDTO {
+public class ApproveTeacherDTO {
 
-    private String adminId;
-
-    private String adminPassword;
-
-    public static AdminCertDTO getInstance(){
-        return new AdminCertDTO();
-    }
-
+    private String teacherId;
+    private boolean approved;
 }

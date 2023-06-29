@@ -37,8 +37,8 @@ public class CertServiceImpl implements CertService {
 	@Override
 	public String findIdByEmail(FindIdDTO findIdDTO) {
 
-		TeacherEntity byTeacherIdIs
-				= teacherRepository.findByEmailIs(findIdDTO.getEmail());
+		TeacherEntity byTeacherIdIs = teacherRepository
+				.findByEmailIs(findIdDTO.getEmail());
 
 		if(byTeacherIdIs==null){
 			return null;
@@ -51,8 +51,8 @@ public class CertServiceImpl implements CertService {
 	 **/
 	@Override
 	public boolean idConfirmation(FindPasswordDTO findPasswordDTO) {
-		TeacherEntity byTeacherIdIs
-				= teacherRepository.findByTeacherIdIs(findPasswordDTO.getTeacherId());
+		TeacherEntity byTeacherIdIs = teacherRepository
+				.findByTeacherIdIs(findPasswordDTO.getTeacherId());
 		return byTeacherIdIs != null;
 	}
 
@@ -128,7 +128,8 @@ public class CertServiceImpl implements CertService {
 
 	@Override
 	public void PwdEdit(PwdEditDTO pwdEditDTO) {
-		TeacherEntity byTeacherIdIs = teacherRepository.findByTeacherIdIs(pwdEditDTO.getTeacherId());
+		TeacherEntity byTeacherIdIs = teacherRepository
+				.findByTeacherIdIs(pwdEditDTO.getTeacherId());
 		String encodePassword = passwordEncoder.encode(pwdEditDTO.getPassword());
 		byTeacherIdIs.updatePassword(encodePassword);
 		teacherRepository.save(byTeacherIdIs);

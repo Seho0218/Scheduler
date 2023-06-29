@@ -1,5 +1,6 @@
 package com.attendance.scheduler.Service;
 
+import com.attendance.scheduler.Dto.Admin.ApproveTeacherDTO;
 import com.attendance.scheduler.Dto.Teacher.TeacherDTO;
 import com.attendance.scheduler.Entity.TeacherEntity;
 import com.attendance.scheduler.Mapper.TeacherMapper;
@@ -25,5 +26,13 @@ public class AdminServiceImpl implements AdminService{
         return allTeacherAccount.stream()
                 .map(teacherMapper::toTeacherDTO)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public void approveTeacher(ApproveTeacherDTO approveTeacherDTO) {
+        TeacherEntity byTeacherIdIs = teacherRepository
+                .findByTeacherIdIs(approveTeacherDTO.getTeacherId());
+        byTeacherIdIs.updateApprove(approveTeacherDTO.isApproved());
+        teacherRepository.save(byTeacherIdIs);
     }
 }

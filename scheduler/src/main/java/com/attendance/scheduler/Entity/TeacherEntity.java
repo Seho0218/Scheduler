@@ -31,7 +31,7 @@ public class TeacherEntity {
     @Transient
     private String role;
 
-    @Column(columnDefinition = "boolean default '1'")
+    @Column(columnDefinition = "boolean default '0'")
     private boolean approved;
 
     @Builder
@@ -46,5 +46,9 @@ public class TeacherEntity {
 
     public void updatePassword(String newPassword) {
         this.password = newPassword;
+    }
+
+    public void updateApprove(boolean approved) {
+        this.approved = approved;
     }
 }
