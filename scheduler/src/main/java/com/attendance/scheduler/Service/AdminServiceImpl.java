@@ -32,6 +32,7 @@ public class AdminServiceImpl implements AdminService{
     public void approveTeacher(ApproveTeacherDTO approveTeacherDTO) {
         TeacherEntity byTeacherIdIs = teacherRepository
                 .findByTeacherIdIs(approveTeacherDTO.getTeacherId());
+        approveTeacherDTO.setApproved(true);
         byTeacherIdIs.updateApprove(approveTeacherDTO.isApproved());
         teacherRepository.save(byTeacherIdIs);
     }
