@@ -7,6 +7,7 @@ import com.attendance.scheduler.Repository.jpa.TeacherRepository;
 import com.attendance.scheduler.Service.AdminService;
 import com.attendance.scheduler.Service.JoinService;
 import jakarta.transaction.Transactional;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,6 +28,7 @@ class AdminControllerTest {
     private JoinService joinService;
 
     @Test
+    @DisplayName("교사에게 권한 부여")
     void grantAuth() {
 
         //Given
@@ -43,7 +45,7 @@ class AdminControllerTest {
         joinService.joinTeacher(joinTeacherDTO);
 
         //When
-        adminService.approveTeacher(approveTeacherDTO);
+        adminService.approveAuth(approveTeacherDTO);
 
         //Then
         TeacherEntity byTeacherIdIs = teacherRepository.findByTeacherIdIs("testTeacher");

@@ -15,6 +15,6 @@ public class AdminDTO {
     private String adminId;
 
     @NotEmpty(message = "비밀번호를 입력해 주세요")
-    private String adminPassword;
+    private String password;
 
 }

@@ -1,5 +1,6 @@
 package com.attendance.scheduler.Controller;
 
+import com.attendance.scheduler.Dto.Admin.AdminDTO;
 import com.attendance.scheduler.Dto.LoginDTO;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -32,9 +33,26 @@ public class LoginController {
 
     }
 
+    /*
+     * adminLogin Form
+     * */
+    @GetMapping("adminLogin")
+    public String adminLoginForm(Model model) {
+        model.addAttribute("login", new AdminDTO());
+        return "admin/adminLogin";
+    }
+
+    @GetMapping("adminLogin/Login")
+    public String adminLogin(HttpSession session, Model model) {
+        model.addAttribute("login", new AdminDTO());
+        model.addAttribute("errorMessage", session.getAttribute("errorMessage"));
+
+        return "admin/adminLogin";
+    }
+
     @GetMapping("logout")
     public String logout(HttpSession session) {
         session.invalidate();
-        return "redirect:/index";
+        return "redirect:index";
     }
 }

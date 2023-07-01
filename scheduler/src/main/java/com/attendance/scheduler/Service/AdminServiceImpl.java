@@ -21,18 +21,28 @@ public class AdminServiceImpl implements AdminService{
     private final TeacherMapper teacherMapper;
 
     @Override
-    public List<TeacherDTO> findAllTeacherAccount() {
-        List<TeacherEntity> allTeacherAccount = teacherRepository.findAll();
-        return allTeacherAccount.stream()
+    public List<TeacherDTO> getTeacherList() {
+        List<TeacherEntity> byTeacherIdIs = teacherRepository.findAll();
+        return byTeacherIdIs.stream()
                 .map(teacherMapper::toTeacherDTO)
                 .collect(Collectors.toList());
+
     }
 
     @Override
-    public void approveTeacher(ApproveTeacherDTO approveTeacherDTO) {
+    public void approveAuth(ApproveTeacherDTO approveTeacherDTO) {
         TeacherEntity byTeacherIdIs = teacherRepository
                 .findByTeacherIdIs(approveTeacherDTO.getTeacherId());
         approveTeacherDTO.setApproved(true);
+        byTeacherIdIs.updateApprove(approveTeacherDTO.isApproved());
+        teacherRepository.save(byTeacherIdIs);
+    }
+
+    @Override
+    public void revokeAuth(ApproveTeacherDTO approveTeacherDTO) {
+        TeacherEntity byTeacherIdIs = teacherRepository
+                .findByTeacherIdIs(approveTeacherDTO.getTeacherId());
+        approveTeacherDTO.setApproved(false);
         byTeacherIdIs.updateApprove(approveTeacherDTO.isApproved());
         teacherRepository.save(byTeacherIdIs);
     }

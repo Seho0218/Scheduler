@@ -25,10 +25,6 @@
         .board p {
             text-align: center;
         }
-        .breadcrumb {
-            display: flex;
-            justify-content: center;
-        }
         .error-message{
             color: #dc3545;
         }
@@ -37,7 +33,7 @@
 </head>
 <body>
 <div class="container">
-    <form method='post' role="form" th:action="@{/login/Login}" th:object="${login}">
+    <form method='post' role="form" th:action="@{/login/adminLogin/Login}" th:object="${login}">
         <div class="py-2">
             <div class="header">
                 <br><br>
@@ -47,15 +43,15 @@
         <!--학생 이름-->
         <div class="py-2">
             <div class="board rounded-3 border border-2">
-                <h1> 교사 로그인 </h1>
+                <h1> 관리자 로그인 </h1>
                 <label for="adminId"></label>
                 <input class="form-control" id="adminId" placeholder="아이디를 입력해주세요"
                        th:errorclass="field-error" th:field="*{adminId}"
                        type="text">
 
-                <label for="adminPassword"></label>
-                <input class="form-control" id="adminPassword" placeholder="비밀번호를 입력해 주세요"
-                       th:errorclass="field-error" th:field="*{adminPassword}"
+                <label for="password"></label>
+                <input class="form-control" id="password" placeholder="비밀번호를 입력해 주세요"
+                       th:errorclass="field-error" th:field="*{password}"
                        type="password">
 
                 <div class="error-message" th:if="${errorMessage}">

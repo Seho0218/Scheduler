@@ -7,8 +7,10 @@ import java.util.List;
 
 public interface AdminService {
 
-    List<TeacherDTO> findAllTeacherAccount();
+    List<TeacherDTO> getTeacherList();
 
-    void approveTeacher(ApproveTeacherDTO approveTeacherDTO);
+    void approveAuth(ApproveTeacherDTO approveTeacherDTO);
+
+    void revokeAuth(ApproveTeacherDTO approveTeacherDTO);
 
 }
