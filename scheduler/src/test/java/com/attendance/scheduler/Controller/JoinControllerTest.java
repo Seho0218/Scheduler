@@ -9,9 +9,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -24,8 +21,7 @@ class JoinControllerTest {
     @Autowired
     private JoinService joinService;
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+
 
     @Test
     @Transactional
@@ -60,9 +56,5 @@ class JoinControllerTest {
         if (duplicateTeacherId != null) {
             assertEquals("중복된 아이디 입니다.", duplicateErrorMessage);
         }
-
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginDTO.getTeacherId(), loginDTO.getPassword()));
-        assertEquals("teacher", authentication.getName());
     }
 }

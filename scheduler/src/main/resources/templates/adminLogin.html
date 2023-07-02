@@ -25,12 +25,7 @@
         .board p {
             text-align: center;
         }
-        .breadcrumb {
-            display: flex;
-            justify-content: center;
-        }
-        .field-error {
-            border-color: #dc3545;
+        .error-message{
             color: #dc3545;
         }
 
@@ -38,7 +33,7 @@
 </head>
 <body>
 <div class="container">
-    <form method='post' role="form" th:action="@{/}" th:object="${login}">
+    <form method='post' role="form" th:action="@{/login/adminLogin/Login}" th:object="${login}">
         <div class="py-2">
             <div class="header">
                 <br><br>
@@ -48,30 +43,25 @@
         <!--학생 이름-->
         <div class="py-2">
             <div class="board rounded-3 border border-2">
-
                 <h1> 관리자 로그인 </h1>
-
                 <label for="adminId"></label>
                 <input class="form-control" id="adminId" placeholder="아이디를 입력해주세요"
                        th:errorclass="field-error" th:field="*{adminId}"
                        type="text">
-                <div class="field-error" th:errors="*{adminId}"></div>
 
-                <label for="adminPassword"></label>
-                <input class="form-control" id="adminPassword" placeholder="비밀번호를 입력해 주세요"
-                       th:errorclass="field-error" th:field="*{adminPassword}"
+                <label for="password"></label>
+                <input class="form-control" id="password" placeholder="비밀번호를 입력해 주세요"
+                       th:errorclass="field-error" th:field="*{password}"
                        type="password">
-                <div class="field-error" th:errors="*{adminPassword}"></div><br>
+
+                <div class="error-message" th:if="${errorMessage}">
+                    <p th:text="${errorMessage}"></p>
+                </div>
+                <br>
 
                 <div class="text-end">
                     <button class="btn btn-primary" type="submit">로그인</button>
-                </div><br><br>
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="#">아이디 찾기</a></li>
-                            <li class="breadcrumb-item"><a href="#">비밀번호 찾기</a></li>
-                        </ol>
-                    </nav>
+                </div><br>
             </div>
         </div>
     </form>

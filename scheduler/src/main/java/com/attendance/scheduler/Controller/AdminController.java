@@ -42,7 +42,7 @@ public class AdminController {
     }
 
     /*
-     * cancel Teacher Auth
+     * revoke Teacher Auth
      * */
     @PostMapping("revoke")
     public ResponseEntity<String> revokeAuth(ApproveTeacherDTO approveTeacherDTO) {

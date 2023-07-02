@@ -1,10 +1,11 @@
-package com.attendance.scheduler.Service;
+package com.attendance.scheduler.Service.Impl;
 
 import com.attendance.scheduler.Dto.Teacher.FindIdDTO;
 import com.attendance.scheduler.Dto.Teacher.FindPasswordDTO;
 import com.attendance.scheduler.Dto.Teacher.PwdEditDTO;
 import com.attendance.scheduler.Entity.TeacherEntity;
 import com.attendance.scheduler.Repository.jpa.TeacherRepository;
+import com.attendance.scheduler.Service.CertService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

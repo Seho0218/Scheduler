@@ -39,15 +39,16 @@ public class LoginController {
     @GetMapping("adminLogin")
     public String adminLoginForm(Model model) {
         model.addAttribute("login", new AdminDTO());
-        return "admin/adminLogin";
+        return "adminLogin";
     }
 
     @GetMapping("adminLogin/Login")
     public String adminLogin(HttpSession session, Model model) {
+        System.out.println("session = " + session.getAttribute("errorMessage"));
         model.addAttribute("login", new AdminDTO());
         model.addAttribute("errorMessage", session.getAttribute("errorMessage"));
 
-        return "admin/adminLogin";
+        return "adminLogin";
     }
 
     @GetMapping("logout")

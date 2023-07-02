@@ -22,16 +22,23 @@
             <tr>
                 <th scope="col">교사 이름</th>
                 <th scope="col">이름</th>
+                <th scope="col">승인 상태</th>
                 <th scope="col">승인</th>
+                <th scope="col">승인 취소</th>
             </tr>
             </thead>
             <tbody th:each="teacher : ${teacherList}">
             <tr>
                 <td th:text="${teacher.teacherId}"></td>
                 <td th:text="${teacher.getName()}"></td>
+                <td th:text="${teacher.isApproved() == true ? '허가' : '비허가'}"></td>
                 <td>
                     <button class="btn btn-primary approve-button"
                             th:value="${teacher.getTeacherId()}">승인</button>
+                </td>
+                <td>
+                    <button class="btn btn-primary cancel-button"
+                                 th:value="${teacher.getTeacherId()}">승인 취소</button>
                 </td>
             </tr>
             </tbody>
@@ -47,19 +54,39 @@
 <script>
     $(document).ready(function() {
         $('.approve-button').click(function() {
-            var teacherId = $(this).attr('value');
-            var confirmation = confirm(teacherId + '을(를) 승인하시겠습니까?');
+            const teacherId = $(this).attr('value');
+            const confirmation = confirm(teacherId + '을(를) 승인하시겠습니까?');
 
             if (confirmation) {
                 $.ajax({
                     url: '/admin/grant',
                     method: 'POST',
                     data: { teacherId: teacherId },
-                    success: function(response) {
+                    success: function() {
                         alert('승인되었습니다');
                         location.reload();
                     },
-                    error: function(xhr, status, error) {
+                    error: function() {
+                        alert('승인에 실패했습니다. 다시 시도해주세요.');
+                    }
+                });
+            }
+        });
+
+        $('.cancel-button').click(function() {
+            const teacherId = $(this).attr('value');
+            const confirmation = confirm(teacherId + '을(를) 승인을 취소하시겠습니까?');
+
+            if (confirmation) {
+                $.ajax({
+                    url: '/admin/revoke',
+                    method: 'POST',
+                    data: { teacherId: teacherId },
+                    success: function() {
+                        alert('승인 취소 되었습니다');
+                        location.reload();
+                    },
+                    error: function() {
                         alert('승인 취소에 실패했습니다. 다시 시도해주세요.');
                     }
                 });

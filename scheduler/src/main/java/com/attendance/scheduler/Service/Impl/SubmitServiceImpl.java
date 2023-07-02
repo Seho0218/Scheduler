@@ -1,7 +1,8 @@
-package com.attendance.scheduler.Service;
+package com.attendance.scheduler.Service.Impl;
 
 import com.attendance.scheduler.Dto.ClassDTO;
 import com.attendance.scheduler.Repository.jpa.ClassTableRepository;
+import com.attendance.scheduler.Service.SubmitService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
