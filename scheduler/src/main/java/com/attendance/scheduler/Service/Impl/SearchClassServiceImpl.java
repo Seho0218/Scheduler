@@ -29,11 +29,11 @@ public class SearchClassServiceImpl implements SearchClassService {
     @Override
     public List<ClassDTO> findClassTable() {
 
-        List<ClassEntity> classEntityList = classTableRepository.findAll();
-
-        return classEntityList.stream()
+        return classTableRepository.findAll()
+                .stream()
                 .map(classMapper::toClassDTO)
                 .collect(Collectors.toList());
+
     }
 
     @Override

@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 
-//@Service
+//@Component
 @RequiredArgsConstructor
 @Transactional
 public class AdminDetailsService implements UserDetailsService {

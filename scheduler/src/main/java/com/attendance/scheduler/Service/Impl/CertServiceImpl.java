@@ -47,9 +47,6 @@ public class CertServiceImpl implements CertService {
 		return byTeacherIdIs.getTeacherId();
 	}
 
-	/*
-	 * Validate ID
-	 **/
 	@Override
 	public boolean idConfirmation(FindPasswordDTO findPasswordDTO) {
 		TeacherEntity byTeacherIdIs = teacherRepository
@@ -57,9 +54,6 @@ public class CertServiceImpl implements CertService {
 		return byTeacherIdIs != null;
 	}
 
-	/*
-	 * Validate Email
-	 **/
 	@Override
 	public boolean emailConfirmation(FindPasswordDTO findPasswordDTO) {
 		TeacherEntity byTeacherIdIs
@@ -67,9 +61,6 @@ public class CertServiceImpl implements CertService {
 		return byTeacherIdIs != null;
 	}
 
-	/*
-	* send id by Email
-	* */
 	@Override
 	public void sendUserId(FindIdDTO findIdDTO) {
 		SimpleMailMessage simpleMailMessage = new  SimpleMailMessage();
@@ -131,6 +122,10 @@ public class CertServiceImpl implements CertService {
 	public void PwdEdit(PwdEditDTO pwdEditDTO) {
 		TeacherEntity byTeacherIdIs = teacherRepository
 				.findByTeacherIdIs(pwdEditDTO.getTeacherId());
+
+		log.info("pwdEditDTO.getTeacherId()={}",pwdEditDTO.getTeacherId());
+		log.info("pwdEditDTO.getPassword()={}",pwdEditDTO.getPassword());
+
 		String encodePassword = passwordEncoder.encode(pwdEditDTO.getPassword());
 		byTeacherIdIs.updatePassword(encodePassword);
 		teacherRepository.save(byTeacherIdIs);

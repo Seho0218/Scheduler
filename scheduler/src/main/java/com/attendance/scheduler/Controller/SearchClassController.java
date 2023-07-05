@@ -101,6 +101,7 @@ public class SearchClassController {
             return "redirect:/completion";
         }catch (Exception e){
             getClassList(model);
+            System.out.println("e.getMessage() = " + e.getMessage());
             return "index";
         }
     }
