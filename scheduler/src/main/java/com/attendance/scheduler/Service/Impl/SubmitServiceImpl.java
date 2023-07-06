@@ -20,17 +20,17 @@ import java.util.List;
 public class SubmitServiceImpl implements SubmitService {
 
     private final ClassTableRepository classTableRepository;
+    private static final String errorCode = "다른 원생과 겹치는 시간이 있습니다. 새로고침 후, 다시 신청해 주세요.";
 
     @Override
     public void saveClassTable(ClassDTO classDTO) {
 
-        classValidator(classDTO);
+//        classValidator(classDTO);
 
-        if(classDTO.getStudentName()!=null) {
-            String trimmedStudentName = classDTO.getStudentName().trim();
-            classDTO.setStudentName(trimmedStudentName);
-            classTableRepository.save(classDTO.toEntity());
-        }
+        String trimmedStudentName = classDTO.getStudentName().trim();
+        classDTO.setStudentName(trimmedStudentName);
+        classTableRepository.save(classDTO.toEntity());
+
     }
 
     private void classValidator(ClassDTO classDTO) {
@@ -38,42 +38,56 @@ public class SubmitServiceImpl implements SubmitService {
         List<Object[]> classesOrderByAsc = classTableRepository.findClassesOrderByAsc();
         ClassEntity byStudentNameIs = classTableRepository.findByStudentNameIs(classDTO.getStudentName().trim());
 
-        log.info("classesOrderByAsc = {}", classesOrderByAsc.size());
+        Integer[] changedStudentClass = {
+                classDTO.getMonday(),
+                classDTO.getTuesday(),
+                classDTO.getWednesday(),
+                classDTO.getThursday(),
+                classDTO.getFriday()
+        };
 
-        log.info("byStudentNameIs = " + byStudentNameIs.getStudentName());
+        ArrayList<Integer> changedStudentClassList = new ArrayList<>(Arrays.asList(changedStudentClass));
 
-        if(byStudentNameIs.getStudentName()!=null && classesOrderByAsc.size()!=0) {
-            Integer[] daysOfWeek = {
-                    classDTO.getMonday(),
-                    classDTO.getTuesday(),
-                    classDTO.getWednesday(),
-                    classDTO.getThursday(),
-                    classDTO.getFriday()
-            };
+        if(byStudentNameIs!=null) {
 
-            Integer[] studentClassList = {
+            log.info("byStudentNameIs = " + byStudentNameIs.getStudentName());
+
+            Integer[] studentClass = {
                     byStudentNameIs.getMonday(),
                     byStudentNameIs.getTuesday(),
                     byStudentNameIs.getWednesday(),
                     byStudentNameIs.getThursday(),
                     byStudentNameIs.getFriday()
             };
-            ArrayList<Integer> arrayListDaysOfWeek = new ArrayList<>(Arrays.asList(daysOfWeek));
-            ArrayList<Integer> arrayStudentClassList = new ArrayList<>(Arrays.asList(studentClassList));
 
-            log.info("arrayStudentClassList = {}", arrayStudentClassList);
-            log.info("arrayListDaysOfWeek = {}", arrayListDaysOfWeek);
+            ArrayList<Integer> existStudentClassList = new ArrayList<>(Arrays.asList(studentClass));
 
-// 같은 값을 가진 요소를 제거
-            arrayListDaysOfWeek.removeAll(arrayStudentClassList);
+            log.info("existStudentClassList = {}", existStudentClassList);
+            log.info("changedStudentClass = {}", changedStudentClassList);
 
-            String errorCode = "다른 원생과 겹치는 시간이 있습니다. 새로고침 후, 다시 신청해 주세요.";
+            for (Integer day : existStudentClassList) {
+                changedStudentClassList.remove(day);
+            }
 
-            for (Object[] classDate : classesOrderByAsc) {
-                for (Integer day : arrayListDaysOfWeek) {
-                    if (Arrays.asList(classDate).contains(day)) {
-                        throw new IllegalStateException(errorCode);
-                    }
+            log.info("remainClass = {}", changedStudentClassList);
+
+            duplicateClassCheck(classesOrderByAsc, changedStudentClassList);
+        }
+
+        duplicateClassCheck(classesOrderByAsc, changedStudentClassList);
+    }
+
+
+
+    private void duplicateClassCheck(List<Object[]> classesOrderByAsc, ArrayList<Integer> changedStudentClassList) {
+        for (Object[] classDate : classesOrderByAsc) {
+
+            for (Integer day : changedStudentClassList) {
+
+                if (Arrays.asList(classDate).contains(day)) {
+
+                    System.out.println("classDate = " + Arrays.toString(classDate));
+                    System.out.println("day = " + day);
                 }
             }
         }
