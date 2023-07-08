@@ -10,14 +10,12 @@ import com.attendance.scheduler.Repository.jpa.ClassTableRepository;
 import com.attendance.scheduler.Service.SearchClassService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class SearchClassServiceImpl implements SearchClassService {
 

@@ -5,13 +5,12 @@ import com.attendance.scheduler.Entity.TeacherEntity;
 import com.attendance.scheduler.Mapper.JoinTeacherMapper;
 import com.attendance.scheduler.Repository.jpa.TeacherRepository;
 import com.attendance.scheduler.Service.JoinService;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class JoinServiceImpl implements JoinService {
 
@@ -20,6 +19,7 @@ public class JoinServiceImpl implements JoinService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
+    @Transactional
     public void joinTeacher(JoinTeacherDTO joinTeacherDTO) {
         String encode = passwordEncoder.encode(joinTeacherDTO.getPassword());
         joinTeacherDTO.setPassword(encode);

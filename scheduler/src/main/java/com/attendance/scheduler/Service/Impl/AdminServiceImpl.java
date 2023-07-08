@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class AdminServiceImpl implements AdminService {
 
@@ -31,6 +30,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    @Transactional
     public void approveAuth(ApproveTeacherDTO approveTeacherDTO) {
         TeacherEntity byTeacherIdIs = teacherRepository
                 .findByTeacherIdIs(approveTeacherDTO.getTeacherId());
@@ -40,6 +40,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    @Transactional
     public void revokeAuth(ApproveTeacherDTO approveTeacherDTO) {
         TeacherEntity byTeacherIdIs = teacherRepository
                 .findByTeacherIdIs(approveTeacherDTO.getTeacherId());
