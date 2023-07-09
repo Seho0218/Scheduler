@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequiredArgsConstructor
 public class JoinController {
 
-    private static final String duplicateErrorMessage = "중복된 아이디 입니다.";
     private final JoinService joinService;
 
     //회원가입 폼
@@ -43,7 +42,7 @@ public class JoinController {
 
         if (duplicateTeacherId != null) {
             log.info("teacherId={}", duplicateTeacherId.getTeacherId());
-            model.addAttribute("errorMessage", duplicateErrorMessage);
+            model.addAttribute("errorMessage", "중복된 아이디 입니다.");
             return "join";
         }
 

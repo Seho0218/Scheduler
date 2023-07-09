@@ -1,5 +1,6 @@
 package com.attendance.scheduler.Config;
 
+import com.attendance.scheduler.Config.Authority.AdminDetailsService;
 import com.attendance.scheduler.Config.Authority.TeacherDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -49,7 +50,7 @@ public class SecurityConfig{
 	}
 
 	private final TeacherDetailsService teacherDetailsService;
-//	private final AdminDetailsService adminDetailsService;
+	private final AdminDetailsService adminDetailsService;
 
 
 
@@ -59,11 +60,11 @@ public class SecurityConfig{
 				http.getSharedObject(AuthenticationManagerBuilder.class);
 
 		authenticationManagerBuilder.userDetailsService(teacherDetailsService);
-//		authenticationManagerBuilder.userDetailsService(adminDetailsService);
-//		authenticationManagerBuilder.inMemoryAuthentication()
-//				.withUser("admin")
-//				.password(encoder().encode("123"))
-//				.roles("ADMIN");
+		authenticationManagerBuilder.userDetailsService(adminDetailsService);
+		authenticationManagerBuilder.inMemoryAuthentication()
+				.withUser("admin")
+				.password(encoder().encode("123"))
+				.roles("ADMIN");
 		return authenticationManagerBuilder.build();
 	}
 
@@ -95,32 +96,32 @@ public class SecurityConfig{
 		}
 	}
 
-//	@Configuration
-//	@Order(2)
-//	public static class adminConfigurationAdapter {
-//
-//		@Bean
-//		public SecurityFilterChain adminFilterChain(HttpSecurity http) throws Exception {
-//			http.httpBasic().disable()
-//					.csrf().disable()
-//					.authorizeHttpRequests(request -> request
-//							.requestMatchers(ENDPOINTS_WHITELIST).permitAll()
-//							.requestMatchers("/admin/").hasRole("ADMIN")
-//							.anyRequest().authenticated())
-//					.formLogin(form -> form
-//							.loginPage(DEFAULT_URL)
-//							.loginProcessingUrl("/login/adminLogin/Login")
-//							.usernameParameter("adminId")
-//							.defaultSuccessUrl("/admin/teacherList")
-//							.failureHandler(adminAuthenticationFailureHandler()))
-//					.logout(logout -> logout
-//							.logoutUrl("/logout")
-//							.invalidateHttpSession(true)
-//							.deleteCookies("JSESSIONID")
-//							.logoutSuccessUrl("/"));
-//			return http.build();
-//		}
-//	}
+	@Configuration
+	@Order(2)
+	public static class adminConfigurationAdapter {
+
+		@Bean
+		public SecurityFilterChain adminFilterChain(HttpSecurity http) throws Exception {
+			http.httpBasic().disable()
+					.csrf().disable()
+					.authorizeHttpRequests(request -> request
+							.requestMatchers(ENDPOINTS_WHITELIST).permitAll()
+							.requestMatchers("/admin/").hasRole("ADMIN")
+							.anyRequest().authenticated())
+					.formLogin(form -> form
+							.loginPage(DEFAULT_URL)
+							.loginProcessingUrl("/login/adminLogin/Login")
+							.usernameParameter("adminId")
+							.defaultSuccessUrl("/admin/teacherList")
+							.failureHandler(adminAuthenticationFailureHandler()))
+					.logout(logout -> logout
+							.logoutUrl("/logout")
+							.invalidateHttpSession(true)
+							.deleteCookies("JSESSIONID")
+							.logoutSuccessUrl("/"));
+			return http.build();
+		}
+	}
 }
 
 

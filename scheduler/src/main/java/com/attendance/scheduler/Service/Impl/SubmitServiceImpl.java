@@ -23,6 +23,16 @@ public class SubmitServiceImpl implements SubmitService {
     private final ClassTableRepository classTableRepository;
     private static final String errorCode = "다른 원생과 겹치는 시간이 있습니다. 새로고침 후, 다시 신청해 주세요.";
 
+    @Override
+    public void saveClassTable(ClassDTO classDTO) {
+
+        classValidator(classDTO);
+        String trimmedStudentName = classDTO.getStudentName().trim();
+        classDTO.setStudentName(trimmedStudentName);
+        classTableRepository.save(classDTO.toEntity());
+
+    }
+
     private static void duplicateClassValidator(ClassDTO classDTO, List<Object[]> classesOrderByAsc) {
         for (Object[] row : classesOrderByAsc) {
             Integer mondayValue = (Integer) row[0];
@@ -39,16 +49,6 @@ public class SubmitServiceImpl implements SubmitService {
         }
     }
 
-    @Override
-    public void saveClassTable(ClassDTO classDTO) {
-
-        classValidator(classDTO);
-        String trimmedStudentName = classDTO.getStudentName().trim();
-        classDTO.setStudentName(trimmedStudentName);
-        classTableRepository.save(classDTO.toEntity());
-
-    }
-
     private void classValidator(ClassDTO classDTO) {
 
         List<Object[]> classesOrderByAsc = classTableRepository.findClassesOrderByAsc();
@@ -57,7 +57,8 @@ public class SubmitServiceImpl implements SubmitService {
         if (byStudentNameIs == null) {
             duplicateClassValidator(classDTO, classesOrderByAsc);
         } else {
-            classTableRepository.deleteByStudentNameIn(singletonList(classDTO.getStudentName().trim()));
+            log.info("check");
+            classTableRepository.deleteByStudentNameIn(singletonList(byStudentNameIs.getStudentName()));
             duplicateClassValidator(classDTO, classesOrderByAsc);
         }
     }

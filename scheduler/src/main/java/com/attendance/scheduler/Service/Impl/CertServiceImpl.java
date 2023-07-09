@@ -21,7 +21,6 @@ import java.util.Map;
 
 @Slf4j
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class CertServiceImpl implements CertService {
 
@@ -62,6 +61,7 @@ public class CertServiceImpl implements CertService {
 	}
 
 	@Override
+	@Transactional
 	public void sendUserId(FindIdDTO findIdDTO) {
 		SimpleMailMessage simpleMailMessage = new  SimpleMailMessage();
 		simpleMailMessage.setFrom("ghdtpgh8913@gmail.com");
@@ -77,6 +77,7 @@ public class CertServiceImpl implements CertService {
 	}
 
 	@Override
+	@Transactional
 	public void setupAuthNum(FindPasswordDTO findPasswordDTO, HttpSession session) {
 
 		String teacherId = findPasswordDTO.getTeacherId();
@@ -119,6 +120,7 @@ public class CertServiceImpl implements CertService {
 	}
 
 	@Override
+	@Transactional
 	public void PwdEdit(PwdEditDTO pwdEditDTO) {
 		TeacherEntity byTeacherIdIs = teacherRepository
 				.findByTeacherIdIs(pwdEditDTO.getTeacherId());

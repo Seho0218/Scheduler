@@ -12,11 +12,11 @@ import java.util.List;
 @NoArgsConstructor
 public class ClassListDTO {
 
-    private List<Integer> ClassInMondayList;
-    private List<Integer> ClassInTuesdayList;
-    private List<Integer> ClassInWednesdayList;
-    private List<Integer> ClassInThursdayList;
-    private List<Integer> ClassInFridayList;
+    private List<Integer> mondayClassList;
+    private List<Integer> tuesdayClassList;
+    private List<Integer> wednesdayClassList;
+    private List<Integer> thursdayClassList;
+    private List<Integer> fridayClassList;
 
 
     public static ClassListDTO getInstance(){

@@ -64,11 +64,11 @@ public class SearchClassServiceImpl implements SearchClassService {
 
         ClassListDTO classListDTO = ClassListDTO.getInstance();
 
-        classListDTO.setClassInMondayList(monday);
-        classListDTO.setClassInTuesdayList(tuesday);
-        classListDTO.setClassInWednesdayList(wednesday);
-        classListDTO.setClassInThursdayList(thursday);
-        classListDTO.setClassInFridayList(friday);
+        classListDTO.setMondayClassList(monday);
+        classListDTO.setTuesdayClassList(tuesday);
+        classListDTO.setWednesdayClassList(wednesday);
+        classListDTO.setThursdayClassList(thursday);
+        classListDTO.setFridayClassList(friday);
 
         return classListDTO;
     }

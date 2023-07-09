@@ -25,9 +25,6 @@ public class CertController {
 
     private final CertService certService;
 
-    private static final String emailErrorMessage = "등록된 이메일이 없습니다.";
-    private static final String idErrorMessage = "등록된 아이디가 없습니다.";
-
 /*
 * Find ID Section
 */
@@ -56,7 +53,7 @@ public class CertController {
 
         if (idByEmail == null) {
             model.addAttribute("account", new FindIdDTO());
-            model.addAttribute("errorMessage", emailErrorMessage);
+            model.addAttribute("errorMessage", "등록된 이메일이 없습니다.");
             return "cert/findId";
         }
 
@@ -95,12 +92,12 @@ public class CertController {
         }
 
         if(!certService.emailConfirmation(findPasswordDTO)) {
-            model.addAttribute("errorMessage", emailErrorMessage);
+            model.addAttribute("errorMessage", "등록된 이메일이 없습니다.");
             model.addAttribute("account", new TeacherDTO());
             return "cert/FindPwd";
         }
         if(!certService.idConfirmation(findPasswordDTO)){
-            model.addAttribute("errorMessage", idErrorMessage);
+            model.addAttribute("errorMessage", "등록된 아이디가 없습니다.");
             model.addAttribute("account", new TeacherDTO());
             return "cert/FindPwd";
         }

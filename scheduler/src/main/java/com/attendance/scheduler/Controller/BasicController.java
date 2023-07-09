@@ -30,19 +30,15 @@ public class BasicController {
     }
 
     private void getClassList(Model model) {
-
         ClassListDTO classesOrderByAsc = searchClassService.findClassesOrderByAsc();
 
-        model.addAttribute("classInMondayList", classesOrderByAsc.getClassInMondayList());
-        model.addAttribute("classInTuesdayList", classesOrderByAsc.getClassInTuesdayList());
-        model.addAttribute("classInWednesdayList", classesOrderByAsc.getClassInWednesdayList());
-        model.addAttribute("classInThursdayList", classesOrderByAsc.getClassInThursdayList());
-        model.addAttribute("classInFridayList", classesOrderByAsc.getClassInFridayList());
+        model.addAttribute("classList", classesOrderByAsc);
 
-        log.info("monday = {}", classesOrderByAsc.getClassInMondayList());
-        log.info("tuesday = {}", classesOrderByAsc.getClassInTuesdayList());
-        log.info("wednesday = {}", classesOrderByAsc.getClassInWednesdayList());
-        log.info("thursday = {}", classesOrderByAsc.getClassInThursdayList());
-        log.info("friday = {}", classesOrderByAsc.getClassInFridayList());
+        log.info("monday = {}", classesOrderByAsc.getMondayClassList());
+        log.info("tuesday = {}", classesOrderByAsc.getTuesdayClassList());
+        log.info("wednesday = {}", classesOrderByAsc.getWednesdayClassList());
+        log.info("thursday = {}", classesOrderByAsc.getThursdayClassList());
+        log.info("friday = {}", classesOrderByAsc.getFridayClassList());
+        log.info("friday = {}", classesOrderByAsc.getClass());
     }
 }
