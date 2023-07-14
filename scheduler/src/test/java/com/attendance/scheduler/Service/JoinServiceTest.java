@@ -90,13 +90,13 @@ class JoinServiceTest {
 
 
         LoginDTO loginDTO = new LoginDTO();
-        loginDTO.setTeacherId("teacher");
+        loginDTO.setUsername("teacher");
         loginDTO.setPassword("123");
 
         //when
 
         UserDetails userDetails = teacherDetailsService
-                .loadUserByUsername(loginDTO.getTeacherId());
+                .loadUserByUsername(loginDTO.getUsername());
 
         //then
         boolean matches = passwordEncoder

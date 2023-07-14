@@ -10,6 +10,6 @@ import lombok.ToString;
 @NoArgsConstructor
 public class ApproveTeacherDTO {
 
-    private String teacherId;
+    private String username;
     private boolean approved;
 }

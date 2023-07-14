@@ -4,24 +4,26 @@ import com.attendance.scheduler.Entity.TeacherEntity;
 import com.attendance.scheduler.Repository.jpa.TeacherRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
-
+@Slf4j
 @Component
-@RequiredArgsConstructor
 @Transactional
+@RequiredArgsConstructor
 public class TeacherDetailsService implements UserDetailsService {
     private final TeacherRepository teacherRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String teacherId) throws UsernameNotFoundException {
-        final TeacherEntity byTeacherIdIs = teacherRepository.findByTeacherIdIs(teacherId);
-        if(byTeacherIdIs != null){
-            return new TeacherDetails(byTeacherIdIs);
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        log.info("teacherId = {}", username);
+        final TeacherEntity byTeacherIdIs = teacherRepository.findByTeacherIdIs(username);
+        if(byTeacherIdIs == null){
+            throw new UsernameNotFoundException(username);
         }
-        return null;
+        return new TeacherDetails(byTeacherIdIs);
     }
 }

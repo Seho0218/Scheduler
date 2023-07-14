@@ -13,8 +13,8 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
-@Component
 @Slf4j
+@Component
 public class AdminCustomAuthenticationFailureHandler implements AuthenticationFailureHandler {
 
     @Override
@@ -22,9 +22,10 @@ public class AdminCustomAuthenticationFailureHandler implements AuthenticationFa
                                         AuthenticationException exception) throws IOException {
 
         String errorMessage;
-        if(exception instanceof UsernameNotFoundException
-                || exception instanceof InternalAuthenticationServiceException){
-            errorMessage = "등록되지 않은 아이디거나 아이디를 입력해주세요";
+        if(exception instanceof UsernameNotFoundException){
+            errorMessage = "아이디가 존재하지 않습니다. 아이디를 확인해주세요";
+        } else if (exception instanceof InternalAuthenticationServiceException) {
+            errorMessage = "아이디를 입력해주세요";
         } else if (exception instanceof BadCredentialsException) {
             errorMessage = "아이디 또는 비밀번호가 잘못되었습니다.";
         } else if (exception instanceof DisabledException) {
@@ -32,8 +33,9 @@ public class AdminCustomAuthenticationFailureHandler implements AuthenticationFa
         } else {
             errorMessage = "관리자에게 문의해주세요";
         }
+
         log.info("errorMessage = {}", errorMessage);
         request.getSession().setAttribute("errorMessage", errorMessage);
-        response.sendRedirect("/login/adminLogin");
+        response.sendRedirect("/login/adminError");
     }
 }

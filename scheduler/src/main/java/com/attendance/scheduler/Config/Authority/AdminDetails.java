@@ -21,12 +21,12 @@ public class AdminDetails implements UserDetails {
 
     @Override
     public String getPassword() {
-        return adminVO.getPassword();
+        return adminVO.getEncryptedPassword();
     }
 
     @Override
     public String getUsername() {
-        return adminVO.getId();
+        return adminVO.getUsername();
     }
 
     @Override

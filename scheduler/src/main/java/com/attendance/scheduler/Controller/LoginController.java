@@ -24,9 +24,9 @@ public class LoginController {
     }
 
     //교사 로그인
-    @GetMapping("Login")
+    @GetMapping("error")
     public String teacherLogin(HttpSession session, Model model){
-        System.out.println("session = " + session.getAttribute("errorMessage"));
+        log.info("errorMessage = {}", session.getAttribute("errorMessage"));
         model.addAttribute("login", new LoginDTO());
         model.addAttribute("errorMessage", session.getAttribute("errorMessage"));
         return "login";
@@ -42,9 +42,9 @@ public class LoginController {
         return "adminLogin";
     }
 
-    @GetMapping("adminLogin/Login")
+    @GetMapping("adminError")
     public String adminLogin(HttpSession session, Model model) {
-        System.out.println("session = " + session.getAttribute("errorMessage"));
+        log.info("errorMessage = {}", session.getAttribute("errorMessage"));
         model.addAttribute("login", new AdminDTO());
         model.addAttribute("errorMessage", session.getAttribute("errorMessage"));
 

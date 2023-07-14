@@ -5,13 +5,16 @@ import com.attendance.scheduler.Config.Authority.TeacherDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
@@ -52,7 +55,15 @@ public class SecurityConfig{
 	private final TeacherDetailsService teacherDetailsService;
 	private final AdminDetailsService adminDetailsService;
 
-
+	@Bean
+	public UserDetailsService userDetailsService() throws Exception {
+		UserDetails admin = User.builder()
+				.username("admin")
+				.password(encoder().encode("123"))
+				.roles("ADMIN")
+				.build();
+		return new InMemoryUserDetailsManager(admin);
+	}
 
 	@Bean
 	public AuthenticationManager authManager(HttpSecurity http) throws Exception {
@@ -61,15 +72,10 @@ public class SecurityConfig{
 
 		authenticationManagerBuilder.userDetailsService(teacherDetailsService);
 		authenticationManagerBuilder.userDetailsService(adminDetailsService);
-		authenticationManagerBuilder.inMemoryAuthentication()
-				.withUser("admin")
-				.password(encoder().encode("123"))
-				.roles("ADMIN");
 		return authenticationManagerBuilder.build();
 	}
 
 	@Configuration
-	@Order(1)
 	public static class teacherConfigurationAdapter{
 
 		@Bean
@@ -84,20 +90,19 @@ public class SecurityConfig{
 					.formLogin(form -> form
 							.loginPage(DEFAULT_URL)
 							.loginProcessingUrl("/login/Login")
-							.usernameParameter("teacherId")
 							.defaultSuccessUrl("/manage/class")
 							.failureHandler(teacherAuthenticationFailureHandler()))
 					.logout(logout -> logout
 							.logoutUrl("/logout")
 							.invalidateHttpSession(true)
 							.deleteCookies("JSESSIONID")
-							.logoutSuccessUrl("/"));
+							.logoutSuccessUrl("/")
+					);
 			return http.build();
 		}
 	}
 
 	@Configuration
-	@Order(2)
 	public static class adminConfigurationAdapter {
 
 		@Bean
@@ -111,14 +116,14 @@ public class SecurityConfig{
 					.formLogin(form -> form
 							.loginPage(DEFAULT_URL)
 							.loginProcessingUrl("/login/adminLogin/Login")
-							.usernameParameter("adminId")
 							.defaultSuccessUrl("/admin/teacherList")
 							.failureHandler(adminAuthenticationFailureHandler()))
 					.logout(logout -> logout
 							.logoutUrl("/logout")
 							.invalidateHttpSession(true)
 							.deleteCookies("JSESSIONID")
-							.logoutSuccessUrl("/"));
+							.logoutSuccessUrl("/")
+					);
 			return http.build();
 		}
 	}

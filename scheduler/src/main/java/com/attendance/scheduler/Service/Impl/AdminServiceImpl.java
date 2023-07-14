@@ -33,7 +33,7 @@ public class AdminServiceImpl implements AdminService {
     @Transactional
     public void approveAuth(ApproveTeacherDTO approveTeacherDTO) {
         TeacherEntity byTeacherIdIs = teacherRepository
-                .findByTeacherIdIs(approveTeacherDTO.getTeacherId());
+                .findByTeacherIdIs(approveTeacherDTO.getUsername());
         approveTeacherDTO.setApproved(true);
         byTeacherIdIs.updateApprove(approveTeacherDTO.isApproved());
         teacherRepository.save(byTeacherIdIs);
@@ -43,7 +43,7 @@ public class AdminServiceImpl implements AdminService {
     @Transactional
     public void revokeAuth(ApproveTeacherDTO approveTeacherDTO) {
         TeacherEntity byTeacherIdIs = teacherRepository
-                .findByTeacherIdIs(approveTeacherDTO.getTeacherId());
+                .findByTeacherIdIs(approveTeacherDTO.getUsername());
         approveTeacherDTO.setApproved(false);
         byTeacherIdIs.updateApprove(approveTeacherDTO.isApproved());
         teacherRepository.save(byTeacherIdIs);
