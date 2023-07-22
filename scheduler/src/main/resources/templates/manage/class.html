@@ -72,7 +72,7 @@
                 $.ajax({
                     url: '/manage/delete',
                     method: 'POST',
-                    data: { deleteClassList: studentName },
+                    data: { deleteClass: studentName },
                     success: function(response) {
                         alert('삭제되었습니다.');
                         location.reload();

@@ -71,7 +71,7 @@ public class SecurityConfig{
 				http.getSharedObject(AuthenticationManagerBuilder.class);
 
 		authenticationManagerBuilder.userDetailsService(teacherDetailsService);
-		authenticationManagerBuilder.userDetailsService(adminDetailsService);
+//		authenticationManagerBuilder.userDetailsService(adminDetailsService);
 		return authenticationManagerBuilder.build();
 	}
 
@@ -102,7 +102,7 @@ public class SecurityConfig{
 		}
 	}
 
-	@Configuration
+//	@Configuration
 	public static class adminConfigurationAdapter {
 
 		@Bean

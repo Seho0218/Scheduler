@@ -43,7 +43,7 @@ class JoinControllerTest {
             로그인
          */
         LoginDTO loginDTO = new LoginDTO();
-        loginDTO.setTeacherId("teacher");
+        loginDTO.setUsername("teacher");
         loginDTO.setPassword("123");
 
 

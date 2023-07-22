@@ -62,10 +62,3 @@ spring:
         smtp:
           starttls.enable: true
           auth: true
-
-
-logging.level:
-  root: info
-  org.hibernate.SQL: debug
-
-

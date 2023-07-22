@@ -3,10 +3,11 @@ package com.attendance.scheduler.Repository.jpa;
 import com.attendance.scheduler.Entity.ClassEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-
+@Repository
 public interface ClassTableRepository extends JpaRepository<ClassEntity, String> {
 
     /*
@@ -26,6 +27,6 @@ public interface ClassTableRepository extends JpaRepository<ClassEntity, String>
     /*
     * delete StudentName
     * */
-    void deleteByStudentNameIn(List<String> studentName);
+    long deleteByStudentName(String studentName);
 
 }

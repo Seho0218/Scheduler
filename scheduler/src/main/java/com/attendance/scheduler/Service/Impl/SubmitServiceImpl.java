@@ -11,29 +11,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static java.util.Collections.singletonList;
-import static org.springframework.transaction.annotation.Isolation.REPEATABLE_READ;
-
 @Slf4j
 @Service
-@Transactional(isolation = REPEATABLE_READ)
 @RequiredArgsConstructor
 public class SubmitServiceImpl implements SubmitService {
-
     private final ClassTableRepository classTableRepository;
-    private static final String errorCode = "다른 원생과 겹치는 시간이 있습니다. 새로고침 후, 다시 신청해 주세요.";
-
-    @Override
-    public void saveClassTable(ClassDTO classDTO) {
-
-        classValidator(classDTO);
-        String trimmedStudentName = classDTO.getStudentName().trim();
-        classDTO.setStudentName(trimmedStudentName);
-        classTableRepository.save(classDTO.toEntity());
-
-    }
 
     private static void duplicateClassValidator(ClassDTO classDTO, List<Object[]> classesOrderByAsc) {
+        String errorCode = "다른 원생과 겹치는 시간이 있습니다. 새로고침 후, 다시 신청해 주세요.";
+
         for (Object[] row : classesOrderByAsc) {
             Integer mondayValue = (Integer) row[0];
             Integer tuesdayValue = (Integer) row[1];
@@ -49,16 +35,26 @@ public class SubmitServiceImpl implements SubmitService {
         }
     }
 
-    private void classValidator(ClassDTO classDTO) {
+    @Override
+    @Transactional
+    public void saveClassTable(ClassDTO classDTO) {
+        classValidator(classDTO);
+        String trimmedStudentName = classDTO.getStudentName().trim();
+        classDTO.setStudentName(trimmedStudentName);
+        classTableRepository.save(classDTO.toEntity());
+    }
 
+    private void classValidator(ClassDTO classDTO) {
         List<Object[]> classesOrderByAsc = classTableRepository.findClassesOrderByAsc();
-        ClassEntity byStudentNameIs = classTableRepository.findByStudentNameIs(classDTO.getStudentName().trim());
+        ClassEntity byStudentNameIs = classTableRepository.findByStudentNameIs(classDTO.getStudentName());
+        log.info("byStudentNameIs={}", byStudentNameIs);
+        log.info("classDTO={}", classDTO);
 
         if (byStudentNameIs == null) {
             duplicateClassValidator(classDTO, classesOrderByAsc);
         } else {
             log.info("check");
-            classTableRepository.deleteByStudentNameIn(singletonList(byStudentNameIs.getStudentName()));
+            classTableRepository.deleteByStudentName(classDTO.getStudentName());
             duplicateClassValidator(classDTO, classesOrderByAsc);
         }
     }

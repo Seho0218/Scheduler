@@ -33,13 +33,13 @@ class AdminControllerTest {
 
         //Given
         JoinTeacherDTO joinTeacherDTO = new JoinTeacherDTO();
-        joinTeacherDTO.setTeacherId("testTeacher");
+        joinTeacherDTO.setTeacherId("testId");
         joinTeacherDTO.setPassword("123");
         joinTeacherDTO.setEmail("ghdtpgh8913@gmail.com");
         joinTeacherDTO.setEmail("김교사");
 
         ApproveTeacherDTO approveTeacherDTO = new ApproveTeacherDTO();
-        approveTeacherDTO.setTeacherId("testTeacher");
+        approveTeacherDTO.setUsername("testTeacher");
         approveTeacherDTO.setApproved(true);
 
         joinService.joinTeacher(joinTeacherDTO);
