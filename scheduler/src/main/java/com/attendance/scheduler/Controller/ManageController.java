@@ -44,7 +44,7 @@ public class ManageController {
     public ResponseEntity<String> deleteSchedule(@ModelAttribute("classList") DeleteClassDTO deleteClassDTO){
 
         manageService.deleteClass(deleteClassDTO);
-        log.info("delete_List={}", deleteClassDTO.getDeleteClass());
+        log.info("delete_List={}", deleteClassDTO.getDeleteClassList());
         return ResponseEntity.ok("삭제되었습니다.");
     }
 }

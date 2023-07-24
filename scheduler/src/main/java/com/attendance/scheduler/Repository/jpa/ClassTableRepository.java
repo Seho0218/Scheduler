@@ -4,6 +4,7 @@ import com.attendance.scheduler.Entity.ClassEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -27,6 +28,11 @@ public interface ClassTableRepository extends JpaRepository<ClassEntity, String>
     /*
     * delete StudentName
     * */
-    long deleteByStudentName(String studentName);
+
+
+    @Transactional
+    void deleteByStudentName(String studentName);
+
+    void deleteByStudentNameIn(List<String> studentName);
 
 }

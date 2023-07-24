@@ -5,10 +5,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.List;
+
 @Getter @Setter
 @ToString
 @NoArgsConstructor
 public class DeleteClassDTO {
 
-    String deleteClass;
+    List<String> deleteClassList;
 }
