@@ -7,6 +7,7 @@ import com.attendance.scheduler.Service.SubmitService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -18,7 +19,7 @@ public class SubmitServiceImpl implements SubmitService {
     private final ClassTableRepository classTableRepository;
 
     @Override
-    @Transactional
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public void saveClassTable(ClassDTO classDTO) {
         classValidator(classDTO);
         String trimmedStudentName = classDTO.getStudentName().trim();
@@ -26,8 +27,24 @@ public class SubmitServiceImpl implements SubmitService {
         classTableRepository.save(classDTO.toEntity());
     }
 
-    private static void duplicateClassValidator(ClassDTO classDTO, List<Object[]> classesOrderByAsc) {
+    private void classValidator(ClassDTO classDTO) {
+        log.info("classDTO={}", classDTO);
+        ClassEntity byStudentNameIs = classTableRepository.findByStudentNameIs(classDTO.getStudentName());
+        log.info("byStudentNameIs={}", byStudentNameIs);
+
+        if (byStudentNameIs == null) {
+            duplicateClassValidator(classDTO);
+        } else {
+            log.info("check");
+            classTableRepository.deleteByStudentName(classDTO.getStudentName());
+            duplicateClassValidator(classDTO);
+        }
+    }
+
+    private void duplicateClassValidator(ClassDTO classDTO) {
         String errorCode = "다른 원생과 겹치는 시간이 있습니다. 새로고침 후, 다시 신청해 주세요.";
+
+        List<Object[]> classesOrderByAsc = classTableRepository.findClassesOrderByAsc();
 
         for (Object[] row : classesOrderByAsc) {
             Integer mondayValue = (Integer) row[0];
@@ -41,20 +58,6 @@ public class SubmitServiceImpl implements SubmitService {
             if (wednesdayValue.equals(classDTO.getWednesday())) throw new RuntimeException(errorCode);
             if (thursdayValue.equals(classDTO.getThursday())) throw new RuntimeException(errorCode);
             if (fridayValue.equals(classDTO.getFriday())) throw new RuntimeException(errorCode);
-        }
-    }
-
-    private void classValidator(ClassDTO classDTO) {
-        log.info("classDTO={}", classDTO);
-        ClassEntity byStudentNameIs = classTableRepository.findByStudentNameIs(classDTO.getStudentName());
-        log.info("byStudentNameIs={}", byStudentNameIs);
-
-        if (byStudentNameIs == null) {
-            duplicateClassValidator(classDTO, classTableRepository.findClassesOrderByAsc());
-        } else {
-            log.info("check");
-            classTableRepository.deleteByStudentName(classDTO.getStudentName());
-            duplicateClassValidator(classDTO, classTableRepository.findClassesOrderByAsc());
         }
     }
 }

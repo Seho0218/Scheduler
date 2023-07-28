@@ -22,7 +22,7 @@ public class TeacherDetailsService implements UserDetailsService {
         log.info("teacherId = {}", username);
         final TeacherEntity byTeacherIdIs = teacherRepository.findByTeacherIdIs(username);
         if(byTeacherIdIs == null){
-            throw new UsernameNotFoundException(username);
+            return null;
         }
         return new TeacherDetails(byTeacherIdIs);
     }
