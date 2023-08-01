@@ -69,6 +69,8 @@
                 <input type="text" id="studentName" th:field="*{studentName}"
                       th:errorclass="field-error" class="form-control" placeholder="이름을 정확히 입력해주세요">
                 <div class="field-error" th:errors="*{studentName}"></div>
+                <div class="field-error" th:text="${studentName}"></div><br>
+
             </div>
         </div>
         <!--요일-->

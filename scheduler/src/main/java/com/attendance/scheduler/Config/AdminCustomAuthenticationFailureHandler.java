@@ -36,6 +36,6 @@ public class AdminCustomAuthenticationFailureHandler implements AuthenticationFa
 
         log.info("errorMessage = {}", errorMessage);
         request.getSession().setAttribute("errorMessage", errorMessage);
-        response.sendRedirect("/login/adminError");
+        response.sendRedirect("/adminError");
     }
 }

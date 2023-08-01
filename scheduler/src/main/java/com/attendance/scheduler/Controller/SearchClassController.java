@@ -66,6 +66,16 @@ public class SearchClassController {
             return "index";
         }
 
+        StudentClassDTO studentClassDTO = new StudentClassDTO();
+        studentClassDTO.setStudentName(classDTO.getStudentName());
+        StudentClassDTO studentClassesList = searchClassService.findStudentClasses(studentClassDTO);
+
+        if (studentClassesList != null) {
+            getClassList(model);
+            model.addAttribute("studentName", "이미 수업을 신청했습니다.");
+            return "index";
+        }
+
         try {
             submitService.saveClassTable(classDTO);
             return "redirect:/completion";

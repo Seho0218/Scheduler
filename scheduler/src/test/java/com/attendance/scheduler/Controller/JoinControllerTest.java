@@ -3,7 +3,6 @@ package com.attendance.scheduler.Controller;
 import com.attendance.scheduler.Dto.LoginDTO;
 import com.attendance.scheduler.Dto.Teacher.JoinTeacherDTO;
 import com.attendance.scheduler.Service.JoinService;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,7 +23,6 @@ class JoinControllerTest {
 
 
     @Test
-    @Transactional
     @DisplayName("교사 회원가입")
     void approved() {
 
@@ -33,10 +31,10 @@ class JoinControllerTest {
          * 회원가입
          */
         JoinTeacherDTO joinTeacherDTO = new JoinTeacherDTO();
-        joinTeacherDTO.setTeacherId("teacher");
+        joinTeacherDTO.setTeacherId("testTeacher");
         joinTeacherDTO.setPassword("123");
         joinTeacherDTO.setEmail("ghdtpgh8913@gmail.com");
-        joinTeacherDTO.setEmail("김교사");
+        joinTeacherDTO.setName("김교사");
         joinTeacherDTO.setApproved(true);
 
         /*
