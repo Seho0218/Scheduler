@@ -37,7 +37,10 @@ public class SearchClassServiceImpl implements SearchClassService {
     @Override
     public ClassListDTO findClassesOrderByAsc() {
 
-        List<Object[]> classesOrderByAsc = classTableRepository.findClassesOrderByAsc();
+        List<ClassDTO> classDTOS = classTableRepository.findAll()
+                .stream()
+                .map(classMapper::toClassDTO)
+                .collect(Collectors.toList());
 
         List<Integer> monday = new ArrayList<>();
         List<Integer> tuesday = new ArrayList<>();
@@ -45,21 +48,12 @@ public class SearchClassServiceImpl implements SearchClassService {
         List<Integer> thursday = new ArrayList<>();
         List<Integer> friday = new ArrayList<>();
 
-        for (Object[] row : classesOrderByAsc) {
-            Integer mondayValue = (Integer) row[0];
-            monday.add(mondayValue);
-
-            Integer tuesdayValue = (Integer) row[1];
-            tuesday.add(tuesdayValue);
-
-            Integer wednesdayValue = (Integer) row[2];
-            wednesday.add(wednesdayValue);
-
-            Integer thursdayValue = (Integer) row[3];
-            thursday.add(thursdayValue);
-
-            Integer fridayValue = (Integer) row[4];
-            friday.add(fridayValue);
+        for (ClassDTO classDTO : classDTOS) {
+            monday.add(classDTO.getMonday());
+            tuesday.add(classDTO.getTuesday());
+            wednesday.add(classDTO.getWednesday());
+            thursday.add(classDTO.getThursday());
+            friday.add(classDTO.getFriday());
         }
 
         ClassListDTO classListDTO = ClassListDTO.getInstance();

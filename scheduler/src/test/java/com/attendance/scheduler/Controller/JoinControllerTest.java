@@ -1,17 +1,21 @@
 package com.attendance.scheduler.Controller;
 
-import com.attendance.scheduler.Dto.LoginDTO;
 import com.attendance.scheduler.Dto.Teacher.JoinTeacherDTO;
+import com.attendance.scheduler.Entity.TeacherEntity;
+import com.attendance.scheduler.Repository.jpa.TeacherRepository;
 import com.attendance.scheduler.Service.JoinService;
 import lombok.RequiredArgsConstructor;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
+@Transactional
 @RequiredArgsConstructor
 class JoinControllerTest {
 
@@ -20,7 +24,8 @@ class JoinControllerTest {
     @Autowired
     private JoinService joinService;
 
-
+    @Autowired
+    private TeacherRepository teacherRepository;
 
     @Test
     @DisplayName("교사 회원가입")
@@ -28,7 +33,7 @@ class JoinControllerTest {
 
         //Given
         /*
-         * 회원가입
+         * 회원가입 정보 1
          */
         JoinTeacherDTO joinTeacherDTO = new JoinTeacherDTO();
         joinTeacherDTO.setTeacherId("testTeacher");
@@ -36,23 +41,31 @@ class JoinControllerTest {
         joinTeacherDTO.setEmail("ghdtpgh8913@gmail.com");
         joinTeacherDTO.setName("김교사");
         joinTeacherDTO.setApproved(true);
-
-        /*
-            로그인
-         */
-        LoginDTO loginDTO = new LoginDTO();
-        loginDTO.setUsername("teacher");
-        loginDTO.setPassword("123");
+        joinService.joinTeacher(joinTeacherDTO);
 
 
         //When
-        joinService.joinTeacher(joinTeacherDTO);
-        JoinTeacherDTO duplicateTeacherId = joinService.findDuplicateTeacherId(joinTeacherDTO);
-
+        /*
+         *   회원가입 정보 2
+         */
+        JoinTeacherDTO joinTeacherDTO2 = new JoinTeacherDTO();
+        joinTeacherDTO2.setTeacherId("testTeacher");
+        joinTeacherDTO2.setPassword("123");
+        joinTeacherDTO2.setEmail("ghdtpgh8913@gmail.com");
+        joinTeacherDTO2.setName("김교사");
+        joinTeacherDTO2.setApproved(true);
 
         //Then
-        if (duplicateTeacherId != null) {
+
+        TeacherEntity testTeacher = teacherRepository.findByTeacherIdIs("testTeacher");
+
+        if (joinTeacherDTO2.getTeacherId().equals(testTeacher.getTeacherId())) {
             assertEquals("중복된 아이디 입니다.", duplicateErrorMessage);
         }
+    }
+
+    @AfterEach
+    void afterEach(){
+        teacherRepository.deleteByTeacherId("testTeacher");
     }
 }

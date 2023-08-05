@@ -2,6 +2,7 @@ package com.attendance.scheduler.Service.Impl;
 
 import com.attendance.scheduler.Dto.ClassDTO;
 import com.attendance.scheduler.Entity.ClassEntity;
+import com.attendance.scheduler.Mapper.ClassMapper;
 import com.attendance.scheduler.Repository.jpa.ClassTableRepository;
 import com.attendance.scheduler.Service.SubmitService;
 import lombok.RequiredArgsConstructor;
@@ -11,11 +12,13 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class SubmitServiceImpl implements SubmitService {
+    private final ClassMapper classMapper;
     private final ClassTableRepository classTableRepository;
 
     @Override
@@ -44,14 +47,17 @@ public class SubmitServiceImpl implements SubmitService {
     private void duplicateClassValidator(ClassDTO classDTO) {
         String errorCode = "다른 원생과 겹치는 시간이 있습니다. 새로고침 후, 다시 신청해 주세요.";
 
-        List<Object[]> classesOrderByAsc = classTableRepository.findClassesOrderByAsc();
+        List<ClassDTO> allClassDTO = classTableRepository.findAll()
+                .stream()
+                .map(classMapper::toClassDTO)
+                .collect(Collectors.toList());
 
-        for (Object[] row : classesOrderByAsc) {
-            Integer mondayValue = (Integer) row[0];
-            Integer tuesdayValue = (Integer) row[1];
-            Integer wednesdayValue = (Integer) row[2];
-            Integer thursdayValue = (Integer) row[3];
-            Integer fridayValue = (Integer) row[4];
+        for (ClassDTO classDTOList: allClassDTO) {
+            Integer mondayValue = classDTOList.getMonday();
+            Integer tuesdayValue = classDTOList.getTuesday();
+            Integer wednesdayValue = classDTOList.getWednesday();
+            Integer thursdayValue = classDTOList.getThursday();
+            Integer fridayValue = classDTOList.getFriday();
 
             if (mondayValue.equals(classDTO.getMonday())) throw new RuntimeException(errorCode);
             if (tuesdayValue.equals(classDTO.getTuesday())) throw new RuntimeException(errorCode);

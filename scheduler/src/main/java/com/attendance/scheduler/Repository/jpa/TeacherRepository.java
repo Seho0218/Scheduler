@@ -7,4 +7,6 @@ public interface TeacherRepository extends JpaRepository<TeacherEntity, Long> {
 
     TeacherEntity findByTeacherIdIs(String teacherId);
     TeacherEntity findByEmailIs(String email);
+
+    void deleteByTeacherId(String teacherId);
 }
