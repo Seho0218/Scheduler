@@ -1,6 +1,6 @@
 package com.attendance.scheduler.Service;
 
-import com.attendance.scheduler.Config.Authority.TeacherDetailsService;
+import com.attendance.scheduler.Config.Authority.UserDetailsService;
 import com.attendance.scheduler.Dto.LoginDTO;
 import com.attendance.scheduler.Dto.Teacher.JoinTeacherDTO;
 import com.attendance.scheduler.Entity.TeacherEntity;
@@ -27,7 +27,7 @@ class JoinServiceTest {
     private JoinService joinService;
 
     @Autowired
-    private TeacherDetailsService teacherDetailsService;
+    private UserDetailsService userDetailsService;
 
     @Autowired
     private TeacherRepository teacherRepository;
@@ -94,8 +94,7 @@ class JoinServiceTest {
         loginDTO.setPassword("123");
 
         //when
-
-        UserDetails userDetails = teacherDetailsService
+        UserDetails userDetails = userDetailsService
                 .loadUserByUsername(loginDTO.getUsername());
 
         //then
@@ -103,6 +102,7 @@ class JoinServiceTest {
                 .matches(loginDTO.getPassword(), userDetails.getPassword());
         assertEquals("teacher", userDetails.getUsername());
         assertTrue(matches);
-
     }
+
+
 }

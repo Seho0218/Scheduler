@@ -1,6 +1,5 @@
 package com.attendance.scheduler.Controller;
 
-import com.attendance.scheduler.Dto.Admin.AdminDTO;
 import com.attendance.scheduler.Dto.LoginDTO;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -34,22 +33,5 @@ public class LoginController {
         model.addAttribute("login", new LoginDTO());
         model.addAttribute("errorMessage", session.getAttribute("errorMessage"));
         return "login";
-    }
-
-    /*
-     * adminLogin Form
-     * */
-    @GetMapping("adminLogin")
-    public String adminLoginForm(Model model) {
-        model.addAttribute("login", new AdminDTO());
-        return "adminLogin";
-    }
-
-    @GetMapping("/adminError")
-    public String adminLogin(HttpSession session, Model model) {
-        log.info("errorMessage = {}", session.getAttribute("errorMessage"));
-        model.addAttribute("login", new AdminDTO());
-        model.addAttribute("errorMessage", session.getAttribute("errorMessage"));
-        return "adminLogin";
     }
 }

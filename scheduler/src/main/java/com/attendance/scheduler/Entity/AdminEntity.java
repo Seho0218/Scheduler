@@ -38,5 +38,4 @@ public class AdminEntity {
     public void updatePassword(String newPassword) {
         this.password = newPassword;
     }
-
 }

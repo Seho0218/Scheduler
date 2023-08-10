@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -24,8 +23,7 @@ public class SecurityConfig{
 			"/join/**",
 			"/login/**",
 			"/cert/**",
-			"/css/*",
-			"/adminLogin/**",
+			"/css/*"
 //			"/**"
 	};
 
@@ -35,13 +33,14 @@ public class SecurityConfig{
 	}
 
 	@Bean
-	@Order(1)
 	public SecurityFilterChain teacherFilterChain(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity
+				.csrf().disable()
 				.authorizeHttpRequests(auth -> auth
 						.requestMatchers(ENDPOINTS_WHITELIST).permitAll()
 						.requestMatchers("/login/Login").permitAll()
-						.requestMatchers("/manage/*").hasRole("TEACHER")
+						.requestMatchers("/manage/*").hasAnyRole("TEACHER", "ADMIN")
+						.requestMatchers("/admin/*").hasRole("ADMIN")
 						.anyRequest().authenticated()
 				)
 				.formLogin()
@@ -55,34 +54,7 @@ public class SecurityConfig{
 				.invalidateHttpSession(true)
 				.deleteCookies("JSESSIONID")
 				.logoutSuccessUrl("/");
-
-//				.httpBasic().disable()
-//				.csrf().disable();
-
 		log.info("1st Configurer");
-		return httpSecurity.build();
-	}
-
-	@Bean
-	public SecurityFilterChain adminFilterChain(HttpSecurity httpSecurity) throws Exception {
-		httpSecurity
-				.authorizeHttpRequests(auth -> auth
-						.requestMatchers("/adminLogin/Login").permitAll()
-						.requestMatchers("/admin/*").hasRole("ADMIN")
-						.anyRequest().authenticated()
-				)
-				.formLogin()
-				.defaultSuccessUrl("/admin/teacherList")
-				.failureHandler(new AdminCustomAuthenticationFailureHandler())
-				.loginProcessingUrl("/adminLogin/Login")
-				.and()
-				.logout()
-				.logoutUrl("/logout")
-				.invalidateHttpSession(true)
-				.deleteCookies("JSESSIONID")
-				.logoutSuccessUrl("/");
-
-		log.info("2nd Configurer");
 		return httpSecurity.build();
 	}
 }

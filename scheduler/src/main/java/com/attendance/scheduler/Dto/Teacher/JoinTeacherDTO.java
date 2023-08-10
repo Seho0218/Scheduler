@@ -39,5 +39,4 @@ public class JoinTeacherDTO {
                 .approved(approved)
                 .build();
     }
-
 }

@@ -8,14 +8,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class ManageServiceImpl implements ManageService {
 
     private final ClassTableRepository classTableRepository;
 
     @Override
-    @Transactional
     public void deleteClass(DeleteClassDTO deleteClassDTO) {
+        System.out.println("deleteClassDTO.getDeleteClassList() = " + deleteClassDTO.getDeleteClassList());
         classTableRepository.deleteByStudentNameIn(deleteClassDTO.getDeleteClassList());
     }
 }

@@ -1,5 +1,7 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<html lang="ko"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -16,6 +18,14 @@
 <body>
 <div class="container">
     <div th:object="${classList}">
+        <table>
+            <tr>
+                <th><a th:href ="@{/logout}"><button class="btn btn-primary"
+                                                     sec:authorize="isAuthenticated()">Logout</button></a></th>
+                <th><a th:href ="@{/admin/teacherList}"><button class="btn btn-primary"
+                                                                sec:authorize="hasRole('ROLE_ADMIN')">관리하기</button></a></th>
+            </tr>
+        </table>
         <table class="table caption-top table-responsive" id="jb-table">
             <caption>List of users</caption>
             <thead id="header">
@@ -31,14 +41,17 @@
                     <th scope="col">삭제</th>
                 </tr>
             </thead>
+            <tbody>
+
+            </tbody>
             <tbody th:each="class : ${findClassTable}">
                 <tr>
                     <td>
-                        <div class="form-check" id="multiChk">
+<!--                        <div class="form-check" id="multiChk">-->
 <!--                            <label><input class="form-check-input" type="checkbox"-->
 <!--                                          th:field="*{deleteClassList}"-->
 <!--                                          th:value="${class.getStudentName()}"></label>-->
-                        </div>
+<!--                        </div>-->
                     </td>
                     <td th:text="${class.getStudentName()}"></td>
                     <td th:text="${class.getMonday() == 0 ? '결석' : '오후 ' + class.getMonday() + '시'}"></td>
@@ -67,18 +80,17 @@
         $('.delete-button').click(function() {
             var studentName = $(this).attr('value');
             var confirmation = confirm('정말로 ' + studentName + '을(를) 삭제하시겠습니까?');
-
             if (confirmation) {
                 $.ajax({
                     url: '/manage/delete',
                     method: 'POST',
                     data: { deleteClassList: studentName },
-                    success: function() {
+                    success: function(response) {
                         alert('삭제되었습니다.');
                         location.reload();
                     },
-                    error: function() {
-                        alert('삭제에 실패했습니다. 다시 시도해주세요.');
+                    error: function(xhr, status, error) {
+                        console.log(error);
                     }
                 });
             }

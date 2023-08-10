@@ -6,5 +6,4 @@ public interface ManageService {
 
     // 수업 삭제
     void deleteClass(DeleteClassDTO deleteClassDTO);
-
 }

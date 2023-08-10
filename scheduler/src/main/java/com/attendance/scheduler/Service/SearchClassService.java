@@ -12,8 +12,7 @@ public interface SearchClassService {
       // 수업 유무 조회
       List<ClassDTO> findClassTable();
 
-      ClassListDTO findClassesOrderByAsc();
+      ClassListDTO findAllClasses();
 
       StudentClassDTO findStudentClasses(StudentClassDTO studentClassDTO);
-
 }

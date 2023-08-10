@@ -31,7 +31,6 @@ public class ManageController {
     // 조회
     @GetMapping("class")
     public String managePage(Model model){
-
         List<ClassDTO> classTable = searchClassService.findClassTable();
         model.addAttribute("classList", new DeleteClassDTO());
         model.addAttribute("findClassTable", classTable);
@@ -42,7 +41,6 @@ public class ManageController {
     // 삭제
     @PostMapping("delete")
     public ResponseEntity<String> deleteSchedule(@ModelAttribute("classList") DeleteClassDTO deleteClassDTO){
-
         manageService.deleteClass(deleteClassDTO);
         log.info("delete_List={}", deleteClassDTO.getDeleteClassList());
         return ResponseEntity.ok("삭제되었습니다.");

@@ -25,6 +25,7 @@ class SearchClassServiceImplTest {
 
     @Autowired
     private StudentClassMapper studentClassMapper;
+
     @Autowired
     private ClassMapper classMapper;
 
@@ -80,7 +81,6 @@ class SearchClassServiceImplTest {
             Assertions.assertEquals(thursday.get(i) , classDTOS.get(i).getThursday());
             Assertions.assertEquals(friday.get(i) , classDTOS.get(i).getFriday());
         }
-
     }
 
 
@@ -96,15 +96,13 @@ class SearchClassServiceImplTest {
         ClassEntity byStudentNameIs = classTableRepository.findByStudentNameIs(studentName);
 
         //Then
-
         StudentClassDTO classDTO = studentClassMapper.toClassDTO(byStudentNameIs);
         Assertions.assertEquals(classDTO.getStudentName(), studentClassDTO.getStudentName());
     }
 
     @AfterEach
     void afterEach(){
-        StudentClassDTO studentClassDTO = new StudentClassDTO();
-        studentClassDTO.setStudentName("testStudent");
         classTableRepository.deleteByStudentName("testStudent");
+        classTableRepository.deleteByStudentName("test2Student");
     }
 }

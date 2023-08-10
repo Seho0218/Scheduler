@@ -113,7 +113,7 @@ public class SearchClassController {
         }
     }
     private void getClassList(Model model) {
-        ClassListDTO classesOrderByAsc = searchClassService.findClassesOrderByAsc();
+        ClassListDTO classesOrderByAsc = searchClassService.findAllClasses();
         model.addAttribute("classList", classesOrderByAsc);
 
         log.info("monday = {}", classesOrderByAsc.getMondayClassList());
@@ -129,7 +129,7 @@ public class SearchClassController {
 * 그 결과에 조회 학생의 정보를 재출력
 * */
     private void searchStudentClass(Model model, StudentClassDTO studentClassesList) {
-        ClassListDTO classesOrderByAsc = searchClassService.findClassesOrderByAsc();
+        ClassListDTO classesOrderByAsc = searchClassService.findAllClasses();
 
         List<Integer> mondayClassList = classesOrderByAsc.getMondayClassList();
         List<Integer> tuesdayClassList = classesOrderByAsc.getTuesdayClassList();

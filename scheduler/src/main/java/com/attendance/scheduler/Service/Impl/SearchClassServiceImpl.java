@@ -35,7 +35,7 @@ public class SearchClassServiceImpl implements SearchClassService {
     }
 
     @Override
-    public ClassListDTO findClassesOrderByAsc() {
+    public ClassListDTO findAllClasses() {
 
         List<ClassDTO> classDTOS = classTableRepository.findAll()
                 .stream()

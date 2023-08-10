@@ -30,7 +30,7 @@ public class BasicController {
     }
 
     private void getClassList(Model model) {
-        ClassListDTO classesOrderByAsc = searchClassService.findClassesOrderByAsc();
+        ClassListDTO classesOrderByAsc = searchClassService.findAllClasses();
 
         model.addAttribute("classList", classesOrderByAsc);
 
@@ -39,6 +39,5 @@ public class BasicController {
         log.info("wednesday = {}", classesOrderByAsc.getWednesdayClassList());
         log.info("thursday = {}", classesOrderByAsc.getThursdayClassList());
         log.info("friday = {}", classesOrderByAsc.getFridayClassList());
-        log.info("friday = {}", classesOrderByAsc.getClass());
     }
 }

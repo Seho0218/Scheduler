@@ -10,5 +10,3 @@ import org.springframework.stereotype.Component;
 public interface ClassMapper {
     ClassDTO toClassDTO(ClassEntity classEntity);
 }
-
-
