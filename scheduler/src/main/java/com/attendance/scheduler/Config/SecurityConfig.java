@@ -24,7 +24,6 @@ public class SecurityConfig{
 			"/login/**",
 			"/cert/**",
 			"/css/*"
-//			"/**"
 	};
 
 	@Bean
@@ -41,13 +40,14 @@ public class SecurityConfig{
 						.requestMatchers("/login/Login").permitAll()
 						.requestMatchers("/manage/*").hasAnyRole("TEACHER", "ADMIN")
 						.requestMatchers("/admin/*").hasRole("ADMIN")
+						.requestMatchers("/login").denyAll()
 						.anyRequest().authenticated()
 				)
 				.formLogin()
 				.loginPage("/login")
 				.loginProcessingUrl("/login/Login")
 				.defaultSuccessUrl("/manage/class")
-				.failureHandler(new TeacherCustomAuthenticationFailureHandler())
+				.failureHandler(new CustomAuthenticationFailureHandler())
 				.and()
 				.logout()
 				.logoutUrl("/logout")

@@ -1,5 +1,7 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<html lang="ko"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,42 +13,68 @@
             width: 1.5em;
             height: 1.5em;
         }
+
+        body { background-color: lightgoldenrodyellow; }
+
+        .form-check-label input {
+            margin-right: 10px;
+        }
+
+        .board{
+            background-color: white;
+            padding: 1em;
+        }
+
+
     </style>
 </head>
 <body>
 <div class="container">
-    <div th:object="${teacherList}">
-        <table class="table caption-top table-responsive" id="jb-table">
-            <caption>List of users</caption>
-            <thead id="header">
-            <tr>
-                <th scope="col">교사 이름</th>
-                <th scope="col">이름</th>
-                <th scope="col">승인 상태</th>
-                <th scope="col">승인</th>
-                <th scope="col">승인 취소</th>
-            </tr>
-            </thead>
-            <tbody th:each="teacher : ${teacherList}">
-            <tr>
-                <td th:text="${teacher.teacherId}"></td>
-                <td th:text="${teacher.getName()}"></td>
-                <td th:text="${teacher.isApproved() == true ? '허가' : '비허가'}"></td>
-                <td>
-                    <button class="btn btn-primary approve-button"
-                            th:value="${teacher.getTeacherId()}">승인</button>
-                </td>
-                <td>
-                    <button class="btn btn-primary cancel-button"
-                                 th:value="${teacher.getTeacherId()}">승인 취소</button>
-                </td>
-            </tr>
-            </tbody>
-            <tfoot>
-            <tr>
-            </tr>
-            </tfoot>
-        </table>
+    <div class="py-2">
+        <div class="board rounded-3 border border-2">
+        <div th:object="${teacherList}">
+            <table>
+                <tr>
+                    <th><a th:href ="@{/logout}"><button class="btn btn-primary"
+                                                         sec:authorize="isAuthenticated()">Logout</button></a></th>
+                    <th><a th:href ="@{/manage/class}"><button class="btn btn-primary"
+                                                         sec:authorize="isAuthenticated()">수업 관리</button></a></th>
+                </tr>
+            </table>
+            <table class="table caption-top table-responsive" id="jb-table">
+                <caption>List of users</caption>
+
+                <thead id="header">
+                <tr>
+                    <th scope="col">교사 이름</th>
+                    <th scope="col">이름</th>
+                    <th scope="col">승인 상태</th>
+                    <th scope="col">승인</th>
+                    <th scope="col">승인 취소</th>
+                </tr>
+                </thead>
+                <tbody th:each="teacher : ${teacherList}">
+                <tr>
+                    <td th:text="${teacher.teacherId}"></td>
+                    <td th:text="${teacher.getName()}"></td>
+                    <td th:text="${teacher.isApproved() == true ? '승인' : '비승인'}"></td>
+                    <td>
+                        <button class="btn btn-primary approve-button"
+                                th:value="${teacher.getTeacherId()}">승인</button>
+                    </td>
+                    <td>
+                        <button class="btn btn-primary cancel-button"
+                                     th:value="${teacher.getTeacherId()}">승인 취소</button>
+                    </td>
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+                </tr>
+                </tfoot>
+            </table>
+            </div>
+        </div>
     </div>
 </div>
 </body>
@@ -61,7 +89,7 @@
                 $.ajax({
                     url: '/admin/grant',
                     method: 'POST',
-                    data: { teacherId: teacherId },
+                    data: { username : teacherId },
                     success: function() {
                         alert('승인되었습니다');
                         location.reload();
@@ -81,7 +109,7 @@
                 $.ajax({
                     url: '/admin/revoke',
                     method: 'POST',
-                    data: { teacherId: teacherId },
+                    data: { username : teacherId },
                     success: function() {
                         alert('승인 취소 되었습니다');
                         location.reload();

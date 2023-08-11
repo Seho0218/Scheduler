@@ -11,9 +11,10 @@ import com.attendance.scheduler.Service.SearchClassService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static java.util.Collections.singletonList;
 
 @Service
 @RequiredArgsConstructor
@@ -42,28 +43,15 @@ public class SearchClassServiceImpl implements SearchClassService {
                 .map(classMapper::toClassDTO)
                 .collect(Collectors.toList());
 
-        List<Integer> monday = new ArrayList<>();
-        List<Integer> tuesday = new ArrayList<>();
-        List<Integer> wednesday = new ArrayList<>();
-        List<Integer> thursday = new ArrayList<>();
-        List<Integer> friday = new ArrayList<>();
-
-        for (ClassDTO classDTO : classDTOS) {
-            monday.add(classDTO.getMonday());
-            tuesday.add(classDTO.getTuesday());
-            wednesday.add(classDTO.getWednesday());
-            thursday.add(classDTO.getThursday());
-            friday.add(classDTO.getFriday());
-        }
-
         ClassListDTO classListDTO = ClassListDTO.getInstance();
 
-        classListDTO.setMondayClassList(monday);
-        classListDTO.setTuesdayClassList(tuesday);
-        classListDTO.setWednesdayClassList(wednesday);
-        classListDTO.setThursdayClassList(thursday);
-        classListDTO.setFridayClassList(friday);
-
+        for (ClassDTO classDTO : classDTOS) {
+            classListDTO.setMondayClassList(singletonList(classDTO.getMonday()));
+            classListDTO.setTuesdayClassList(singletonList(classDTO.getTuesday()));
+            classListDTO.setWednesdayClassList(singletonList(classDTO.getWednesday()));
+            classListDTO.setThursdayClassList(singletonList(classDTO.getThursday()));
+            classListDTO.setFridayClassList(singletonList(classDTO.getFriday()));
+        }
         return classListDTO;
     }
 

@@ -1,6 +1,6 @@
 package com.attendance.scheduler.Service;
 
-import com.attendance.scheduler.Config.Authority.UserDetailsService;
+import com.attendance.scheduler.Config.Authority.UserDetailService;
 import com.attendance.scheduler.Dto.LoginDTO;
 import com.attendance.scheduler.Dto.Teacher.JoinTeacherDTO;
 import com.attendance.scheduler.Entity.TeacherEntity;
@@ -27,7 +27,7 @@ class JoinServiceTest {
     private JoinService joinService;
 
     @Autowired
-    private UserDetailsService userDetailsService;
+    private UserDetailService userDetailsService;
 
     @Autowired
     private TeacherRepository teacherRepository;

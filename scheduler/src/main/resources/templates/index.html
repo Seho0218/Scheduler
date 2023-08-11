@@ -1,5 +1,7 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<html lang="ko"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -46,6 +48,18 @@
 </head>
 <body>
 <div class="container">
+    <div class="py-sm-1">
+            <table>
+                <tr>
+                    <th><a th:href = "@{/logout}"><button class="btn btn-primary"
+                                                           sec:authorize="isAuthenticated()">Logout</button></a></th>
+                    <th><a th:href = "@{/manage/class}"><button class="btn btn-primary"
+                                                                sec:authorize="isAuthenticated()">수업 관리</button></a></th>
+                </tr>
+            </table>
+        </div>
+    </div>
+
     <form method='post' role="form" th:action="@{/search/submit}" th:object="${class}">
         <div class="py-2">
             <div class="header">
@@ -56,9 +70,18 @@
         <!--학생 이름-->
         <div class="py-2">
             <div class="board rounded-3 border border-2">
-                <a href = "/search/">
-                    <button type="button" class="btn btn-primary">수업 조회 및 변경</button>
-                </a><br><br>
+                <table>
+                    <tr>
+                        <th><a th:href = "@{/logout/}"><button class="btn btn-primary"
+                                                             sec:authorize="isAuthenticated()">Logout</button></a></th>
+                        <th><a th:href = "@{/manage/class}"><button class="btn btn-primary"
+                                                                   sec:authorize="isAuthenticated()">수업 관리</button></a></th>
+                        <th><a th:href = "@{/search/}">
+                            <button class="btn btn-primary" type="button">수업 조회 및 변경</button>
+                        </a></th>
+                    </tr>
+                </table>
+               <br><br>
 
                 <h1> 1학기 시간표 신청 </h1>
                 <p>1 : 00 ~ 7 : 00 (마지막수업 6시)<br>

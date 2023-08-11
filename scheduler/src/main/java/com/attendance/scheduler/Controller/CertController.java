@@ -101,8 +101,7 @@ public class CertController {
             model.addAttribute("account", new TeacherDTO());
             return "cert/FindPwd";
         }
-        return "cert/authNumView";
-//        return "redirect:/cert/authNumView";
+            return "cert/authNum";
     }
 
     /*
@@ -110,12 +109,12 @@ public class CertController {
      * */
     @PostMapping("authNum")
     private String authNum(FindPasswordDTO findPasswordDTO, Model model, HttpSession session){
-        log.info("findPasswordDTO={}", findPasswordDTO);
+
         try {
             model.addAttribute("auth", new CertDTO());
             model.addAttribute("teacherId", findPasswordDTO);
             certService.setupAuthNum(findPasswordDTO, session);
-            return "cert/authNumView";
+            return "cert/authNum";
         } catch (Exception e) {
             model.addAttribute("errorMessage", e.getMessage());
             return "cert/findPwd";
@@ -137,7 +136,7 @@ public class CertController {
             model.addAttribute("auth", new CertDTO());
             model.addAttribute("teacherId", certDTO);
             model.addAttribute("errorMessage","인증번호를 전송해주세요");
-            return "cert/authNumView";
+            return "cert/authNum";
         }
 
 
@@ -147,7 +146,7 @@ public class CertController {
             model.addAttribute("errorMessage","인증시간이 만료되었습니다");
             session.setAttribute(authNum, null);
             session.setMaxInactiveInterval(0);
-            return "cert/authNumView";
+            return "cert/authNum";
         }
 
         // 인증번호
@@ -156,7 +155,7 @@ public class CertController {
             model.addAttribute("auth", new CertDTO());
             model.addAttribute("teacherId", certDTO);
             model.addAttribute("errorMessage","인증번호가 일치하지 않습니다");
-            return "cert/authNumView";
+            return "cert/authNum";
         } else {
             // 인증번호가 일치하면
             model.addAttribute("pwdEdit", new PwdEditDTO());

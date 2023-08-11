@@ -8,11 +8,13 @@ import com.attendance.scheduler.Repository.jpa.AdminRepository;
 import com.attendance.scheduler.Repository.jpa.TeacherRepository;
 import com.attendance.scheduler.Service.AdminService;
 import com.attendance.scheduler.Service.JoinService;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -36,6 +38,7 @@ class AdminControllerTest {
     private PasswordEncoder passwordEncoder;
 
     @Test
+    @Transactional
     @DisplayName("교사에게 권한 부여")
     void grantAuth() {
 
@@ -71,5 +74,10 @@ class AdminControllerTest {
         adminRepository.save(adminDTO.toEntity());
 
         assertEquals(adminRepository.findByAdminIdIs("admin").getAdminId(), "admin");
+    }
+
+    @AfterEach
+    void test(){
+        teacherRepository.deleteByTeacherId("testId");
     }
 }
