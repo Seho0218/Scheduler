@@ -121,7 +121,7 @@ Link : http://seho0218.synology.me:3205/
     - `CustomAuthenticationFailureHandler.java`: 로그인 했을시 발생하는 오류를 반환하는 클래스입니다.
     - `SecurityConfig.java`: 스프링 시큐리티를 설정하고 규칙을 정의하는 클래스입니다.
 
-  - **Controller**: 스케줄러와 관련된 API 엔드포인트를 처리하는 컨트롤러 클래스를 포함하는 디렉토리입니다.
+- **Controller**: 스케줄러와 관련된 API 엔드포인트를 처리하는 컨트롤러 클래스를 포함하는 디렉토리입니다.
     - `BasicController.java`: 기본 API 엔드포인트를 처리하는 컨트롤러 클래스입니다.
     - `CertController.java`: 아이디찾기 및 비밀번호찾기 API 엔드포인트를 처리하는 컨트롤러 클래스입니다.
     - `JoinController.java`: 교사 회원가입 API 엔드포인트를 처리하는 컨트롤러 클래스입니다.
@@ -129,7 +129,7 @@ Link : http://seho0218.synology.me:3205/
     - `ManageController.java`: 관리 API 엔드포인트를 처리하는 컨트롤러 클래스입니다.
     - `SearchClassController.java`: 스케줄러 API 엔드포인트를 처리하는 컨트롤러 클래스입니다.
 
-  - **Dto**: 데이터 전송 객체(DTO)를 포함하는 디렉토리입니다.
+- **Dto**: 데이터 전송 객체(DTO)를 포함하는 디렉토리입니다.
     - **Admin**
       - `AdminDTO.java`: 관리자 정보를 가진 DTO 클래스입니다.
       - `ApproveTeacherDTO.java`:  관리자의 교사 권한 제어를 위한  DTO 클래스입니다.
@@ -151,18 +151,18 @@ Link : http://seho0218.synology.me:3205/
     - `ClassEntity.java`: 수업 스케쥴 정보를 담고 있는 엔티티 클래스입니다.
     - `TeacherEntity.java`: 교사 정보를 담고 있는 엔티티 클래스입니다.
 
-  - **Mapper**: 엔티티와 DTO 간의 매핑을 처리하는 매퍼 클래스를 포함하는 디렉토리입니다.
+- **Mapper**: 엔티티와 DTO 간의 매핑을 처리하는 매퍼 클래스를 포함하는 디렉토리입니다.
     - `ClassMapper.java`: 클래스 엔티티에서 DTO로 가는 매핑을 담당하는 매퍼 클래스입니다.
     - `JoinTeacherMapper.java`: 클래스 엔티티에서 DTO로 가는 매핑을 담당하는 매퍼 클래스입니다.
     - `StudentClassMapper.java`: 학생이 신청한 수강목록 엔티티에서 DTO로 가는 매핑을 담당하는 매퍼 클래스입니다.
 
-  - **Repository**: 스케줄 데이터에 접근하기 위한 리포지토리 인터페이스를 포함하는 디렉토리입니다.
+ - **Repository**: 스케줄 데이터에 접근하기 위한 리포지토리 인터페이스를 포함하는 디렉토리입니다.
       **jpa**
       - `AdminRepository.java`: 관리자 데이터를 관리하기 위한 리포지토리 인터페이스입니다.
       - `ClassTableRepository.java`: 수업 조회, 저장 및 관리하기 위한 리포지토리 인터페이스입니다.
       - `TeacherRepository.java`: 교사 데이터를 관리하기 위한 리포지토리 인터페이스입니다.
 
-  - **Service**: 스케줄러 비즈니스 로직을 처리하는 서비스 인터페이스와 구현체를 포함하는 디렉토리입니다.
+- **Service**: 스케줄러 비즈니스 로직을 처리하는 서비스 인터페이스와 구현체를 포함하는 디렉토리입니다.
     - `AdminService.java`: 교사 회원의 권한 승인의 허가와 비허가를 관리하는 인터페이스 입니다.
     - `CertService.java`: 아이디와 비밀번호 찾기 등의 비즈니스 로직을 담당하는 서비스 인터페이스입니다.
     - `JoinService.java`: 교사 회원가입 비즈니스 로직을 담당하는 서비스 인터페이스입니다.
