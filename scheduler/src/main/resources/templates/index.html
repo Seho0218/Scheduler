@@ -49,40 +49,22 @@
 <body>
 <div class="container">
     <div class="py-sm-1">
-            <table>
-                <tr>
-                    <th><a th:href = "@{/logout}"><button class="btn btn-primary"
-                                                           sec:authorize="isAuthenticated()">Logout</button></a></th>
-                    <th><a th:href = "@{/manage/class}"><button class="btn btn-primary"
-                                                                sec:authorize="isAuthenticated()">수업 관리</button></a></th>
-                </tr>
-            </table>
-        </div>
+        <table>
+            <tr>
+                <th><a th:href = "@{/logout}"><button class="btn btn-primary"
+                                                      sec:authorize="isAuthenticated()">Logout</button></a></th>
+                <th><a th:href = "@{/manage/class}"><button class="btn btn-primary"
+                                                            sec:authorize="isAuthenticated()">수업 관리</button></a></th>
+            </tr>
+        </table>
     </div>
-
     <form method='post' role="form" th:action="@{/search/submit}" th:object="${class}">
         <div class="py-2">
-            <div class="header">
-
-
-            </div>
+            <div class="header"></div>
         </div>
         <!--학생 이름-->
         <div class="py-2">
             <div class="board rounded-3 border border-2">
-                <table>
-                    <tr>
-                        <th><a th:href = "@{/logout/}"><button class="btn btn-primary"
-                                                             sec:authorize="isAuthenticated()">Logout</button></a></th>
-                        <th><a th:href = "@{/manage/class}"><button class="btn btn-primary"
-                                                                   sec:authorize="isAuthenticated()">수업 관리</button></a></th>
-                        <th><a th:href = "@{/search/}">
-                            <button class="btn btn-primary" type="button">수업 조회 및 변경</button>
-                        </a></th>
-                    </tr>
-                </table>
-               <br><br>
-
                 <h1> 1학기 시간표 신청 </h1>
                 <p>1 : 00 ~ 7 : 00 (마지막수업 6시)<br>
                     수업은 아이의 당일 학습능력에 따라 <br>
@@ -93,7 +75,6 @@
                       th:errorclass="field-error" class="form-control" placeholder="이름을 정확히 입력해주세요">
                 <div class="field-error" th:errors="*{studentName}"></div>
                 <div class="field-error" th:text="${studentName}"></div><br>
-
             </div>
         </div>
         <!--요일-->
@@ -224,7 +205,6 @@
         <div class="text-end">
             <button class="btn btn-primary" type="submit">제출하기</button><br><br><br>
         </div>
-
     </form>
 </div><!-- container-->
 </body>

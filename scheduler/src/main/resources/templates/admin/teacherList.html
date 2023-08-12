@@ -55,16 +55,16 @@
                 </thead>
                 <tbody th:each="teacher : ${teacherList}">
                 <tr>
-                    <td th:text="${teacher.teacherId}"></td>
+                    <td th:text="${teacher.getUsername()}"></td>
                     <td th:text="${teacher.getName()}"></td>
                     <td th:text="${teacher.isApproved() == true ? '승인' : '비승인'}"></td>
                     <td>
                         <button class="btn btn-primary approve-button"
-                                th:value="${teacher.getTeacherId()}">승인</button>
+                                th:value="${teacher.getUsername()}">승인</button>
                     </td>
                     <td>
                         <button class="btn btn-primary cancel-button"
-                                     th:value="${teacher.getTeacherId()}">승인 취소</button>
+                                     th:value="${teacher.getUsername()}">승인 취소</button>
                     </td>
                 </tr>
                 </tbody>

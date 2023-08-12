@@ -15,5 +15,5 @@ public class FindPasswordDTO {
     private String email;
 
     @NotEmpty(message = "아이디을 입력해 주세요")
-    private String teacherId;
+    private String username;
 }

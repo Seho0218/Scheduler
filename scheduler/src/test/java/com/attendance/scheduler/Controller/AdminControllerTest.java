@@ -44,7 +44,7 @@ class AdminControllerTest {
 
         //Given
         JoinTeacherDTO joinTeacherDTO = new JoinTeacherDTO();
-        joinTeacherDTO.setTeacherId("testId");
+        joinTeacherDTO.setUsername("testId");
         joinTeacherDTO.setPassword("123");
         joinTeacherDTO.setEmail("ghdtpgh8913@gmail.com");
         joinTeacherDTO.setEmail("김교사");
@@ -59,7 +59,7 @@ class AdminControllerTest {
         adminService.approveAuth(approveTeacherDTO);
 
         //Then
-        TeacherEntity byTeacherIdIs = teacherRepository.findByTeacherIdIs("testTeacher");
+        TeacherEntity byTeacherIdIs = teacherRepository.findByUsernameIs("testTeacher");
         boolean approved = byTeacherIdIs.isApproved();
 
         assertTrue(approved);
@@ -73,11 +73,11 @@ class AdminControllerTest {
 
         adminRepository.save(adminDTO.toEntity());
 
-        assertEquals(adminRepository.findByAdminIdIs("admin").getAdminId(), "admin");
+        assertEquals(adminRepository.findByUsernameIs("admin").getUsername(), "admin");
     }
 
     @AfterEach
     void test(){
-        teacherRepository.deleteByTeacherId("testId");
+        teacherRepository.deleteByUsernameIs("testId");
     }
 }

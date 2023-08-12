@@ -20,7 +20,7 @@ public class AdminDTO {
 
     public AdminEntity toEntity() {
         return AdminEntity.builder()
-                .adminId(username)
+                .username(username)
                 .password(password)
                 .build();
     }

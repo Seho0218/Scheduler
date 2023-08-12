@@ -22,7 +22,6 @@ public class SearchClassServiceImpl implements SearchClassService {
 
     private final ClassTableRepository classTableRepository;
     private final StudentClassMapper studentClassMapper;
-
     private final ClassMapper classMapper;
 
     @Override

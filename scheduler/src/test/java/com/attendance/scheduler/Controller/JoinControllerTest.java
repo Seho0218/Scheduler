@@ -36,7 +36,7 @@ class JoinControllerTest {
          * 회원가입 정보 1
          */
         JoinTeacherDTO joinTeacherDTO = new JoinTeacherDTO();
-        joinTeacherDTO.setTeacherId("testTeacher");
+        joinTeacherDTO.setUsername("testTeacher123");
         joinTeacherDTO.setPassword("123");
         joinTeacherDTO.setEmail("ghdtpgh8913@gmail.com");
         joinTeacherDTO.setName("김교사");
@@ -49,7 +49,7 @@ class JoinControllerTest {
          *   회원가입 정보 2
          */
         JoinTeacherDTO joinTeacherDTO2 = new JoinTeacherDTO();
-        joinTeacherDTO2.setTeacherId("testTeacher");
+        joinTeacherDTO2.setUsername("testTeacher123");
         joinTeacherDTO2.setPassword("123");
         joinTeacherDTO2.setEmail("ghdtpgh8913@gmail.com");
         joinTeacherDTO2.setName("김교사");
@@ -57,15 +57,15 @@ class JoinControllerTest {
 
         //Then
 
-        TeacherEntity testTeacher = teacherRepository.findByTeacherIdIs("testTeacher");
+        TeacherEntity testTeacher = teacherRepository.findByUsernameIs("testTeacher");
 
-        if (joinTeacherDTO2.getTeacherId().equals(testTeacher.getTeacherId())) {
+        if (joinTeacherDTO2.getUsername().equals(testTeacher.getUsername())) {
             assertEquals("중복된 아이디 입니다.", duplicateErrorMessage);
         }
     }
 
     @AfterEach
     void afterEach(){
-        teacherRepository.deleteByTeacherId("testTeacher");
+        teacherRepository.deleteByUsernameIs("testTeacher123");
     }
 }

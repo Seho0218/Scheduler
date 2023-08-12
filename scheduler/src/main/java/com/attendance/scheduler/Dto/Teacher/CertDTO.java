@@ -11,7 +11,7 @@ import lombok.ToString;
 @NoArgsConstructor
 public class CertDTO {
 
-    private String teacherId;
+    private String username;
 
     @NotEmpty(message = "인증번호를 입력해 주세요")
     private String authNum;

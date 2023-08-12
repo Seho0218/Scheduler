@@ -1,10 +1,13 @@
 package com.attendance.scheduler.Controller;
 
+import com.attendance.scheduler.Dto.ClassDTO;
 import com.attendance.scheduler.Dto.Teacher.*;
 import com.attendance.scheduler.Service.CertService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -112,7 +115,7 @@ public class CertController {
 
         try {
             model.addAttribute("auth", new CertDTO());
-            model.addAttribute("teacherId", findPasswordDTO);
+            model.addAttribute("username", findPasswordDTO);
             certService.setupAuthNum(findPasswordDTO, session);
             return "cert/authNum";
         } catch (Exception e) {
@@ -128,13 +131,13 @@ public class CertController {
     private String authNumCheck(Model model, CertDTO certDTO, HttpSession session) {
         log.info("CertDTO={}", certDTO);
 
-        Map<String, Object> sessionAuthNumMap = (Map<String, Object>) session.getAttribute(certDTO.getTeacherId());
-        String teacherId = certDTO.getTeacherId();
+        Map<String, Object> sessionAuthNumMap = (Map<String, Object>) session.getAttribute(certDTO.getUsername());
+        String teacherId = certDTO.getUsername();
         String authNum = certDTO.getAuthNum();
 
         if (sessionAuthNumMap.isEmpty()) {
             model.addAttribute("auth", new CertDTO());
-            model.addAttribute("teacherId", certDTO);
+            model.addAttribute("username", certDTO);
             model.addAttribute("errorMessage","인증번호를 전송해주세요");
             return "cert/authNum";
         }
@@ -151,28 +154,45 @@ public class CertController {
 
         // 인증번호
         String sessionAuthNum = (String) sessionAuthNumMap.get(teacherId);
-        if (!authNum.equals(sessionAuthNum)) {
-            model.addAttribute("auth", new CertDTO());
-            model.addAttribute("teacherId", certDTO);
-            model.addAttribute("errorMessage","인증번호가 일치하지 않습니다");
-            return "cert/authNum";
-        } else {
+        if (authNum.equals(sessionAuthNum)) {
             // 인증번호가 일치하면
             model.addAttribute("pwdEdit", new PwdEditDTO());
-            model.addAttribute("teacherId", certDTO);
+            model.addAttribute("username", certDTO);
             return "cert/updatePassword";
+        } else {
+            model.addAttribute("auth", new CertDTO());
+            model.addAttribute("username", certDTO);
+            model.addAttribute("errorMessage","인증번호가 일치하지 않습니다");
+            return "cert/authNum";
         }
     }
+
+    @GetMapping("changePassword")
+    public String changePassword(Model model, PwdEditDTO pwdEditDTO){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        pwdEditDTO.setUsername(auth.getName());
+        try {
+            model.addAttribute("pwdEdit", new PwdEditDTO());
+            model.addAttribute("username", pwdEditDTO);
+            return "cert/updatePassword";
+        } catch (Exception e) {
+            log.info("send Id error = {}", e.getMessage());
+            model.addAttribute("class", new ClassDTO());
+            return "redirect:/";
+        }
+    }
+
     // 인증 완료 후
     @PostMapping("updatePassword")
-    public String authCompletion(Model model, PwdEditDTO pwdEditDTO) {
-        model.addAttribute("teacherId", pwdEditDTO);
+    public String authCompletion(PwdEditDTO pwdEditDTO, Model model) {
         try {
             certService.PwdEdit(pwdEditDTO);
             return "cert/pwdCompletion";
         }catch (Exception e) {
             log.info("send Id error = {}", e.getMessage());
-            return "index";
+            model.addAttribute("class", new ClassDTO());
+
+            return "redirect:/";
         }
     }
 }

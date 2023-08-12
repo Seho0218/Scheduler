@@ -5,8 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TeacherRepository extends JpaRepository<TeacherEntity, Long> {
 
-    TeacherEntity findByTeacherIdIs(String teacherId);
+    TeacherEntity findByUsernameIs(String username);
     TeacherEntity findByEmailIs(String email);
 
-    void deleteByTeacherId(String teacherId);
+    void deleteByUsernameIs(String username);
 }

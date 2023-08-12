@@ -34,7 +34,7 @@ class CertControllerTest {
         //Given
         //회원가입
         JoinTeacherDTO joinTeacherDTO = new JoinTeacherDTO();
-        joinTeacherDTO.setTeacherId("teacher");
+        joinTeacherDTO.setUsername("teacher");
         joinTeacherDTO.setPassword("123");
         joinTeacherDTO.setEmail("ghdtpgh8913@gmail.com");
         joinTeacherDTO.setName("김교사");
@@ -43,7 +43,7 @@ class CertControllerTest {
         //비밀번호 찾기 정보
         FindPasswordDTO findPasswordDTO = new FindPasswordDTO();
         findPasswordDTO.setEmail("ghdtpgh8913@gmail.com");
-        findPasswordDTO.setTeacherId("teacher");
+        findPasswordDTO.setUsername("teacher");
 
         //When
         boolean id = certService.idConfirmation(findPasswordDTO);
@@ -60,13 +60,13 @@ class CertControllerTest {
         //Given
         HttpSession session = new MockHttpSession();
         FindPasswordDTO findPasswordDTO = new FindPasswordDTO();
-        findPasswordDTO.setTeacherId("testTeacher");
+        findPasswordDTO.setUsername("testTeacher");
         findPasswordDTO.setEmail("ghdtpgh8913@gmail.com");
 
         certService.setupAuthNum(findPasswordDTO, session);
 
         //When
-        Map<String, Object> sessionAuthNumMap = (Map<String, Object>) session.getAttribute(findPasswordDTO.getTeacherId());
+        Map<String, Object> sessionAuthNumMap = (Map<String, Object>) session.getAttribute(findPasswordDTO.getEmail());
 
         //Then
         assertFalse(sessionAuthNumMap.isEmpty());

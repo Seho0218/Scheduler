@@ -41,7 +41,7 @@ public class JoinController {
         JoinTeacherDTO duplicateTeacherId = joinService.findDuplicateTeacherId(joinTeacherDTO);
 
         if (duplicateTeacherId != null) {
-            log.info("teacherId={}", duplicateTeacherId.getTeacherId());
+            log.info("teacherId={}", duplicateTeacherId.getUsername());
             model.addAttribute("errorMessage", "중복된 아이디 입니다.");
             return "join";
         }
@@ -51,7 +51,7 @@ public class JoinController {
             model.addAttribute("login", new JoinTeacherDTO());
             return "redirect:/login";
         } catch (Exception e) {
-            e.printStackTrace();
+            e.getStackTrace();
             return "join";
         }
     }

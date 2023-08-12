@@ -40,7 +40,6 @@ public class SecurityConfig{
 						.requestMatchers("/login/Login").permitAll()
 						.requestMatchers("/manage/*").hasAnyRole("TEACHER", "ADMIN")
 						.requestMatchers("/admin/*").hasRole("ADMIN")
-						.requestMatchers("/login").denyAll()
 						.anyRequest().authenticated()
 				)
 				.formLogin()

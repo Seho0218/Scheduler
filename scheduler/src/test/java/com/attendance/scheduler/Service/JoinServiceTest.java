@@ -41,7 +41,7 @@ class JoinServiceTest {
 
         //Given
         JoinTeacherDTO joinTeacherDTO = new JoinTeacherDTO();
-        joinTeacherDTO.setTeacherId("teacher");
+        joinTeacherDTO.setUsername("teacher");
         joinTeacherDTO.setPassword("123");
         joinTeacherDTO.setEmail("ghdtpgh8913@gmail.com");
         joinTeacherDTO.setName("김교사");
@@ -50,8 +50,8 @@ class JoinServiceTest {
         joinService.joinTeacher(joinTeacherDTO);
 
         //Then
-        TeacherEntity byTeacherIdIs = teacherRepository.findByTeacherIdIs("teacher");
-        assertEquals("teacher", byTeacherIdIs.getTeacherId());
+        TeacherEntity byTeacherIdIs = teacherRepository.findByUsernameIs("teacher");
+        assertEquals("teacher", byTeacherIdIs.getUsername());
 
     }
 
@@ -61,14 +61,14 @@ class JoinServiceTest {
 
         //given
         JoinTeacherDTO joinTeacherDTO = new JoinTeacherDTO();
-        joinTeacherDTO.setTeacherId("teacher");
+        joinTeacherDTO.setUsername("teacher");
         joinTeacherDTO.setPassword("123");
         joinTeacherDTO.setEmail("ghdtpgh8913@gmail.com");
         joinTeacherDTO.setName("김교사");
 
         //when
         joinService.joinTeacher(joinTeacherDTO);
-        String teacherId = joinService.findDuplicateTeacherId(joinTeacherDTO).getTeacherId();
+        String teacherId = joinService.findDuplicateTeacherId(joinTeacherDTO).getUsername();
 
         //then
         assertEquals("teacher", teacherId);
@@ -80,7 +80,7 @@ class JoinServiceTest {
 
         //Given
         JoinTeacherDTO joinTeacherDTO = new JoinTeacherDTO();
-        joinTeacherDTO.setTeacherId("teacher");
+        joinTeacherDTO.setUsername("teacher");
         joinTeacherDTO.setPassword("123");
         joinTeacherDTO.setEmail("ghdtpgh8913@gmail.com");
         joinTeacherDTO.setName("김교사");

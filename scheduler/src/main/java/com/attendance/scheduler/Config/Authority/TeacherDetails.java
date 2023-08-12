@@ -27,7 +27,7 @@ public class TeacherDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return teacherEntity.getTeacherId();
+        return teacherEntity.getUsername();
     }
 
     @Override

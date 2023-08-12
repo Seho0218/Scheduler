@@ -28,7 +28,7 @@ class CertServiceImplTest {
     void findId() {
         //given
         JoinTeacherDTO joinTeacherDTO = new JoinTeacherDTO();
-        joinTeacherDTO.setTeacherId("testTeacher");
+        joinTeacherDTO.setUsername("testTeacher");
         joinTeacherDTO.setPassword("Root123!@#");
         joinTeacherDTO.setEmail("ghdtpgh8913@gmail.com");
         teacherRepository.save(joinTeacherDTO.toEntity());
@@ -48,7 +48,7 @@ class CertServiceImplTest {
         //given
         // 임의 관리자 객체생성
         JoinTeacherDTO joinTeacherDTO = new JoinTeacherDTO();
-        joinTeacherDTO.setTeacherId("testTeacher");
+        joinTeacherDTO.setUsername("testTeacher");
 
         //비밀번호 암호화
         String encodedPwd = passwordEncoder.encode("Root123!@#");
@@ -56,7 +56,7 @@ class CertServiceImplTest {
         teacherRepository.save(joinTeacherDTO.toEntity());
 
         //when
-        teacherRepository.findByTeacherIdIs(joinTeacherDTO.getTeacherId());
+        teacherRepository.findByUsernameIs(joinTeacherDTO.getUsername());
 
         //then
         //비밀번호 검증

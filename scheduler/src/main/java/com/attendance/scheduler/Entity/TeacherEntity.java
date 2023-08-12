@@ -20,7 +20,8 @@ public class TeacherEntity {
     @Id @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    private String teacherId;
+    @Column(name = "teacherId")
+    private String username;
 
     private String name;
 
@@ -35,9 +36,9 @@ public class TeacherEntity {
     private boolean approved;
 
     @Builder
-    public TeacherEntity(Long id, String teacherId, String name, String password, String email, boolean approved) {
+    public TeacherEntity(Long id, String username, String name, String password, String email, boolean approved) {
         this.id = id;
-        this.teacherId = teacherId;
+        this.username = username;
         this.name = name;
         this.password = password;
         this.email = email;

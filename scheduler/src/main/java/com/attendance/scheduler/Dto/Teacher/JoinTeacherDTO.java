@@ -13,7 +13,7 @@ import lombok.ToString;
 public class JoinTeacherDTO {
 
     @NotEmpty(message = "아이디를 입력해 주세요")
-    private String teacherId;
+    private String username;
 
     @NotEmpty(message = "비밀번호를 입력해 주세요")
     private String password;
@@ -32,7 +32,7 @@ public class JoinTeacherDTO {
 
     public TeacherEntity toEntity(){
         return TeacherEntity.builder()
-                .teacherId(teacherId)
+                .username(username)
                 .password(password)
                 .email(email)
                 .name(name)

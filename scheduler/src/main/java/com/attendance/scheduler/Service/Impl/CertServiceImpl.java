@@ -3,7 +3,9 @@ package com.attendance.scheduler.Service.Impl;
 import com.attendance.scheduler.Dto.Teacher.FindIdDTO;
 import com.attendance.scheduler.Dto.Teacher.FindPasswordDTO;
 import com.attendance.scheduler.Dto.Teacher.PwdEditDTO;
+import com.attendance.scheduler.Entity.AdminEntity;
 import com.attendance.scheduler.Entity.TeacherEntity;
+import com.attendance.scheduler.Repository.jpa.AdminRepository;
 import com.attendance.scheduler.Repository.jpa.TeacherRepository;
 import com.attendance.scheduler.Service.CertService;
 import jakarta.servlet.http.HttpSession;
@@ -11,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,11 +29,9 @@ import java.util.Map;
 public class CertServiceImpl implements CertService {
 
 	private final JavaMailSender mailSender;
-
 	private final TeacherRepository teacherRepository;
-
+	private final AdminRepository adminRepository;
 	private final PasswordEncoder passwordEncoder;
-
 
 	/*
 	* Confirm id exist
@@ -43,13 +45,13 @@ public class CertServiceImpl implements CertService {
 		if(byTeacherIdIs==null){
 			return null;
 		}
-		return byTeacherIdIs.getTeacherId();
+		return byTeacherIdIs.getUsername();
 	}
 
 	@Override
 	public boolean idConfirmation(FindPasswordDTO findPasswordDTO) {
 		TeacherEntity byTeacherIdIs = teacherRepository
-				.findByTeacherIdIs(findPasswordDTO.getTeacherId());
+				.findByUsernameIs(findPasswordDTO.getUsername());
 		return byTeacherIdIs != null;
 	}
 
@@ -80,7 +82,7 @@ public class CertServiceImpl implements CertService {
 	@Transactional
 	public void setupAuthNum(FindPasswordDTO findPasswordDTO, HttpSession session) {
 
-		String teacherId = findPasswordDTO.getTeacherId();
+		String teacherId = findPasswordDTO.getUsername();
 		String email = findPasswordDTO.getEmail();
 
 		StringBuilder authNum = new StringBuilder();
@@ -107,7 +109,6 @@ public class CertServiceImpl implements CertService {
 
 
 	public void sendAuthNum(String userEmail, String authNum) {
-
 		SimpleMailMessage simpleMailMessage = new  SimpleMailMessage();
 		simpleMailMessage.setFrom("ghdtpgh8913@gmail.com");
 		simpleMailMessage.setTo(userEmail);
@@ -122,14 +123,24 @@ public class CertServiceImpl implements CertService {
 	@Override
 	@Transactional
 	public void PwdEdit(PwdEditDTO pwdEditDTO) {
-		TeacherEntity byTeacherIdIs = teacherRepository
-				.findByTeacherIdIs(pwdEditDTO.getTeacherId());
 
-		log.info("pwdEditDTO.getTeacherId()={}",pwdEditDTO.getTeacherId());
-		log.info("pwdEditDTO.getPassword()={}",pwdEditDTO.getPassword());
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		System.out.println("auth = " + auth);
 
-		String encodePassword = passwordEncoder.encode(pwdEditDTO.getPassword());
-		byTeacherIdIs.updatePassword(encodePassword);
-		teacherRepository.save(byTeacherIdIs);
+		if(auth.getAuthorities().toString().equals("[ROLE_TEACHER]")){
+			TeacherEntity byTeacherIdIs = teacherRepository
+					.findByUsernameIs(pwdEditDTO.getUsername());
+			String encodePassword = passwordEncoder.encode(pwdEditDTO.getPassword());
+			byTeacherIdIs.updatePassword(encodePassword);
+			teacherRepository.save(byTeacherIdIs);
+		}
+
+		if(auth.getAuthorities().toString().equals("[ROLE_ADMIN]")){
+			AdminEntity byAdminIdIs = adminRepository
+					.findByUsernameIs(pwdEditDTO.getUsername());
+			String encodePassword = passwordEncoder.encode(pwdEditDTO.getPassword());
+			byAdminIdIs.updatePassword(encodePassword);
+			adminRepository.save(byAdminIdIs);
+		}
 	}
 }

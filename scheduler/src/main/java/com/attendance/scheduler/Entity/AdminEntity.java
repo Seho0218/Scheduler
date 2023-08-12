@@ -1,5 +1,6 @@
 package com.attendance.scheduler.Entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -24,14 +25,15 @@ public class AdminEntity {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    private String adminId;
+    @Column(name = "adminId")
+    private String username;
 
     private String password;
 
     @Builder
-    public AdminEntity(Long id, String adminId, String password) {
+    public AdminEntity(Long id, String username, String password) {
         this.id = id;
-        this.adminId = adminId;
+        this.username = username;
         this.password = password;
     }
 

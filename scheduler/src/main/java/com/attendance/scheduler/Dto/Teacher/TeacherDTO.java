@@ -10,7 +10,7 @@ import lombok.ToString;
 @NoArgsConstructor
 public class TeacherDTO {
 
-    private String teacherId;
+    private String username;
 
     private String password;
 

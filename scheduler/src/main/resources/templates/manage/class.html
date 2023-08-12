@@ -39,7 +39,7 @@
                                                          sec:authorize="isAuthenticated()">Logout</button></a></th>
                     <th><a th:href ="@{/admin/teacherList}"><button class="btn btn-primary"
                                                                     sec:authorize="hasRole('ROLE_ADMIN')">관리하기</button></a></th>
-                    <th><a th:href ="@{/logout}"><button class="btn btn-primary text-end"
+                    <th><a th:href ="@{/cert/changePassword}"><button class="btn btn-primary text-end"
                                                          sec:authorize="isAuthenticated()">비밀번호 변경</button></a></th>
                 </tr>
             </table>
@@ -58,18 +58,8 @@
                     <th scope="col">삭제</th>
                 </tr>
             </thead>
-            <tbody>
-
-            </tbody>
             <tbody th:each="class : ${findClassTable}">
                 <tr>
-                    <td>
-<!--                        <div class="form-check" id="multiChk">-->
-<!--                            <label><input class="form-check-input" type="checkbox"-->
-<!--                                          th:field="*{deleteClassList}"-->
-<!--                                          th:value="${class.getStudentName()}"></label>-->
-<!--                        </div>-->
-                    </td>
                     <td th:text="${class.getStudentName()}"></td>
                     <td th:text="${class.getMonday() == 0 ? '결석' : '오후 ' + class.getMonday() + '시'}"></td>
                     <td th:text="${class.getTuesday() == 0 ? '결석' : '오후 ' + class.getTuesday() + '시'}"></td>

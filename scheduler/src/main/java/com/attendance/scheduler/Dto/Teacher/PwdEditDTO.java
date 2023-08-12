@@ -11,7 +11,7 @@ import lombok.ToString;
 @NoArgsConstructor
 public class PwdEditDTO {
 
-    private String teacherId;
+    private String username;
 
     @NotEmpty(message = "변경할 비밀번호를 입력해 주세요.")
     private String password;

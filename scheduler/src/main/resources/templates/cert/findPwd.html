@@ -55,11 +55,11 @@
                        type="text">
                 <div class="field-error" th:errors="*{email}"></div>
 
-                <label for="teacherId"></label>
-                <input class="form-control" id="teacherId" placeholder="아이디를 입력해 주세요"
-                       th:errorclass="field-error" th:field="*{teacherId}"
+                <label for="username"></label>
+                <input class="form-control" id="username" placeholder="아이디를 입력해 주세요"
+                       th:errorclass="field-error" th:field="*{username}"
                        type="text">
-                <div class="field-error" th:errors="*{teacherId}"></div>
+                <div class="field-error" th:errors="*{username}"></div>
 
 
                 <div class="error-message" th:if="${errorMessage}">
