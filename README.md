@@ -44,7 +44,7 @@ Link : http://seho0218.synology.me:3205/
   │   │   ├── Authority
   │   │         └── AdminDetails.java
   │   │         └── TeacherDetails.java  
-  │   │         └── TeacherDetailsService.java
+  │   │         └── UserDetailService.java
   │   │   └── CustomAuthenticationFailureHandler.java
   │   │   └── SecurityConfig.java
   │   │
@@ -114,9 +114,10 @@ Link : http://seho0218.synology.me:3205/
 **scheduler**: 스케줄러 모듈의 루트 디렉토리입니다.
 
 - **Config**: 스케줄러의 설정과 관련된 클래스들을 포함하는 디렉토리입니다.
-      - **Authority**
-            -  `TeacherDetails.java`: 유저 정보를 조회합니다.
-            -  `TeacherDetailsService.java` : DB에서 구체적인 유저의 정보를 조회합니다.
+    -  **Authority**
+         -  `AdminDetails.java`: 관리자 정보를 조회하여 비교합니다.
+         -  `TeacherDetails.java`: : 교사 정보를 조회하여 비교합니다.
+         -  `UserDetailsService.java` : DB에서 구체적인 유저의 정보를 조회합니다.
     - `CustomAuthenticationFailureHandler.java`: 로그인 했을시 발생하는 오류를 반환하는 클래스입니다.
     - `SecurityConfig.java`: 스프링 시큐리티를 설정하고 규칙을 정의하는 클래스입니다.
 
@@ -131,7 +132,7 @@ Link : http://seho0218.synology.me:3205/
   - **Dto**: 데이터 전송 객체(DTO)를 포함하는 디렉토리입니다.
     - **Admin**
       - `AdminDTO.java`: 관리자 정보를 가진 DTO 클래스입니다.
-      - `ApproveTeacherDTO.java`:  관리자의 교사 권한 제어를 위한  DTO 클래스입니다.
+      - `ApproveTeacherDTO.java`:  관리자의 교사 권한 제어를 위한  DTO 클래스입니다.
     - **Teacher**
       - `CertDTO.java`: 임시 인증번호 위한 DTO 클래스입니다.
       - `DeleteClassDTO.java`: 수업 삭제를 위한 DTO 클래스입니다.
