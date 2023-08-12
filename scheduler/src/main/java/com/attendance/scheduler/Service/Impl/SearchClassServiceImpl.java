@@ -31,7 +31,6 @@ public class SearchClassServiceImpl implements SearchClassService {
                 .stream()
                 .map(classMapper::toClassDTO)
                 .collect(Collectors.toList());
-
     }
 
     @Override

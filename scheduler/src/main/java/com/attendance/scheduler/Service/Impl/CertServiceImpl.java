@@ -107,7 +107,6 @@ public class CertServiceImpl implements CertService {
 		session.setAttribute(teacherId, authNumMap);
 	}
 
-
 	public void sendAuthNum(String userEmail, String authNum) {
 		SimpleMailMessage simpleMailMessage = new  SimpleMailMessage();
 		simpleMailMessage.setFrom("ghdtpgh8913@gmail.com");
@@ -123,11 +122,9 @@ public class CertServiceImpl implements CertService {
 	@Override
 	@Transactional
 	public void PwdEdit(PwdEditDTO pwdEditDTO) {
-
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		System.out.println("auth = " + auth);
-
-		if(auth.getAuthorities().toString().equals("[ROLE_TEACHER]")){
+		if(auth.getAuthorities().toString().equals("[ROLE_TEACHER]")
+				|| auth.getAuthorities().toString().equals("[ROLE_ANONYMOUS]")){
 			TeacherEntity byTeacherIdIs = teacherRepository
 					.findByUsernameIs(pwdEditDTO.getUsername());
 			String encodePassword = passwordEncoder.encode(pwdEditDTO.getPassword());

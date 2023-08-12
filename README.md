@@ -13,11 +13,15 @@ Link : http://seho0218.synology.me:3205/
 ## 기본정보
 
 - ### 기본 기능
-- 기본적으로 선착순으로 처리되며 학생이 1시에 신청을 했을 경우,다른 학생은 1시를 선택할 수 없게됌.
+- 기본적으로 선착순으로 처리되며 학생이 1시에 신청을 했을 경우,다른 학생은 1시를 선택할 수 없다.
 - 학생이 이름을 정확히 입력하여 수강 신청하였을 경우, '수업 조회 및 변경'을 통해 수업 시간대를 변경, 조회할 수 있다.
-- 이름을 정확히 입력하지 않거나 수강신청하지 않은 상태에서 조회할 경우, 조회 불가 메시지를 볼 수 있음.
-- 모든 입력 조회폼에서 입력해야하는 칸에 아무것도 입력하지 않은 경우 오류 메시지가 뜸.
-- 각 기능에 대한 테스트 케이스 작성
+- 이름을 정확히 입력하지 않거나 수강신청하지 않은 상태에서 조회할 경우, 조회 불가 메시지를 볼 수 있다.
+- 모든 입력 조회 폼에서 입력해야하는 칸에 아무것도 입력하지 않은 경우 오류 메시지가 발생한다.
+- 교사 회원 가입시 승인 절차 없이 바로 스케쥴을 관리할 수 있으면 문제가 발생할 수 있기에 Spring Security와 관리자 아이디를 통해 교사 아이디에 승인 절차를 부여하였다.
+- 교사와 관리자 공통적으로 수업 관리를 할 수 있고 로그인 했을 경우 다시 로그인 페이지로 갈 수 없도록 LoginController에 설정이 되어있고  로그인을 했을 때는 메인 페이지에서 로그아웃 및 수업 관리 버튼이 보여지게 되어있다.
+- 관리자로 로그인 했을 경우, 기본적으로 교사 권한 부여 페이지로 이동하도록 되어있으며 교사에게 권한 부여를 할 수 있다.
+- 로그인 했을 경우, 수업 관리 페이지에서 비밀번호를 변경할 수 있다.
+- 각 기능에 대한 테스트 케이스 작성을 하였다.
 
 - ### 인증 및 보안
 - 교사 폼을 통해 회원가입을 할 경우, BCrypt를 통해 비밀번호가 암호화 되고 관리자의 인가를 받아서 학생의 수업을 삭제할 수 있다.
@@ -38,12 +42,14 @@ Link : http://seho0218.synology.me:3205/
   ├── scheduler/
   │   ├── Config/
   │   │   ├── Authority
-  │   │         └── TeacherDetails.java
+  │   │         └── AdminDetails.java
+  │   │         └── TeacherDetails.java  
   │   │         └── TeacherDetailsService.java
   │   │   └── CustomAuthenticationFailureHandler.java
   │   │   └── SecurityConfig.java
   │   │
   │   ├── Controller/
+  │   │   └── AdminController.java  
   │   │   └── BasicController.java
   │   │   └── CertController.java
   │   │   └── JoinController.java
@@ -53,11 +59,11 @@ Link : http://seho0218.synology.me:3205/
   │   │
   │   ├── Dto/
   │   │   ├── Admin
-  │   │   │     └── AdminCertDTO.java
+  │   │   │     └── ApproveTeacherDTO.java
   │   │   │     └── AdminDTO.java
-  │   │   │     └── DeleteClassDTO.java
   │   │   ├── Teacher
   │   │   │     └── CertDTO.java
+  │   │   │     └── DeleteClassDTO.java
   │   │   │     └── FindIdDTO.java
   │   │   │     └── FindPasswordDTO.java
   │   │   │     └── JoinTeacherDTO.java
@@ -82,22 +88,25 @@ Link : http://seho0218.synology.me:3205/
   │   ├── Repository/
   │   │   └── jpa
   │   │         └── AdminRepository.java
-  │   │         └── ClassSaveRepository.java
   │   │         └── ClassTableRepository.java
-  │   │         └── SearchNotEmptyClassRepository.java
   │   │         └── TeacherRepository.java
   │   │
   │   └── Service/
+  │       │   └──Impl
+  │       │       ├── AdminServiceImpl.java
+  │       │       ├── CertServiceImpl.java
+  │       │       ├── JoinServiceImpl.java
+  │       │       ├── CertServiceImpl.java
+  │       │       ├── SearchClassServiceImpl.java
+  │       │       └── SubmitServiceImpl.java
+  │       │
+  │       ├── AdminService.java
   │       ├── CertService.java
-  │       ├── CertServiceImpl.java
   │       ├── JoinService.java
-  │       ├── JoinServiceImpl.java
   │       ├── ManageService.java
-  │       ├── ManageServiceImpl.java
   │       ├── SearchClassService.java
-  │       ├── SearchClassServiceImpl.java
-  │       ├── SubmitService.java
-  │       └── SubmitServiceImpl.java
+  │       └── SubmitService.java
+  │
   └── README.md
   ```
 
@@ -121,11 +130,11 @@ Link : http://seho0218.synology.me:3205/
 
   - **Dto**: 데이터 전송 객체(DTO)를 포함하는 디렉토리입니다.
     - **Admin**
-      - `AdminCertDTO.java`: 관리자 인증을 위한 DTO 클래스입니다.
       - `AdminDTO.java`: 관리자 정보를 가진 DTO 클래스입니다.
-      - `DeleteClassDTO.java`: 수업정보 삭제를 위한 DTO 클래스입니다.
+      - `ApproveTeacherDTO.java`:  관리자의 교사 권한 제어를 위한  DTO 클래스입니다.
     - **Teacher**
       - `CertDTO.java`: 임시 인증번호 위한 DTO 클래스입니다.
+      - `DeleteClassDTO.java`: 수업 삭제를 위한 DTO 클래스입니다.
       - `FindIdDTO.java`: 아이디를 가진 DTO 클래스입니다.
       - `FindPasswordDTO.java`: 비밀번호 찾기를 위한 DTO 클래스입니다.
       - `JoinTeacherDTO.java`: 교사 회원가입을 위한 DTO 클래스입니다.
@@ -153,16 +162,13 @@ Link : http://seho0218.synology.me:3205/
       - `TeacherRepository.java`: 교사 데이터를 관리하기 위한 리포지토리 인터페이스입니다.
 
   - **Service**: 스케줄러 비즈니스 로직을 처리하는 서비스 인터페이스와 구현체를 포함하는 디렉토리입니다.
+    - `AdminService.java`: 교사 회원의 권한 승인의 허가와 비허가를 관리하는 인터페이스 입니다.
     - `CertService.java`: 아이디와 비밀번호 찾기 등의 비즈니스 로직을 담당하는 서비스 인터페이스입니다.
-    - `CertServiceImpl.java`: CertService 인터페이스의 구현체입니다.
     - `JoinService.java`: 교사 회원가입 비즈니스 로직을 담당하는 서비스 인터페이스입니다.
-    - `JoinServiceImpl.java`: 교사 회원가입 인터페이스의 구현체입니다.
     - `ManageService.java`: 수업 관련 로직을 담당하는 서비스 인터페이스입니다.
-    - `ManageServiceImpl.java`: 수업 관리 서비스 인터페이스의 구현체입니다.
     - `SearchClassService.java`: 수업조회 로직을 담당하는 서비스 인터페이스입니다.
-    - `SearchClassServiceImpl.java`: 수업조회 인터페이스의 구현체입니다.
     - `SubmitService.java`: 수강신청 및 수정 로직을 담당하는 서비스 인터페이스입니다.
-    - `SubmitServiceImpl.java`: 수강신청 및 수정 인터페이스의 구현체입니다.
+    - Impl: 각 인터페이스를 구현한 구현체들의 폴더입니다.
 
 - **README.md**: 프로젝트에 대한 설명과 사용 방법을 기술한 마크다운 파일입니다.
 
@@ -172,7 +178,6 @@ Link : http://seho0218.synology.me:3205/
  Link
 
 ## 개선여지 및 추가적으로 진행해야할 부분
- - 관리자 Account 생성 및 부여
  - JWT Token
 
 ## 개발 기록
