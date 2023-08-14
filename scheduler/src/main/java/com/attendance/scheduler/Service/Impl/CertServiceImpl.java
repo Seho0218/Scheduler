@@ -5,6 +5,7 @@ import com.attendance.scheduler.Dto.Teacher.FindPasswordDTO;
 import com.attendance.scheduler.Dto.Teacher.PwdEditDTO;
 import com.attendance.scheduler.Entity.AdminEntity;
 import com.attendance.scheduler.Entity.TeacherEntity;
+import com.attendance.scheduler.Mapper.JoinTeacherMapper;
 import com.attendance.scheduler.Repository.jpa.AdminRepository;
 import com.attendance.scheduler.Repository.jpa.TeacherRepository;
 import com.attendance.scheduler.Service.CertService;
@@ -22,11 +23,13 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class CertServiceImpl implements CertService {
+	private final JoinTeacherMapper joinTeacherMapper;
 
 	private final JavaMailSender mailSender;
 	private final TeacherRepository teacherRepository;
@@ -37,29 +40,29 @@ public class CertServiceImpl implements CertService {
 	* Confirm id exist
 	* */
 	@Override
-	public String findIdByEmail(FindIdDTO findIdDTO) {
+	public Optional<FindIdDTO> findIdByEmail(FindIdDTO findIdDTO) {
+		Optional<TeacherEntity> optionalTeacherEntity
+				= teacherRepository.findByEmailIs(findIdDTO.getEmail());
 
-		TeacherEntity byTeacherIdIs = teacherRepository
-				.findByEmailIs(findIdDTO.getEmail());
-
-		if(byTeacherIdIs==null){
-			return null;
-		}
-		return byTeacherIdIs.getUsername();
-	}
+        return optionalTeacherEntity.map(teacherEntity -> {
+			FindIdDTO resultDTO = new FindIdDTO();
+			resultDTO.setEmail(teacherEntity.getEmail());
+			return resultDTO;
+		});
+    }
 
 	@Override
 	public boolean idConfirmation(FindPasswordDTO findPasswordDTO) {
-		TeacherEntity byTeacherIdIs = teacherRepository
-				.findByUsernameIs(findPasswordDTO.getUsername());
-		return byTeacherIdIs != null;
+		Optional<TeacherEntity> optionalTeacherEntity
+				= teacherRepository.findByUsernameIs(findPasswordDTO.getUsername());
+		return optionalTeacherEntity.isPresent();
 	}
 
 	@Override
 	public boolean emailConfirmation(FindPasswordDTO findPasswordDTO) {
-		TeacherEntity byTeacherIdIs
+		Optional<TeacherEntity> optionalTeacherEntity
 				= teacherRepository.findByEmailIs(findPasswordDTO.getEmail());
-		return byTeacherIdIs != null;
+		return optionalTeacherEntity.isPresent();
 	}
 
 	@Override
@@ -122,22 +125,26 @@ public class CertServiceImpl implements CertService {
 	@Override
 	@Transactional
 	public void PwdEdit(PwdEditDTO pwdEditDTO) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		final String encodePassword = passwordEncoder.encode(pwdEditDTO.getPassword());
+
 		if(auth.getAuthorities().toString().equals("[ROLE_TEACHER]")
 				|| auth.getAuthorities().toString().equals("[ROLE_ANONYMOUS]")){
-			TeacherEntity byTeacherIdIs = teacherRepository
+			final Optional<TeacherEntity> byTeacherIdIs = teacherRepository
 					.findByUsernameIs(pwdEditDTO.getUsername());
-			String encodePassword = passwordEncoder.encode(pwdEditDTO.getPassword());
-			byTeacherIdIs.updatePassword(encodePassword);
-			teacherRepository.save(byTeacherIdIs);
+			byTeacherIdIs.ifPresent(teacherEntity -> {
+				teacherEntity.updatePassword(encodePassword);
+				teacherRepository.save(teacherEntity);
+			});
 		}
 
 		if(auth.getAuthorities().toString().equals("[ROLE_ADMIN]")){
-			AdminEntity byAdminIdIs = adminRepository
+			final Optional<AdminEntity> byAdminIdIs = adminRepository
 					.findByUsernameIs(pwdEditDTO.getUsername());
-			String encodePassword = passwordEncoder.encode(pwdEditDTO.getPassword());
-			byAdminIdIs.updatePassword(encodePassword);
-			adminRepository.save(byAdminIdIs);
+			byAdminIdIs.ifPresent(adminEntity -> {
+				adminEntity.updatePassword(encodePassword);
+				adminRepository.save(adminEntity);
+			});
 		}
 	}
 }

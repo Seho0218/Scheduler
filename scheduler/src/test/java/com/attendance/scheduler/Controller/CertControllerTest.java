@@ -34,7 +34,7 @@ class CertControllerTest {
         //Given
         //회원가입
         JoinTeacherDTO joinTeacherDTO = new JoinTeacherDTO();
-        joinTeacherDTO.setUsername("teacher");
+        joinTeacherDTO.setUsername("testTeacher");
         joinTeacherDTO.setPassword("123");
         joinTeacherDTO.setEmail("ghdtpgh8913@gmail.com");
         joinTeacherDTO.setName("김교사");
@@ -43,7 +43,7 @@ class CertControllerTest {
         //비밀번호 찾기 정보
         FindPasswordDTO findPasswordDTO = new FindPasswordDTO();
         findPasswordDTO.setEmail("ghdtpgh8913@gmail.com");
-        findPasswordDTO.setUsername("teacher");
+        findPasswordDTO.setUsername("testTeacher");
 
         //When
         boolean id = certService.idConfirmation(findPasswordDTO);

@@ -11,6 +11,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -23,14 +25,14 @@ public class UserDetailService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         log.info("teacherId = {}", username);
 
-        final TeacherEntity byTeacherIdIs = teacherRepository.findByUsernameIs(username);
-        if(byTeacherIdIs != null){
-            return new TeacherDetails(byTeacherIdIs);
+        final Optional<TeacherEntity> optionalTeacherEntity = teacherRepository.findByUsernameIs(username);
+        if(optionalTeacherEntity.isPresent()){
+            return new TeacherDetails(optionalTeacherEntity.get());
         }
 
-        final AdminEntity byAdminIdIs = adminRepository.findByUsernameIs(username);
-        if(byAdminIdIs != null){
-            return new AdminDetails(byAdminIdIs);
+        final Optional<AdminEntity> optionalAdminEntity = adminRepository.findByUsernameIs(username);
+        if(optionalAdminEntity.isPresent()){
+            return new AdminDetails(optionalAdminEntity.get());
         }
         throw new UsernameNotFoundException(username);
     }

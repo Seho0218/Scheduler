@@ -5,11 +5,13 @@ import com.attendance.scheduler.Dto.Teacher.FindPasswordDTO;
 import com.attendance.scheduler.Dto.Teacher.PwdEditDTO;
 import jakarta.servlet.http.HttpSession;
 
+import java.util.Optional;
+
 public interface CertService {
 
     /*
     * find id By Email*/
-    String findIdByEmail(FindIdDTO findIdDTO);
+    Optional<FindIdDTO> findIdByEmail(FindIdDTO findIdDTO);
     /*
     * send UserId by Email*/
     void sendUserId(FindIdDTO findIdDTO);

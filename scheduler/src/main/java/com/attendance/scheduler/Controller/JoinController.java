@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.Optional;
+
 @Slf4j
 @Controller
 @RequestMapping("/join/")
@@ -38,10 +40,10 @@ public class JoinController {
             return "join";
         }
 
-        JoinTeacherDTO duplicateTeacherId = joinService.findDuplicateTeacherId(joinTeacherDTO);
+        Optional<JoinTeacherDTO> duplicateTeacherId = joinService.findDuplicateTeacherId(joinTeacherDTO);
 
-        if (duplicateTeacherId != null) {
-            log.info("teacherId={}", duplicateTeacherId.getUsername());
+        if (duplicateTeacherId.isPresent()) {
+            log.info("teacherId={}", duplicateTeacherId.get().getUsername());
             model.addAttribute("errorMessage", "중복된 아이디 입니다.");
             return "join";
         }

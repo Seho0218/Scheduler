@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.Optional;
 
 @Slf4j
 @Controller
@@ -51,17 +52,17 @@ public class CertController {
         if (bindingResult.hasErrors()) {
             return "cert/findId";
         }
-        String idByEmail = certService.findIdByEmail(findIdDTO);
+        Optional<FindIdDTO> idByEmail = certService.findIdByEmail(findIdDTO);
         log.info("email={}", idByEmail);
 
-        if (idByEmail == null) {
+        if (idByEmail.isEmpty()) {
             model.addAttribute("account", new FindIdDTO());
             model.addAttribute("errorMessage", "등록된 이메일이 없습니다.");
             return "cert/findId";
         }
 
         try {
-            findIdDTO.setId(idByEmail);
+            findIdDTO.setId(idByEmail.get().getEmail());
             certService.sendUserId(findIdDTO);
         } catch (Exception e) {
             log.info("send Id error = {}", e.getMessage());

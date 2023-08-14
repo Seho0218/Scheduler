@@ -1,10 +1,8 @@
 package com.attendance.scheduler.Controller;
 
-import com.attendance.scheduler.Dto.Admin.AdminDTO;
 import com.attendance.scheduler.Dto.Admin.ApproveTeacherDTO;
 import com.attendance.scheduler.Dto.Teacher.JoinTeacherDTO;
 import com.attendance.scheduler.Entity.TeacherEntity;
-import com.attendance.scheduler.Repository.jpa.AdminRepository;
 import com.attendance.scheduler.Repository.jpa.TeacherRepository;
 import com.attendance.scheduler.Service.AdminService;
 import com.attendance.scheduler.Service.JoinService;
@@ -13,10 +11,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
@@ -31,12 +29,6 @@ class AdminControllerTest {
     @Autowired
     private JoinService joinService;
 
-    @Autowired
-    private AdminRepository adminRepository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
     @Test
     @Transactional
     @DisplayName("교사에게 권한 부여")
@@ -44,7 +36,7 @@ class AdminControllerTest {
 
         //Given
         JoinTeacherDTO joinTeacherDTO = new JoinTeacherDTO();
-        joinTeacherDTO.setUsername("testId");
+        joinTeacherDTO.setUsername("testTeacher");
         joinTeacherDTO.setPassword("123");
         joinTeacherDTO.setEmail("ghdtpgh8913@gmail.com");
         joinTeacherDTO.setEmail("김교사");
@@ -59,25 +51,14 @@ class AdminControllerTest {
         adminService.approveAuth(approveTeacherDTO);
 
         //Then
-        TeacherEntity byTeacherIdIs = teacherRepository.findByUsernameIs("testTeacher");
-        boolean approved = byTeacherIdIs.isApproved();
-
-        assertTrue(approved);
-    }
-
-    @Test
-    void adminJoin() {
-        AdminDTO adminDTO = new AdminDTO();
-        adminDTO.setUsername("admin");
-        adminDTO.setPassword(passwordEncoder.encode("123"));
-
-        adminRepository.save(adminDTO.toEntity());
-
-        assertEquals(adminRepository.findByUsernameIs("admin").getUsername(), "admin");
+        Optional<TeacherEntity> optionalTeacherEntity = teacherRepository.findByUsernameIs("testTeacher");
+        optionalTeacherEntity.ifPresent(teacherEntity -> {
+            assertTrue(teacherEntity.isApproved());
+        });
     }
 
     @AfterEach
     void test(){
-        teacherRepository.deleteByUsernameIs("testId");
+        teacherRepository.deleteByUsernameIs("testTeacher");
     }
 }

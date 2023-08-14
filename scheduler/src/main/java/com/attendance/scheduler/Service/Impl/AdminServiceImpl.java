@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,8 +23,8 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public List<TeacherDTO> getTeacherList() {
-        List<TeacherEntity> byTeacherIdIs = teacherRepository.findAll();
-        return byTeacherIdIs.stream()
+        List<TeacherEntity> optionalTeacherEntity = teacherRepository.findAll();
+        return optionalTeacherEntity.stream()
                 .map(teacherMapper::toTeacherDTO)
                 .collect(Collectors.toList());
 
@@ -32,20 +33,23 @@ public class AdminServiceImpl implements AdminService {
     @Override
     @Transactional
     public void approveAuth(ApproveTeacherDTO approveTeacherDTO) {
-        TeacherEntity byTeacherIdIs = teacherRepository
+        Optional<TeacherEntity> optionalTeacherEntity = teacherRepository
                 .findByUsernameIs(approveTeacherDTO.getUsername());
-        approveTeacherDTO.setApproved(true);
-        byTeacherIdIs.updateApprove(approveTeacherDTO.isApproved());
-        teacherRepository.save(byTeacherIdIs);
+        optionalTeacherEntity.ifPresent(teacherEntity -> {
+            teacherEntity.updateApprove(true);
+            teacherRepository.save(teacherEntity);
+        });
     }
 
     @Override
     @Transactional
     public void revokeAuth(ApproveTeacherDTO approveTeacherDTO) {
-        TeacherEntity byTeacherIdIs = teacherRepository
+        Optional<TeacherEntity> optionalTeacherEntity = teacherRepository
                 .findByUsernameIs(approveTeacherDTO.getUsername());
         approveTeacherDTO.setApproved(false);
-        byTeacherIdIs.updateApprove(approveTeacherDTO.isApproved());
-        teacherRepository.save(byTeacherIdIs);
+        optionalTeacherEntity.ifPresent(teacherEntity -> {
+            teacherEntity.updateApprove(false);
+            teacherRepository.save(teacherEntity);
+        });
     }
 }

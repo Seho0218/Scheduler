@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Controller
@@ -39,14 +40,14 @@ public class SearchClassController {
     public String findClass(@Validated @ModelAttribute("studentClass") StudentClassDTO studentClassDTO,
                             BindingResult bindingResult, Model model) {
         //학생 수업 조회
-        StudentClassDTO studentClassesList = searchClassService.findStudentClasses(studentClassDTO);
+        Optional<StudentClassDTO> studentClassesList = searchClassService.findStudentClasses(studentClassDTO);
 
         if (bindingResult.hasErrors()) {
             log.info("errors={}", bindingResult);
             return "class/search";
         }
 
-        if (studentClassesList == null) {
+        if (studentClassesList.isEmpty()) {
             model.addAttribute("nullStudentName", "등록된 이름이 없습니다.");
             return "class/search";
         }
@@ -68,9 +69,9 @@ public class SearchClassController {
 
         StudentClassDTO studentClassDTO = new StudentClassDTO();
         studentClassDTO.setStudentName(classDTO.getStudentName());
-        StudentClassDTO studentClassesList = searchClassService.findStudentClasses(studentClassDTO);
+        Optional<StudentClassDTO> studentClassesList = searchClassService.findStudentClasses(studentClassDTO);
 
-        if (studentClassesList != null) {
+        if (studentClassesList.isPresent()) {
             getClassList(model);
             model.addAttribute("studentName", "이미 수업을 신청했습니다.");
             return "index";
@@ -128,7 +129,7 @@ public class SearchClassController {
 * 수업 리스트 정보를 가져온 후, 조회 학생의 시간표를 제외하여 수업 시간표를 출력한 후
 * 그 결과에 조회 학생의 정보를 재출력
 * */
-    private void searchStudentClass(Model model, StudentClassDTO studentClassesList) {
+    private void searchStudentClass(Model model, Optional<StudentClassDTO> studentClassesList) {
         ClassListDTO classesOrderByAsc = searchClassService.findAllClasses();
 
         List<Integer> mondayClassList = classesOrderByAsc.getMondayClassList();
@@ -137,11 +138,13 @@ public class SearchClassController {
         List<Integer> thursdayClassList = classesOrderByAsc.getThursdayClassList();
         List<Integer> fridayClassList = classesOrderByAsc.getFridayClassList();
 
-        mondayClassList.remove(studentClassesList.getMonday());
-        tuesdayClassList.remove(studentClassesList.getTuesday());
-        wednesdayClassList.remove(studentClassesList.getWednesday());
-        thursdayClassList.remove(studentClassesList.getThursday());
-        fridayClassList.remove(studentClassesList.getFriday());
+        studentClassesList.ifPresent(studentClass -> {
+            mondayClassList.remove(studentClass.getMonday());
+            tuesdayClassList.remove(studentClass.getTuesday());
+            wednesdayClassList.remove(studentClass.getWednesday());
+            thursdayClassList.remove(studentClass.getThursday());
+            fridayClassList.remove(studentClass.getFriday());
+        });
 
         model.addAttribute("classInMondayList", mondayClassList);
         model.addAttribute("classInTuesdayList", tuesdayClassList);

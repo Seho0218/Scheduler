@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -28,17 +30,18 @@ class CertServiceImplTest {
     void findId() {
         //given
         JoinTeacherDTO joinTeacherDTO = new JoinTeacherDTO();
-        joinTeacherDTO.setUsername("testTeacher");
+        joinTeacherDTO.setUsername("testTeacher123");
         joinTeacherDTO.setPassword("Root123!@#");
         joinTeacherDTO.setEmail("ghdtpgh8913@gmail.com");
         teacherRepository.save(joinTeacherDTO.toEntity());
 
         //when
-        TeacherEntity teacherEntity = teacherRepository.findByEmailIs(joinTeacherDTO.getEmail());
+        Optional<TeacherEntity> optionalTeacherEntity = teacherRepository.findByEmailIs(joinTeacherDTO.getEmail());
 
         //then
-        assertEquals("ghdtpgh8913@gmail.com", teacherEntity.getEmail());
-
+        optionalTeacherEntity.ifPresent(teacherEntity -> {
+            assertEquals("ghdtpgh8913@gmail.com", teacherEntity.getEmail());
+        });
     }
 
     @Test

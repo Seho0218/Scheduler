@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -32,12 +33,13 @@ public class SubmitServiceImpl implements SubmitService {
 
     private void classValidator(ClassDTO classDTO) {
         log.info("classDTO={}", classDTO);
-        ClassEntity byStudentNameIs = classTableRepository.findByStudentNameIs(classDTO.getStudentName());
+        Optional<ClassEntity> byStudentNameIs = classTableRepository.findByStudentNameIs(classDTO.getStudentName());
         log.info("byStudentNameIs={}", byStudentNameIs);
 
-        if (byStudentNameIs == null) {
+        if (byStudentNameIs.isPresent()) {
             duplicateClassValidator(classDTO);
-        } else {
+        }
+        if(byStudentNameIs.isEmpty()) {
             log.info("check");
             classTableRepository.deleteByStudentName(classDTO.getStudentName());
             duplicateClassValidator(classDTO);

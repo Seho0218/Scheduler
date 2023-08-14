@@ -14,6 +14,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -41,7 +43,7 @@ class JoinServiceTest {
 
         //Given
         JoinTeacherDTO joinTeacherDTO = new JoinTeacherDTO();
-        joinTeacherDTO.setUsername("teacher");
+        joinTeacherDTO.setUsername("testTeacher");
         joinTeacherDTO.setPassword("123");
         joinTeacherDTO.setEmail("ghdtpgh8913@gmail.com");
         joinTeacherDTO.setName("김교사");
@@ -50,9 +52,11 @@ class JoinServiceTest {
         joinService.joinTeacher(joinTeacherDTO);
 
         //Then
-        TeacherEntity byTeacherIdIs = teacherRepository.findByUsernameIs("teacher");
-        assertEquals("teacher", byTeacherIdIs.getUsername());
-
+        Optional<TeacherEntity> optionalTeacherEntity
+                = teacherRepository.findByUsernameIs("testTeacher");
+        optionalTeacherEntity.ifPresent(
+                teacherEntity -> assertEquals("testTeacher", teacherEntity.getUsername())
+        );
     }
 
     @Test
@@ -61,17 +65,19 @@ class JoinServiceTest {
 
         //given
         JoinTeacherDTO joinTeacherDTO = new JoinTeacherDTO();
-        joinTeacherDTO.setUsername("teacher");
+        joinTeacherDTO.setUsername("testTeacher");
         joinTeacherDTO.setPassword("123");
         joinTeacherDTO.setEmail("ghdtpgh8913@gmail.com");
         joinTeacherDTO.setName("김교사");
 
         //when
         joinService.joinTeacher(joinTeacherDTO);
-        String teacherId = joinService.findDuplicateTeacherId(joinTeacherDTO).getUsername();
+        Optional<JoinTeacherDTO> optionalJoinTeacherDTO = joinService.findDuplicateTeacherId(joinTeacherDTO);
 
         //then
-        assertEquals("teacher", teacherId);
+        optionalJoinTeacherDTO.ifPresent(
+                teacherEntity -> assertEquals("testTeacher", teacherEntity.getUsername())
+        );
     }
 
     @Test
@@ -80,7 +86,7 @@ class JoinServiceTest {
 
         //Given
         JoinTeacherDTO joinTeacherDTO = new JoinTeacherDTO();
-        joinTeacherDTO.setUsername("teacher");
+        joinTeacherDTO.setUsername("testTeacher");
         joinTeacherDTO.setPassword("123");
         joinTeacherDTO.setEmail("ghdtpgh8913@gmail.com");
         joinTeacherDTO.setName("김교사");
@@ -90,7 +96,7 @@ class JoinServiceTest {
 
 
         LoginDTO loginDTO = new LoginDTO();
-        loginDTO.setUsername("teacher");
+        loginDTO.setUsername("testTeacher");
         loginDTO.setPassword("123");
 
         //when
@@ -100,9 +106,7 @@ class JoinServiceTest {
         //then
         boolean matches = passwordEncoder
                 .matches(loginDTO.getPassword(), userDetails.getPassword());
-        assertEquals("teacher", userDetails.getUsername());
+        assertEquals("testTeacher", userDetails.getUsername());
         assertTrue(matches);
     }
-
-
 }

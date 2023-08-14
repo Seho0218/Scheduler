@@ -10,6 +10,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class JoinServiceImpl implements JoinService {
@@ -28,10 +30,10 @@ public class JoinServiceImpl implements JoinService {
     }
 
     @Override
-    public JoinTeacherDTO findDuplicateTeacherId(JoinTeacherDTO joinTeacherDTO) {
+    public Optional<JoinTeacherDTO> findDuplicateTeacherId(JoinTeacherDTO joinTeacherDTO) {
         //final 붙인 이유. 변수값을 더이상 변경하지 않기 위해서
-        final TeacherEntity byTeacherIdIs = teacherRepository
+        final Optional<TeacherEntity> optionalTeacherEntity = teacherRepository
                 .findByUsernameIs(joinTeacherDTO.getUsername());
-        return joinTeacherMapper.toJoinTeacherDTO(byTeacherIdIs);
+        return optionalTeacherEntity.map(joinTeacherMapper::toJoinTeacherDTO);
     }
 }

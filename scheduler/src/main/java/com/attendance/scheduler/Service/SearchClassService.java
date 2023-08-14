@@ -6,6 +6,7 @@ import com.attendance.scheduler.Dto.ClassListDTO;
 import com.attendance.scheduler.Dto.StudentClassDTO;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface SearchClassService {
 
@@ -14,5 +15,5 @@ public interface SearchClassService {
 
       ClassListDTO findAllClasses();
 
-      StudentClassDTO findStudentClasses(StudentClassDTO studentClassDTO);
+      Optional<StudentClassDTO> findStudentClasses(StudentClassDTO studentClassDTO);
 }
