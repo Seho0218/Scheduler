@@ -32,7 +32,8 @@ Link : http://seho0218.synology.me:3205/
 - 
 ## 로그인 정보
  관리자 정보
-- 아이디 : admin, 비밀번호: root123!@#
+- 아이디 : admin
+- 비밀번호: root123!@#
 ## 사용 기술
 
 - Spring
