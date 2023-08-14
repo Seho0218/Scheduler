@@ -8,10 +8,6 @@ spring:
   sql:
     init:
       mode: always
-  security:
-    user:
-      name: user
-      password: 123
   devtools:
     livereload:
       enabled: true
@@ -38,7 +34,7 @@ spring:
       defer-datasource-initialization: true
 
   thymeleaf:
-    cache: false #운영시 true
+    cache: true #운영시 true
     enabled: true
 
   servlet: #fileupload
@@ -49,16 +45,12 @@ spring:
   mail: #email
     host: smtp.gmail.com
     port: 587
-    username:
+    username: dev.hsayho@gmail.com
     password:
     properties:
       mail:
         smtp:
-        starttls.enable: true
-        auth: true
-
-#decorator:
-#  datasource:
-#    p6spy:
-#      enable-logging: true
-#      multiline: true
+          auth: true
+          starttls:
+            enable: true
+      protocol: smtp

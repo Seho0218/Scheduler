@@ -5,7 +5,6 @@ import com.attendance.scheduler.Dto.Teacher.FindPasswordDTO;
 import com.attendance.scheduler.Dto.Teacher.PwdEditDTO;
 import com.attendance.scheduler.Entity.AdminEntity;
 import com.attendance.scheduler.Entity.TeacherEntity;
-import com.attendance.scheduler.Mapper.JoinTeacherMapper;
 import com.attendance.scheduler.Repository.jpa.AdminRepository;
 import com.attendance.scheduler.Repository.jpa.TeacherRepository;
 import com.attendance.scheduler.Service.CertService;
@@ -29,7 +28,6 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class CertServiceImpl implements CertService {
-	private final JoinTeacherMapper joinTeacherMapper;
 
 	private final JavaMailSender mailSender;
 	private final TeacherRepository teacherRepository;
@@ -46,6 +44,7 @@ public class CertServiceImpl implements CertService {
 
         return optionalTeacherEntity.map(teacherEntity -> {
 			FindIdDTO resultDTO = new FindIdDTO();
+			resultDTO.setId(teacherEntity.getUsername());
 			resultDTO.setEmail(teacherEntity.getEmail());
 			return resultDTO;
 		});
@@ -69,7 +68,7 @@ public class CertServiceImpl implements CertService {
 	@Transactional
 	public void sendUserId(FindIdDTO findIdDTO) {
 		SimpleMailMessage simpleMailMessage = new  SimpleMailMessage();
-		simpleMailMessage.setFrom("ghdtpgh8913@gmail.com");
+		simpleMailMessage.setFrom("dev.hsayho@gmail.com");
 		simpleMailMessage.setTo(findIdDTO.getEmail());
 		simpleMailMessage.setSubject("아이디 찾기");
 
@@ -112,7 +111,7 @@ public class CertServiceImpl implements CertService {
 
 	public void sendAuthNum(String userEmail, String authNum) {
 		SimpleMailMessage simpleMailMessage = new  SimpleMailMessage();
-		simpleMailMessage.setFrom("ghdtpgh8913@gmail.com");
+		simpleMailMessage.setFrom("dev.hsayho@gmail.com");
 		simpleMailMessage.setTo(userEmail);
 		simpleMailMessage.setSubject("비밀번호 찾기 인증번호");
 
