@@ -1,9 +1,10 @@
-package com.attendance.scheduler.Service;
+package com.attendance.scheduler.Service.Impl;
 
 import com.attendance.scheduler.Dto.Teacher.JoinTeacherDTO;
 import com.attendance.scheduler.Entity.TeacherEntity;
 import com.attendance.scheduler.Repository.jpa.TeacherRepository;
 import jakarta.transaction.Transactional;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,15 +26,24 @@ class CertServiceImplTest {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Test
-    @DisplayName("아이디 찾을 때, 이메일 검증")
-    void findId() {
+
+
+    private JoinTeacherDTO getJoinTeacherDTO() {
         //given
         JoinTeacherDTO joinTeacherDTO = new JoinTeacherDTO();
         joinTeacherDTO.setUsername("testTeacher");
-        joinTeacherDTO.setPassword("root123!@#");
+        String encodedPwd = passwordEncoder.encode("root123!@#");
+        joinTeacherDTO.setPassword(encodedPwd);
         joinTeacherDTO.setEmail("ghdtpgh8913@gmail.com");
         teacherRepository.save(joinTeacherDTO.toEntity());
+        return joinTeacherDTO;
+    }
+
+    @Test
+    @DisplayName("아이디 찾을 때, 이메일 검증")
+    void findId() {
+
+        JoinTeacherDTO joinTeacherDTO = getJoinTeacherDTO();
 
         //when
         Optional<TeacherEntity> optionalTeacherEntity = teacherRepository.findByEmailIs(joinTeacherDTO.getEmail());
@@ -45,14 +55,21 @@ class CertServiceImplTest {
     @Test
     @DisplayName("id 유무 확인")
     void idConfirmation(){
-        boolean existedByUsername = teacherRepository.existsByUsername("teacher");
+        //given
+        getJoinTeacherDTO();
+        boolean existedByUsername = teacherRepository.existsByUsername("testTeacher");
+
         assertTrue(existedByUsername);
     }
 
     @Test
     @DisplayName("email 유무 확인")
     void emailConfirmation(){
+        //given
+        getJoinTeacherDTO();
+
         boolean existedByUsername = teacherRepository.existsByEmail("ghdtpgh8913@gmail.com");
+
         assertTrue(existedByUsername);
     }
 
@@ -78,5 +95,10 @@ class CertServiceImplTest {
         boolean pwdMatch = passwordEncoder.matches("root123!@#", joinTeacherDTO.getPassword());
 
         assertTrue(pwdMatch);
+    }
+
+    @AfterEach
+    void afterEach(){
+        teacherRepository.deleteByUsernameIs("testTeacher");
     }
 }

@@ -1,4 +1,4 @@
-package com.attendance.scheduler.Service;
+package com.attendance.scheduler.Service.Impl;
 
 import com.attendance.scheduler.Dto.ClassDTO;
 import com.attendance.scheduler.Entity.ClassEntity;

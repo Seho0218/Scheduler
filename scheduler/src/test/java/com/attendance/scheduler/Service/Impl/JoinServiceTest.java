@@ -1,10 +1,11 @@
-package com.attendance.scheduler.Service;
+package com.attendance.scheduler.Service.Impl;
 
 import com.attendance.scheduler.Config.Authority.UserDetailService;
 import com.attendance.scheduler.Dto.LoginDTO;
 import com.attendance.scheduler.Dto.Teacher.JoinTeacherDTO;
 import com.attendance.scheduler.Entity.TeacherEntity;
 import com.attendance.scheduler.Repository.jpa.TeacherRepository;
+import com.attendance.scheduler.Service.JoinService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.DisplayName;

@@ -14,8 +14,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static java.util.Collections.singletonList;
-
 @Service
 @RequiredArgsConstructor
 public class SearchClassServiceImpl implements SearchClassService {
@@ -42,11 +40,11 @@ public class SearchClassServiceImpl implements SearchClassService {
         ClassListDTO classListDTO = ClassListDTO.getInstance();
 
         for (ClassDTO classDTO : classDTOS) {
-            classListDTO.setMondayClassList(singletonList(classDTO.getMonday()));
-            classListDTO.setTuesdayClassList(singletonList(classDTO.getTuesday()));
-            classListDTO.setWednesdayClassList(singletonList(classDTO.getWednesday()));
-            classListDTO.setThursdayClassList(singletonList(classDTO.getThursday()));
-            classListDTO.setFridayClassList(singletonList(classDTO.getFriday()));
+            classListDTO.getMondayClassList().add(classDTO.getMonday());
+            classListDTO.getTuesdayClassList().add(classDTO.getTuesday());
+            classListDTO.getWednesdayClassList().add(classDTO.getWednesday());
+            classListDTO.getThursdayClassList().add(classDTO.getThursday());
+            classListDTO.getFridayClassList().add(classDTO.getMonday());
         }
         return classListDTO;
     }
