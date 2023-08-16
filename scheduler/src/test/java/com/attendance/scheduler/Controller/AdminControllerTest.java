@@ -13,8 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
@@ -51,10 +49,8 @@ class AdminControllerTest {
         adminService.approveAuth(approveTeacherDTO);
 
         //Then
-        Optional<TeacherEntity> optionalTeacherEntity = teacherRepository.findByUsernameIs("testTeacher");
-        optionalTeacherEntity.ifPresent(teacherEntity -> {
-            assertTrue(teacherEntity.isApproved());
-        });
+        TeacherEntity teacherEntity = teacherRepository.findByUsernameIs("testTeacher");
+        assertTrue(teacherEntity.isApproved());
     }
 
     @AfterEach

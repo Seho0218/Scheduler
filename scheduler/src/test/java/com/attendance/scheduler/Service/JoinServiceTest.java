@@ -14,8 +14,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -52,11 +50,8 @@ class JoinServiceTest {
         joinService.joinTeacher(joinTeacherDTO);
 
         //Then
-        Optional<TeacherEntity> optionalTeacherEntity
-                = teacherRepository.findByUsernameIs("testTeacher");
-        optionalTeacherEntity.ifPresent(
-                teacherEntity -> assertEquals("testTeacher", teacherEntity.getUsername())
-        );
+        TeacherEntity teacherEntity = teacherRepository.findByUsernameIs("testTeacher");
+        assertEquals("testTeacher", teacherEntity.getUsername());
     }
 
     @Test
@@ -72,12 +67,10 @@ class JoinServiceTest {
 
         //when
         joinService.joinTeacher(joinTeacherDTO);
-        Optional<JoinTeacherDTO> optionalJoinTeacherDTO = joinService.findDuplicateTeacherId(joinTeacherDTO);
+        boolean findDuplicateTeacherId = joinService.findDuplicateTeacherId(joinTeacherDTO);
 
         //then
-        optionalJoinTeacherDTO.ifPresent(
-                teacherEntity -> assertEquals("testTeacher", teacherEntity.getUsername())
-        );
+        assertTrue(findDuplicateTeacherId);
     }
 
     @Test

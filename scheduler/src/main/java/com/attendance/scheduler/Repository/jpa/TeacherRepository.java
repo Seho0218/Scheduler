@@ -7,7 +7,10 @@ import java.util.Optional;
 
 public interface TeacherRepository extends JpaRepository<TeacherEntity, Long> {
 
-    Optional<TeacherEntity> findByUsernameIs(String username);
+    boolean existsByUsername(String username);
+    boolean existsByEmail(String email);
+
+    TeacherEntity findByUsernameIs(String username);
     Optional<TeacherEntity> findByEmailIs(String email);
 
     void deleteByUsernameIs(String username);

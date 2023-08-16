@@ -12,8 +12,6 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -33,17 +31,15 @@ public class SubmitServiceImpl implements SubmitService {
 
     private void classValidator(ClassDTO classDTO) {
         log.info("classDTO={}", classDTO);
-        Optional<ClassEntity> byStudentNameIs = classTableRepository.findByStudentNameIs(classDTO.getStudentName());
+        ClassEntity byStudentNameIs = classTableRepository.findByStudentNameIs(classDTO.getStudentName());
         log.info("byStudentNameIs={}", byStudentNameIs);
 
-        if (byStudentNameIs.isPresent()) {
+        if (byStudentNameIs != null) {
             duplicateClassValidator(classDTO);
         }
-        if(byStudentNameIs.isEmpty()) {
-            log.info("check");
-            classTableRepository.deleteByStudentName(classDTO.getStudentName());
-            duplicateClassValidator(classDTO);
-        }
+        classTableRepository.deleteByStudentName(classDTO.getStudentName());
+        duplicateClassValidator(classDTO);
+
     }
 
     private void duplicateClassValidator(ClassDTO classDTO) {
@@ -52,7 +48,7 @@ public class SubmitServiceImpl implements SubmitService {
         List<ClassDTO> allClassDTO = classTableRepository.findAll()
                 .stream()
                 .map(classMapper::toClassDTO)
-                .collect(Collectors.toList());
+                .toList();
 
         for (ClassDTO classDTOList: allClassDTO) {
             Integer mondayValue = classDTOList.getMonday();

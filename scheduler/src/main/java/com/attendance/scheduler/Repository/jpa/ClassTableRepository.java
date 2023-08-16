@@ -5,7 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface ClassTableRepository extends JpaRepository<ClassEntity, String> {
 
@@ -13,7 +12,7 @@ public interface ClassTableRepository extends JpaRepository<ClassEntity, String>
     /*
     * find StudentClass by StudentName
     * */
-    Optional<ClassEntity> findByStudentNameIs(String studentName);
+    ClassEntity findByStudentNameIs(String studentName);
 
     /*
     * delete StudentName

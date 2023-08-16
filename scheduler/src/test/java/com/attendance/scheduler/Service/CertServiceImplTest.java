@@ -30,8 +30,8 @@ class CertServiceImplTest {
     void findId() {
         //given
         JoinTeacherDTO joinTeacherDTO = new JoinTeacherDTO();
-        joinTeacherDTO.setUsername("testTeacher123");
-        joinTeacherDTO.setPassword("Root123!@#");
+        joinTeacherDTO.setUsername("testTeacher");
+        joinTeacherDTO.setPassword("root123!@#");
         joinTeacherDTO.setEmail("ghdtpgh8913@gmail.com");
         teacherRepository.save(joinTeacherDTO.toEntity());
 
@@ -39,9 +39,21 @@ class CertServiceImplTest {
         Optional<TeacherEntity> optionalTeacherEntity = teacherRepository.findByEmailIs(joinTeacherDTO.getEmail());
 
         //then
-        optionalTeacherEntity.ifPresent(teacherEntity -> {
-            assertEquals("ghdtpgh8913@gmail.com", teacherEntity.getEmail());
-        });
+        optionalTeacherEntity.ifPresent(teacherEntity -> assertEquals("ghdtpgh8913@gmail.com", teacherEntity.getEmail()));
+    }
+
+    @Test
+    @DisplayName("id 유무 확인")
+    void idConfirmation(){
+        boolean existedByUsername = teacherRepository.existsByUsername("teacher");
+        assertTrue(existedByUsername);
+    }
+
+    @Test
+    @DisplayName("email 유무 확인")
+    void emailConfirmation(){
+        boolean existedByUsername = teacherRepository.existsByEmail("ghdtpgh8913@gmail.com");
+        assertTrue(existedByUsername);
     }
 
     @Test
@@ -54,7 +66,7 @@ class CertServiceImplTest {
         joinTeacherDTO.setUsername("testTeacher");
 
         //비밀번호 암호화
-        String encodedPwd = passwordEncoder.encode("Root123!@#");
+        String encodedPwd = passwordEncoder.encode("root123!@#");
         joinTeacherDTO.setPassword(encodedPwd);
         teacherRepository.save(joinTeacherDTO.toEntity());
 
@@ -63,7 +75,7 @@ class CertServiceImplTest {
 
         //then
         //비밀번호 검증
-        boolean pwdMatch = passwordEncoder.matches("Root123!@#", joinTeacherDTO.getPassword());
+        boolean pwdMatch = passwordEncoder.matches("root123!@#", joinTeacherDTO.getPassword());
 
         assertTrue(pwdMatch);
     }

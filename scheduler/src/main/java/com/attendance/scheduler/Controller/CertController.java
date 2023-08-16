@@ -62,7 +62,7 @@ public class CertController {
         }
 
         try {
-            findIdDTO.setId(idByEmail.get().getId());
+            findIdDTO.setUsername(idByEmail.get().getUsername());
             certService.sendUserId(findIdDTO);
         } catch (Exception e) {
             log.info("send Id error = {}", e.getMessage());
@@ -85,11 +85,11 @@ public class CertController {
     }
 
     /*
-    * Validate ID and Email
+    * Validate ID and Email and Send teacher AuthNum
     **/
     @PostMapping("findPwd")
     public String idEmailConfirm(@Validated @ModelAttribute("account") FindPasswordDTO findPasswordDTO,
-                       BindingResult bindingResult, Model model) {
+                       BindingResult bindingResult, HttpSession session, Model model) {
 
         if (bindingResult.hasErrors()) {
             return "cert/findPwd";
@@ -98,32 +98,27 @@ public class CertController {
         if(!certService.emailConfirmation(findPasswordDTO)) {
             model.addAttribute("errorMessage", "등록된 이메일이 없습니다.");
             model.addAttribute("account", new TeacherDTO());
-            return "cert/FindPwd";
+            return "cert/findPwd";
         }
         if(!certService.idConfirmation(findPasswordDTO)){
             model.addAttribute("errorMessage", "등록된 아이디가 없습니다.");
             model.addAttribute("account", new TeacherDTO());
-            return "cert/FindPwd";
+            return "cert/findPwd";
         }
-            return "cert/authNum";
-    }
 
-    /*
-     * Set and Send teacher AuthNum
-     * */
-    @PostMapping("authNum")
-    private String authNum(FindPasswordDTO findPasswordDTO, Model model, HttpSession session){
 
         try {
+            model.addAttribute("username", findPasswordDTO.getUsername());
             model.addAttribute("auth", new CertDTO());
-            model.addAttribute("username", findPasswordDTO);
             certService.setupAuthNum(findPasswordDTO, session);
             return "cert/authNum";
         } catch (Exception e) {
+            model.addAttribute("account", new TeacherDTO());
             model.addAttribute("errorMessage", e.getMessage());
             return "cert/findPwd";
         }
     }
+
 
     /*
      * AuthNum Check
@@ -192,7 +187,6 @@ public class CertController {
         }catch (Exception e) {
             log.info("send Id error = {}", e.getMessage());
             model.addAttribute("class", new ClassDTO());
-
             return "redirect:/";
         }
     }

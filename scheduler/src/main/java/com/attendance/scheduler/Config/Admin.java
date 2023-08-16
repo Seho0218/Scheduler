@@ -1,6 +1,5 @@
 package com.attendance.scheduler.Config;
 
-import com.attendance.scheduler.Dto.Admin.AdminDTO;
 import com.attendance.scheduler.Entity.AdminEntity;
 import com.attendance.scheduler.Repository.jpa.AdminRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,25 +21,21 @@ public class Admin implements ApplicationRunner{
     @Override
     public void run(ApplicationArguments args) throws Exception {
 
-        Optional<AdminEntity> optionalAdminEntity = adminRepository.findByUsernameIs("admin");
-        optionalAdminEntity.ifPresentOrElse(adminEntity -> {
-            adminEntity.updatePassword(passwordEncoder.encode("root123!@#"));
-            adminRepository.save(adminEntity);
-            },
-                () -> {
-            AdminDTO adminDTO = new AdminDTO();
-            adminDTO.setUsername("admin");
-            adminDTO.setPassword(passwordEncoder.encode("root123!@#"));
-            adminRepository.save(adminDTO.toEntity());
-        });
+        Optional<AdminEntity> optionalAdminEntity = Optional.ofNullable(adminRepository.findByUsernameIs("admin"));
+        optionalAdminEntity.orElseGet(() -> adminRepository.save(
+                AdminEntity.builder()
+                        .username("admin")
+                        .password(passwordEncoder.encode("root123!@#"))
+                        .build()));
     }
 
     @Scheduled(fixedRate = 3600000)
-    public void execute(){
-        Optional<AdminEntity> optionalAdminEntity = adminRepository.findByUsernameIs("admin");
-        optionalAdminEntity.ifPresent(adminEntity -> {
-            adminEntity.updatePassword(passwordEncoder.encode("root123!@#"));
-            adminRepository.save(adminEntity);
+    public void updatePassword(){
+        Optional<AdminEntity> optionalAdminEntity = Optional.ofNullable(adminRepository.findByUsernameIs("admin"));
+        optionalAdminEntity.ifPresent(
+                adminEntity -> {
+                    adminEntity.updatePassword(passwordEncoder.encode("root123!@#"));
+                    adminRepository.save(adminEntity);
         });
     }
 }

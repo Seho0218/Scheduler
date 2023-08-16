@@ -14,5 +14,5 @@ public class FindIdDTO {
     @NotEmpty(message = "이메일을 입력해주세요")
     private String email;
 
-    private String id;
+    private String username;
 }

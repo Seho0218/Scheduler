@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,23 +32,19 @@ public class AdminServiceImpl implements AdminService {
     @Override
     @Transactional
     public void approveAuth(ApproveTeacherDTO approveTeacherDTO) {
-        Optional<TeacherEntity> optionalTeacherEntity = teacherRepository
+        TeacherEntity teacherEntity = teacherRepository
                 .findByUsernameIs(approveTeacherDTO.getUsername());
-        optionalTeacherEntity.ifPresent(teacherEntity -> {
-            teacherEntity.updateApprove(true);
-            teacherRepository.save(teacherEntity);
-        });
+        teacherEntity.updateApprove(true);
+        teacherRepository.save(teacherEntity);
     }
 
     @Override
     @Transactional
     public void revokeAuth(ApproveTeacherDTO approveTeacherDTO) {
-        Optional<TeacherEntity> optionalTeacherEntity = teacherRepository
+        TeacherEntity teacherEntity = teacherRepository
                 .findByUsernameIs(approveTeacherDTO.getUsername());
         approveTeacherDTO.setApproved(false);
-        optionalTeacherEntity.ifPresent(teacherEntity -> {
-            teacherEntity.updateApprove(false);
-            teacherRepository.save(teacherEntity);
-        });
+        teacherEntity.updateApprove(false);
+        teacherRepository.save(teacherEntity);
     }
 }

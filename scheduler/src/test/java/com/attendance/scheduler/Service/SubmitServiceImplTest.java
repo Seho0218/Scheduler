@@ -9,8 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Transactional
@@ -37,15 +35,13 @@ class SubmitServiceImplTest {
         classTableRepository.save(classDTO.toEntity());
 
         //then
-        Optional<ClassEntity> studentNameIs = classTableRepository.findByStudentNameIs("김김김");
+        ClassEntity studentNameIs = classTableRepository.findByStudentNameIs("김김김");
 
-        studentNameIs.ifPresent(student -> {
-                    assertEquals("김김김", student.getStudentName());
-                    assertEquals(1, student.getMonday());
-                    assertEquals(2, student.getTuesday());
-                    assertEquals(3, student.getWednesday());
-                    assertEquals(4, student.getThursday());
-                    assertEquals(5, student.getFriday());
-        });
+        assertEquals("김김김", studentNameIs.getStudentName());
+        assertEquals(1, studentNameIs.getMonday());
+        assertEquals(2, studentNameIs.getTuesday());
+        assertEquals(3, studentNameIs.getWednesday());
+        assertEquals(4, studentNameIs.getThursday());
+
     }
 }

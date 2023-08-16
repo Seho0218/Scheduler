@@ -12,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static java.util.Collections.singletonList;
@@ -27,7 +26,6 @@ public class SearchClassServiceImpl implements SearchClassService {
 
     @Override
     public List<ClassDTO> findClassTable() {
-
         return classTableRepository.findAll()
                 .stream()
                 .map(classMapper::toClassDTO)
@@ -36,11 +34,10 @@ public class SearchClassServiceImpl implements SearchClassService {
 
     @Override
     public ClassListDTO findAllClasses() {
-
         List<ClassDTO> classDTOS = classTableRepository.findAll()
                 .stream()
                 .map(classMapper::toClassDTO)
-                .collect(Collectors.toList());
+                .toList();
 
         ClassListDTO classListDTO = ClassListDTO.getInstance();
 
@@ -55,10 +52,9 @@ public class SearchClassServiceImpl implements SearchClassService {
     }
 
     @Override
-    public Optional<StudentClassDTO> findStudentClasses(StudentClassDTO studentClassDTO) {
+    public StudentClassDTO findStudentClasses(StudentClassDTO studentClassDTO) {
         String studentName = studentClassDTO.getStudentName().trim();
-        Optional<ClassEntity> optionalClassEntity = classTableRepository.findByStudentNameIs(studentName);
-        return optionalClassEntity.map(studentClassMapper::toClassDTO);
+        ClassEntity byStudentNameIs = classTableRepository.findByStudentNameIs(studentName);
+        return studentClassMapper.toClassDTO(byStudentNameIs);
     }
 }
-

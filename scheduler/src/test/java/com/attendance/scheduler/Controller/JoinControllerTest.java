@@ -12,16 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @Transactional
 @RequiredArgsConstructor
 class JoinControllerTest {
-
-    private static final String duplicateErrorMessage = "중복된 아이디 입니다.";
 
     @Autowired
     private JoinService joinService;
@@ -59,14 +55,9 @@ class JoinControllerTest {
 
         //Then
 
-        Optional<TeacherEntity> optionalTeacherEntity = teacherRepository.findByUsernameIs("testTeacher");
-
-        optionalTeacherEntity.ifPresent(
-                teacherEntity -> {
-                    if (joinTeacherDTO.getUsername().equals(optionalTeacherEntity.get().getUsername())) {
-                        assertEquals("중복된 아이디 입니다.", duplicateErrorMessage);
-                    }
-                });
+        TeacherEntity teacherEntity = teacherRepository.findByUsernameIs("testTeacher");
+        boolean existedByUsername = teacherRepository.existsByUsername(teacherEntity.getUsername());
+        assertTrue(existedByUsername);
     }
 
     @AfterEach

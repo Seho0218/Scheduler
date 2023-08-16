@@ -10,7 +10,6 @@ public interface AdminService {
     List<TeacherDTO> getTeacherList();
 
     void approveAuth(ApproveTeacherDTO approveTeacherDTO);
-
     void revokeAuth(ApproveTeacherDTO approveTeacherDTO);
 
 }

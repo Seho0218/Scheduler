@@ -44,7 +44,7 @@ public class CertServiceImpl implements CertService {
 
         return optionalTeacherEntity.map(teacherEntity -> {
 			FindIdDTO resultDTO = new FindIdDTO();
-			resultDTO.setId(teacherEntity.getUsername());
+			resultDTO.setUsername(teacherEntity.getUsername());
 			resultDTO.setEmail(teacherEntity.getEmail());
 			return resultDTO;
 		});
@@ -52,16 +52,13 @@ public class CertServiceImpl implements CertService {
 
 	@Override
 	public boolean idConfirmation(FindPasswordDTO findPasswordDTO) {
-		Optional<TeacherEntity> optionalTeacherEntity
-				= teacherRepository.findByUsernameIs(findPasswordDTO.getUsername());
-		return optionalTeacherEntity.isPresent();
+		return teacherRepository.existsByUsername(findPasswordDTO.getUsername());
 	}
 
 	@Override
 	public boolean emailConfirmation(FindPasswordDTO findPasswordDTO) {
-		Optional<TeacherEntity> optionalTeacherEntity
-				= teacherRepository.findByEmailIs(findPasswordDTO.getEmail());
-		return optionalTeacherEntity.isPresent();
+		return teacherRepository.existsByEmail(findPasswordDTO.getEmail());
+
 	}
 
 	@Override
@@ -74,7 +71,7 @@ public class CertServiceImpl implements CertService {
 
 		String sb = "가입하신 아이디는" +
 				System.lineSeparator() +
-				findIdDTO.getId() + "입니다";
+				findIdDTO.getUsername() + "입니다";
 
 		simpleMailMessage.setText(sb);
 		new Thread(() -> mailSender.send(simpleMailMessage)).start();
@@ -129,21 +126,18 @@ public class CertServiceImpl implements CertService {
 
 		if(auth.getAuthorities().toString().equals("[ROLE_TEACHER]")
 				|| auth.getAuthorities().toString().equals("[ROLE_ANONYMOUS]")){
-			final Optional<TeacherEntity> byTeacherIdIs = teacherRepository
+			final TeacherEntity byTeacherIdIs = teacherRepository
 					.findByUsernameIs(pwdEditDTO.getUsername());
-			byTeacherIdIs.ifPresent(teacherEntity -> {
-				teacherEntity.updatePassword(encodePassword);
-				teacherRepository.save(teacherEntity);
-			});
+				byTeacherIdIs.updatePassword(encodePassword);
+				teacherRepository.save(byTeacherIdIs);
+
 		}
 
 		if(auth.getAuthorities().toString().equals("[ROLE_ADMIN]")){
-			final Optional<AdminEntity> byAdminIdIs = adminRepository
+			final AdminEntity adminEntity = adminRepository
 					.findByUsernameIs(pwdEditDTO.getUsername());
-			byAdminIdIs.ifPresent(adminEntity -> {
-				adminEntity.updatePassword(encodePassword);
-				adminRepository.save(adminEntity);
-			});
+			adminEntity.updatePassword(encodePassword);
+			adminRepository.save(adminEntity);
 		}
 	}
 }

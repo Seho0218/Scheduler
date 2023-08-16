@@ -15,8 +15,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @SpringBootTest
 class SearchClassServiceImplTest {
@@ -60,7 +58,7 @@ class SearchClassServiceImplTest {
         List<ClassDTO> classDTOS = classTableRepository.findAll()
                 .stream()
                 .map(classMapper::toClassDTO)
-                .collect(Collectors.toList());
+                .toList();
 
         List<Integer> monday = new ArrayList<>();
         List<Integer> tuesday = new ArrayList<>();
@@ -94,10 +92,10 @@ class SearchClassServiceImplTest {
         String studentName = studentClassDTO.getStudentName().trim();
 
         //When
-        Optional<ClassEntity> byStudentNameIs = classTableRepository.findByStudentNameIs(studentName);
+        ClassEntity byStudentNameIs = classTableRepository.findByStudentNameIs(studentName);
 
         //Then
-        StudentClassDTO classDTO = studentClassMapper.toClassDTO(byStudentNameIs.get());
+        StudentClassDTO classDTO = studentClassMapper.toClassDTO(byStudentNameIs);
         Assertions.assertEquals(classDTO.getStudentName(), studentClassDTO.getStudentName());
     }
 

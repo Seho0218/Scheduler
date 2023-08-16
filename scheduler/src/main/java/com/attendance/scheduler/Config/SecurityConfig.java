@@ -16,7 +16,6 @@ import org.springframework.security.web.SecurityFilterChain;
 @RequiredArgsConstructor
 @EnableWebSecurity
 public class SecurityConfig{
-
 	public static final String[] ENDPOINTS_WHITELIST = {
 			"/", "/submit", "/completion",
 			"/search/**",
