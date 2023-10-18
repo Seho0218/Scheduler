@@ -3,6 +3,7 @@ package com.attendance.scheduler.Service.Impl;
 import com.attendance.scheduler.Dto.Teacher.JoinTeacherDTO;
 import com.attendance.scheduler.Entity.TeacherEntity;
 import com.attendance.scheduler.Repository.jpa.TeacherRepository;
+import com.attendance.scheduler.Service.JoinService;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
@@ -26,6 +27,9 @@ class CertServiceImplTest {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private JoinService joinService;
+
 
 
     private JoinTeacherDTO getJoinTeacherDTO() {
@@ -35,7 +39,7 @@ class CertServiceImplTest {
         String encodedPwd = passwordEncoder.encode("root123!@#");
         joinTeacherDTO.setPassword(encodedPwd);
         joinTeacherDTO.setEmail("ghdtpgh8913@gmail.com");
-        teacherRepository.save(joinTeacherDTO.toEntity());
+        joinService.joinTeacher(joinTeacherDTO);
         return joinTeacherDTO;
     }
 
@@ -85,7 +89,7 @@ class CertServiceImplTest {
         //비밀번호 암호화
         String encodedPwd = passwordEncoder.encode("root123!@#");
         joinTeacherDTO.setPassword(encodedPwd);
-        teacherRepository.save(joinTeacherDTO.toEntity());
+        joinService.joinTeacher(joinTeacherDTO);
 
         //when
         teacherRepository.findByUsernameIs(joinTeacherDTO.getUsername());

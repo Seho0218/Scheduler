@@ -58,7 +58,6 @@ public class CertServiceImpl implements CertService {
 	@Override
 	public boolean emailConfirmation(FindPasswordDTO findPasswordDTO) {
 		return teacherRepository.existsByEmail(findPasswordDTO.getEmail());
-
 	}
 
 	@Override

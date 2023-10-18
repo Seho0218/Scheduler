@@ -23,7 +23,7 @@ public class SubmitServiceImpl implements SubmitService {
 
     @Override
     @Transactional(isolation = Isolation.REPEATABLE_READ)
-    public void saveClassTable(ClassDTO classDTO) {
+    public synchronized void saveClassTable(ClassDTO classDTO) {
         classValidator(classDTO);
         String trimmedStudentName = classDTO.getStudentName().trim();
         classDTO.setStudentName(trimmedStudentName);
@@ -33,15 +33,16 @@ public class SubmitServiceImpl implements SubmitService {
     private void classValidator(ClassDTO classDTO) {
         log.info("classDTO={}", classDTO);
         Optional<ClassEntity> byStudentNameIs =
-                Optional.ofNullable(classTableRepository.findByStudentNameIs(classDTO.getStudentName()));
+                Optional.ofNullable(classTableRepository
+                        .findByStudentNameIs(classDTO.getStudentName()));
         log.info("byStudentNameIs={}", byStudentNameIs);
 
-        if (byStudentNameIs.isPresent()) {
+        if (byStudentNameIs.isEmpty()) {
             duplicateClassValidator(classDTO);
         }
+
         classTableRepository.deleteByStudentName(classDTO.getStudentName());
         duplicateClassValidator(classDTO);
-
     }
 
     private void duplicateClassValidator(ClassDTO classDTO) {
@@ -59,11 +60,11 @@ public class SubmitServiceImpl implements SubmitService {
             Integer thursdayValue = classDTOList.getThursday();
             Integer fridayValue = classDTOList.getFriday();
 
-            if (mondayValue.equals(classDTO.getMonday())) throw new RuntimeException(errorCode);
-            if (tuesdayValue.equals(classDTO.getTuesday())) throw new RuntimeException(errorCode);
-            if (wednesdayValue.equals(classDTO.getWednesday())) throw new RuntimeException(errorCode);
-            if (thursdayValue.equals(classDTO.getThursday())) throw new RuntimeException(errorCode);
-            if (fridayValue.equals(classDTO.getFriday())) throw new RuntimeException(errorCode);
+            if (mondayValue.equals(classDTO.getMonday())) throw new IllegalStateException(errorCode);
+            if (tuesdayValue.equals(classDTO.getTuesday())) throw new IllegalStateException(errorCode);
+            if (wednesdayValue.equals(classDTO.getWednesday())) throw new IllegalStateException(errorCode);
+            if (thursdayValue.equals(classDTO.getThursday())) throw new IllegalStateException(errorCode);
+            if (fridayValue.equals(classDTO.getFriday())) throw new IllegalStateException(errorCode);
         }
     }
 }

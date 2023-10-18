@@ -6,6 +6,7 @@ import com.attendance.scheduler.Entity.ClassEntity;
 import com.attendance.scheduler.Mapper.ClassMapper;
 import com.attendance.scheduler.Mapper.StudentClassMapper;
 import com.attendance.scheduler.Repository.jpa.ClassTableRepository;
+import com.attendance.scheduler.Service.SubmitService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,6 +19,9 @@ import java.util.List;
 
 @SpringBootTest
 class SearchClassServiceImplTest {
+
+    @Autowired
+    private SubmitService submitService;
 
     @Autowired
     private ClassTableRepository classTableRepository;
@@ -39,7 +43,7 @@ class SearchClassServiceImplTest {
         classDTO.setThursday(4);
         classDTO.setFriday(5);
 
-        classTableRepository.save(classDTO.toEntity());
+        submitService.saveClassTable(classDTO);
 
         ClassDTO classDTO2 = new ClassDTO();
         classDTO2.setStudentName("test2Student");
@@ -49,7 +53,7 @@ class SearchClassServiceImplTest {
         classDTO2.setThursday(5);
         classDTO2.setFriday(6);
 
-        classTableRepository.save(classDTO2.toEntity());
+        submitService.saveClassTable(classDTO2);
     }
 
     @Test
