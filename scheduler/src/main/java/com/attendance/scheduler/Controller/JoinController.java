@@ -39,9 +39,15 @@ public class JoinController {
         }
 
         boolean duplicateTeacherId = joinService.findDuplicateTeacherId(joinTeacherDTO);
+        boolean duplicateTeacherEmail = joinService.findDuplicateTeacherEmail(joinTeacherDTO);
 
         if (duplicateTeacherId) {
-            model.addAttribute("errorMessage", "중복된 아이디 입니다.");
+            model.addAttribute("errorMessage", "이미 가입된 아이디 입니다.");
+            return "join";
+        }
+
+        if (duplicateTeacherEmail) {
+            model.addAttribute("errorMessage", "이미 가입된 이메일 입니다.");
             return "join";
         }
 

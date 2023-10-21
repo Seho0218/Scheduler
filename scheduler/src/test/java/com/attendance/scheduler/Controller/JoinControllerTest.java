@@ -10,12 +10,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
-@Transactional
 @RequiredArgsConstructor
 class JoinControllerTest {
 
@@ -39,22 +37,12 @@ class JoinControllerTest {
         joinTeacherDTO.setEmail("ghdtpgh8913@gmail.com");
         joinTeacherDTO.setName("김교사");
         joinTeacherDTO.setApproved(true);
-        joinService.joinTeacher(joinTeacherDTO);
 
 
         //When
-        /*
-         *   회원가입 정보 2
-         */
-        JoinTeacherDTO joinTeacherDTO2 = new JoinTeacherDTO();
-        joinTeacherDTO2.setUsername("testTeacher");
-        joinTeacherDTO2.setPassword("123");
-        joinTeacherDTO2.setEmail("ghdtpgh8913@gmail.com");
-        joinTeacherDTO2.setName("김교사");
-        joinTeacherDTO2.setApproved(true);
+        joinService.joinTeacher(joinTeacherDTO);
 
         //Then
-
         TeacherEntity teacherEntity = teacherRepository.findByUsernameIs("testTeacher");
         boolean existedByUsername = teacherRepository.existsByUsername(teacherEntity.getUsername());
         assertTrue(existedByUsername);

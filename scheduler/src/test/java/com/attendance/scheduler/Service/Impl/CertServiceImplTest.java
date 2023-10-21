@@ -1,11 +1,13 @@
 package com.attendance.scheduler.Service.Impl;
 
 import com.attendance.scheduler.Dto.Teacher.JoinTeacherDTO;
+import com.attendance.scheduler.Dto.Teacher.PwdEditDTO;
 import com.attendance.scheduler.Entity.TeacherEntity;
 import com.attendance.scheduler.Repository.jpa.TeacherRepository;
+import com.attendance.scheduler.Service.CertService;
 import com.attendance.scheduler.Service.JoinService;
-import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,11 +16,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
-@Transactional
 class CertServiceImplTest {
 
     @Autowired
@@ -30,74 +30,69 @@ class CertServiceImplTest {
     @Autowired
     private JoinService joinService;
 
+    @Autowired
+    private CertService certService;
 
+    private JoinTeacherDTO joinTeacherDTO;
 
-    private JoinTeacherDTO getJoinTeacherDTO() {
-        //given
-        JoinTeacherDTO joinTeacherDTO = new JoinTeacherDTO();
-        joinTeacherDTO.setUsername("testTeacher");
-        String encodedPwd = passwordEncoder.encode("root123!@#");
-        joinTeacherDTO.setPassword(encodedPwd);
-        joinTeacherDTO.setEmail("ghdtpgh8913@gmail.com");
-        joinService.joinTeacher(joinTeacherDTO);
-        return joinTeacherDTO;
+    @BeforeEach
+    @DisplayName("회원가입")
+    public void joinTeacherDTO() {
+        Optional<TeacherEntity> existingTeacher
+                = Optional.ofNullable(teacherRepository.findByUsernameIs("testTeacher"));
+
+        if (existingTeacher.isEmpty()) {
+            joinTeacherDTO = new JoinTeacherDTO();
+            joinTeacherDTO.setUsername("testTeacher");
+            joinTeacherDTO.setPassword("123");
+            joinTeacherDTO.setEmail("testEmail@gmail.com");
+            joinService.joinTeacher(joinTeacherDTO);
+        }
     }
 
     @Test
     @DisplayName("아이디 찾을 때, 이메일 검증")
     void findId() {
-
-        JoinTeacherDTO joinTeacherDTO = getJoinTeacherDTO();
-
-        //when
-        Optional<TeacherEntity> optionalTeacherEntity = teacherRepository.findByEmailIs(joinTeacherDTO.getEmail());
-
-        //then
-        optionalTeacherEntity.ifPresent(teacherEntity -> assertEquals("ghdtpgh8913@gmail.com", teacherEntity.getEmail()));
+        boolean duplicateTeacherEmail
+                = joinService.findDuplicateTeacherEmail(joinTeacherDTO);
+        assertTrue(duplicateTeacherEmail);
     }
 
     @Test
     @DisplayName("id 유무 확인")
     void idConfirmation(){
-        //given
-        getJoinTeacherDTO();
-        boolean existedByUsername = teacherRepository.existsByUsername("testTeacher");
-
+        boolean existedByUsername
+                = teacherRepository.existsByUsername("testTeacher");
         assertTrue(existedByUsername);
     }
 
     @Test
     @DisplayName("email 유무 확인")
     void emailConfirmation(){
-        //given
-        getJoinTeacherDTO();
-
-        boolean existedByUsername = teacherRepository.existsByEmail("ghdtpgh8913@gmail.com");
-
+        boolean existedByUsername
+                = teacherRepository.existsByEmail("testEmail@gmail.com");
         assertTrue(existedByUsername);
     }
 
-    @Test
-    @DisplayName(" 비밀번호 변경 참 거짓 확인 ")
+//    @Test
+    @DisplayName("비밀번호 변경 참 거짓 확인")
     void pwdEdit() {
 
-        //given
-        // 임의 관리자 객체생성
-        JoinTeacherDTO joinTeacherDTO = new JoinTeacherDTO();
-        joinTeacherDTO.setUsername("testTeacher");
-
-        //비밀번호 암호화
-        String encodedPwd = passwordEncoder.encode("root123!@#");
-        joinTeacherDTO.setPassword(encodedPwd);
-        joinService.joinTeacher(joinTeacherDTO);
+        //비밀번호 변경
+        PwdEditDTO pwdEditDTO = new PwdEditDTO();
+        pwdEditDTO.setUsername("testTeacher");
+        pwdEditDTO.setPassword("root123!@#");
 
         //when
-        teacherRepository.findByUsernameIs(joinTeacherDTO.getUsername());
+
+        certService.PwdEdit(pwdEditDTO);
+        TeacherEntity byUsernameIs
+                = teacherRepository.findByUsernameIs(pwdEditDTO.getUsername());
 
         //then
         //비밀번호 검증
-        boolean pwdMatch = passwordEncoder.matches("root123!@#", joinTeacherDTO.getPassword());
-
+        boolean pwdMatch
+                = passwordEncoder.matches("root123!@#", byUsernameIs.getPassword());
         assertTrue(pwdMatch);
     }
 

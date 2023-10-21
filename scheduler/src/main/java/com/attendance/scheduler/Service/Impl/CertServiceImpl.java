@@ -129,7 +129,6 @@ public class CertServiceImpl implements CertService {
 					.findByUsernameIs(pwdEditDTO.getUsername());
 				byTeacherIdIs.updatePassword(encodePassword);
 				teacherRepository.save(byTeacherIdIs);
-
 		}
 
 		if(auth.getAuthorities().toString().equals("[ROLE_ADMIN]")){

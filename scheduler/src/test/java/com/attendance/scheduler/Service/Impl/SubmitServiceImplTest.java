@@ -20,9 +20,10 @@ class SubmitServiceImplTest {
     @Autowired
     private ClassTableRepository classTableRepository;
 
-    String errorCode = "다른 원생과 겹치는 시간이 있습니다. 새로고침 후, 다시 신청해 주세요.";
     @Autowired
     private SubmitService submitService;
+
+    String errorCode = "다른 원생과 겹치는 시간이 있습니다. 새로고침 후, 다시 신청해 주세요.";
 
     @Test
     @BeforeEach
@@ -95,8 +96,7 @@ class SubmitServiceImplTest {
 
         //when //then
         assertThrows(IllegalStateException.class,
-                () -> submitService.saveClassTable(classDTO),
-                errorCode);
+                () -> submitService.saveClassTable(classDTO), errorCode);
     }
 
     @AfterEach
@@ -104,5 +104,4 @@ class SubmitServiceImplTest {
         classTableRepository.deleteByStudentName("testStudent");
         classTableRepository.deleteByStudentName("test2Student");
     }
-
 }

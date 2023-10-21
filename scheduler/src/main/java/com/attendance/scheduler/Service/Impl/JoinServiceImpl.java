@@ -18,7 +18,7 @@ public class JoinServiceImpl implements JoinService {
     @Override
     @Transactional
     public void joinTeacher(JoinTeacherDTO joinTeacherDTO) {
-        String encode = passwordEncoder
+        final String encode = passwordEncoder
                 .encode(joinTeacherDTO.getPassword());
         joinTeacherDTO.setPassword(encode);
         teacherRepository.save(joinTeacherDTO.toEntity());
@@ -26,7 +26,11 @@ public class JoinServiceImpl implements JoinService {
 
     @Override
     public boolean findDuplicateTeacherId(JoinTeacherDTO joinTeacherDTO) {
-        //final 붙인 이유. 변수값을 더이상 변경하지 않기 위해서
         return teacherRepository.existsByUsername(joinTeacherDTO.getUsername());
+    }
+
+    @Override
+    public boolean findDuplicateTeacherEmail(JoinTeacherDTO joinTeacherDTO) {
+        return teacherRepository.existsByEmail(joinTeacherDTO.getEmail());
     }
 }

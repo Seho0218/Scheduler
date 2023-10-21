@@ -96,7 +96,8 @@ class SearchClassServiceImplTest {
         String studentName = studentClassDTO.getStudentName().trim();
 
         //When
-        ClassEntity byStudentNameIs = classTableRepository.findByStudentNameIs(studentName);
+        ClassEntity byStudentNameIs
+                = classTableRepository.findByStudentNameIs(studentName);
 
         //Then
         StudentClassDTO classDTO = studentClassMapper.toClassDTO(byStudentNameIs);
