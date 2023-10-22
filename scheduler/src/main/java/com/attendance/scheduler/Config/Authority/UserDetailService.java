@@ -23,12 +23,14 @@ public class UserDetailService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         log.info("teacherId = {}", username);
 
-        final TeacherEntity teacherEntity = teacherRepository.findByUsernameIs(username);
+        final TeacherEntity teacherEntity = teacherRepository
+                .findByUsernameIs(username);
         if(teacherEntity != null){
             return new TeacherDetails(teacherEntity);
         }
 
-        final AdminEntity adminEntity = adminRepository.findByUsernameIs(username);
+        final AdminEntity adminEntity = adminRepository
+                .findByUsernameIs(username);
         if(adminEntity != null){
             return new AdminDetails(adminEntity);
         }

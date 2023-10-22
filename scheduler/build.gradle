@@ -23,6 +23,7 @@ dependencies {
 
 	//JPA
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'com.mysql:mysql-connector-j'
 
 	//Annotation
 	annotationProcessor 'org.projectlombok:lombok'

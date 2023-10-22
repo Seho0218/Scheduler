@@ -23,7 +23,7 @@ public class SearchClassServiceImpl implements SearchClassService {
     private final ClassMapper classMapper;
 
     @Override
-    public List<ClassDTO> findClassTable() {
+    public List<ClassDTO> findClassByStudent() {
         return classTableRepository.findAll()
                 .stream()
                 .map(classMapper::toClassDTO)
@@ -52,7 +52,8 @@ public class SearchClassServiceImpl implements SearchClassService {
     @Override
     public StudentClassDTO findStudentClasses(StudentClassDTO studentClassDTO) {
         String studentName = studentClassDTO.getStudentName().trim();
-        ClassEntity byStudentNameIs = classTableRepository.findByStudentNameIs(studentName);
+        ClassEntity byStudentNameIs = classTableRepository
+                .findByStudentNameIs(studentName);
         return studentClassMapper.toClassDTO(byStudentNameIs);
     }
 }

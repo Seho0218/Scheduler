@@ -31,11 +31,9 @@ public class SubmitServiceImpl implements SubmitService {
     }
 
     private void classValidator(ClassDTO classDTO) {
-        log.info("classDTO={}", classDTO);
         Optional<ClassEntity> byStudentNameIs =
                 Optional.ofNullable(classTableRepository
                         .findByStudentNameIs(classDTO.getStudentName()));
-        log.info("byStudentNameIs={}", byStudentNameIs);
 
         if (byStudentNameIs.isEmpty()) {
             duplicateClassValidator(classDTO);
@@ -47,6 +45,7 @@ public class SubmitServiceImpl implements SubmitService {
 
     private void duplicateClassValidator(ClassDTO classDTO) {
         String errorCode = "다른 원생과 겹치는 시간이 있습니다. 새로고침 후, 다시 신청해 주세요.";
+
 
         List<ClassDTO> allClassDTO = classTableRepository.findAll()
                 .stream()

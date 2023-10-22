@@ -1,21 +1,25 @@
 package com.attendance.scheduler.Service.Impl;
 
 import com.attendance.scheduler.Dto.ClassDTO;
+import com.attendance.scheduler.Dto.ClassListDTO;
 import com.attendance.scheduler.Dto.StudentClassDTO;
-import com.attendance.scheduler.Entity.ClassEntity;
 import com.attendance.scheduler.Mapper.ClassMapper;
-import com.attendance.scheduler.Mapper.StudentClassMapper;
 import com.attendance.scheduler.Repository.jpa.ClassTableRepository;
+import com.attendance.scheduler.Service.SearchClassService;
 import com.attendance.scheduler.Service.SubmitService;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+
+import static com.attendance.scheduler.Config.TestDataSet.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 class SearchClassServiceImplTest {
@@ -24,89 +28,107 @@ class SearchClassServiceImplTest {
     private SubmitService submitService;
 
     @Autowired
-    private ClassTableRepository classTableRepository;
+    private SearchClassService searchClassService;
 
     @Autowired
-    private StudentClassMapper studentClassMapper;
+    private ClassTableRepository classTableRepository;
 
     @Autowired
     private ClassMapper classMapper;
 
+    private StudentClassDTO studentClassDTO;
+
 
     @BeforeEach
     void beforeEach(){
-        ClassDTO classDTO = new ClassDTO();
-        classDTO.setStudentName("testStudent");
-        classDTO.setMonday(1);
-        classDTO.setTuesday(2);
-        classDTO.setWednesday(3);
-        classDTO.setThursday(4);
-        classDTO.setFriday(5);
+        testStudent();
+        submitService.saveClassTable(testStudent());
 
-        submitService.saveClassTable(classDTO);
+        test2Student();
+        submitService.saveClassTable(test2Student());
 
-        ClassDTO classDTO2 = new ClassDTO();
-        classDTO2.setStudentName("test2Student");
-        classDTO2.setMonday(2);
-        classDTO2.setTuesday(3);
-        classDTO2.setWednesday(4);
-        classDTO2.setThursday(5);
-        classDTO2.setFriday(6);
-
-        submitService.saveClassTable(classDTO2);
+        studentClassDTO = new StudentClassDTO();
+        studentClassDTO.setStudentName(testStudent().getStudentName());
     }
 
     @Test
-    void findClassesOrderByAsc() {
-
-        List<ClassDTO> classDTOS = classTableRepository.findAll()
+    @DisplayName("(무작위로 호출)값이 제대로 저장되었는지 확인")
+    void checkClassList() {
+        List<ClassDTO> dtoList = classTableRepository.findAll()
                 .stream()
                 .map(classMapper::toClassDTO)
                 .toList();
 
-        List<Integer> monday = new ArrayList<>();
-        List<Integer> tuesday = new ArrayList<>();
-        List<Integer> wednesday = new ArrayList<>();
-        List<Integer> thursday = new ArrayList<>();
-        List<Integer> friday = new ArrayList<>();
+        ClassListDTO classListDTO = ClassListDTO.getInstance();
 
-        for (ClassDTO classDTO : classDTOS) {
-            monday.add(classDTO.getMonday());
-            tuesday.add(classDTO.getTuesday());
-            wednesday.add(classDTO.getWednesday());
-            thursday.add(classDTO.getThursday());
-            friday.add(classDTO.getFriday());
+        for (ClassDTO classDTO : dtoList) {
+            classListDTO.getMondayClassList().add(classDTO.getMonday());
+            classListDTO.getTuesdayClassList().add(classDTO.getTuesday());
+            classListDTO.getWednesdayClassList().add(classDTO.getWednesday());
+            classListDTO.getThursdayClassList().add(classDTO.getThursday());
+            classListDTO.getFridayClassList().add(classDTO.getFriday());
         }
-        for (int i = 0; i < classDTOS.size(); i++) {
-            Assertions.assertEquals(monday.get(i) , classDTOS.get(i).getMonday());
-            Assertions.assertEquals(tuesday.get(i) , classDTOS.get(i).getTuesday());
-            Assertions.assertEquals(wednesday.get(i) , classDTOS.get(i).getWednesday());
-            Assertions.assertEquals(thursday.get(i) , classDTOS.get(i).getThursday());
-            Assertions.assertEquals(friday.get(i) , classDTOS.get(i).getFriday());
+
+        for (int i = 0; i < dtoList.size(); i++) {
+            assertEquals(classListDTO.getMondayClassList().get(i) , dtoList.get(i).getMonday());
+            assertEquals(classListDTO.getTuesdayClassList().get(i) , dtoList.get(i).getTuesday());
+            assertEquals(classListDTO.getWednesdayClassList().get(i) , dtoList.get(i).getWednesday());
+            assertEquals(classListDTO.getThursdayClassList().get(i) , dtoList.get(i).getThursday());
+            assertEquals(classListDTO.getFridayClassList().get(i) , dtoList.get(i).getFriday());
         }
     }
 
-
     @Test
-    void findStudentClasses() {
+    @DisplayName("(리스트 별로 호출)저장된 수강 정보를 학생 별 확인")
+    void findClassByStudent() {
 
         //Given
-        StudentClassDTO studentClassDTO = new StudentClassDTO();
-        studentClassDTO.setStudentName("testStudent");
-        String studentName = studentClassDTO.getStudentName().trim();
+        List<ClassDTO> classList = Arrays
+                .asList(testStudent(), test2Student());
 
-        //When
-        ClassEntity byStudentNameIs
-                = classTableRepository.findByStudentNameIs(studentName);
+        //when
+        List<ClassDTO> classByStudent = searchClassService
+                .findClassByStudent();
+        Collections.reverse(classByStudent);
 
-        //Then
-        StudentClassDTO classDTO = studentClassMapper.toClassDTO(byStudentNameIs);
-        Assertions.assertEquals(classDTO.getStudentName(), studentClassDTO.getStudentName());
+        //then
+        for (int i = 0; i < classByStudent.size(); i++) {
+            assertEquals(classList.get(i).getMonday(), classByStudent.get(i).getMonday());
+            assertEquals(classList.get(i).getTuesday(), classByStudent.get(i).getTuesday());
+            assertEquals(classList.get(i).getWednesday(), classByStudent.get(i).getWednesday());
+            assertEquals(classList.get(i).getThursday(), classByStudent.get(i).getThursday());
+            assertEquals(classList.get(i).getFriday(), classByStudent.get(i).getFriday());
+        }
+    }
+
+    @Test
+    @DisplayName("저장된 수강 정보 확인")
+    void findAllClasses() {
+        //when
+        ClassListDTO allClasses = searchClassService
+                .findAllClasses();
+        //then
+        assertEquals(2,allClasses.getMondayClassList().size());
+    }
+
+    @Test
+    @DisplayName("학생 수업 조회")
+    void findStudentClasses() {
+
+        //when
+        StudentClassDTO studentClasses = searchClassService
+                .findStudentClasses(studentClassDTO);
+
+        //then
+        assertEquals(studentClassDTO.getStudentName(), studentClasses.getStudentName());
+
     }
 
     @AfterEach
     void afterEach(){
-        classTableRepository.deleteByStudentName("testStudent");
-        classTableRepository.deleteByStudentName("test2Student");
+        classTableRepository.deleteByStudentName(testStudent().getStudentName());
+        classTableRepository.deleteByStudentName(test2Student().getStudentName());
+        classTableRepository.deleteByStudentName(testStudent_duplicated().getStudentName());
     }
 }
+

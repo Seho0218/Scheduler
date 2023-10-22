@@ -22,7 +22,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/search/")
 @RequiredArgsConstructor
-public class SearchClassController {
+public class ClassController {
 
     private final SubmitService submitService;
     private final SearchClassService searchClassService;
@@ -39,7 +39,8 @@ public class SearchClassController {
     public String findClass(@Validated @ModelAttribute("studentClass") StudentClassDTO studentClassDTO,
                             BindingResult bindingResult, Model model) {
         //학생 수업 조회
-        StudentClassDTO studentClassesList = searchClassService.findStudentClasses(studentClassDTO);
+        StudentClassDTO studentClassesList = searchClassService
+                .findStudentClasses(studentClassDTO);
 
         if (bindingResult.hasErrors()) {
             log.info("errors={}", bindingResult);

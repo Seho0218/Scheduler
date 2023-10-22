@@ -16,6 +16,7 @@ public class ManageServiceImpl implements ManageService {
 
     @Override
     public void deleteClass(DeleteClassDTO deleteClassDTO) {
-        classTableRepository.deleteByStudentNameIn(deleteClassDTO.getDeleteClassList());
+        classTableRepository
+                .deleteByStudentNameIn(deleteClassDTO.getDeleteClassList());
     }
 }

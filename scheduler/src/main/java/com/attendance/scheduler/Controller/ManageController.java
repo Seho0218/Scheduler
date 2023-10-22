@@ -31,10 +31,10 @@ public class ManageController {
     // 조회
     @GetMapping("class")
     public String managePage(Model model){
-        List<ClassDTO> classTable = searchClassService.findClassTable();
+        List<ClassDTO> classTable = searchClassService.findClassByStudent();
         model.addAttribute("classList", new DeleteClassDTO());
         model.addAttribute("findClassTable", classTable);
-        log.info("student = {}", searchClassService.findClassTable());
+        log.info("student = {}", searchClassService.findClassByStudent());
         return "manage/class";
     }
 

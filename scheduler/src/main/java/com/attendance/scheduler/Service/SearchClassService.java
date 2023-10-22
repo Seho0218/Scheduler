@@ -10,7 +10,7 @@ import java.util.List;
 public interface SearchClassService {
 
       // 수업 유무 조회
-      List<ClassDTO> findClassTable();
+      List<ClassDTO> findClassByStudent();
 
       ClassListDTO findAllClasses();
 

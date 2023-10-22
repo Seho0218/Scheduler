@@ -26,11 +26,13 @@ public class JoinServiceImpl implements JoinService {
 
     @Override
     public boolean findDuplicateTeacherId(JoinTeacherDTO joinTeacherDTO) {
-        return teacherRepository.existsByUsername(joinTeacherDTO.getUsername());
+        return teacherRepository
+                .existsByUsername(joinTeacherDTO.getUsername());
     }
 
     @Override
     public boolean findDuplicateTeacherEmail(JoinTeacherDTO joinTeacherDTO) {
-        return teacherRepository.existsByEmail(joinTeacherDTO.getEmail());
+        return teacherRepository
+                .existsByEmail(joinTeacherDTO.getEmail());
     }
 }

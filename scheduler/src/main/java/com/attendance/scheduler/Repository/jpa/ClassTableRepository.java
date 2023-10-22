@@ -20,6 +20,7 @@ public interface ClassTableRepository extends JpaRepository<ClassEntity, String>
     @Transactional
     void deleteByStudentName(String studentName);
 
+    @Transactional
     void deleteByStudentNameIn(List<String> studentName);
 
 }

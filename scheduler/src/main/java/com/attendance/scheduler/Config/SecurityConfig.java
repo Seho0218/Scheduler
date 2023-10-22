@@ -44,7 +44,7 @@ public class SecurityConfig{
 				.formLogin()
 				.loginPage("/login")
 				.loginProcessingUrl("/login/Login")
-				.defaultSuccessUrl("/manage/class")
+				.defaultSuccessUrl("/manage/class", true)
 				.failureHandler(new CustomAuthenticationFailureHandler())
 				.and()
 				.logout()

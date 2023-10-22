@@ -30,14 +30,22 @@ public class AdminEntity {
 
     private String password;
 
+    @Column(columnDefinition = "varchar(255) default '이메일을 입력해 주세요'")
+    private String adminEmail;
+
     @Builder
-    public AdminEntity(Long id, String username, String password) {
+    public AdminEntity(Long id, String username, String password, String adminEmail) {
         this.id = id;
         this.username = username;
         this.password = password;
+        this.adminEmail = adminEmail;
     }
 
     public void updatePassword(String newPassword) {
         this.password = newPassword;
+    }
+
+    public void updateEmail(String adminEmail) {
+        this.adminEmail = adminEmail;
     }
 }

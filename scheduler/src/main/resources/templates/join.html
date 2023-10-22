@@ -52,7 +52,7 @@
                        type="text">
                 <div class="field-error" th:errors="*{username}"></div>
                 <!--중복 아이디 검사-->
-                <div class="field-error" th:text="${errorMessage}"></div>
+                <div class="field-error" th:text="${idErrorMessage}"></div>
 
                 <!--비밀번호-->
                 <label for="password"></label>
@@ -73,7 +73,9 @@
                 <input class="form-control" id="email" placeholder="이메일을 입력하세요"
                        th:errorclass="field-error" th:field="*{email}"
                        type="email">
-                <div class="field-error" th:errors="*{email}"></div><br>
+                <div class="field-error" th:errors="*{email}"></div>
+                <div class="field-error" th:text="${emailErrorMessage}"></div>
+                <br>
 
                 <div class="text-end">
                     <button class="btn btn-primary" type="submit">가입하기</button>
