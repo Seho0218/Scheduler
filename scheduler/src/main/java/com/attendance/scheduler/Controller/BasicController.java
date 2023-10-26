@@ -2,7 +2,7 @@ package com.attendance.scheduler.Controller;
 
 import com.attendance.scheduler.Dto.ClassDTO;
 import com.attendance.scheduler.Dto.ClassListDTO;
-import com.attendance.scheduler.Service.SearchClassService;
+import com.attendance.scheduler.Service.ClassService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @RequiredArgsConstructor
 public class BasicController {
 
-    private final SearchClassService searchClassService;
+    private final ClassService classService;
 
     @GetMapping("/")
     public String basic(Model model){
@@ -30,7 +30,7 @@ public class BasicController {
     }
 
     private void getClassList(Model model) {
-        ClassListDTO classesOrderByAsc = searchClassService.findAllClasses();
+        ClassListDTO classesOrderByAsc = classService.findAllClasses();
 
         model.addAttribute("classList", classesOrderByAsc);
 

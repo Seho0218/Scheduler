@@ -1,8 +1,7 @@
 package com.attendance.scheduler.Entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
@@ -26,7 +25,22 @@ public class StudentEntity {
     private String studentPhoneNumber;
 
     private String studentAddress;
+    private String studentDetailedAddress;
 
     private String studentParentPhoneNumber;
 
+    @ManyToOne
+    @JoinColumn(name = "teacherId")
+    private TeacherEntity teacherEntity;
+
+    @Builder
+    public StudentEntity(Long id, String studentName, String studentPhoneNumber, String studentAddress, String studentDetailedAddress, String studentParentPhoneNumber, TeacherEntity teacherEntity) {
+        this.id = id;
+        this.studentName = studentName;
+        this.studentPhoneNumber = studentPhoneNumber;
+        this.studentAddress = studentAddress;
+        this.studentDetailedAddress = studentDetailedAddress;
+        this.studentParentPhoneNumber = studentParentPhoneNumber;
+        this.teacherEntity = teacherEntity;
+    }
 }

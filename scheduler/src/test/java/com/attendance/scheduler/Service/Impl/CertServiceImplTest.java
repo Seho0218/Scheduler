@@ -48,7 +48,7 @@ class CertServiceImplTest {
 
     @Test
     @DisplayName("아이디 찾을 때, 이메일 검증")
-    void findId() {
+    void findIdByEmail() {
         boolean duplicateTeacherEmail = teacherService
                 .findDuplicateTeacherEmail(sampleTeacherDataSet());
         assertTrue(duplicateTeacherEmail);

@@ -3,10 +3,10 @@ package com.attendance.scheduler.Service.Impl;
 import com.attendance.scheduler.Dto.ClassDTO;
 import com.attendance.scheduler.Dto.ClassListDTO;
 import com.attendance.scheduler.Dto.StudentClassDTO;
+import com.attendance.scheduler.Entity.ClassEntity;
 import com.attendance.scheduler.Mapper.ClassMapper;
 import com.attendance.scheduler.Repository.jpa.ClassTableRepository;
-import com.attendance.scheduler.Service.SearchClassService;
-import com.attendance.scheduler.Service.SubmitService;
+import com.attendance.scheduler.Service.ClassService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -15,20 +15,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import static com.attendance.scheduler.Config.TestDataSet.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
-class SearchClassServiceImplTest {
+class ClassServiceImplTest {
 
     @Autowired
-    private SubmitService submitService;
-
-    @Autowired
-    private SearchClassService searchClassService;
+    private ClassService classService;
 
     @Autowired
     private ClassTableRepository classTableRepository;
@@ -42,10 +39,10 @@ class SearchClassServiceImplTest {
     @BeforeEach
     void beforeEach(){
         testStudent();
-        submitService.saveClassTable(testStudent());
+        classService.saveClassTable(testStudent());
 
         test2Student();
-        submitService.saveClassTable(test2Student());
+        classService.saveClassTable(test2Student());
 
         studentClassDTO = new StudentClassDTO();
         studentClassDTO.setStudentName(testStudent().getStudentName());
@@ -87,9 +84,8 @@ class SearchClassServiceImplTest {
                 .asList(testStudent(), test2Student());
 
         //when
-        List<ClassDTO> classByStudent = searchClassService
+        List<ClassDTO> classByStudent = classService
                 .findClassByStudent();
-        Collections.reverse(classByStudent);
 
         //then
         for (int i = 0; i < classByStudent.size(); i++) {
@@ -105,10 +101,10 @@ class SearchClassServiceImplTest {
     @DisplayName("저장된 수강 정보 확인")
     void findAllClasses() {
         //when
-        ClassListDTO allClasses = searchClassService
+        ClassListDTO allClasses = classService
                 .findAllClasses();
         //then
-        assertEquals(2,allClasses.getMondayClassList().size());
+        assertEquals(2, allClasses.getMondayClassList().size());
     }
 
     @Test
@@ -116,12 +112,67 @@ class SearchClassServiceImplTest {
     void findStudentClasses() {
 
         //when
-        StudentClassDTO studentClasses = searchClassService
+        StudentClassDTO studentClasses = classService
                 .findStudentClasses(studentClassDTO);
 
         //then
         assertEquals(studentClassDTO.getStudentName(), studentClasses.getStudentName());
 
+    }
+
+    @Test
+    @DisplayName("수업 정보 저장")
+    void saveClassTable() {
+
+        ClassEntity byStudentNameIs = classTableRepository
+                .findByStudentNameIs(testStudent().getStudentName());
+        assertEquals(testStudent().getStudentName(), byStudentNameIs.getStudentName());
+    }
+
+    @Test
+    @DisplayName("수업 변경 확인")
+    void modifyClass(){
+
+        ClassDTO classDTO = new ClassDTO();
+        classDTO.setStudentName(testStudent().getStudentName());
+        classDTO.setMonday(1);
+        classDTO.setTuesday(1);
+        classDTO.setWednesday(2);
+        classDTO.setThursday(3);
+        classDTO.setFriday(4);
+
+        classService.saveClassTable(classDTO);
+
+        //찾는 로직
+        StudentClassDTO studentClasses = classService
+                .findStudentClasses(studentClassDTO);
+
+        assertEquals(studentClasses.getMonday(), 1);
+        assertEquals(studentClasses.getTuesday(),1);
+        assertEquals(studentClasses.getWednesday(),2);
+        assertEquals(studentClasses.getThursday(),3);
+        assertEquals(studentClasses.getFriday(),4);
+    }
+
+    @Test
+    @DisplayName("학생 수업 저장 상태 확인")
+    void checkStudentClasses() {
+
+        //When
+        StudentClassDTO studentClasses = classService
+                .findStudentClasses(studentClassDTO);
+
+        //Then
+        assertEquals(studentClasses.getStudentName(), studentClassDTO.getStudentName());
+    }
+
+    @Test
+    @DisplayName("중복 수업 확인")
+    void duplicatedClassTest() {
+
+        //when //then
+        assertThrows(IllegalStateException.class,
+                () -> classService.saveClassTable(testStudent_duplicated()));
     }
 
     @AfterEach

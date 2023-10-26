@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-public interface ClassTableRepository extends JpaRepository<ClassEntity, String> {
+public interface ClassTableRepository extends JpaRepository<ClassEntity, Long> {
 
 
     /*

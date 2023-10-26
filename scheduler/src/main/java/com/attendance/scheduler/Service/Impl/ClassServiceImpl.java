@@ -1,25 +1,65 @@
 package com.attendance.scheduler.Service.Impl;
 
 import com.attendance.scheduler.Dto.ClassDTO;
+import com.attendance.scheduler.Dto.ClassListDTO;
+import com.attendance.scheduler.Dto.StudentClassDTO;
+import com.attendance.scheduler.Dto.Teacher.DeleteClassDTO;
 import com.attendance.scheduler.Entity.ClassEntity;
 import com.attendance.scheduler.Mapper.ClassMapper;
+import com.attendance.scheduler.Mapper.StudentClassMapper;
 import com.attendance.scheduler.Repository.jpa.ClassTableRepository;
-import com.attendance.scheduler.Service.SubmitService;
+import com.attendance.scheduler.Service.ClassService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
-public class SubmitServiceImpl implements SubmitService {
-    private final ClassMapper classMapper;
+public class ClassServiceImpl implements ClassService {
+
     private final ClassTableRepository classTableRepository;
+    private final StudentClassMapper studentClassMapper;
+    private final ClassMapper classMapper;
+
+    @Override
+    public List<ClassDTO> findClassByStudent() {
+        return classTableRepository.findAll()
+                .stream()
+                .map(classMapper::toClassDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public ClassListDTO findAllClasses() {
+        List<ClassDTO> classDTOS = classTableRepository.findAll()
+                .stream()
+                .map(classMapper::toClassDTO)
+                .toList();
+
+        ClassListDTO classListDTO = ClassListDTO.getInstance();
+
+        for (ClassDTO classDTO : classDTOS) {
+            classListDTO.getMondayClassList().add(classDTO.getMonday());
+            classListDTO.getTuesdayClassList().add(classDTO.getTuesday());
+            classListDTO.getWednesdayClassList().add(classDTO.getWednesday());
+            classListDTO.getThursdayClassList().add(classDTO.getThursday());
+            classListDTO.getFridayClassList().add(classDTO.getMonday());
+        }
+        return classListDTO;
+    }
+
+    @Override
+    public StudentClassDTO findStudentClasses(StudentClassDTO studentClassDTO) {
+        String studentName = studentClassDTO.getStudentName().trim();
+        ClassEntity byStudentNameIs = classTableRepository
+                .findByStudentNameIs(studentName);
+        return studentClassMapper.toClassDTO(byStudentNameIs);
+    }
 
     @Override
     @Transactional(isolation = Isolation.REPEATABLE_READ)
@@ -65,5 +105,11 @@ public class SubmitServiceImpl implements SubmitService {
             if (thursdayValue.equals(classDTO.getThursday())) throw new IllegalStateException(errorCode);
             if (fridayValue.equals(classDTO.getFriday())) throw new IllegalStateException(errorCode);
         }
+    }
+
+    @Override
+    public void deleteClass(DeleteClassDTO deleteClassDTO) {
+        classTableRepository
+                .deleteByStudentNameIn(deleteClassDTO.getDeleteClassList());
     }
 }

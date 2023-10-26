@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
@@ -34,6 +37,9 @@ public class TeacherEntity {
 
     @Column(columnDefinition = "boolean default '0'")
     private boolean approved;
+
+    @OneToMany(mappedBy = "teacherEntity")
+    List<StudentEntity> studentEntityList = new ArrayList<>();
 
     @Builder
     public TeacherEntity(Long id, String username, String name, String password, String email, boolean approved) {

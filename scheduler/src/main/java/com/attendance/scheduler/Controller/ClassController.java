@@ -3,8 +3,7 @@ package com.attendance.scheduler.Controller;
 import com.attendance.scheduler.Dto.ClassDTO;
 import com.attendance.scheduler.Dto.ClassListDTO;
 import com.attendance.scheduler.Dto.StudentClassDTO;
-import com.attendance.scheduler.Service.SearchClassService;
-import com.attendance.scheduler.Service.SubmitService;
+import com.attendance.scheduler.Service.ClassService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -24,8 +23,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ClassController {
 
-    private final SubmitService submitService;
-    private final SearchClassService searchClassService;
+    private final ClassService classService;
 
     //  수업 조회 폼
     @GetMapping("")
@@ -39,7 +37,7 @@ public class ClassController {
     public String findClass(@Validated @ModelAttribute("studentClass") StudentClassDTO studentClassDTO,
                             BindingResult bindingResult, Model model) {
         //학생 수업 조회
-        StudentClassDTO studentClassesList = searchClassService
+        StudentClassDTO studentClassesList = classService
                 .findStudentClasses(studentClassDTO);
 
         if (bindingResult.hasErrors()) {
@@ -69,7 +67,7 @@ public class ClassController {
 
         StudentClassDTO studentClassDTO = new StudentClassDTO();
         studentClassDTO.setStudentName(classDTO.getStudentName());
-        StudentClassDTO studentClassesList = searchClassService.findStudentClasses(studentClassDTO);
+        StudentClassDTO studentClassesList = classService.findStudentClasses(studentClassDTO);
 
         if (studentClassesList != null) {
             getClassList(model);
@@ -78,7 +76,7 @@ public class ClassController {
         }
 
         try {
-            submitService.saveClassTable(classDTO);
+            classService.saveClassTable(classDTO);
             return "redirect:/completion";
         }catch (Exception e){
             getClassList(model);
@@ -99,12 +97,12 @@ public class ClassController {
         }
 
         try{
-            submitService.saveClassTable(classDTO);
+            classService.saveClassTable(classDTO);
             return "redirect:/completion";
         }catch(Exception e){
             StudentClassDTO studentClassDTO = new StudentClassDTO();
             studentClassDTO.setStudentName(classDTO.getStudentName());
-            searchStudentClass(model, searchClassService.findStudentClasses(studentClassDTO));
+            searchStudentClass(model, classService.findStudentClasses(studentClassDTO));
             model.addAttribute("errorMessage", e.getMessage());
 
             log.info("studentClass={}", classDTO);
@@ -114,7 +112,7 @@ public class ClassController {
         }
     }
     private void getClassList(Model model) {
-        ClassListDTO classesOrderByAsc = searchClassService.findAllClasses();
+        ClassListDTO classesOrderByAsc = classService.findAllClasses();
         model.addAttribute("classList", classesOrderByAsc);
 
         log.info("monday = {}", classesOrderByAsc.getMondayClassList());
@@ -131,7 +129,7 @@ public class ClassController {
 * */
     private void searchStudentClass(Model model, StudentClassDTO studentClassesList) {
 
-        ClassListDTO classesOrderByAsc = searchClassService.findAllClasses();
+        ClassListDTO classesOrderByAsc = classService.findAllClasses();
 
         List<Integer> mondayClassList = classesOrderByAsc.getMondayClassList();
         List<Integer> tuesdayClassList = classesOrderByAsc.getTuesdayClassList();
