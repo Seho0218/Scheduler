@@ -31,21 +31,21 @@ public class AdminEntity {
     private String password;
 
     @Column(columnDefinition = "varchar(255) default '이메일을 입력해 주세요'")
-    private String adminEmail;
+    private String email;
 
     @Builder
-    public AdminEntity(Long id, String username, String password, String adminEmail) {
+    public AdminEntity(Long id, String username, String password, String email) {
         this.id = id;
         this.username = username;
         this.password = password;
-        this.adminEmail = adminEmail;
+        this.email = email;
     }
 
     public void updatePassword(String newPassword) {
         this.password = newPassword;
     }
 
-    public void updateEmail(String adminEmail) {
-        this.adminEmail = adminEmail;
+    public void updateEmail(String email) {
+        this.email = email;
     }
 }

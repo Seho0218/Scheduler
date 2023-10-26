@@ -5,7 +5,7 @@ import com.attendance.scheduler.Dto.Teacher.PwdEditDTO;
 import com.attendance.scheduler.Entity.TeacherEntity;
 import com.attendance.scheduler.Repository.jpa.TeacherRepository;
 import com.attendance.scheduler.Service.CertService;
-import com.attendance.scheduler.Service.JoinService;
+import com.attendance.scheduler.Service.TeacherService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -16,7 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 
-import static com.attendance.scheduler.Config.TestDataSet.teacherDTO;
+import static com.attendance.scheduler.Config.TestDataSet.sampleTeacherDataSet;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
@@ -29,7 +29,7 @@ class CertServiceImplTest {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private JoinService joinService;
+    private TeacherService teacherService;
 
     @Autowired
     private CertService certService;
@@ -38,18 +38,19 @@ class CertServiceImplTest {
     @DisplayName("회원가입")
     public void joinTeacherDTO() {
         Optional<TeacherEntity> existingTeacher = Optional
-                .ofNullable(teacherRepository.findByUsernameIs(teacherDTO().getUsername()));
+                .ofNullable(teacherRepository
+                        .findByUsernameIs(sampleTeacherDataSet().getUsername()));
 
         if (existingTeacher.isEmpty()) {
-            joinService.joinTeacher(teacherDTO());
+            teacherService.joinTeacher(sampleTeacherDataSet());
         }
     }
 
     @Test
     @DisplayName("아이디 찾을 때, 이메일 검증")
     void findId() {
-        boolean duplicateTeacherEmail = joinService
-                .findDuplicateTeacherEmail(teacherDTO());
+        boolean duplicateTeacherEmail = teacherService
+                .findDuplicateTeacherEmail(sampleTeacherDataSet());
         assertTrue(duplicateTeacherEmail);
     }
 
@@ -57,7 +58,7 @@ class CertServiceImplTest {
     @DisplayName("ID 유무 확인")
     void idConfirmation(){
         boolean existedByUsername = teacherRepository
-                .existsByUsername(teacherDTO().getUsername());
+                .existsByUsername(sampleTeacherDataSet().getUsername());
         assertTrue(existedByUsername);
     }
 
@@ -65,7 +66,7 @@ class CertServiceImplTest {
     @DisplayName("Email 유무 확인")
     void emailConfirmation(){
         boolean existedByUsername = teacherRepository
-                .existsByEmail(teacherDTO().getEmail());
+                .existsByEmail(sampleTeacherDataSet().getEmail());
         assertTrue(existedByUsername);
     }
 
@@ -75,7 +76,7 @@ class CertServiceImplTest {
 
         //비밀번호 변경
         PwdEditDTO pwdEditDTO = new PwdEditDTO();
-        pwdEditDTO.setUsername(teacherDTO().getUsername());
+        pwdEditDTO.setUsername(sampleTeacherDataSet().getUsername());
         pwdEditDTO.setPassword("root123!@#");
 
         //when
@@ -93,6 +94,6 @@ class CertServiceImplTest {
 
     @AfterEach
     void afterEach(){
-        teacherRepository.deleteByUsernameIs(teacherDTO().getUsername());
+        teacherRepository.deleteByUsernameIs(sampleTeacherDataSet().getUsername());
     }
 }

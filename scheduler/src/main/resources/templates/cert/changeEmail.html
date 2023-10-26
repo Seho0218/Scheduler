@@ -54,14 +54,13 @@
                        name="username" th:type="hidden"
                        th:value="${username.getUsername()}"/>
 
-                <p th:text="기존+'&nbsp;'+'이메일 : '+'&nbsp;'+${username.getAdminEmail()}"></p>
-
+                <p th:text="기존+'&nbsp;'+'이메일 : '+'&nbsp;'+${username.getEmail()}"></p>
 
                 <label for="email"></label>
                 <input class="form-control" id="email" placeholder="이메일을 입력해 주세요"
-                       th:errorclass="field-error" th:field="*{adminEmail}"
+                       th:errorclass="field-error" th:field="*{email}"
                        type="email">
-                <div class="field-error" th:errors="*{adminEmail}"></div>
+                <div class="field-error" th:errors="*{email}"></div>
                 <div class="error-message" th:if="${errorMessage}">
                     <p th:text="${errorMessage}"></p>
                 </div><br>

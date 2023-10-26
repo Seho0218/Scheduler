@@ -1,8 +1,10 @@
 package com.attendance.scheduler.Service.Impl;
 
+import com.attendance.scheduler.Dto.EmailDTO;
 import com.attendance.scheduler.Dto.Teacher.JoinTeacherDTO;
+import com.attendance.scheduler.Entity.TeacherEntity;
 import com.attendance.scheduler.Repository.jpa.TeacherRepository;
-import com.attendance.scheduler.Service.JoinService;
+import com.attendance.scheduler.Service.TeacherService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -10,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class JoinServiceImpl implements JoinService {
+public class TeacherServiceImpl implements TeacherService {
 
     private final TeacherRepository teacherRepository;
     private final PasswordEncoder passwordEncoder;
@@ -25,7 +27,7 @@ public class JoinServiceImpl implements JoinService {
     }
 
     @Override
-    public boolean findDuplicateTeacherId(JoinTeacherDTO joinTeacherDTO) {
+    public boolean findDuplicateTeacherID(JoinTeacherDTO joinTeacherDTO) {
         return teacherRepository
                 .existsByUsername(joinTeacherDTO.getUsername());
     }
@@ -34,5 +36,16 @@ public class JoinServiceImpl implements JoinService {
     public boolean findDuplicateTeacherEmail(JoinTeacherDTO joinTeacherDTO) {
         return teacherRepository
                 .existsByEmail(joinTeacherDTO.getEmail());
+    }
+
+    @Override
+    public EmailDTO findTeacherEmailByID(EmailDTO emailDTO) {
+        TeacherEntity teacherEntity = teacherRepository
+                .findByUsernameIs(emailDTO.getUsername());
+
+        return EmailDTO.builder()
+                .username(teacherEntity.getUsername())
+                .email(teacherEntity.getEmail())
+                .build();
     }
 }

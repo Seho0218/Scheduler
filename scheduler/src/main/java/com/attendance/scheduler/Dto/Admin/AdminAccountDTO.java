@@ -17,13 +17,13 @@ public class AdminAccountDTO {
     @NotEmpty(message = "비밀번호를 입력해 주세요")
     private String password;
 
-    private String adminEmail;
+    private String email;
 
     public AdminEntity toEntity() {
         return AdminEntity.builder()
                 .username(username)
                 .password(password)
-                .adminEmail(adminEmail)
+                .email(email)
                 .build();
     }
 }

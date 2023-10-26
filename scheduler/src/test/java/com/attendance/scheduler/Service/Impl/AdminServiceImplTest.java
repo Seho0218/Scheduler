@@ -1,13 +1,14 @@
 package com.attendance.scheduler.Service.Impl;
 
 import com.attendance.scheduler.Dto.Admin.ApproveTeacherDTO;
-import com.attendance.scheduler.Dto.Admin.EmailEditDTO;
+import com.attendance.scheduler.Dto.EditEmailDTO;
+import com.attendance.scheduler.Dto.EmailDTO;
 import com.attendance.scheduler.Entity.AdminEntity;
 import com.attendance.scheduler.Entity.TeacherEntity;
 import com.attendance.scheduler.Repository.jpa.AdminRepository;
 import com.attendance.scheduler.Repository.jpa.TeacherRepository;
 import com.attendance.scheduler.Service.AdminService;
-import com.attendance.scheduler.Service.JoinService;
+import com.attendance.scheduler.Service.TeacherService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -15,7 +16,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static com.attendance.scheduler.Config.TestDataSet.teacherDTO;
+import java.util.Optional;
+
+import static com.attendance.scheduler.Config.TestDataSet.sampleTeacherDataSet;
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -29,7 +32,7 @@ class AdminServiceImplTest {
     public AdminRepository adminRepository;
 
     @Autowired
-    private JoinService joinService;
+    private TeacherService teacherService;
 
     @Autowired
     private TeacherRepository teacherRepository;
@@ -37,24 +40,46 @@ class AdminServiceImplTest {
     private ApproveTeacherDTO approveTeacherDTO;
 
     @BeforeEach
-    void joinTestTeacherAccount(){
-        joinService.joinTeacher(teacherDTO());
+    void joinSampleTeacherAccount(){
+        Optional<TeacherEntity> existingTeacher = Optional
+                .ofNullable(teacherRepository
+                        .findByUsernameIs(sampleTeacherDataSet().getUsername()));
+        if (existingTeacher.isEmpty()) {
+            teacherService.joinTeacher(sampleTeacherDataSet());
+        }
+    }
 
+
+    @Test
+    void findAdminEmailByID() {
+        EmailDTO emailDTO = new EmailDTO();
+        emailDTO.setUsername("admin");
+        AdminEntity adminAccount = adminRepository
+                .findByUsernameIs(emailDTO.getUsername());
+
+        EmailDTO build = EmailDTO.builder()
+                .username(adminAccount.getUsername())
+                .email(adminAccount.getEmail())
+                .build();
+
+        assertEquals("admin", build.getUsername());
+        assertEquals("adminTest@gmail.com", build.getEmail());
     }
 
     @Test
     @DisplayName("교사에게 권한 부여")
     void grantAuth() {
 
+        //Given
         approveTeacherDTO = new ApproveTeacherDTO();
-        approveTeacherDTO.setUsername(teacherDTO().getUsername());
+        approveTeacherDTO.setUsername(sampleTeacherDataSet().getUsername());
 
         //When
-        adminService.approveAuth(approveTeacherDTO);
+        adminService.grantAuth(approveTeacherDTO);
 
         //Then
         TeacherEntity teacherEntity = teacherRepository
-                .findByUsernameIs(teacherDTO().getUsername());
+                .findByUsernameIs(sampleTeacherDataSet().getUsername());
         assertTrue(teacherEntity.isApproved());
     }
 
@@ -64,14 +89,14 @@ class AdminServiceImplTest {
 
         //Given
         approveTeacherDTO = new ApproveTeacherDTO();
-        approveTeacherDTO.setUsername(teacherDTO().getUsername());
+        approveTeacherDTO.setUsername(sampleTeacherDataSet().getUsername());
 
         //When
         adminService.revokeAuth(approveTeacherDTO);
 
         //Then
         TeacherEntity teacherEntity = teacherRepository
-                .findByUsernameIs(teacherDTO().getUsername());
+                .findByUsernameIs(sampleTeacherDataSet().getUsername());
         assertFalse(teacherEntity.isApproved());
     }
 
@@ -80,23 +105,21 @@ class AdminServiceImplTest {
     void updateEmail(){
 
         //Given
-        EmailEditDTO emailEditDTO = new EmailEditDTO();
-        emailEditDTO.setUsername("admin");
-        emailEditDTO.setAdminEmail("adminTest@gmail.com");
+        EditEmailDTO editEmailDTO = new EditEmailDTO();
+        editEmailDTO.setUsername("admin");
+        editEmailDTO.setEmail("adminTest@gmail.com");
 
         //When
-        System.out.println("emailEditDTO = " + emailEditDTO);
-        adminService.updateEmail(emailEditDTO);
+        adminService.updateEmail(editEmailDTO);
         AdminEntity byUsernameIs = adminRepository
-                .findByUsernameIs(emailEditDTO.getUsername());
+                .findByUsernameIs(editEmailDTO.getUsername());
 
         //Then
-        assertEquals(emailEditDTO.getAdminEmail(),byUsernameIs.getAdminEmail());
+        assertEquals(editEmailDTO.getEmail(),byUsernameIs.getEmail());
     }
 
     @AfterEach
     void test(){
-        teacherRepository.deleteByUsernameIs(teacherDTO().getUsername());
+        teacherRepository.deleteByUsernameIs(sampleTeacherDataSet().getUsername());
     }
-
 }

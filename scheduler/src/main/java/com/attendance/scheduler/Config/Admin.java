@@ -21,17 +21,22 @@ public class Admin implements ApplicationRunner{
     @Override
     public void run(ApplicationArguments args) throws Exception {
 
-        Optional<AdminEntity> optionalAdminEntity = Optional.ofNullable(adminRepository.findByUsernameIs("admin"));
+        Optional<AdminEntity> optionalAdminEntity = Optional
+                .ofNullable(adminRepository
+                        .findByUsernameIs("admin"));
         optionalAdminEntity.orElseGet(() -> adminRepository.save(
                 AdminEntity.builder()
                         .username("admin")
+                        .email("adminTest@gmail.com")
                         .password(passwordEncoder.encode("root123!@#"))
                         .build()));
     }
 
     @Scheduled(fixedRate = 3600000)
     public void updatePassword(){
-        Optional<AdminEntity> optionalAdminEntity = Optional.ofNullable(adminRepository.findByUsernameIs("admin"));
+        Optional<AdminEntity> optionalAdminEntity = Optional
+                .ofNullable(adminRepository
+                        .findByUsernameIs("admin"));
         optionalAdminEntity.ifPresent(
                 adminEntity -> {
                     adminEntity.updatePassword(passwordEncoder.encode("root123!@#"));

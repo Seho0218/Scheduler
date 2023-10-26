@@ -1,11 +1,12 @@
 package com.attendance.scheduler.Controller;
 
-import com.attendance.scheduler.Dto.Admin.AdminDTO;
-import com.attendance.scheduler.Dto.Admin.EmailEditDTO;
 import com.attendance.scheduler.Dto.ClassDTO;
+import com.attendance.scheduler.Dto.EditEmailDTO;
+import com.attendance.scheduler.Dto.EmailDTO;
 import com.attendance.scheduler.Dto.Teacher.*;
 import com.attendance.scheduler.Service.AdminService;
 import com.attendance.scheduler.Service.CertService;
+import com.attendance.scheduler.Service.TeacherService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,25 +30,26 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class CertController {
 
+    private final AdminService adminService;
+    private final TeacherService teacherService;
     private final CertService certService;
-    public final AdminService adminService;
 
-/*
+    /*
 * Find ID Section
 */
-
     /*
     * findId Form
     * */
+
     @GetMapping("findId")
     public String findId(Model model) {
         model.addAttribute("account", new TeacherDTO());
         return "cert/findId";
     }
-
     /*
     * send id by Email
     * */
+
     @PostMapping("sendUserId")
     public String sendEmail(@Validated @ModelAttribute("account") FindIdDTO findIdDTO,
                                             BindingResult bindingResult, Model model) {
@@ -193,16 +195,30 @@ public class CertController {
             return "redirect:/";
         }
     }
-
+ /*
+//TODO
+  */
     @GetMapping("changeEmail")
-    public String changeEmail(Model model, AdminDTO adminDTO){
+    public String changeEmail(Model model){
+
+        EmailDTO emailDTO = new EmailDTO();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        adminDTO.setUsername(auth.getName());
-        AdminDTO adminAccountById = adminService.findAdminAccountById(adminDTO);
-        adminDTO.setAdminEmail(adminAccountById.getAdminEmail());
+        emailDTO.setUsername(auth.getName());
+
+        EmailDTO adminAccountByID = adminService.findAdminEmailByID(emailDTO);
+        EmailDTO teacherAccountByID = teacherService.findTeacherEmailByID(emailDTO);
+
+        if (adminAccountByID != null) {
+            // 관리자 계정 정보가 있을 경우, emailDTO 정보 추가
+            emailDTO.setEmail(adminAccountByID.getEmail()); // 이메일 정보 예시
+        } else if (teacherAccountByID != null) {
+            // 교사 계정 정보가 있을 경우, emailDTO 정보 추가
+            emailDTO.setEmail(teacherAccountByID.getEmail()); // 이메일 정보 예시
+        }
+
         try {
-            model.addAttribute("emailEdit", new EmailEditDTO());
-            model.addAttribute("username", adminDTO);
+            model.addAttribute("emailEdit", new EditEmailDTO());
+            model.addAttribute("username", emailDTO);
             return "cert/changeEmail";
         } catch (Exception e) {
             log.info("send Id error = {}", e.getMessage());
@@ -212,12 +228,12 @@ public class CertController {
     }
 
     @PostMapping("updateEmail")
-    public String updateEmail(EmailEditDTO emailEditDTO) {
+    public String updateEmail(EditEmailDTO editEmailDTO) {
         try{
-            adminService.updateEmail(emailEditDTO);
-            return "redirect:/cert/completion";
+            adminService.updateEmail(editEmailDTO);
+            return "redirect:cert/completion";
         }catch (Exception e){
-            return "/manage/class";
+            return "manage/class";
         }
     }
 

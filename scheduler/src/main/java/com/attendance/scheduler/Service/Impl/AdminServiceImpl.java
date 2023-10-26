@@ -1,8 +1,8 @@
 package com.attendance.scheduler.Service.Impl;
 
-import com.attendance.scheduler.Dto.Admin.AdminDTO;
 import com.attendance.scheduler.Dto.Admin.ApproveTeacherDTO;
-import com.attendance.scheduler.Dto.Admin.EmailEditDTO;
+import com.attendance.scheduler.Dto.EditEmailDTO;
+import com.attendance.scheduler.Dto.EmailDTO;
 import com.attendance.scheduler.Dto.Teacher.TeacherDTO;
 import com.attendance.scheduler.Entity.AdminEntity;
 import com.attendance.scheduler.Entity.TeacherEntity;
@@ -21,9 +21,9 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AdminServiceImpl implements AdminService {
 
+    private final AdminRepository adminRepository;
     private final TeacherRepository teacherRepository;
     private final TeacherMapper teacherMapper;
-    private final AdminRepository adminRepository;
 
     @Override
     public List<TeacherDTO> getTeacherList() {
@@ -33,19 +33,20 @@ public class AdminServiceImpl implements AdminService {
                 .collect(Collectors.toList());
     }
 
+
     @Override
-    public AdminDTO findAdminAccountById(AdminDTO adminDTO) {
-        AdminEntity byUsernameIs = adminRepository
-                .findByUsernameIs(adminDTO.getUsername());
-        AdminDTO resultDTO = new AdminDTO();
-        resultDTO.setUsername(byUsernameIs.getUsername());
-        resultDTO.setAdminEmail(byUsernameIs.getAdminEmail());
-        return resultDTO;
+    public EmailDTO findAdminEmailByID(EmailDTO emailDTO) {
+        AdminEntity adminAccount = adminRepository
+                .findByUsernameIs(emailDTO.getUsername());
+        return EmailDTO.builder()
+                .username(adminAccount.getUsername())
+                .email(adminAccount.getEmail())
+                .build();
     }
 
     @Override
     @Transactional
-    public void approveAuth(ApproveTeacherDTO approveTeacherDTO) {
+    public void grantAuth(ApproveTeacherDTO approveTeacherDTO) {
         TeacherEntity teacherEntity = teacherRepository
                 .findByUsernameIs(approveTeacherDTO.getUsername());
         teacherEntity.updateApprove(true);
@@ -57,17 +58,16 @@ public class AdminServiceImpl implements AdminService {
     public void revokeAuth(ApproveTeacherDTO approveTeacherDTO) {
         TeacherEntity teacherEntity = teacherRepository
                 .findByUsernameIs(approveTeacherDTO.getUsername());
-        approveTeacherDTO.setApproved(false);
         teacherEntity.updateApprove(false);
         teacherRepository.save(teacherEntity);
     }
 
     @Override
     @Transactional
-    public void updateEmail(EmailEditDTO emailEditDTO) {
+    public void updateEmail(EditEmailDTO editEmailDTO) {
         AdminEntity byUsernameIs = adminRepository
-                .findByUsernameIs(emailEditDTO.getUsername());
-        byUsernameIs.updateEmail(emailEditDTO.getAdminEmail());
+                .findByUsernameIs(editEmailDTO.getUsername());
+        byUsernameIs.updateEmail(editEmailDTO.getEmail());
         adminRepository.save(byUsernameIs);
     }
 }

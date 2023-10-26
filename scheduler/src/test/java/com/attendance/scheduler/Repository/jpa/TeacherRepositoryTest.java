@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import static com.attendance.scheduler.Config.TestDataSet.teacherDTO;
+import static com.attendance.scheduler.Config.TestDataSet.sampleTeacherDataSet;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
@@ -21,7 +21,7 @@ class TeacherRepositoryTest {
 
     @BeforeEach
     void beforeEachTest(){
-        teacherRepository.save(teacherDTO().toEntity());
+        teacherRepository.save(sampleTeacherDataSet().toEntity());
     }
 
     @Test
@@ -29,7 +29,7 @@ class TeacherRepositoryTest {
 
         //When
         boolean existsByUsername = teacherRepository
-                .existsByUsername(teacherDTO().getUsername());
+                .existsByUsername(sampleTeacherDataSet().getUsername());
 
         //Then
         assertTrue(existsByUsername);
@@ -40,7 +40,7 @@ class TeacherRepositoryTest {
 
         //When
         boolean existsByEmail = teacherRepository
-                .existsByEmail(teacherDTO().getEmail());
+                .existsByEmail(sampleTeacherDataSet().getEmail());
 
         //Then
         assertTrue(existsByEmail);
@@ -50,10 +50,10 @@ class TeacherRepositoryTest {
     void findByUsernameIs() {
         //When
         TeacherEntity byUsernameIs = teacherRepository
-                .findByUsernameIs(teacherDTO().getUsername());
+                .findByUsernameIs(sampleTeacherDataSet().getUsername());
         //Then
-        assertEquals(teacherDTO().getUsername(), byUsernameIs.getUsername());
-        assertEquals(teacherDTO().getEmail(), byUsernameIs.getEmail());
+        assertEquals(sampleTeacherDataSet().getUsername(), byUsernameIs.getUsername());
+        assertEquals(sampleTeacherDataSet().getEmail(), byUsernameIs.getEmail());
     }
 
     @Test
@@ -61,10 +61,10 @@ class TeacherRepositoryTest {
 
         //When
         TeacherEntity byEmailIs = teacherRepository
-                .findByEmailIs(teacherDTO().getEmail());
+                .findByEmailIs(sampleTeacherDataSet().getEmail());
         //Then
-        assertEquals(teacherDTO().getUsername(), byEmailIs.getUsername());
-        assertEquals(teacherDTO().getEmail(), byEmailIs.getEmail());
+        assertEquals(sampleTeacherDataSet().getUsername(), byEmailIs.getUsername());
+        assertEquals(sampleTeacherDataSet().getEmail(), byEmailIs.getEmail());
     }
 
     @Test

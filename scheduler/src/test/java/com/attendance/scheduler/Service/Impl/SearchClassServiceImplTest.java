@@ -70,11 +70,11 @@ class SearchClassServiceImplTest {
         }
 
         for (int i = 0; i < dtoList.size(); i++) {
-            assertEquals(classListDTO.getMondayClassList().get(i) , dtoList.get(i).getMonday());
-            assertEquals(classListDTO.getTuesdayClassList().get(i) , dtoList.get(i).getTuesday());
-            assertEquals(classListDTO.getWednesdayClassList().get(i) , dtoList.get(i).getWednesday());
-            assertEquals(classListDTO.getThursdayClassList().get(i) , dtoList.get(i).getThursday());
-            assertEquals(classListDTO.getFridayClassList().get(i) , dtoList.get(i).getFriday());
+            assertEquals(classListDTO.getMondayClassList().get(i), dtoList.get(i).getMonday());
+            assertEquals(classListDTO.getTuesdayClassList().get(i), dtoList.get(i).getTuesday());
+            assertEquals(classListDTO.getWednesdayClassList().get(i), dtoList.get(i).getWednesday());
+            assertEquals(classListDTO.getThursdayClassList().get(i), dtoList.get(i).getThursday());
+            assertEquals(classListDTO.getFridayClassList().get(i), dtoList.get(i).getFriday());
         }
     }
 
@@ -131,4 +131,3 @@ class SearchClassServiceImplTest {
         classTableRepository.deleteByStudentName(testStudent_duplicated().getStudentName());
     }
 }
-

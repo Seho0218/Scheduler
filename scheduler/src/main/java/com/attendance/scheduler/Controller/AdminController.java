@@ -37,7 +37,7 @@ public class AdminController {
      * */
     @PostMapping("grant")
     public ResponseEntity<String> grantAuth(ApproveTeacherDTO approveTeacherDTO) {
-        adminService.approveAuth(approveTeacherDTO);
+        adminService.grantAuth(approveTeacherDTO);
         return ResponseEntity.ok("승인되었습니다.");
     }
 

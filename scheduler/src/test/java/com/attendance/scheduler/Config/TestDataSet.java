@@ -38,11 +38,11 @@ public class TestDataSet {
         return classDTO;
     }
 
-    public static JoinTeacherDTO teacherDTO(){
+    public static JoinTeacherDTO sampleTeacherDataSet(){
         JoinTeacherDTO joinTeacherDTO = new JoinTeacherDTO();
-        joinTeacherDTO.setUsername("testTeacher");
+        joinTeacherDTO.setUsername("sampleTeacherDataSet");
         joinTeacherDTO.setPassword("123");
-        joinTeacherDTO.setEmail("testTeacher@gmail.com");
+        joinTeacherDTO.setEmail("sampleTeacherDataSet@gmail.com");
         joinTeacherDTO.setName("김교사");
         joinTeacherDTO.setApproved(true);
         return joinTeacherDTO;

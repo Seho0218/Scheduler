@@ -1,7 +1,7 @@
 package com.attendance.scheduler.Controller;
 
 import com.attendance.scheduler.Dto.Teacher.JoinTeacherDTO;
-import com.attendance.scheduler.Service.JoinService;
+import com.attendance.scheduler.Service.TeacherService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequiredArgsConstructor
 public class JoinController {
 
-    private final JoinService joinService;
+    private final TeacherService teacherService;
 
     //회원가입 폼
     @GetMapping("teacher")
@@ -38,8 +38,10 @@ public class JoinController {
             return "join";
         }
 
-        boolean duplicateTeacherId = joinService.findDuplicateTeacherId(joinTeacherDTO);
-        boolean duplicateTeacherEmail = joinService.findDuplicateTeacherEmail(joinTeacherDTO);
+        boolean duplicateTeacherId = teacherService
+                .findDuplicateTeacherID(joinTeacherDTO);
+        boolean duplicateTeacherEmail = teacherService
+                .findDuplicateTeacherEmail(joinTeacherDTO);
 
         if (duplicateTeacherId) {
             model.addAttribute("idErrorMessage", "이미 가입된 아이디 입니다.");
@@ -52,7 +54,7 @@ public class JoinController {
         }
 
         try {
-            joinService.joinTeacher(joinTeacherDTO);
+            teacherService.joinTeacher(joinTeacherDTO);
             model.addAttribute("login", new JoinTeacherDTO());
             return "redirect:/login";
         } catch (Exception e) {
