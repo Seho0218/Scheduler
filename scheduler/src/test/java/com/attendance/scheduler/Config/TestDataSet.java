@@ -41,7 +41,7 @@ public class TestDataSet {
         return classDTO;
     }
 
-    public static JoinTeacherDTO sampleTeacherDataSet(){
+    public static JoinTeacherDTO testTeacherDataSet(){
         JoinTeacherDTO joinTeacherDTO = new JoinTeacherDTO();
         joinTeacherDTO.setUsername("testTeacher");
         joinTeacherDTO.setPassword("123");
@@ -51,7 +51,7 @@ public class TestDataSet {
         return joinTeacherDTO;
     }
 
-    public static StudentInformationDTO sampleStudentInformationDTO(){
+    public static StudentInformationDTO testStudentInformationDTO(){
         StudentInformationDTO studentInformationDTO = new StudentInformationDTO();
         studentInformationDTO.setStudentName("김학생");
         studentInformationDTO.setStudentPhoneNumber("010-1234-1234");
@@ -62,7 +62,7 @@ public class TestDataSet {
 
     }
 
-    public static StudentInformationDTO sample2StudentInformationDTO(){
+    public static StudentInformationDTO test2StudentInformationDTO(){
         StudentInformationDTO studentInformationDTO = new StudentInformationDTO();
         studentInformationDTO.setStudentName("박학생");
         studentInformationDTO.setStudentPhoneNumber("010-4321-4321");

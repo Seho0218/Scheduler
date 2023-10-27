@@ -41,6 +41,10 @@ public class TeacherEntity {
     @OneToMany(mappedBy = "teacherEntity")
     List<StudentEntity> studentEntityList = new ArrayList<>();
 
+    public void addForeignKey(StudentEntity studentEntity) {
+        this.studentEntityList.add(studentEntity);
+    }
+
     @Builder
     public TeacherEntity(Long id, String username, String name, String password, String email, boolean approved) {
         this.id = id;

@@ -195,9 +195,8 @@ public class CertController {
             return "redirect:/";
         }
     }
- /*
-//TODO
-  */
+    //TODO
+
     @GetMapping("changeEmail")
     public String changeEmail(Model model){
 
@@ -205,15 +204,12 @@ public class CertController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         emailDTO.setUsername(auth.getName());
 
-        EmailDTO adminAccountByID = adminService.findAdminEmailByID(emailDTO);
-        EmailDTO teacherAccountByID = teacherService.findTeacherEmailByID(emailDTO);
-
-        if (adminAccountByID != null) {
+        if (adminService.findAdminEmailByID(emailDTO) != null) {
             // 관리자 계정 정보가 있을 경우, emailDTO 정보 추가
-            emailDTO.setEmail(adminAccountByID.getEmail()); // 이메일 정보 예시
-        } else if (teacherAccountByID != null) {
+            emailDTO.setEmail(adminService.findAdminEmailByID(emailDTO).get(0).getEmail());
+        } else if (teacherService.findTeacherEmailByID(emailDTO) != null) {
             // 교사 계정 정보가 있을 경우, emailDTO 정보 추가
-            emailDTO.setEmail(teacherAccountByID.getEmail()); // 이메일 정보 예시
+            emailDTO.setEmail(teacherService.findTeacherEmailByID(emailDTO).get(0).getEmail());
         }
 
         try {

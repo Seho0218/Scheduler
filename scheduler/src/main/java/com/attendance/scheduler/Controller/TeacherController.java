@@ -34,7 +34,8 @@ public class TeacherController {
     @GetMapping("class")
     public String managePage(Model model) {
         List<ClassDTO> classTable = classService.findClassByStudent();
-        model.addAttribute("findClassTable", classTable);
+        model.addAttribute("classList", new DeleteClassDTO()); //있어야 빠름
+        model.addAttribute("studentList", classTable);
         log.info("student = {}", classService.findClassByStudent());
         return "manage/class";
     }
@@ -49,19 +50,31 @@ public class TeacherController {
 
     //학생 리스트
     @GetMapping("studentList")
-    public String studentList(@Validated @ModelAttribute StudentInformationDTO studentInformationDTO, Model model) {
+    public String studentList(StudentInformationDTO studentInformationDTO, Model model) {
         List<StudentInformationDTO> studentInformationList = manageStudentService
                 .findStudentInformationList(studentInformationDTO);
-        model.addAttribute("studentList", studentInformationList);
         model.addAttribute("studentObject", new StudentInformationDTO());
+        model.addAttribute("studentList", studentInformationList);
         return "manage/studentList";
     }
 
+    //학생 정보 등록
+    @GetMapping("registerStudentInformation")
+    public String addStudentInformation(Model model) {
+        model.addAttribute("studentObject", new StudentInformationDTO());
+        return "manage/registerStudentInformation";
+    }
+
     @PostMapping("saveStudentList")
-    public ResponseEntity<String> saveStudentList(@Validated @ModelAttribute StudentInformationDTO studentInformationDTO) {
-        manageStudentService.saveStudentInformation(studentInformationDTO);
-        log.info("save List={}", studentInformationDTO);
-        return ResponseEntity.ok("등록되었습니다.");
+    public String saveStudentList(@Validated @ModelAttribute("studentObject") StudentInformationDTO studentInformationDTO, Model model) {
+        try {
+            manageStudentService.registerStudentInformation(studentInformationDTO);
+            return "redirect:/manage/studentList";
+        } catch (Exception e) {
+            System.out.println("e = " + e);
+            model.addAttribute("studentObject", new StudentInformationDTO());
+            return "manage/registerStudentInformation";
+        }
     }
 
     @PostMapping("deleteStudentList")

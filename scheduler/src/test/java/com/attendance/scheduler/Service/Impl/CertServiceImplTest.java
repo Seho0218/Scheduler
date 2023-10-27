@@ -16,7 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 
-import static com.attendance.scheduler.Config.TestDataSet.sampleTeacherDataSet;
+import static com.attendance.scheduler.Config.TestDataSet.testTeacherDataSet;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
@@ -39,10 +39,10 @@ class CertServiceImplTest {
     public void joinTeacherDTO() {
         Optional<TeacherEntity> existingTeacher = Optional
                 .ofNullable(teacherRepository
-                        .findByUsernameIs(sampleTeacherDataSet().getUsername()));
+                        .findByUsernameIs(testTeacherDataSet().getUsername()));
 
         if (existingTeacher.isEmpty()) {
-            teacherService.joinTeacher(sampleTeacherDataSet());
+            teacherService.joinTeacher(testTeacherDataSet());
         }
     }
 
@@ -50,7 +50,7 @@ class CertServiceImplTest {
     @DisplayName("아이디 찾을 때, 이메일 검증")
     void findIdByEmail() {
         boolean duplicateTeacherEmail = teacherService
-                .findDuplicateTeacherEmail(sampleTeacherDataSet());
+                .findDuplicateTeacherEmail(testTeacherDataSet());
         assertTrue(duplicateTeacherEmail);
     }
 
@@ -58,7 +58,7 @@ class CertServiceImplTest {
     @DisplayName("ID 유무 확인")
     void idConfirmation(){
         boolean existedByUsername = teacherRepository
-                .existsByUsername(sampleTeacherDataSet().getUsername());
+                .existsByUsername(testTeacherDataSet().getUsername());
         assertTrue(existedByUsername);
     }
 
@@ -66,7 +66,7 @@ class CertServiceImplTest {
     @DisplayName("Email 유무 확인")
     void emailConfirmation(){
         boolean existedByUsername = teacherRepository
-                .existsByEmail(sampleTeacherDataSet().getEmail());
+                .existsByEmail(testTeacherDataSet().getEmail());
         assertTrue(existedByUsername);
     }
 
@@ -76,7 +76,7 @@ class CertServiceImplTest {
 
         //비밀번호 변경
         PwdEditDTO pwdEditDTO = new PwdEditDTO();
-        pwdEditDTO.setUsername(sampleTeacherDataSet().getUsername());
+        pwdEditDTO.setUsername(testTeacherDataSet().getUsername());
         pwdEditDTO.setPassword("root123!@#");
 
         //when
@@ -94,6 +94,6 @@ class CertServiceImplTest {
 
     @AfterEach
     void afterEach(){
-        teacherRepository.deleteByUsernameIs(sampleTeacherDataSet().getUsername());
+        teacherRepository.deleteByUsernameIs(testTeacherDataSet().getUsername());
     }
 }

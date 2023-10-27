@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
+import static jakarta.persistence.FetchType.EAGER;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
@@ -25,13 +26,23 @@ public class StudentEntity {
     private String studentPhoneNumber;
 
     private String studentAddress;
+
     private String studentDetailedAddress;
 
     private String studentParentPhoneNumber;
 
-    @ManyToOne
+    @ManyToOne(fetch = EAGER)
     @JoinColumn(name = "teacherId")
     private TeacherEntity teacherEntity;
+
+
+    public void setTeacherEntity(TeacherEntity teacherEntity) {
+        if (this.teacherEntity != null) {
+            this.teacherEntity.getStudentEntityList().remove(this);
+        }
+        this.teacherEntity = teacherEntity;
+        teacherEntity.addForeignKey(this);
+    }
 
     @Builder
     public StudentEntity(Long id, String studentName, String studentPhoneNumber, String studentAddress, String studentDetailedAddress, String studentParentPhoneNumber, TeacherEntity teacherEntity) {

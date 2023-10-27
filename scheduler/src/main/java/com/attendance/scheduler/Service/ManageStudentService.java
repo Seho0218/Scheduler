@@ -8,8 +8,9 @@ public interface ManageStudentService {
 
     List<StudentInformationDTO> findStudentInformationList(StudentInformationDTO studentInformationDTO);
 
-    void saveStudentInformation(StudentInformationDTO studentInformationDTO);
+    void registerStudentInformation(StudentInformationDTO studentInformationDTO);
 
     void deleteStudentInformation(StudentInformationDTO studentInformationDTO);
+
 
 }

@@ -11,7 +11,7 @@ public interface AdminService {
 
     List<TeacherDTO> getTeacherList();
 
-    EmailDTO findAdminEmailByID(EmailDTO emailDTO);
+    List<EmailDTO> findAdminEmailByID(EmailDTO emailDTO);
     void grantAuth(ApproveTeacherDTO approveTeacherDTO);
     void revokeAuth(ApproveTeacherDTO approveTeacherDTO);
     void updateEmail(EditEmailDTO editEmailDTO);

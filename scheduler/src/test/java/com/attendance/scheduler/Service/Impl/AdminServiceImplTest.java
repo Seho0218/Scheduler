@@ -18,7 +18,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Optional;
 
-import static com.attendance.scheduler.Config.TestDataSet.sampleTeacherDataSet;
+import static com.attendance.scheduler.Config.TestDataSet.testTeacherDataSet;
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -43,9 +43,9 @@ class AdminServiceImplTest {
     void joinSampleTeacherAccount(){
         Optional<TeacherEntity> existingTeacher = Optional
                 .ofNullable(teacherRepository
-                        .findByUsernameIs(sampleTeacherDataSet().getUsername()));
+                        .findByUsernameIs(testTeacherDataSet().getUsername()));
         if (existingTeacher.isEmpty()) {
-            teacherService.joinTeacher(sampleTeacherDataSet());
+            teacherService.joinTeacher(testTeacherDataSet());
         }
     }
 
@@ -72,14 +72,14 @@ class AdminServiceImplTest {
 
         //Given
         approveTeacherDTO = new ApproveTeacherDTO();
-        approveTeacherDTO.setUsername(sampleTeacherDataSet().getUsername());
+        approveTeacherDTO.setUsername(testTeacherDataSet().getUsername());
 
         //When
         adminService.grantAuth(approveTeacherDTO);
 
         //Then
         TeacherEntity teacherEntity = teacherRepository
-                .findByUsernameIs(sampleTeacherDataSet().getUsername());
+                .findByUsernameIs(testTeacherDataSet().getUsername());
         assertTrue(teacherEntity.isApproved());
     }
 
@@ -89,14 +89,14 @@ class AdminServiceImplTest {
 
         //Given
         approveTeacherDTO = new ApproveTeacherDTO();
-        approveTeacherDTO.setUsername(sampleTeacherDataSet().getUsername());
+        approveTeacherDTO.setUsername(testTeacherDataSet().getUsername());
 
         //When
         adminService.revokeAuth(approveTeacherDTO);
 
         //Then
         TeacherEntity teacherEntity = teacherRepository
-                .findByUsernameIs(sampleTeacherDataSet().getUsername());
+                .findByUsernameIs(testTeacherDataSet().getUsername());
         assertFalse(teacherEntity.isApproved());
     }
 
@@ -120,6 +120,6 @@ class AdminServiceImplTest {
 
     @AfterEach
     void test(){
-        teacherRepository.deleteByUsernameIs(sampleTeacherDataSet().getUsername());
+        teacherRepository.deleteByUsernameIs(testTeacherDataSet().getUsername());
     }
 }

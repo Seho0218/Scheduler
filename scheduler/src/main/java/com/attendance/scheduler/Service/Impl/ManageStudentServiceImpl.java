@@ -1,9 +1,14 @@
 package com.attendance.scheduler.Service.Impl;
 
 import com.attendance.scheduler.Dto.StudentInformationDTO;
+import com.attendance.scheduler.Entity.StudentEntity;
+import com.attendance.scheduler.Entity.TeacherEntity;
 import com.attendance.scheduler.Repository.jpa.StudentRepository;
+import com.attendance.scheduler.Repository.jpa.TeacherRepository;
 import com.attendance.scheduler.Service.ManageStudentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,13 +16,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class ManageStudentServiceImpl implements ManageStudentService {
 
     private final StudentRepository studentRepository;
+    private final TeacherRepository teacherRepository;
 
     @Override
+    @Transactional
     public List<StudentInformationDTO> findStudentInformationList(StudentInformationDTO studentInformationDTO) {
          return studentRepository.findAll()
                 .stream().map(studentEntity -> {
@@ -33,8 +39,15 @@ public class ManageStudentServiceImpl implements ManageStudentService {
     }
 
     @Override
-    public void saveStudentInformation(StudentInformationDTO studentInformationDTO) {
-        studentRepository.save(studentInformationDTO.toEntity());
+    @Transactional
+    public void registerStudentInformation(StudentInformationDTO studentInformationDTO) {
+        final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        TeacherEntity byUsernameIs = teacherRepository.findByUsernameIs(auth.getName());
+
+        StudentEntity entity = studentInformationDTO.toEntity();
+        entity.setTeacherEntity(byUsernameIs);
+        byUsernameIs.getStudentEntityList().add(entity);
+        studentRepository.save(entity);
     }
 
     @Override

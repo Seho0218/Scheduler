@@ -35,10 +35,14 @@
         <div th:object="${teacherList}">
             <table>
                 <tr>
-                    <th><a th:href ="@{/logout}"><button class="btn btn-primary"
-                                                         sec:authorize="isAuthenticated()">Logout</button></a></th>
                     <th><a th:href ="@{/manage/class}"><button class="btn btn-primary"
                                                          sec:authorize="isAuthenticated()">수업 관리</button></a></th>
+                    <th><a th:href ="@{/cert/changePassword}"><button class="btn btn-primary text-end"
+                                                                      sec:authorize="isAuthenticated()">비밀번호 변경</button></a></th>
+                    <th><a th:href ="@{/cert/changeEmail}"><button class="btn btn-primary"
+                                                                   sec:authorize="isAuthenticated()">이메일 변경</button></a></th>
+                    <th><a th:href ="@{/logout}"><button class="btn btn-primary"
+                                                         sec:authorize="isAuthenticated()">Logout</button></a></th>
                 </tr>
             </table>
             <table class="table caption-top table-responsive" id="jb-table">

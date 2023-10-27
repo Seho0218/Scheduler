@@ -10,7 +10,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.List;
 
-import static com.attendance.scheduler.Config.TestDataSet.sampleStudentInformationDTO;
+import static com.attendance.scheduler.Config.TestDataSet.testStudentInformationDTO;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
@@ -24,24 +24,30 @@ class StudentRepositoryTest {
 
     @BeforeEach
     void beforeEach(){
-        studentRepository.save(sampleStudentInformationDTO().toEntity());
+        studentRepository.save(testStudentInformationDTO().toEntity());
     }
 
     @Test
     @DisplayName("학생 인적 사항 정보 저장")
     void findStudentEntityByStudentName() {
         List<StudentEntity> studentEntityByStudentName = studentRepository
-                .findStudentEntityByStudentName(sampleStudentInformationDTO().getStudentName());
+                .findStudentEntityByStudentName(testStudentInformationDTO().getStudentName());
 
-        assertEquals(sampleStudentInformationDTO().getStudentName(),
+        assertEquals(testStudentInformationDTO().getStudentName(),
                 studentEntityByStudentName.get(0).getStudentName());
+    }
+
+    @Test //TODO
+    @DisplayName("학생 정보 찾기(고유번호로)")
+    void findStudentEntityById(){
+
     }
 
     @Test
     @DisplayName("학생 정보 삭제(이름이 아닌 고유번호로)")
     void deleteStudentEntityById() {
         List<StudentEntity> studentEntityByStudentName = studentRepository
-                .findStudentEntityByStudentName(sampleStudentInformationDTO().getStudentName());
+                .findStudentEntityByStudentName(testStudentInformationDTO().getStudentName());
 
         studentRepository.deleteStudentEntityById(studentEntityByStudentName.get(0).getId());
 

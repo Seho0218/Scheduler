@@ -14,6 +14,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,13 +36,14 @@ public class AdminServiceImpl implements AdminService {
 
 
     @Override
-    public EmailDTO findAdminEmailByID(EmailDTO emailDTO) {
+    public List<EmailDTO> findAdminEmailByID(EmailDTO emailDTO) {
         AdminEntity adminAccount = adminRepository
                 .findByUsernameIs(emailDTO.getUsername());
-        return EmailDTO.builder()
+        EmailDTO build = EmailDTO.builder()
                 .username(adminAccount.getUsername())
                 .email(adminAccount.getEmail())
                 .build();
+        return Collections.singletonList(build);
     }
 
     @Override
