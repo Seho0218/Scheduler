@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +20,16 @@ public class ManageStudentServiceImpl implements ManageStudentService {
 
     private final StudentRepository studentRepository;
     private final TeacherRepository teacherRepository;
+
+    @Override
+    public List<StudentInformationDTO> findStudentEntityByStudentName(StudentInformationDTO studentInformationDTO) {
+        return studentRepository.findStudentEntityByStudentName(studentInformationDTO.getStudentName())
+                .stream().map(studentEntity -> {
+                    StudentInformationDTO informationDTO = new StudentInformationDTO();
+                    informationDTO.setStudentName(studentEntity.getStudentName());
+                    return informationDTO;
+                }).toList();
+    }
 
     @Override
     @Transactional
@@ -35,7 +44,7 @@ public class ManageStudentServiceImpl implements ManageStudentService {
                     informationDTO.setStudentPhoneNumber(studentEntity.getStudentPhoneNumber());
                     informationDTO.setStudentParentPhoneNumber(studentEntity.getStudentParentPhoneNumber());
                     return informationDTO;
-                }).collect(Collectors.toList());
+                }).toList();
     }
 
     @Override

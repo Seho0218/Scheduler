@@ -19,6 +19,7 @@ import static lombok.AccessLevel.PROTECTED;
 public class StudentEntity {
 
     @Id @GeneratedValue(strategy = IDENTITY)
+    @Column(name = "studentId")
     private Long id;
 
     private String studentName;
@@ -35,7 +36,6 @@ public class StudentEntity {
     @JoinColumn(name = "teacherId")
     private TeacherEntity teacherEntity;
 
-
     public void setTeacherEntity(TeacherEntity teacherEntity) {
         if (this.teacherEntity != null) {
             this.teacherEntity.getStudentEntityList().remove(this);
@@ -43,6 +43,15 @@ public class StudentEntity {
         this.teacherEntity = teacherEntity;
         teacherEntity.addForeignKey(this);
     }
+
+    @OneToOne(mappedBy = "studentEntity")
+    private ClassEntity classEntity;
+
+    public void addClassForeignKey(ClassEntity classEntity) {
+        this.classEntity = classEntity;
+    }
+
+
 
     @Builder
     public StudentEntity(Long id, String studentName, String studentPhoneNumber, String studentAddress, String studentDetailedAddress, String studentParentPhoneNumber, TeacherEntity teacherEntity) {

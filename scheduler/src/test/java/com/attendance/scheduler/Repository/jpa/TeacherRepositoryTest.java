@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import java.util.Optional;
+
 import static com.attendance.scheduler.Config.TestDataSet.testTeacherDataSet;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -60,11 +62,11 @@ class TeacherRepositoryTest {
     void findByEmailIs() {
 
         //When
-        TeacherEntity byEmailIs = teacherRepository
+        Optional<TeacherEntity> byEmailIs = teacherRepository
                 .findByEmailIs(testTeacherDataSet().getEmail());
         //Then
-        assertEquals(testTeacherDataSet().getUsername(), byEmailIs.getUsername());
-        assertEquals(testTeacherDataSet().getEmail(), byEmailIs.getEmail());
+        assertEquals(testTeacherDataSet().getUsername(), byEmailIs.get().getUsername());
+        assertEquals(testTeacherDataSet().getEmail(), byEmailIs.get().getEmail());
     }
 
     @Test

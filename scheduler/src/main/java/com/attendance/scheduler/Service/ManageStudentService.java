@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface ManageStudentService {
 
+    List<StudentInformationDTO> findStudentEntityByStudentName(StudentInformationDTO studentInformationDTO);
+
     List<StudentInformationDTO> findStudentInformationList(StudentInformationDTO studentInformationDTO);
 
     void registerStudentInformation(StudentInformationDTO studentInformationDTO);

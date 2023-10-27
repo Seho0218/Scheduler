@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -37,14 +38,17 @@ public class CertServiceImpl implements CertService {
 	* Confirm id exist
 	* */
 	@Override
-	public FindIdDTO findIdByEmail(FindIdDTO findIdDTO) {
-		TeacherEntity byEmailIs = teacherRepository
-				.findByEmailIs(findIdDTO.getEmail());
-		FindIdDTO resultDTO = new FindIdDTO();
-		resultDTO.setUsername(byEmailIs.getUsername());
-		resultDTO.setEmail(byEmailIs.getEmail());
-		return resultDTO;
-    }
+	public Optional<FindIdDTO> findIdByEmail(FindIdDTO findIdDTO) {
+		Optional<TeacherEntity> optionalTeacherEntity
+				= teacherRepository.findByEmailIs(findIdDTO.getEmail());
+
+		return optionalTeacherEntity.map(teacherEntity -> {
+			FindIdDTO resultDTO = new FindIdDTO();
+			resultDTO.setUsername(teacherEntity.getUsername());
+			resultDTO.setEmail(teacherEntity.getEmail());
+			return resultDTO;
+		});
+	}
 
 	@Override
 	public boolean idConfirmation(FindPasswordDTO findPasswordDTO) {

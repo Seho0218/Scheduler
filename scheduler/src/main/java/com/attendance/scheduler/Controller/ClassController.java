@@ -3,7 +3,9 @@ package com.attendance.scheduler.Controller;
 import com.attendance.scheduler.Dto.ClassDTO;
 import com.attendance.scheduler.Dto.ClassListDTO;
 import com.attendance.scheduler.Dto.StudentClassDTO;
+import com.attendance.scheduler.Dto.StudentInformationDTO;
 import com.attendance.scheduler.Service.ClassService;
+import com.attendance.scheduler.Service.ManageStudentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -24,6 +26,7 @@ import java.util.List;
 public class ClassController {
 
     private final ClassService classService;
+    private final ManageStudentService manageStudentService;
 
     //  수업 조회 폼
     @GetMapping("")
@@ -72,6 +75,17 @@ public class ClassController {
         if (studentClassesList != null) {
             getClassList(model);
             model.addAttribute("studentName", "이미 수업을 신청했습니다.");
+            return "index";
+        }
+        //TODO 학생 이름이 명부에 없는 경우
+        StudentInformationDTO informationDTO = new StudentInformationDTO();
+        informationDTO.setStudentName(classDTO.getStudentName());
+        List<StudentInformationDTO> studentEntityByStudentName = manageStudentService
+                .findStudentEntityByStudentName(informationDTO);
+
+        if(studentEntityByStudentName.isEmpty()) {
+            getClassList(model);
+            model.addAttribute("studentName", "등록 되지 않은 학생입니다.");
             return "index";
         }
 

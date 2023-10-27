@@ -21,9 +21,9 @@ import static lombok.AccessLevel.PROTECTED;
 public class TeacherEntity {
 
     @Id @GeneratedValue(strategy = IDENTITY)
+    @Column(name = "teacherId")
     private Long id;
 
-    @Column(name = "teacherId")
     private String username;
 
     private String name;

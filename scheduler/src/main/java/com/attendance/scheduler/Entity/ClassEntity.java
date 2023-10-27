@@ -1,9 +1,6 @@
 package com.attendance.scheduler.Entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,6 +20,7 @@ import static lombok.AccessLevel.PROTECTED;
 public class ClassEntity {
 
     @Id @GeneratedValue(strategy = IDENTITY)
+    @Column(name = "classId")
     private Long id;
 
     private String studentName;
@@ -36,8 +34,22 @@ public class ClassEntity {
     @UpdateTimestamp
     private Timestamp updateTimeStamp;
 
+    @OneToOne
+    @JoinColumn(name = "studentId")
+    private StudentEntity studentEntity;
+
+    public void setStudentEntity(StudentEntity studentEntity) {
+        if (this.studentEntity != null) {
+            this.studentEntity.addClassForeignKey(null);
+        }
+        this.studentEntity = studentEntity;
+        if (studentEntity != null) {
+            studentEntity.addClassForeignKey(this);
+        }
+    }
+
     @Builder
-    public ClassEntity(Long id, String studentName, Integer monday, Integer tuesday, Integer wednesday, Integer thursday, Integer friday, Timestamp updateTimeStamp) {
+    public ClassEntity(Long id, String studentName, Integer monday, Integer tuesday, Integer wednesday, Integer thursday, Integer friday, Timestamp updateTimeStamp, StudentEntity studentEntity) {
         this.id = id;
         this.studentName = studentName;
         this.monday = monday;
@@ -46,5 +58,6 @@ public class ClassEntity {
         this.thursday = thursday;
         this.friday = friday;
         this.updateTimeStamp = updateTimeStamp;
+        this.studentEntity = studentEntity;
     }
 }

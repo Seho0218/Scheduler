@@ -5,9 +5,11 @@ import com.attendance.scheduler.Dto.ClassListDTO;
 import com.attendance.scheduler.Dto.StudentClassDTO;
 import com.attendance.scheduler.Dto.Teacher.DeleteClassDTO;
 import com.attendance.scheduler.Entity.ClassEntity;
+import com.attendance.scheduler.Entity.StudentEntity;
 import com.attendance.scheduler.Mapper.ClassMapper;
 import com.attendance.scheduler.Mapper.StudentClassMapper;
 import com.attendance.scheduler.Repository.jpa.ClassTableRepository;
+import com.attendance.scheduler.Repository.jpa.StudentRepository;
 import com.attendance.scheduler.Service.ClassService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,6 +27,7 @@ public class ClassServiceImpl implements ClassService {
     private final ClassTableRepository classTableRepository;
     private final StudentClassMapper studentClassMapper;
     private final ClassMapper classMapper;
+    private final StudentRepository studentRepository;
 
     @Override
     public List<ClassDTO> findClassByStudent() {
@@ -65,9 +68,11 @@ public class ClassServiceImpl implements ClassService {
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     public synchronized void saveClassTable(ClassDTO classDTO) {
         classValidator(classDTO);
-        String trimmedStudentName = classDTO.getStudentName().trim();
-        classDTO.setStudentName(trimmedStudentName);
-        classTableRepository.save(classDTO.toEntity());
+        List<StudentEntity> entityByStudentName = studentRepository
+                .findStudentEntityByStudentName(classDTO.getStudentName());
+        ClassEntity entity = classDTO.toEntity();
+        entity.setStudentEntity(entityByStudentName.get(0));
+        classTableRepository.save(entity);
     }
 
     private void classValidator(ClassDTO classDTO) {

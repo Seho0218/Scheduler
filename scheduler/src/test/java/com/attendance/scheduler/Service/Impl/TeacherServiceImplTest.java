@@ -22,7 +22,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static com.attendance.scheduler.Config.TestDataSet.*;
+import static com.attendance.scheduler.Config.TestDataSet.testStudentInformationDTO;
+import static com.attendance.scheduler.Config.TestDataSet.testTeacherDataSet;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
