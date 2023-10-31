@@ -3,58 +3,48 @@ package com.attendance.scheduler.Service.Impl;
 import com.attendance.scheduler.Config.Authority.UserDetailService;
 import com.attendance.scheduler.Dto.EmailDTO;
 import com.attendance.scheduler.Dto.LoginDTO;
-import com.attendance.scheduler.Entity.StudentEntity;
 import com.attendance.scheduler.Entity.TeacherEntity;
 import com.attendance.scheduler.Repository.jpa.StudentRepository;
 import com.attendance.scheduler.Repository.jpa.TeacherRepository;
-import com.attendance.scheduler.Service.ManageStudentService;
+import com.attendance.scheduler.Service.StudentService;
 import com.attendance.scheduler.Service.TeacherService;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 import static com.attendance.scheduler.Config.TestDataSet.testStudentInformationDTO;
 import static com.attendance.scheduler.Config.TestDataSet.testTeacherDataSet;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@Transactional
 class TeacherServiceImplTest {
 
-    @Autowired
-    private TeacherService teacherService;
-
-    @Autowired
-    private UserDetailService userDetailsService;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private TeacherRepository teacherRepository;
-
-    @Autowired
-    private StudentRepository studentRepository;
-
-    @Autowired
-    private ManageStudentService manageStudentService;
+    @Autowired private TeacherService teacherService;
+    @Autowired private UserDetailService userDetailsService;
+    @Autowired private PasswordEncoder passwordEncoder;
+    @Autowired private TeacherRepository teacherRepository;
+    @Autowired private StudentRepository studentRepository;
+    @Autowired private StudentService studentService;
 
 
     @BeforeEach
     void joinTestTeacherAccount(){
-        Optional<TeacherEntity> existingTeacher = Optional
-                .ofNullable(teacherRepository
-                        .findByUsernameIs(testTeacherDataSet().getUsername()));
+        boolean duplicateTeacherID = teacherService
+                .findDuplicateTeacherID(testTeacherDataSet());
 
-        if (existingTeacher.isEmpty()) {
+        if (!duplicateTeacherID) {
             teacherService.joinTeacher(testTeacherDataSet());
         }
     }
@@ -138,26 +128,24 @@ class TeacherServiceImplTest {
     void registerStudentInformation() {
 
         //Given
-        testStudentInformationDTO();
+        LoginDTO loginDTO = new LoginDTO();
+        loginDTO.setUsername(testTeacherDataSet().getUsername());
+
+        UserDetails userDetails = userDetailsService
+                .loadUserByUsername(loginDTO.getUsername());
+
+        UsernamePasswordAuthenticationToken auth =
+                new UsernamePasswordAuthenticationToken(testTeacherDataSet().getUsername(),
+                        null , userDetails.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(auth);
 
         //When
-        manageStudentService.registerStudentInformation(testStudentInformationDTO());
+        studentService.registerStudentInformation(testStudentInformationDTO());
 
         //Then
-        assertEquals(testStudentInformationDTO().getStudentName(),
-                studentRepository.findStudentEntityByStudentName(testStudentInformationDTO()
-                        .getStudentName()).get(0).getStudentName());
+        String studentName = studentRepository.findStudentEntityByStudentNameIs(testStudentInformationDTO()
+                .getStudentName()).get().getStudentName();
 
-        //after
-        List<StudentEntity> studentEntityByStudentName = studentRepository
-                .findStudentEntityByStudentName(testStudentInformationDTO().getStudentName());
-
-        studentRepository.deleteStudentEntityById(studentEntityByStudentName.get(0).getId());
-
-    }
-
-    @AfterEach
-    void afterEach(){
-        teacherRepository.deleteByUsernameIs(testTeacherDataSet().getUsername());
+        assertThat(testStudentInformationDTO().getStudentName()).isEqualTo(studentName);
     }
 }

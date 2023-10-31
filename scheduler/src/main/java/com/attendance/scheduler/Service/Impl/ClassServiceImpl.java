@@ -7,7 +7,6 @@ import com.attendance.scheduler.Dto.Teacher.DeleteClassDTO;
 import com.attendance.scheduler.Entity.ClassEntity;
 import com.attendance.scheduler.Entity.StudentEntity;
 import com.attendance.scheduler.Mapper.ClassMapper;
-import com.attendance.scheduler.Mapper.StudentClassMapper;
 import com.attendance.scheduler.Repository.jpa.ClassTableRepository;
 import com.attendance.scheduler.Repository.jpa.StudentRepository;
 import com.attendance.scheduler.Service.ClassService;
@@ -18,14 +17,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class ClassServiceImpl implements ClassService {
 
     private final ClassTableRepository classTableRepository;
-    private final StudentClassMapper studentClassMapper;
     private final ClassMapper classMapper;
     private final StudentRepository studentRepository;
 
@@ -34,7 +31,7 @@ public class ClassServiceImpl implements ClassService {
         return classTableRepository.findAll()
                 .stream()
                 .map(classMapper::toClassDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
@@ -51,36 +48,48 @@ public class ClassServiceImpl implements ClassService {
             classListDTO.getTuesdayClassList().add(classDTO.getTuesday());
             classListDTO.getWednesdayClassList().add(classDTO.getWednesday());
             classListDTO.getThursdayClassList().add(classDTO.getThursday());
-            classListDTO.getFridayClassList().add(classDTO.getMonday());
+            classListDTO.getFridayClassList().add(classDTO.getFriday());
         }
         return classListDTO;
     }
 
     @Override
-    public StudentClassDTO findStudentClasses(StudentClassDTO studentClassDTO) {
+    public Optional<StudentClassDTO> findStudentClasses(StudentClassDTO studentClassDTO) {
         String studentName = studentClassDTO.getStudentName().trim();
-        ClassEntity byStudentNameIs = classTableRepository
+        Optional<ClassEntity> byStudentNameIs = classTableRepository
                 .findByStudentNameIs(studentName);
-        return studentClassMapper.toClassDTO(byStudentNameIs);
+
+        return byStudentNameIs.map(classEntity -> {
+            StudentClassDTO classDTO = new StudentClassDTO();
+            classDTO.setStudentName(classEntity.getStudentName());
+            classDTO.setMonday(classEntity.getMonday());
+            classDTO.setTuesday(classEntity.getTuesday());
+            classDTO.setWednesday(classEntity.getWednesday());
+            classDTO.setThursday(classEntity.getThursday());
+            classDTO.setFriday(classEntity.getFriday());
+            return classDTO;
+        });
     }
 
     @Override
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     public synchronized void saveClassTable(ClassDTO classDTO) {
+
         classValidator(classDTO);
-        List<StudentEntity> entityByStudentName = studentRepository
-                .findStudentEntityByStudentName(classDTO.getStudentName());
+
+        Optional<StudentEntity> studentEntityByStudentName = studentRepository
+                .findStudentEntityByStudentNameIs(classDTO.getStudentName());
         ClassEntity entity = classDTO.toEntity();
-        entity.setStudentEntity(entityByStudentName.get(0));
+        entity.setStudentEntity(studentEntityByStudentName.get());
+
         classTableRepository.save(entity);
     }
 
     private void classValidator(ClassDTO classDTO) {
-        Optional<ClassEntity> byStudentNameIs =
-                Optional.ofNullable(classTableRepository
-                        .findByStudentNameIs(classDTO.getStudentName()));
+        boolean byStudentNameIs = classTableRepository
+                .existsByStudentNameIs(classDTO.getStudentName());
 
-        if (byStudentNameIs.isEmpty()) {
+        if (!byStudentNameIs) {
             duplicateClassValidator(classDTO);
         }
 

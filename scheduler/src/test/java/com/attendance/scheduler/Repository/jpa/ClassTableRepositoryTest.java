@@ -1,15 +1,14 @@
 package com.attendance.scheduler.Repository.jpa;
 
-import com.attendance.scheduler.Entity.ClassEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import static com.attendance.scheduler.Config.TestDataSet.testStudent;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static com.attendance.scheduler.Config.TestDataSet.testStudentClassDataSet;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 
 @DataJpaTest
@@ -22,18 +21,18 @@ class ClassTableRepositoryTest {
     //Given
     @BeforeEach
     void beforeEach(){
-        classTableRepository.save(testStudent().toEntity());
+        classTableRepository.save(testStudentClassDataSet().toEntity());
     }
 
     @Test
-    void findByStudentNameIs() {
+    void existsByStudentNameIs() {
 
         //When
-        ClassEntity byStudentNameIs = classTableRepository
-                .findByStudentNameIs(testStudent().getStudentName());
+        boolean existsByStudentNameIs = classTableRepository
+                .existsByStudentNameIs(testStudentClassDataSet().getStudentName());
 
         //Then
-        assertEquals(testStudent().getStudentName(), byStudentNameIs.getStudentName());
+        assertTrue(existsByStudentNameIs);
     }
 
     @Test
@@ -41,10 +40,10 @@ class ClassTableRepositoryTest {
     void deleteByStudentName() {
 
         //When
-        classTableRepository.deleteByStudentName(testStudent().getStudentName());
+        classTableRepository.deleteByStudentName(testStudentClassDataSet().getStudentName());
 
         //Then
-        assertNull(testStudent().getStudentName());
+        assertNull(testStudentClassDataSet().getStudentName());
     }
 
     @Test

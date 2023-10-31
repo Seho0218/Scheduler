@@ -204,12 +204,12 @@ public class CertController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         emailDTO.setUsername(auth.getName());
 
-        if (adminService.findAdminEmailByID(emailDTO) != null) {
+        if (adminService.findAdminEmailByID(emailDTO).isPresent()) {
             // 관리자 계정 정보가 있을 경우, emailDTO 정보 추가
-            emailDTO.setEmail(adminService.findAdminEmailByID(emailDTO).get(0).getEmail());
-        } else if (teacherService.findTeacherEmailByID(emailDTO) != null) {
+            emailDTO.setEmail(adminService.findAdminEmailByID(emailDTO).get().getEmail());
+        } else if (teacherService.findTeacherEmailByID(emailDTO).isPresent()) {
             // 교사 계정 정보가 있을 경우, emailDTO 정보 추가
-            emailDTO.setEmail(teacherService.findTeacherEmailByID(emailDTO).get(0).getEmail());
+            emailDTO.setEmail(teacherService.findTeacherEmailByID(emailDTO).get().getEmail());
         }
 
         try {

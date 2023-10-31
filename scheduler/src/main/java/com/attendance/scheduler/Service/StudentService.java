@@ -4,7 +4,7 @@ import com.attendance.scheduler.Dto.StudentInformationDTO;
 
 import java.util.List;
 
-public interface ManageStudentService {
+public interface StudentService {
 
     List<StudentInformationDTO> findStudentEntityByStudentName(StudentInformationDTO studentInformationDTO);
 

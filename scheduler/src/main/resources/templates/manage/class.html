@@ -62,6 +62,8 @@
             </thead>
             <tbody th:each="class : ${findClassTable}">
                 <tr>
+
+                    <td></td>
                     <td th:text="${class.getStudentName()}"></td>
                     <td th:text="${class.getMonday() == 0 ? '결석' : '오후 ' + class.getMonday() + '시'}"></td>
                     <td th:text="${class.getTuesday() == 0 ? '결석' : '오후 ' + class.getTuesday() + '시'}"></td>

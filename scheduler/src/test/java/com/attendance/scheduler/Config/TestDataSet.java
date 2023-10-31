@@ -8,9 +8,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class TestDataSet {
 
-    public static ClassDTO testStudent(){
+    public static ClassDTO testStudentClassDataSet(){
         ClassDTO classDTO = new ClassDTO();
-        classDTO.setStudentName("testStudent");
+        classDTO.setStudentName("김학생");
         classDTO.setMonday(1);
         classDTO.setTuesday(2);
         classDTO.setWednesday(3);
@@ -19,9 +19,9 @@ public class TestDataSet {
         return classDTO;
     }
 
-    public static ClassDTO test2Student(){
+    public static ClassDTO test2StudentClassDataSet(){
         ClassDTO classDTO = new ClassDTO();
-        classDTO.setStudentName("test2Student");
+        classDTO.setStudentName("이학생");
         classDTO.setMonday(2);
         classDTO.setTuesday(3);
         classDTO.setWednesday(4);
@@ -32,7 +32,7 @@ public class TestDataSet {
 
     public static ClassDTO testStudent_duplicated(){
         ClassDTO classDTO = new ClassDTO();
-        classDTO.setStudentName("test3Student");
+        classDTO.setStudentName("박학생");
         classDTO.setMonday(1);
         classDTO.setTuesday(2);
         classDTO.setWednesday(3);
@@ -64,7 +64,7 @@ public class TestDataSet {
 
     public static StudentInformationDTO test2StudentInformationDTO(){
         StudentInformationDTO studentInformationDTO = new StudentInformationDTO();
-        studentInformationDTO.setStudentName("박학생");
+        studentInformationDTO.setStudentName("이학생");
         studentInformationDTO.setStudentPhoneNumber("010-4321-4321");
         studentInformationDTO.setStudentParentPhoneNumber("010-4321-4322");
         studentInformationDTO.setStudentAddress("대한민국 저기 먼데");

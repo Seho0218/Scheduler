@@ -9,7 +9,7 @@ import com.attendance.scheduler.Repository.jpa.AdminRepository;
 import com.attendance.scheduler.Repository.jpa.TeacherRepository;
 import com.attendance.scheduler.Service.AdminService;
 import com.attendance.scheduler.Service.TeacherService;
-import org.junit.jupiter.api.AfterEach;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,23 +19,19 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.Optional;
 
 import static com.attendance.scheduler.Config.TestDataSet.testTeacherDataSet;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 @SpringBootTest
+@Transactional
 class AdminServiceImplTest {
 
-    @Autowired
-    public AdminService adminService;
-
-    @Autowired
-    public AdminRepository adminRepository;
-
-    @Autowired
-    private TeacherService teacherService;
-
-    @Autowired
-    private TeacherRepository teacherRepository;
+    @Autowired public AdminService adminService;
+    @Autowired public AdminRepository adminRepository;
+    @Autowired private TeacherService teacherService;
+    @Autowired private TeacherRepository teacherRepository;
 
     private ApproveTeacherDTO approveTeacherDTO;
 
@@ -62,8 +58,8 @@ class AdminServiceImplTest {
                 .email(adminAccount.getEmail())
                 .build();
 
-        assertEquals("admin", build.getUsername());
-        assertEquals("adminTest@gmail.com", build.getEmail());
+        assertThat("admin").isEqualTo(build.getUsername());
+        assertThat("adminTest@gmail.com").isEqualTo( build.getEmail());
     }
 
     @Test
@@ -115,11 +111,6 @@ class AdminServiceImplTest {
                 .findByUsernameIs(editEmailDTO.getUsername());
 
         //Then
-        assertEquals(editEmailDTO.getEmail(),byUsernameIs.getEmail());
-    }
-
-    @AfterEach
-    void test(){
-        teacherRepository.deleteByUsernameIs(testTeacherDataSet().getUsername());
+        assertThat(editEmailDTO.getEmail()).isEqualTo(byUsernameIs.getEmail());
     }
 }

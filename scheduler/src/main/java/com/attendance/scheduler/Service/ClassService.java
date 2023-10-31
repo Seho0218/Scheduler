@@ -7,6 +7,7 @@ import com.attendance.scheduler.Dto.StudentClassDTO;
 import com.attendance.scheduler.Dto.Teacher.DeleteClassDTO;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ClassService {
 
@@ -15,7 +16,8 @@ public interface ClassService {
 
       ClassListDTO findAllClasses();
 
-      StudentClassDTO findStudentClasses(StudentClassDTO studentClassDTO);
+      Optional<StudentClassDTO> findStudentClasses(StudentClassDTO studentClassDTO);
+
 
       void saveClassTable(ClassDTO classDTO);
 

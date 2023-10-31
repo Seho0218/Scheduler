@@ -9,6 +9,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.sql.Timestamp;
 
+import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
@@ -34,7 +35,7 @@ public class ClassEntity {
     @UpdateTimestamp
     private Timestamp updateTimeStamp;
 
-    @OneToOne
+    @OneToOne(fetch = LAZY)
     @JoinColumn(name = "studentId")
     private StudentEntity studentEntity;
 

@@ -38,11 +38,19 @@ public class TeacherEntity {
     @Column(columnDefinition = "boolean default '0'")
     private boolean approved;
 
-    @OneToMany(mappedBy = "teacherEntity")
+    @OneToMany(mappedBy = "teacherEntity", cascade = CascadeType.PERSIST)
     List<StudentEntity> studentEntityList = new ArrayList<>();
 
     public void addForeignKey(StudentEntity studentEntity) {
         this.studentEntityList.add(studentEntity);
+    }
+
+    public void updatePassword(String newPassword) {
+        this.password = newPassword;
+    }
+
+    public void updateApprove(boolean approved) {
+        this.approved = approved;
     }
 
     @Builder
@@ -52,14 +60,6 @@ public class TeacherEntity {
         this.name = name;
         this.password = password;
         this.email = email;
-        this.approved = approved;
-    }
-
-    public void updatePassword(String newPassword) {
-        this.password = newPassword;
-    }
-
-    public void updateApprove(boolean approved) {
         this.approved = approved;
     }
 }

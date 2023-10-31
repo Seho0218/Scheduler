@@ -5,7 +5,7 @@ import com.attendance.scheduler.Dto.ClassListDTO;
 import com.attendance.scheduler.Dto.StudentClassDTO;
 import com.attendance.scheduler.Dto.StudentInformationDTO;
 import com.attendance.scheduler.Service.ClassService;
-import com.attendance.scheduler.Service.ManageStudentService;
+import com.attendance.scheduler.Service.StudentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Controller
@@ -26,7 +27,7 @@ import java.util.List;
 public class ClassController {
 
     private final ClassService classService;
-    private final ManageStudentService manageStudentService;
+    private final StudentService studentService;
 
     //  수업 조회 폼
     @GetMapping("")
@@ -40,7 +41,7 @@ public class ClassController {
     public String findClass(@Validated @ModelAttribute("studentClass") StudentClassDTO studentClassDTO,
                             BindingResult bindingResult, Model model) {
         //학생 수업 조회
-        StudentClassDTO studentClassesList = classService
+        Optional<StudentClassDTO> studentClasses = classService
                 .findStudentClasses(studentClassDTO);
 
         if (bindingResult.hasErrors()) {
@@ -48,12 +49,12 @@ public class ClassController {
             return "class/search";
         }
 
-        if (studentClassesList == null) {
-            model.addAttribute("nullStudentName", "등록된 이름이 없습니다.");
+        if (studentClasses.isEmpty()) {
+            model.addAttribute("nullStudentName", "수업을 신청하지 않았습니다.");
             return "class/search";
         }
 
-        searchStudentClass(model, studentClassesList);
+        searchStudentClass(model, studentClasses.get());
 
         return "class/findClass";
     }
@@ -70,17 +71,18 @@ public class ClassController {
 
         StudentClassDTO studentClassDTO = new StudentClassDTO();
         studentClassDTO.setStudentName(classDTO.getStudentName());
-        StudentClassDTO studentClassesList = classService.findStudentClasses(studentClassDTO);
+        Optional<StudentClassDTO> studentClasses = classService
+                .findStudentClasses(studentClassDTO);
 
-        if (studentClassesList != null) {
+        if (studentClasses.isPresent()) {
             getClassList(model);
             model.addAttribute("studentName", "이미 수업을 신청했습니다.");
             return "index";
         }
-        //TODO 학생 이름이 명부에 없는 경우
+
         StudentInformationDTO informationDTO = new StudentInformationDTO();
         informationDTO.setStudentName(classDTO.getStudentName());
-        List<StudentInformationDTO> studentEntityByStudentName = manageStudentService
+        List<StudentInformationDTO> studentEntityByStudentName = studentService
                 .findStudentEntityByStudentName(informationDTO);
 
         if(studentEntityByStudentName.isEmpty()) {
@@ -116,7 +118,7 @@ public class ClassController {
         }catch(Exception e){
             StudentClassDTO studentClassDTO = new StudentClassDTO();
             studentClassDTO.setStudentName(classDTO.getStudentName());
-            searchStudentClass(model, classService.findStudentClasses(studentClassDTO));
+            searchStudentClass(model, classService.findStudentClasses(studentClassDTO).get());
             model.addAttribute("errorMessage", e.getMessage());
 
             log.info("studentClass={}", classDTO);

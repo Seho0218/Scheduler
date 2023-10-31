@@ -11,8 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -48,14 +47,13 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    public List<EmailDTO> findTeacherEmailByID(EmailDTO emailDTO) {
+    public Optional<EmailDTO> findTeacherEmailByID(EmailDTO emailDTO) {
         TeacherEntity teacherEntity = teacherRepository
                 .findByUsernameIs(emailDTO.getUsername());
 
-        EmailDTO build = EmailDTO.builder()
+        return Optional.ofNullable(EmailDTO.builder()
                 .username(teacherEntity.getUsername())
                 .email(teacherEntity.getEmail())
-                .build();
-        return Collections.singletonList(build);
+                .build());
     }
 }

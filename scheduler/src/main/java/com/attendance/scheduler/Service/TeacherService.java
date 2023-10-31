@@ -4,7 +4,7 @@ import com.attendance.scheduler.Dto.EmailDTO;
 import com.attendance.scheduler.Dto.Teacher.JoinTeacherDTO;
 import com.attendance.scheduler.Dto.Teacher.TeacherDTO;
 
-import java.util.List;
+import java.util.Optional;
 
 public interface TeacherService {
 
@@ -20,6 +20,6 @@ public interface TeacherService {
     //교사 이메일 중복 검사
     boolean findDuplicateTeacherEmail(JoinTeacherDTO joinTeacherDTO);
 
-    List<EmailDTO> findTeacherEmailByID(EmailDTO emailDTO);
+    Optional<EmailDTO> findTeacherEmailByID(EmailDTO emailDTO);
 
 }

@@ -5,7 +5,7 @@ import com.attendance.scheduler.Entity.StudentEntity;
 import com.attendance.scheduler.Entity.TeacherEntity;
 import com.attendance.scheduler.Repository.jpa.StudentRepository;
 import com.attendance.scheduler.Repository.jpa.TeacherRepository;
-import com.attendance.scheduler.Service.ManageStudentService;
+import com.attendance.scheduler.Service.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,14 +16,14 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class ManageStudentServiceImpl implements ManageStudentService {
+public class StudentServiceImpl implements StudentService {
 
     private final StudentRepository studentRepository;
     private final TeacherRepository teacherRepository;
 
     @Override
     public List<StudentInformationDTO> findStudentEntityByStudentName(StudentInformationDTO studentInformationDTO) {
-        return studentRepository.findStudentEntityByStudentName(studentInformationDTO.getStudentName())
+        return studentRepository.findStudentEntityByStudentNameIs(studentInformationDTO.getStudentName())
                 .stream().map(studentEntity -> {
                     StudentInformationDTO informationDTO = new StudentInformationDTO();
                     informationDTO.setStudentName(studentEntity.getStudentName());
@@ -55,7 +55,6 @@ public class ManageStudentServiceImpl implements ManageStudentService {
 
         StudentEntity entity = studentInformationDTO.toEntity();
         entity.setTeacherEntity(byUsernameIs);
-        byUsernameIs.getStudentEntityList().add(entity);
         studentRepository.save(entity);
     }
 
