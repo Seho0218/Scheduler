@@ -18,8 +18,11 @@ public class BasicController {
 
     @GetMapping("/")
     public String basic(Model model){
-        getClassList(model);
+        ClassListDTO allClasses = classService.findAllClasses();
+
+        model.addAttribute("classList", allClasses);
         model.addAttribute("class", new ClassDTO());
+        log.info("allClasses = {}", allClasses);
         return "index";
     }
 
@@ -27,17 +30,5 @@ public class BasicController {
     @GetMapping("completion")
     public String completeForm() {
         return "class/completion";
-    }
-
-    private void getClassList(Model model) {
-        ClassListDTO classesOrderByAsc = classService.findAllClasses();
-
-        model.addAttribute("classList", classesOrderByAsc);
-
-        log.info("monday = {}", classesOrderByAsc.getMondayClassList());
-        log.info("tuesday = {}", classesOrderByAsc.getTuesdayClassList());
-        log.info("wednesday = {}", classesOrderByAsc.getWednesdayClassList());
-        log.info("thursday = {}", classesOrderByAsc.getThursdayClassList());
-        log.info("friday = {}", classesOrderByAsc.getFridayClassList());
     }
 }

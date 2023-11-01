@@ -9,10 +9,6 @@
   <link th:href="@{/css/bootstrap.min.css}"
         href="/static/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        input[type="checkbox"] {
-            width: 1.5em;
-            height: 1.5em;
-        }
 
         body { background-color: lightgoldenrodyellow; }
 
@@ -25,6 +21,14 @@
             padding: 1em;
         }
 
+        table {
+            font-size: 1em; /* 여기에 적절한 크기 입력 */
+        }
+
+        .teacherId,
+        .save-button,
+        .delete-button {
+        }
 
     </style>
 </head>
@@ -52,19 +56,30 @@
                     <th scope="col">주소</th>
                     <th scope="col">상세주소</th>
                     <th scope="col">부모님 전화번호</th>
+                    <th scope="col">담당 선생님</th>
+                    <th scope="col" sec:authorize="hasRole('ROLE_ADMIN')">담당 선생님 변경</th>
                     <th scope="col">삭제</th>
                 </tr>
             </thead>
-            <tbody th:each="studentList : ${studentList}">
+            <tbody th:each="student : ${studentList}">
                 <tr>
-                    <td th:text="${studentList.getStudentName()}"></td>
-                    <td th:text="${studentList.getStudentPhoneNumber()}"></td>
-                    <td th:text="${studentList.getStudentAddress()}"></td>
-                    <td th:text="${studentList.getStudentDetailedAddress()}"></td>
-                    <td th:text="${studentList.getStudentParentPhoneNumber()}"></td>
+                    <td th:text="${student.getStudentName()}"></td>
+                    <td th:text="${student.getStudentPhoneNumber()}"></td>
+                    <td th:text="${student.getStudentAddress()}"></td>
+                    <td th:text="${student.getStudentDetailedAddress()}"></td>
+                    <td th:text="${student.getStudentParentPhoneNumber()}"></td>
+                    <td th:text="${student.getTeacherName()}"></td>
+                    <td sec:authorize="hasRole('ROLE_ADMIN')">
+                        <label>
+                            <select class="form-select form-select-md mb-3 teacherId" aria-label=".form-select-md">
+                                <option th:each="teacher : ${teacherList}" th:text="${teacher.getName()}" th:value="${teacher.getId()}"></option>
+                            </select>
+                        </label>
+                        <button class="btn btn-primary save-button">저장</button>
+                    </td>
                     <td>
                         <button class="btn btn-primary delete-button"
-                                th:value="${studentList.getId()}">삭제</button>
+                                th:value="${student.getId()}">삭제</button>
                     </td>
                 </tr>
             </tbody>
@@ -79,26 +94,5 @@
 </div>
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script>
-    $(document).ready(function() {
-        $('.delete-button').click(function() {
-            var studentId = $(this).attr('value');
-            var confirmation = confirm('정말 학생 정보를 삭제하시겠습니까?');
-            if (confirmation) {
-                $.ajax({
-                    url: '/manage/deleteStudentList',
-                    method: 'POST',
-                    data: { id : studentId },
-                    success: function() {
-                        alert('삭제되었습니다.');
-                        location.reload();
-                    },
-                    error: function(xhr, status, error) {
-                        console.log(error);
-                    }
-                });
-            }
-        });
-    });
-</script>
+<script src="/js/studentList.js"></script>
 </html>

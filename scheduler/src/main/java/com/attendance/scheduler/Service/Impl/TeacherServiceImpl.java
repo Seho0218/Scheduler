@@ -47,7 +47,7 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    public Optional<EmailDTO> findTeacherEmailByID(EmailDTO emailDTO) {
+    public Optional<EmailDTO> findTeacherEmailByUsername(EmailDTO emailDTO) {
         TeacherEntity teacherEntity = teacherRepository
                 .findByUsernameIs(emailDTO.getUsername());
 

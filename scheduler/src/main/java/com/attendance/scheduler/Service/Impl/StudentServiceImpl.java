@@ -1,5 +1,6 @@
 package com.attendance.scheduler.Service.Impl;
 
+import com.attendance.scheduler.Dto.RegisterStudentDTO;
 import com.attendance.scheduler.Dto.StudentInformationDTO;
 import com.attendance.scheduler.Entity.StudentEntity;
 import com.attendance.scheduler.Entity.TeacherEntity;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -22,13 +24,14 @@ public class StudentServiceImpl implements StudentService {
     private final TeacherRepository teacherRepository;
 
     @Override
-    public List<StudentInformationDTO> findStudentEntityByStudentName(StudentInformationDTO studentInformationDTO) {
+    public Optional<StudentInformationDTO> findStudentEntityByStudentName(StudentInformationDTO studentInformationDTO) {
         return studentRepository.findStudentEntityByStudentNameIs(studentInformationDTO.getStudentName())
-                .stream().map(studentEntity -> {
+                .map(studentEntity -> {
                     StudentInformationDTO informationDTO = new StudentInformationDTO();
+                    informationDTO.setId(studentEntity.getId());
                     informationDTO.setStudentName(studentEntity.getStudentName());
                     return informationDTO;
-                }).toList();
+                });
     }
 
     @Override
@@ -43,22 +46,24 @@ public class StudentServiceImpl implements StudentService {
                     informationDTO.setStudentDetailedAddress(studentEntity.getStudentDetailedAddress());
                     informationDTO.setStudentPhoneNumber(studentEntity.getStudentPhoneNumber());
                     informationDTO.setStudentParentPhoneNumber(studentEntity.getStudentParentPhoneNumber());
+                    informationDTO.setTeacherName(studentEntity.getTeacherEntity().getUsername());
                     return informationDTO;
                 }).toList();
     }
 
     @Override
     @Transactional
-    public void registerStudentInformation(StudentInformationDTO studentInformationDTO) {
+    public void registerStudentInformation(RegisterStudentDTO registerStudentDTO) {
         final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         TeacherEntity byUsernameIs = teacherRepository.findByUsernameIs(auth.getName());
 
-        StudentEntity entity = studentInformationDTO.toEntity();
+        StudentEntity entity = registerStudentDTO.toEntity();
         entity.setTeacherEntity(byUsernameIs);
         studentRepository.save(entity);
     }
 
     @Override
+    @Transactional
     public void deleteStudentInformation(StudentInformationDTO studentInformationDTO) {
         studentRepository.deleteStudentEntityById(studentInformationDTO.getId());
     }

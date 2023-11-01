@@ -10,6 +10,8 @@ import lombok.ToString;
 @NoArgsConstructor
 public class TeacherDTO {
 
+    private Long id;
+
     private String username;
 
     private String password;

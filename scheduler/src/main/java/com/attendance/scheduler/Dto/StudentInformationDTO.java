@@ -1,6 +1,5 @@
 package com.attendance.scheduler.Dto;
 
-import com.attendance.scheduler.Entity.StudentEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -24,13 +23,5 @@ public class StudentInformationDTO {
 
     private String studentParentPhoneNumber;
 
-    public StudentEntity toEntity(){
-        return StudentEntity.builder()
-                .studentName(studentName)
-                .studentPhoneNumber(studentParentPhoneNumber)
-                .studentParentPhoneNumber(studentPhoneNumber)
-                .studentAddress(studentAddress)
-                .studentDetailedAddress(studentDetailedAddress)
-                .build();
-    }
+    private String teacherName;
 }

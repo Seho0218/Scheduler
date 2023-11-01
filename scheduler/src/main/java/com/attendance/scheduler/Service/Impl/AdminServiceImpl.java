@@ -1,13 +1,16 @@
 package com.attendance.scheduler.Service.Impl;
 
 import com.attendance.scheduler.Dto.Admin.ApproveTeacherDTO;
+import com.attendance.scheduler.Dto.ChangeTeacherDTO;
 import com.attendance.scheduler.Dto.EditEmailDTO;
 import com.attendance.scheduler.Dto.EmailDTO;
 import com.attendance.scheduler.Dto.Teacher.TeacherDTO;
 import com.attendance.scheduler.Entity.AdminEntity;
+import com.attendance.scheduler.Entity.StudentEntity;
 import com.attendance.scheduler.Entity.TeacherEntity;
 import com.attendance.scheduler.Mapper.TeacherMapper;
 import com.attendance.scheduler.Repository.jpa.AdminRepository;
+import com.attendance.scheduler.Repository.jpa.StudentRepository;
 import com.attendance.scheduler.Repository.jpa.TeacherRepository;
 import com.attendance.scheduler.Service.AdminService;
 import jakarta.transaction.Transactional;
@@ -25,6 +28,7 @@ public class AdminServiceImpl implements AdminService {
     private final AdminRepository adminRepository;
     private final TeacherRepository teacherRepository;
     private final TeacherMapper teacherMapper;
+    private final StudentRepository studentRepository;
 
     @Override
     public List<TeacherDTO> getTeacherList() {
@@ -37,11 +41,11 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public Optional<EmailDTO> findAdminEmailByID(EmailDTO emailDTO) {
-        AdminEntity adminAccount = adminRepository
-                .findByUsernameIs(emailDTO.getUsername());
-        return Optional.ofNullable(EmailDTO.builder()
-                .username(adminAccount.getUsername())
-                .email(adminAccount.getEmail())
+        Optional<AdminEntity> adminAccount = Optional.ofNullable(adminRepository
+                .findByUsernameIs(emailDTO.getUsername()));
+        return adminAccount.map(adminEntity -> EmailDTO.builder()
+                .username(adminEntity.getUsername())
+                .email(adminEntity.getEmail())
                 .build());
     }
 
@@ -61,6 +65,27 @@ public class AdminServiceImpl implements AdminService {
                 .findByUsernameIs(approveTeacherDTO.getUsername());
         teacherEntity.updateApprove(false);
         teacherRepository.save(teacherEntity);
+    }
+
+    @Override
+    @Transactional
+    public void changeExistTeacher(ChangeTeacherDTO changeTeacherDTO) {
+        Optional<StudentEntity> studentEntityById = studentRepository
+                .findStudentEntityById(changeTeacherDTO.getStudentId());
+        Optional<TeacherEntity> teacherEntityById = teacherRepository
+                .findTeacherEntityById(changeTeacherDTO.getTeacherId());
+
+        TeacherEntity teacherEntity = teacherEntityById.get();
+        StudentEntity studentEntity = studentEntityById.get();
+
+        studentEntity.setTeacherEntity(teacherEntity);
+        studentRepository.save(studentEntity);
+    }
+
+    @Override
+    @Transactional
+    public void deleteTeacherAccount(ApproveTeacherDTO approveTeacherDTO) {
+        teacherRepository.deleteByUsernameIs(approveTeacherDTO.getUsername());
     }
 
     @Override

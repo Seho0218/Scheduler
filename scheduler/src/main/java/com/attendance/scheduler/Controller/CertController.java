@@ -207,9 +207,9 @@ public class CertController {
         if (adminService.findAdminEmailByID(emailDTO).isPresent()) {
             // 관리자 계정 정보가 있을 경우, emailDTO 정보 추가
             emailDTO.setEmail(adminService.findAdminEmailByID(emailDTO).get().getEmail());
-        } else if (teacherService.findTeacherEmailByID(emailDTO).isPresent()) {
+        } else if (teacherService.findTeacherEmailByUsername(emailDTO).isPresent()) {
             // 교사 계정 정보가 있을 경우, emailDTO 정보 추가
-            emailDTO.setEmail(teacherService.findTeacherEmailByID(emailDTO).get().getEmail());
+            emailDTO.setEmail(teacherService.findTeacherEmailByUsername(emailDTO).get().getEmail());
         }
 
         try {

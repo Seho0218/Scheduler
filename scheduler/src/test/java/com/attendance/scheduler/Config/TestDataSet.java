@@ -1,7 +1,7 @@
 package com.attendance.scheduler.Config;
 
 import com.attendance.scheduler.Dto.ClassDTO;
-import com.attendance.scheduler.Dto.StudentInformationDTO;
+import com.attendance.scheduler.Dto.RegisterStudentDTO;
 import com.attendance.scheduler.Dto.Teacher.JoinTeacherDTO;
 import lombok.RequiredArgsConstructor;
 
@@ -51,8 +51,8 @@ public class TestDataSet {
         return joinTeacherDTO;
     }
 
-    public static StudentInformationDTO testStudentInformationDTO(){
-        StudentInformationDTO studentInformationDTO = new StudentInformationDTO();
+    public static RegisterStudentDTO testStudentInformationDTO(){
+        RegisterStudentDTO studentInformationDTO = new RegisterStudentDTO();
         studentInformationDTO.setStudentName("김학생");
         studentInformationDTO.setStudentPhoneNumber("010-1234-1234");
         studentInformationDTO.setStudentParentPhoneNumber("010-1234-1233");
@@ -62,8 +62,8 @@ public class TestDataSet {
 
     }
 
-    public static StudentInformationDTO test2StudentInformationDTO(){
-        StudentInformationDTO studentInformationDTO = new StudentInformationDTO();
+    public static RegisterStudentDTO test2StudentInformationDTO(){
+        RegisterStudentDTO studentInformationDTO = new RegisterStudentDTO();
         studentInformationDTO.setStudentName("이학생");
         studentInformationDTO.setStudentPhoneNumber("010-4321-4321");
         studentInformationDTO.setStudentParentPhoneNumber("010-4321-4322");

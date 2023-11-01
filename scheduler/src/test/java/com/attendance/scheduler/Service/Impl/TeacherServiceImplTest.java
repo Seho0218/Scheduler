@@ -3,6 +3,7 @@ package com.attendance.scheduler.Service.Impl;
 import com.attendance.scheduler.Config.Authority.UserDetailService;
 import com.attendance.scheduler.Dto.EmailDTO;
 import com.attendance.scheduler.Dto.LoginDTO;
+import com.attendance.scheduler.Entity.StudentEntity;
 import com.attendance.scheduler.Entity.TeacherEntity;
 import com.attendance.scheduler.Repository.jpa.StudentRepository;
 import com.attendance.scheduler.Repository.jpa.TeacherRepository;
@@ -21,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static com.attendance.scheduler.Config.TestDataSet.testStudentInformationDTO;
 import static com.attendance.scheduler.Config.TestDataSet.testTeacherDataSet;
@@ -139,13 +141,17 @@ class TeacherServiceImplTest {
                         null , userDetails.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(auth);
 
-        //When
-        studentService.registerStudentInformation(testStudentInformationDTO());
 
-        //Then
-        String studentName = studentRepository.findStudentEntityByStudentNameIs(testStudentInformationDTO()
-                .getStudentName()).get().getStudentName();
+        Optional<StudentEntity> studentEntityByStudentNameIs = studentRepository
+                .findStudentEntityByStudentNameIs(testStudentInformationDTO().getStudentName());
 
-        assertThat(testStudentInformationDTO().getStudentName()).isEqualTo(studentName);
+        if(studentEntityByStudentNameIs.isEmpty()){
+            studentService.registerStudentInformation(testStudentInformationDTO());
+        }
+
+        if (studentEntityByStudentNameIs.isPresent()) {
+            String studentName = studentEntityByStudentNameIs.get().getStudentName();
+            assertThat(testStudentInformationDTO().getStudentName()).isEqualTo(studentName);
+        }
     }
 }

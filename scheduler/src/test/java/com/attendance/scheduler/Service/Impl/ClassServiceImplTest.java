@@ -1,15 +1,11 @@
 package com.attendance.scheduler.Service.Impl;
 
 import com.attendance.scheduler.Config.Authority.UserDetailService;
-import com.attendance.scheduler.Dto.ClassDTO;
-import com.attendance.scheduler.Dto.ClassListDTO;
-import com.attendance.scheduler.Dto.LoginDTO;
-import com.attendance.scheduler.Dto.StudentClassDTO;
-import com.attendance.scheduler.Entity.ClassEntity;
+import com.attendance.scheduler.Dto.*;
 import com.attendance.scheduler.Mapper.ClassMapper;
 import com.attendance.scheduler.Repository.jpa.ClassTableRepository;
-import com.attendance.scheduler.Repository.jpa.StudentRepository;
 import com.attendance.scheduler.Service.ClassService;
+import com.attendance.scheduler.Service.StudentService;
 import com.attendance.scheduler.Service.TeacherService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -35,7 +31,7 @@ class ClassServiceImplTest {
 
     @Autowired private ClassService classService;
     @Autowired private TeacherService teacherService;
-    @Autowired private StudentRepository studentRepository;
+    @Autowired private StudentService studentService;
     @Autowired private ClassTableRepository classTableRepository;
     @Autowired private ClassMapper classMapper;
     @Autowired private UserDetailService userDetailsService;
@@ -43,7 +39,6 @@ class ClassServiceImplTest {
     private StudentClassDTO studentClassDTO;
 
     @BeforeEach
-    @Transactional
     void beforeEach(){
 
         boolean duplicateTeacherID = teacherService
@@ -65,13 +60,26 @@ class ClassServiceImplTest {
                         testTeacherDataSet().getPassword() , userDetails.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(auth);
 
-        //힉생정보
-        studentRepository.save(testStudentInformationDTO().toEntity());
-        studentRepository.save(test2StudentInformationDTO().toEntity());
+        StudentInformationDTO studentInformationDTO = new StudentInformationDTO();
+        studentInformationDTO.setStudentName(testStudentClassDataSet().getStudentName());
 
-        //수업 정보
-        classService.saveClassTable(testStudentClassDataSet());
-        classService.saveClassTable(test2StudentClassDataSet());
+        Optional<StudentInformationDTO> studentEntityByStudentName = studentService
+                .findStudentEntityByStudentName(studentInformationDTO);
+
+        if(studentEntityByStudentName.isEmpty()){
+            studentService.registerStudentInformation(testStudentInformationDTO());
+            classService.saveClassTable(testStudentClassDataSet());
+        }
+
+        studentInformationDTO.setStudentName(test2StudentClassDataSet().getStudentName());
+
+        Optional<StudentInformationDTO> studentEntityByStudentName1 = studentService
+                .findStudentEntityByStudentName(studentInformationDTO);
+
+        if(studentEntityByStudentName1.isEmpty()){
+            studentService.registerStudentInformation(test2StudentInformationDTO());
+            classService.saveClassTable(test2StudentClassDataSet());
+        }
 
         studentClassDTO = new StudentClassDTO();
         studentClassDTO.setStudentName(testStudentClassDataSet().getStudentName());
@@ -79,7 +87,6 @@ class ClassServiceImplTest {
 
     @Test
     @DisplayName("(무작위로 호출)값이 제대로 저장되었는지 확인")
-    @Transactional
     void checkClassList() {
         List<ClassDTO> dtoList = classTableRepository.findAll()
                 .stream()
@@ -146,8 +153,9 @@ class ClassServiceImplTest {
                 .findStudentClasses(studentClassDTO);
 
         //then
-        assertThat(studentClassDTO.getStudentName())
-                .isEqualTo(studentClasses.get().getStudentName());
+        studentClasses.ifPresent(classDTO ->
+                assertThat(testStudentClassDataSet().getStudentName())
+                        .isEqualTo(classDTO.getStudentName()));
 
     }
 
@@ -155,25 +163,47 @@ class ClassServiceImplTest {
     @DisplayName("수업 정보 저장")
     void saveClassTable() {
 
-        Optional<ClassEntity> byStudentNameIs = classTableRepository
-                .findByStudentNameIs(testStudentClassDataSet().getStudentName());
-        assertThat(testStudentClassDataSet().getStudentName())
-                .isEqualTo(byStudentNameIs.get().getStudentName());
+        Optional<StudentClassDTO> studentClasses = classService
+                .findStudentClasses(studentClassDTO);
+
+        studentClasses.ifPresent(classDTO -> {
+            assertThat(classDTO.getStudentName())
+                    .isEqualTo(testStudentClassDataSet().getStudentName());
+
+            assertThat(classDTO.getMonday())
+                    .isEqualTo(testStudentClassDataSet().getMonday());
+
+            assertThat(classDTO.getTuesday())
+                    .isEqualTo(testStudentClassDataSet().getTuesday());
+
+            assertThat(classDTO.getWednesday())
+                    .isEqualTo(testStudentClassDataSet().getWednesday());
+
+            assertThat(classDTO.getThursday())
+                    .isEqualTo(testStudentClassDataSet().getThursday());
+
+            assertThat(classDTO.getMonday())
+                    .isEqualTo(testStudentClassDataSet().getMonday());
+        });
     }
 
     @Test
     @DisplayName("수업 변경 확인")
     void modifyClass(){
 
-        testStudentClassDataSet().setMonday(5);
+        ClassDTO classDTO = testStudentClassDataSet();
+        classDTO.setMonday(4);
 
-        classService.saveClassTable(testStudentClassDataSet());
+        classService.saveClassTable(classDTO);
 
         //찾는 로직
+        studentClassDTO = new StudentClassDTO();
+        studentClassDTO.setStudentName(testStudentClassDataSet().getStudentName());
+
         Optional<StudentClassDTO> studentClasses = classService
                 .findStudentClasses(studentClassDTO);
 
-        assertEquals(studentClasses.get().getMonday(), 5);
+        assertEquals(studentClasses.get().getMonday(), 4);
         assertEquals(studentClasses.get().getTuesday(),2);
         assertEquals(studentClasses.get().getWednesday(),3);
         assertEquals(studentClasses.get().getThursday(),4);

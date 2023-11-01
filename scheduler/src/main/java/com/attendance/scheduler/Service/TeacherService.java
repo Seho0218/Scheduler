@@ -20,6 +20,6 @@ public interface TeacherService {
     //교사 이메일 중복 검사
     boolean findDuplicateTeacherEmail(JoinTeacherDTO joinTeacherDTO);
 
-    Optional<EmailDTO> findTeacherEmailByID(EmailDTO emailDTO);
+    Optional<EmailDTO> findTeacherEmailByUsername(EmailDTO emailDTO);
 
 }

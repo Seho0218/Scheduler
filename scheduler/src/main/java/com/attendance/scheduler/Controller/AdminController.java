@@ -1,6 +1,7 @@
 package com.attendance.scheduler.Controller;
 
 import com.attendance.scheduler.Dto.Admin.ApproveTeacherDTO;
+import com.attendance.scheduler.Dto.ChangeTeacherDTO;
 import com.attendance.scheduler.Dto.Teacher.TeacherDTO;
 import com.attendance.scheduler.Service.AdminService;
 import lombok.RequiredArgsConstructor;
@@ -48,5 +49,17 @@ public class AdminController {
     public ResponseEntity<String> revokeAuth(ApproveTeacherDTO approveTeacherDTO) {
         adminService.revokeAuth(approveTeacherDTO);
         return ResponseEntity.ok("승인 취소되었습니다.");
+    }
+
+    @PostMapping("changeTeacher")
+    public ResponseEntity<String> changeTeacher(ChangeTeacherDTO changeTeacherDTO) {
+        adminService.changeExistTeacher(changeTeacherDTO);
+        return ResponseEntity.ok("변경 되었습니다.");
+    }
+
+    @PostMapping("delete")
+    public ResponseEntity<String> delete(ApproveTeacherDTO approveTeacherDTO) {
+        adminService.deleteTeacherAccount(approveTeacherDTO);
+        return ResponseEntity.ok("삭제 되었습니다.");
     }
 }

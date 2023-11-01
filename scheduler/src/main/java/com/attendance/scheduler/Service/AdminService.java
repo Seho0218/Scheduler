@@ -1,6 +1,7 @@
 package com.attendance.scheduler.Service;
 
 import com.attendance.scheduler.Dto.Admin.ApproveTeacherDTO;
+import com.attendance.scheduler.Dto.ChangeTeacherDTO;
 import com.attendance.scheduler.Dto.EditEmailDTO;
 import com.attendance.scheduler.Dto.EmailDTO;
 import com.attendance.scheduler.Dto.Teacher.TeacherDTO;
@@ -15,5 +16,8 @@ public interface AdminService {
     Optional<EmailDTO> findAdminEmailByID(EmailDTO emailDTO);
     void grantAuth(ApproveTeacherDTO approveTeacherDTO);
     void revokeAuth(ApproveTeacherDTO approveTeacherDTO);
+
+    void changeExistTeacher(ChangeTeacherDTO changeTeacherDTO);
+    void deleteTeacherAccount(ApproveTeacherDTO approveTeacherDTO);
     void updateEmail(EditEmailDTO editEmailDTO);
 }

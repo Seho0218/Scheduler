@@ -1,6 +1,7 @@
 package com.attendance.scheduler.Entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,6 +33,7 @@ public class StudentEntity {
 
     private String studentParentPhoneNumber;
 
+    @NotNull
     @ManyToOne(fetch = LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "teacherId")
     private TeacherEntity teacherEntity;

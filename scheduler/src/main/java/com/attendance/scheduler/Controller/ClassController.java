@@ -40,14 +40,15 @@ public class ClassController {
     @PostMapping("findClass")
     public String findClass(@Validated @ModelAttribute("studentClass") StudentClassDTO studentClassDTO,
                             BindingResult bindingResult, Model model) {
-        //학생 수업 조회
-        Optional<StudentClassDTO> studentClasses = classService
-                .findStudentClasses(studentClassDTO);
 
         if (bindingResult.hasErrors()) {
             log.info("errors={}", bindingResult);
             return "class/search";
         }
+
+        //학생 수업 조회
+        Optional<StudentClassDTO> studentClasses = classService
+                .findStudentClasses(studentClassDTO);
 
         if (studentClasses.isEmpty()) {
             model.addAttribute("nullStudentName", "수업을 신청하지 않았습니다.");
@@ -82,7 +83,7 @@ public class ClassController {
 
         StudentInformationDTO informationDTO = new StudentInformationDTO();
         informationDTO.setStudentName(classDTO.getStudentName());
-        List<StudentInformationDTO> studentEntityByStudentName = studentService
+        Optional<StudentInformationDTO> studentEntityByStudentName = studentService
                 .findStudentEntityByStudentName(informationDTO);
 
         if(studentEntityByStudentName.isEmpty()) {
