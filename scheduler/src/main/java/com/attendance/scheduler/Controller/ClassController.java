@@ -97,6 +97,7 @@ public class ClassController {
             return "redirect:/completion";
         }catch (Exception e){
             getClassList(model);
+            model.addAttribute("studentName", e.getMessage());
             log.info("e.getMessage() = {}", e.getMessage());
             return "index";
         }
