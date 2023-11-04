@@ -1,6 +1,6 @@
 package com.attendance.scheduler.Config.Authority;
 
-import com.attendance.scheduler.Entity.AdminEntity;
+import com.attendance.scheduler.Admin.AdminEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

@@ -1,8 +1,8 @@
 package com.attendance.scheduler.Config;
 
-import com.attendance.scheduler.Dto.ClassDTO;
-import com.attendance.scheduler.Dto.RegisterStudentDTO;
-import com.attendance.scheduler.Dto.Teacher.JoinTeacherDTO;
+import com.attendance.scheduler.Course.Dto.ClassDTO;
+import com.attendance.scheduler.Teacher.Dto.RegisterStudentDTO;
+import com.attendance.scheduler.Teacher.Dto.JoinTeacherDTO;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

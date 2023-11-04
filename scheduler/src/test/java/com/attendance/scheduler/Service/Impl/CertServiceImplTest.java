@@ -2,12 +2,12 @@ package com.attendance.scheduler.Service.Impl;
 
 
 import com.attendance.scheduler.Config.Authority.UserDetailService;
-import com.attendance.scheduler.Dto.LoginDTO;
-import com.attendance.scheduler.Dto.Teacher.PwdEditDTO;
-import com.attendance.scheduler.Entity.TeacherEntity;
-import com.attendance.scheduler.Repository.jpa.TeacherRepository;
-import com.attendance.scheduler.Service.CertService;
-import com.attendance.scheduler.Service.TeacherService;
+import com.attendance.scheduler.Infra.Dto.LoginDTO;
+import com.attendance.scheduler.Infra.Dto.PwdEditDTO;
+import com.attendance.scheduler.Teacher.TeacherEntity;
+import com.attendance.scheduler.Teacher.TeacherRepository;
+import com.attendance.scheduler.Infra.CertService;
+import com.attendance.scheduler.Teacher.TeacherService;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

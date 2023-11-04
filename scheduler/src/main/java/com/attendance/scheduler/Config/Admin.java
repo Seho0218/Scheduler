@@ -1,7 +1,7 @@
 package com.attendance.scheduler.Config;
 
-import com.attendance.scheduler.Entity.AdminEntity;
-import com.attendance.scheduler.Repository.jpa.AdminRepository;
+import com.attendance.scheduler.Admin.AdminEntity;
+import com.attendance.scheduler.Admin.AdminRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
