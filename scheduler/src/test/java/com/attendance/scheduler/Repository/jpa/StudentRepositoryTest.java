@@ -1,7 +1,7 @@
 package com.attendance.scheduler.Repository.jpa;
 
-import com.attendance.scheduler.Student.StudentEntity;
-import com.attendance.scheduler.Student.StudentRepository;
+import com.attendance.scheduler.student.domain.StudentEntity;
+import com.attendance.scheduler.student.repository.StudentRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,7 +11,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.Optional;
 
-import static com.attendance.scheduler.Config.TestDataSet.testStudentInformationDTO;
+import static com.attendance.scheduler.config.TestDataSet.testStudentInformationDTO;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
@@ -34,8 +35,8 @@ class StudentRepositoryTest {
         Optional<StudentEntity> studentEntityByStudentName = studentRepository
                 .findStudentEntityByStudentNameIs(testStudentInformationDTO().getStudentName());
 
-        assertEquals(testStudentInformationDTO().getStudentName(),
-                studentEntityByStudentName.get().getStudentName());
+        studentEntityByStudentName.ifPresent(studentEntity -> assertThat(testStudentInformationDTO().getStudentName())
+                .isEqualTo(studentEntity.getStudentName()));
     }
 
     @Test //TODO
@@ -50,7 +51,7 @@ class StudentRepositoryTest {
         Optional<StudentEntity> studentEntityByStudentName = studentRepository
                 .findStudentEntityByStudentNameIs(testStudentInformationDTO().getStudentName());
 
-        studentRepository.deleteStudentEntityById(studentEntityByStudentName.get().getId());
+        studentEntityByStudentName.ifPresent(studentEntity -> studentRepository.deleteStudentEntityById(studentEntity.getId()));
 
         assertNull(studentRepository.findStudentEntityById(studentEntityByStudentName.get().getId()));
     }

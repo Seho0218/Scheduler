@@ -1,14 +1,14 @@
 package com.attendance.scheduler.Service.Impl;
 
-import com.attendance.scheduler.Admin.Dto.ApproveTeacherDTO;
-import com.attendance.scheduler.Infra.Dto.EditEmailDTO;
-import com.attendance.scheduler.Infra.Dto.EmailDTO;
-import com.attendance.scheduler.Admin.AdminEntity;
-import com.attendance.scheduler.Teacher.TeacherEntity;
-import com.attendance.scheduler.Admin.AdminRepository;
-import com.attendance.scheduler.Teacher.TeacherRepository;
-import com.attendance.scheduler.Admin.AdminService;
-import com.attendance.scheduler.Teacher.TeacherService;
+import com.attendance.scheduler.admin.application.AdminService;
+import com.attendance.scheduler.admin.domain.AdminEntity;
+import com.attendance.scheduler.admin.dto.ApproveTeacherDTO;
+import com.attendance.scheduler.admin.dto.EditEmailDTO;
+import com.attendance.scheduler.admin.dto.EmailDTO;
+import com.attendance.scheduler.admin.repository.AdminRepository;
+import com.attendance.scheduler.teacher.application.TeacherService;
+import com.attendance.scheduler.teacher.domain.TeacherEntity;
+import com.attendance.scheduler.teacher.repository.TeacherRepository;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -18,7 +18,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Optional;
 
-import static com.attendance.scheduler.Config.TestDataSet.testTeacherDataSet;
+import static com.attendance.scheduler.config.TestDataSet.testTeacherDataSet;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;

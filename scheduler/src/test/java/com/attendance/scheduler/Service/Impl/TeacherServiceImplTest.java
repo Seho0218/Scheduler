@@ -1,14 +1,14 @@
 package com.attendance.scheduler.Service.Impl;
 
-import com.attendance.scheduler.Config.Authority.UserDetailService;
-import com.attendance.scheduler.Infra.Dto.EmailDTO;
-import com.attendance.scheduler.Infra.Dto.LoginDTO;
-import com.attendance.scheduler.Student.StudentEntity;
-import com.attendance.scheduler.Teacher.TeacherEntity;
-import com.attendance.scheduler.Student.StudentRepository;
-import com.attendance.scheduler.Teacher.TeacherRepository;
-import com.attendance.scheduler.Student.StudentService;
-import com.attendance.scheduler.Teacher.TeacherService;
+import com.attendance.scheduler.common.dto.LoginDTO;
+import com.attendance.scheduler.config.Authority.UserDetailService;
+import com.attendance.scheduler.student.application.StudentService;
+import com.attendance.scheduler.student.domain.StudentEntity;
+import com.attendance.scheduler.student.repository.StudentRepository;
+import com.attendance.scheduler.teacher.application.TeacherService;
+import com.attendance.scheduler.teacher.domain.TeacherEntity;
+import com.attendance.scheduler.teacher.dto.EmailDTO;
+import com.attendance.scheduler.teacher.repository.TeacherRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,8 +24,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static com.attendance.scheduler.Config.TestDataSet.testStudentInformationDTO;
-import static com.attendance.scheduler.Config.TestDataSet.testTeacherDataSet;
+import static com.attendance.scheduler.config.TestDataSet.testStudentInformationDTO;
+import static com.attendance.scheduler.config.TestDataSet.testTeacherDataSet;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -146,7 +146,7 @@ class TeacherServiceImplTest {
                 .findStudentEntityByStudentNameIs(testStudentInformationDTO().getStudentName());
 
         if(studentEntityByStudentNameIs.isEmpty()){
-            studentService.registerStudentInformation(testStudentInformationDTO());
+            teacherService.registerStudentInformation(testStudentInformationDTO());
         }
 
         if (studentEntityByStudentNameIs.isPresent()) {

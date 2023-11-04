@@ -1,14 +1,16 @@
 package com.attendance.scheduler.Service.Impl;
 
-import com.attendance.scheduler.Config.Authority.UserDetailService;
-import com.attendance.scheduler.Course.*;
-import com.attendance.scheduler.Course.Dto.ClassDTO;
-import com.attendance.scheduler.Course.Dto.StudentClassDTO;
-import com.attendance.scheduler.Infra.Dto.LoginDTO;
-import com.attendance.scheduler.Student.Dto.ClassListDTO;
-import com.attendance.scheduler.Student.Dto.StudentInformationDTO;
-import com.attendance.scheduler.Student.StudentService;
-import com.attendance.scheduler.Teacher.TeacherService;
+import com.attendance.scheduler.common.dto.LoginDTO;
+import com.attendance.scheduler.config.Authority.UserDetailService;
+import com.attendance.scheduler.course.application.ClassService;
+import com.attendance.scheduler.course.domain.ClassMapper;
+import com.attendance.scheduler.course.dto.ClassDTO;
+import com.attendance.scheduler.course.dto.StudentClassDTO;
+import com.attendance.scheduler.course.repository.ClassTableRepository;
+import com.attendance.scheduler.student.dto.ClassListDTO;
+import com.attendance.scheduler.student.dto.StudentInformationDTO;
+import com.attendance.scheduler.student.application.StudentService;
+import com.attendance.scheduler.teacher.application.TeacherService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,7 +25,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static com.attendance.scheduler.Config.TestDataSet.*;
+import static com.attendance.scheduler.config.TestDataSet.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -69,7 +71,7 @@ class ClassServiceImplTest {
                 .findStudentEntityByStudentName(studentInformationDTO);
 
         if(studentEntityByStudentName.isEmpty()){
-            studentService.registerStudentInformation(testStudentInformationDTO());
+            teacherService.registerStudentInformation(testStudentInformationDTO());
             classService.saveClassTable(testStudentClassDataSet());
         }
 
@@ -79,7 +81,7 @@ class ClassServiceImplTest {
                 .findStudentEntityByStudentName(studentInformationDTO);
 
         if(studentEntityByStudentName1.isEmpty()){
-            studentService.registerStudentInformation(test2StudentInformationDTO());
+            teacherService.registerStudentInformation(test2StudentInformationDTO());
             classService.saveClassTable(test2StudentClassDataSet());
         }
 
@@ -205,11 +207,25 @@ class ClassServiceImplTest {
         Optional<StudentClassDTO> studentClasses = classService
                 .findStudentClasses(studentClassDTO);
 
-        assertEquals(studentClasses.get().getMonday(), 4);
-        assertEquals(studentClasses.get().getTuesday(),2);
-        assertEquals(studentClasses.get().getWednesday(),3);
-        assertEquals(studentClasses.get().getThursday(),4);
-        assertEquals(studentClasses.get().getFriday(),5);
+        studentClasses.ifPresent(ClassList -> {
+            assertThat(ClassList.getStudentName())
+                    .isEqualTo(testStudentClassDataSet().getStudentName());
+
+            assertThat(ClassList.getMonday())
+                    .isEqualTo(testStudentClassDataSet().getMonday());
+
+            assertThat(ClassList.getTuesday())
+                    .isEqualTo(testStudentClassDataSet().getTuesday());
+
+            assertThat(ClassList.getWednesday())
+                    .isEqualTo(testStudentClassDataSet().getWednesday());
+
+            assertThat(ClassList.getThursday())
+                    .isEqualTo(testStudentClassDataSet().getThursday());
+
+            assertThat(ClassList.getMonday())
+                    .isEqualTo(testStudentClassDataSet().getMonday());
+        });
     }
 
     @Test

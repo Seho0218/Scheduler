@@ -1,14 +1,14 @@
 package com.attendance.scheduler.Service.Impl;
 
-import com.attendance.scheduler.Config.Authority.UserDetailService;
-import com.attendance.scheduler.Infra.Dto.LoginDTO;
-import com.attendance.scheduler.Course.Dto.StudentClassDTO;
-import com.attendance.scheduler.Student.StudentEntity;
-import com.attendance.scheduler.Teacher.TeacherEntity;
-import com.attendance.scheduler.Student.StudentRepository;
-import com.attendance.scheduler.Teacher.TeacherRepository;
-import com.attendance.scheduler.Student.StudentService;
-import com.attendance.scheduler.Teacher.TeacherService;
+import com.attendance.scheduler.common.dto.LoginDTO;
+import com.attendance.scheduler.config.Authority.UserDetailService;
+import com.attendance.scheduler.course.dto.StudentClassDTO;
+import com.attendance.scheduler.student.application.StudentService;
+import com.attendance.scheduler.student.domain.StudentEntity;
+import com.attendance.scheduler.student.repository.StudentRepository;
+import com.attendance.scheduler.teacher.application.TeacherService;
+import com.attendance.scheduler.teacher.domain.TeacherEntity;
+import com.attendance.scheduler.teacher.repository.TeacherRepository;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -21,7 +21,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Optional;
 
-import static com.attendance.scheduler.Config.TestDataSet.*;
+import static com.attendance.scheduler.config.TestDataSet.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doReturn;
 
@@ -33,8 +33,7 @@ class StudentServiceImplTest {
     @Autowired private StudentService studentService;
     @Autowired private StudentRepository studentRepository;
     @Autowired private UserDetailService userDetailsService;
-    @Autowired
-    private TeacherRepository teacherRepository;
+    @Autowired private TeacherRepository teacherRepository;
 
     @BeforeEach
     @Transactional
@@ -68,7 +67,7 @@ class StudentServiceImplTest {
     void saveStudentInformation() {
 
         //When
-        studentService.registerStudentInformation(testStudentInformationDTO());
+        teacherService.registerStudentInformation(testStudentInformationDTO());
 
         //Then
         assertThat(testStudentInformationDTO().getStudentName())

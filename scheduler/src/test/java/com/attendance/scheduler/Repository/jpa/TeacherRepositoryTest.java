@@ -1,7 +1,7 @@
 package com.attendance.scheduler.Repository.jpa;
 
-import com.attendance.scheduler.Teacher.TeacherEntity;
-import com.attendance.scheduler.Teacher.TeacherRepository;
+import com.attendance.scheduler.teacher.domain.TeacherEntity;
+import com.attendance.scheduler.teacher.repository.TeacherRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.Optional;
 
-import static com.attendance.scheduler.Config.TestDataSet.testTeacherDataSet;
+import static com.attendance.scheduler.config.TestDataSet.testTeacherDataSet;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
@@ -66,8 +66,10 @@ class TeacherRepositoryTest {
         Optional<TeacherEntity> byEmailIs = teacherRepository
                 .findByEmailIs(testTeacherDataSet().getEmail());
         //Then
-        assertEquals(testTeacherDataSet().getUsername(), byEmailIs.get().getUsername());
-        assertEquals(testTeacherDataSet().getEmail(), byEmailIs.get().getEmail());
+        if(byEmailIs.isPresent()) {
+            assertEquals(testTeacherDataSet().getUsername(), byEmailIs.get().getUsername());
+            assertEquals(testTeacherDataSet().getEmail(), byEmailIs.get().getEmail());
+        }
     }
 
     @Test

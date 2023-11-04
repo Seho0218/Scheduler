@@ -1,13 +1,13 @@
 package com.attendance.scheduler.Repository.jpa;
 
-import com.attendance.scheduler.Course.ClassTableRepository;
+import com.attendance.scheduler.course.repository.ClassTableRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import static com.attendance.scheduler.Config.TestDataSet.testStudentClassDataSet;
+import static com.attendance.scheduler.config.TestDataSet.testStudentClassDataSet;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;

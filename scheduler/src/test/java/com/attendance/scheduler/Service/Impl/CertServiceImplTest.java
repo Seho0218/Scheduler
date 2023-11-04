@@ -1,13 +1,13 @@
 package com.attendance.scheduler.Service.Impl;
 
 
-import com.attendance.scheduler.Config.Authority.UserDetailService;
-import com.attendance.scheduler.Infra.Dto.LoginDTO;
-import com.attendance.scheduler.Infra.Dto.PwdEditDTO;
-import com.attendance.scheduler.Teacher.TeacherEntity;
-import com.attendance.scheduler.Teacher.TeacherRepository;
-import com.attendance.scheduler.Infra.CertService;
-import com.attendance.scheduler.Teacher.TeacherService;
+import com.attendance.scheduler.common.dto.LoginDTO;
+import com.attendance.scheduler.config.Authority.UserDetailService;
+import com.attendance.scheduler.teacher.application.TeacherCertService;
+import com.attendance.scheduler.teacher.application.TeacherService;
+import com.attendance.scheduler.teacher.domain.TeacherEntity;
+import com.attendance.scheduler.teacher.dto.PwdEditDTO;
+import com.attendance.scheduler.teacher.repository.TeacherRepository;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -21,7 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 
-import static com.attendance.scheduler.Config.TestDataSet.testTeacherDataSet;
+import static com.attendance.scheduler.config.TestDataSet.testTeacherDataSet;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
@@ -29,8 +29,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class CertServiceImplTest {
 
     @Autowired private TeacherService teacherService;
+    @Autowired private TeacherCertService teacherCertService;
     @Autowired private TeacherRepository teacherRepository;
-    @Autowired private CertService certService;
     @Autowired private UserDetailService userDetailsService;
     @Autowired private PasswordEncoder passwordEncoder;
 
@@ -92,7 +92,7 @@ class CertServiceImplTest {
             SecurityContextHolder.getContext().setAuthentication(auth);
 
         //when
-        certService.PwdEdit(pwdEditDTO);
+        teacherCertService.initializePassword(pwdEditDTO);
         TeacherEntity byUsernameIs = teacherRepository
                 .findByUsernameIs(pwdEditDTO.getUsername());
 
