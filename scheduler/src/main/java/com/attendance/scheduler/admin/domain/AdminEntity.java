@@ -1,10 +1,7 @@
 package com.attendance.scheduler.admin.domain;
 
 import com.attendance.scheduler.admin.dto.EditEmailDTO;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,6 +16,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Getter
 @DynamicUpdate
 @DynamicInsert
+@Table(name = "admin")
 @NoArgsConstructor(access = PROTECTED)
 public class AdminEntity {
 

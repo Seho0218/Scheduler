@@ -1,6 +1,5 @@
 package com.attendance.scheduler.student.domain;
 
-import com.attendance.scheduler.course.domain.ClassEntity;
 import com.attendance.scheduler.teacher.domain.TeacherEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -18,6 +17,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Getter
 @DynamicUpdate
 @DynamicInsert
+@Table(name = "student")
 @NoArgsConstructor(access = PROTECTED)
 public class StudentEntity {
 
@@ -46,19 +46,19 @@ public class StudentEntity {
         }
         this.teacherEntity = teacherEntity;
         if(teacherEntity != null) {
-            teacherEntity.addForeignKey(this);
+            teacherEntity.setStudentEntity(this);
         }
     }
 
     @OneToOne(mappedBy = "studentEntity", cascade = CascadeType.ALL, orphanRemoval = true)
-    private ClassEntity classEntity;
+    private StudentStatusEntity studentStatusEntity;
 
-    public void addClassForeignKey(ClassEntity classEntity) {
-        this.classEntity = classEntity;
+    public void setStudentClassEntity(StudentStatusEntity studentStatusEntity) {
+        this.studentStatusEntity = studentStatusEntity;
     }
 
     @Builder
-    public StudentEntity(Long id, String studentName, String studentPhoneNumber, String studentAddress, String studentDetailedAddress, String studentParentPhoneNumber, TeacherEntity teacherEntity) {
+    public StudentEntity(Long id, String studentName, String studentPhoneNumber, String studentAddress, String studentDetailedAddress, String studentParentPhoneNumber, TeacherEntity teacherEntity, StudentStatusEntity studentStatusEntity) {
         this.id = id;
         this.studentName = studentName;
         this.studentPhoneNumber = studentPhoneNumber;
@@ -66,5 +66,6 @@ public class StudentEntity {
         this.studentDetailedAddress = studentDetailedAddress;
         this.studentParentPhoneNumber = studentParentPhoneNumber;
         this.teacherEntity = teacherEntity;
+        this.studentStatusEntity = studentStatusEntity;
     }
 }

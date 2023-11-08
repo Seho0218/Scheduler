@@ -1,4 +1,4 @@
-package com.attendance.scheduler.Service.Impl;
+package com.attendance.scheduler.course;
 
 import com.attendance.scheduler.common.dto.LoginDTO;
 import com.attendance.scheduler.config.Authority.UserDetailService;
@@ -7,9 +7,9 @@ import com.attendance.scheduler.course.domain.ClassMapper;
 import com.attendance.scheduler.course.dto.ClassDTO;
 import com.attendance.scheduler.course.dto.StudentClassDTO;
 import com.attendance.scheduler.course.repository.ClassTableRepository;
+import com.attendance.scheduler.student.application.StudentService;
 import com.attendance.scheduler.student.dto.ClassListDTO;
 import com.attendance.scheduler.student.dto.StudentInformationDTO;
-import com.attendance.scheduler.student.application.StudentService;
 import com.attendance.scheduler.teacher.application.TeacherService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -64,21 +64,17 @@ class ClassServiceImplTest {
                         testTeacherDataSet().getPassword() , userDetails.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(auth);
 
-        StudentInformationDTO studentInformationDTO = new StudentInformationDTO();
-        studentInformationDTO.setStudentName(testStudentClassDataSet().getStudentName());
 
         Optional<StudentInformationDTO> studentEntityByStudentName = studentService
-                .findStudentEntityByStudentName(studentInformationDTO);
+                .findStudentEntityByStudentName(testStudentClassDataSet().getStudentName());
 
         if(studentEntityByStudentName.isEmpty()){
             teacherService.registerStudentInformation(testStudentInformationDTO());
             classService.saveClassTable(testStudentClassDataSet());
         }
 
-        studentInformationDTO.setStudentName(test2StudentClassDataSet().getStudentName());
-
         Optional<StudentInformationDTO> studentEntityByStudentName1 = studentService
-                .findStudentEntityByStudentName(studentInformationDTO);
+                .findStudentEntityByStudentName(test2StudentClassDataSet().getStudentName());
 
         if(studentEntityByStudentName1.isEmpty()){
             teacherService.registerStudentInformation(test2StudentInformationDTO());
@@ -126,7 +122,7 @@ class ClassServiceImplTest {
 
         //when
         List<ClassDTO> classByStudent = classService
-                .findClassByStudent();
+                .findStudentClassList();
 
         //then
         for (int i = 0; i < classByStudent.size(); i++) {
@@ -143,7 +139,7 @@ class ClassServiceImplTest {
     void findAllClasses() {
         //when
         ClassListDTO allClasses = classService
-                .findAllClasses();
+                .findTeachersClasses(test2StudentClassDataSet().getStudentName());
         //then
         assertEquals(2, allClasses.getMondayClassList().size());
     }
@@ -191,16 +187,19 @@ class ClassServiceImplTest {
         });
     }
 
+    //TODO
     @Test
     @DisplayName("수업 변경 확인")
+    @Transactional
     void modifyClass(){
+
+        //찾는 로직
 
         ClassDTO classDTO = testStudentClassDataSet();
         classDTO.setMonday(4);
 
         classService.saveClassTable(classDTO);
 
-        //찾는 로직
         studentClassDTO = new StudentClassDTO();
         studentClassDTO.setStudentName(testStudentClassDataSet().getStudentName());
 
@@ -212,7 +211,7 @@ class ClassServiceImplTest {
                     .isEqualTo(testStudentClassDataSet().getStudentName());
 
             assertThat(ClassList.getMonday())
-                    .isEqualTo(testStudentClassDataSet().getMonday());
+                    .isEqualTo(4);
 
             assertThat(ClassList.getTuesday())
                     .isEqualTo(testStudentClassDataSet().getTuesday());
@@ -223,8 +222,8 @@ class ClassServiceImplTest {
             assertThat(ClassList.getThursday())
                     .isEqualTo(testStudentClassDataSet().getThursday());
 
-            assertThat(ClassList.getMonday())
-                    .isEqualTo(testStudentClassDataSet().getMonday());
+            assertThat(ClassList.getFriday())
+                    .isEqualTo(testStudentClassDataSet().getFriday());
         });
     }
 

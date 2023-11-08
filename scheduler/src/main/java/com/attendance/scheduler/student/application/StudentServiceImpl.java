@@ -15,8 +15,8 @@ public class StudentServiceImpl implements StudentService {
 
 
     @Override
-    public Optional<StudentInformationDTO> findStudentEntityByStudentName(StudentInformationDTO studentInformationDTO) {
-        return studentRepository.findStudentEntityByStudentNameIs(studentInformationDTO.getStudentName())
+    public Optional<StudentInformationDTO> findStudentEntityByStudentName(String studentName) {
+        return studentRepository.findStudentEntityByStudentNameIs(studentName)
                 .map(studentEntity -> {
                     StudentInformationDTO informationDTO = new StudentInformationDTO();
                     informationDTO.setId(studentEntity.getId());

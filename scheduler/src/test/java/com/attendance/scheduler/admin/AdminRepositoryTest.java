@@ -1,4 +1,4 @@
-package com.attendance.scheduler.Repository.jpa;
+package com.attendance.scheduler.admin;
 
 import com.attendance.scheduler.admin.domain.AdminEntity;
 import com.attendance.scheduler.admin.repository.AdminRepository;

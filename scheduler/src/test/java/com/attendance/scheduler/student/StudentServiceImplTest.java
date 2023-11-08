@@ -1,9 +1,8 @@
-package com.attendance.scheduler.Controller;
-
+package com.attendance.scheduler.student;
 
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class CertControllerTest {
+class StudentServiceImplTest {
 
 }

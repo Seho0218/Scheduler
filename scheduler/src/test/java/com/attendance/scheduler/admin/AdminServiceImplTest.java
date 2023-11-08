@@ -1,4 +1,4 @@
-package com.attendance.scheduler.Service.Impl;
+package com.attendance.scheduler.admin;
 
 import com.attendance.scheduler.admin.application.AdminService;
 import com.attendance.scheduler.admin.domain.AdminEntity;
@@ -79,6 +79,8 @@ class AdminServiceImplTest {
         assertTrue(teacherEntity.isApproved());
     }
 
+
+
     @Test
     @DisplayName("교사에게서 권한 회수")
     void revokeAuth() {
@@ -94,6 +96,16 @@ class AdminServiceImplTest {
         TeacherEntity teacherEntity = teacherRepository
                 .findByUsernameIs(testTeacherDataSet().getUsername());
         assertFalse(teacherEntity.isApproved());
+    }
+
+    @Test
+    @DisplayName("교사 계정 삭제")
+    void deleteTeacher() {
+        teacherRepository.deleteByUsernameIs(testTeacherDataSet().getUsername());
+        boolean duplicateTeacherId = teacherService
+                .findDuplicateTeacherID(testTeacherDataSet());
+
+        assertFalse(duplicateTeacherId);
     }
 
     @Test

@@ -35,6 +35,8 @@ public class ClassDTO {
     @NotNull(message = "요일을 선택해 주세요")
     private Integer friday;
 
+    private String teacherName;
+
     private Timestamp updateTimeStamp;
 
     public ClassEntity toEntity() {

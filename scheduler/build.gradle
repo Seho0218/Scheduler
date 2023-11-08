@@ -45,6 +45,9 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
+	// https://mvnrepository.com/artifact/com.vladmihalcea/db-util
+	implementation 'com.vladmihalcea:db-util:1.0.7'
+
 
 
 	compileOnly 'org.projectlombok:lombok'

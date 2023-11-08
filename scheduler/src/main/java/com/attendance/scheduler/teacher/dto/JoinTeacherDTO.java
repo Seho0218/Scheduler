@@ -19,7 +19,7 @@ public class JoinTeacherDTO {
     private String password;
 
     @NotEmpty(message = "이름을 입력해 주세요")
-    private String name;
+    private String teacherName;
 
     @NotEmpty(message = "이메일을 입력해 주세요")
     private String email;
@@ -35,7 +35,7 @@ public class JoinTeacherDTO {
                 .username(username)
                 .password(password)
                 .email(email)
-                .name(name)
+                .teacherName(teacherName)
                 .approved(approved)
                 .build();
     }

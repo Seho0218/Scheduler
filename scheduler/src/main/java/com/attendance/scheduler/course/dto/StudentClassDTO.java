@@ -1,5 +1,6 @@
 package com.attendance.scheduler.course.dto;
 
+import com.attendance.scheduler.teacher.domain.TeacherEntity;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,4 +26,6 @@ public class StudentClassDTO {
     private Integer thursday;
 
     private Integer friday;
+
+    private TeacherEntity teacherEntity;
 }

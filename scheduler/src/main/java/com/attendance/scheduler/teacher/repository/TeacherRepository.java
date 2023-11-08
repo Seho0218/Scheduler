@@ -18,4 +18,5 @@ public interface TeacherRepository extends JpaRepository<TeacherEntity, Long> {
 
     @Transactional
     void deleteByUsernameIs(String username);
+
 }

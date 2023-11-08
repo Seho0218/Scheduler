@@ -11,13 +11,12 @@ import java.util.Optional;
 
 public interface ClassService {
 
-      // 수업 유무 조회
-      List<ClassDTO> findClassByStudent();
+      List<ClassDTO> findStudentClassList();
 
-      ClassListDTO findAllClasses();
+      ClassListDTO findTeachersClasses(String studentName);
+      // 수업 유무 조회
 
       Optional<StudentClassDTO> findStudentClasses(StudentClassDTO studentClassDTO);
-
 
       void saveClassTable(ClassDTO classDTO);
 

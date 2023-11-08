@@ -1,6 +1,5 @@
-package com.attendance.scheduler.course.domain;
+package com.attendance.scheduler.student.domain;
 
-import com.attendance.scheduler.teacher.domain.TeacherEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
@@ -18,12 +17,12 @@ import static lombok.AccessLevel.PROTECTED;
 @Entity
 @Getter
 @DynamicUpdate
-@Table(name = "class_table")
+@Table(name = "student_status")
 @NoArgsConstructor(access = PROTECTED)
-public class ClassEntity {
+public class StudentStatusEntity {
 
     @Id @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "classId")
+    @Column(name = "student_class")
     private Long id;
 
     private String studentName;
@@ -38,22 +37,22 @@ public class ClassEntity {
     private Timestamp updateTimeStamp;
 
     @NotNull
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "teacherId")
-    private TeacherEntity teacherEntity;
+    @OneToOne(fetch = LAZY)
+    @JoinColumn(name = "studentId")
+    private StudentEntity studentEntity;
 
-    public void setTeacherEntity(TeacherEntity teacherEntity) {
-        if (this.teacherEntity != null) {
-            this.teacherEntity.setClassEntity(null);
+    public void setStudentEntity(StudentEntity studentEntity) {
+        if (this.studentEntity != null) {
+            this.studentEntity.setStudentClassEntity(null);
         }
-        this.teacherEntity = teacherEntity;
-        if (teacherEntity != null) {
-            teacherEntity.setClassEntity(this);
+        this.studentEntity = studentEntity;
+        if (studentEntity != null) {
+            studentEntity.setStudentClassEntity(this);
         }
     }
 
     @Builder
-    public ClassEntity(Long id, String studentName, Integer monday, Integer tuesday, Integer wednesday, Integer thursday, Integer friday, Timestamp updateTimeStamp, TeacherEntity teacherEntity) {
+    public StudentStatusEntity(Long id, String studentName, Integer monday, Integer tuesday, Integer wednesday, Integer thursday, Integer friday, Timestamp updateTimeStamp, StudentEntity studentEntity) {
         this.id = id;
         this.studentName = studentName;
         this.monday = monday;
@@ -62,6 +61,6 @@ public class ClassEntity {
         this.thursday = thursday;
         this.friday = friday;
         this.updateTimeStamp = updateTimeStamp;
-        this.teacherEntity = teacherEntity;
+        this.studentEntity = studentEntity;
     }
 }

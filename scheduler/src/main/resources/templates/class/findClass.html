@@ -47,7 +47,7 @@
 </head>
 <body>
 <div class="container">
-    <form method='post' role="form" th:action="@{/search/modify}" th:object="${studentClass}">
+    <form method='post' role="form" th:action="@{/search/submit}" th:object="${class}">
         <div class="py-2">
 
         </div>
@@ -55,8 +55,8 @@
         <div class="py-2">
             <div class="board rounded-3 border border-2">
                 <div class="header">
-                    <input name="studentName" th:value="${studentClassList.getStudentName()}" type="hidden">
-                    <p th:text="${studentClassList.getStudentName()}"></p>
+                    <input name="studentName" th:value="${studentName}" type="hidden">
+                    <p th:text="${studentName}"></p>
                 </div>
             </div>
         </div>

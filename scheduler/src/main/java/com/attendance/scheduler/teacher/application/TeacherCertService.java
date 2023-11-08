@@ -12,15 +12,15 @@ public interface TeacherCertService {
 
     /*
      * find id By Email*/
-
     boolean idConfirmation(FindPasswordDTO findPasswordDTO);
     boolean emailConfirmation(FindPasswordDTO findPasswordDTO);
 
     Optional<FindIdDTO> findIdByEmail(FindIdDTO findIdDTO);
+//    Optional<FindIdDTO> findEmailById(FindIdDTO findIdDTO);
+
     /*
      * send UserId by Email*/
     void sendUserId(FindIdDTO findIdDTO);
-
     void setupAuthNum(FindPasswordDTO findPasswordDTO, HttpSession session);
 
     void initializePassword(PwdEditDTO pwdEditDTO);

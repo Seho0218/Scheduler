@@ -1,15 +1,13 @@
-package com.attendance.scheduler.Service.Impl;
+package com.attendance.scheduler.teacher;
 
 import com.attendance.scheduler.common.dto.LoginDTO;
 import com.attendance.scheduler.config.Authority.UserDetailService;
-import com.attendance.scheduler.course.dto.StudentClassDTO;
-import com.attendance.scheduler.student.application.StudentService;
 import com.attendance.scheduler.student.domain.StudentEntity;
 import com.attendance.scheduler.student.repository.StudentRepository;
 import com.attendance.scheduler.teacher.application.TeacherService;
 import com.attendance.scheduler.teacher.domain.TeacherEntity;
 import com.attendance.scheduler.teacher.repository.TeacherRepository;
-import jakarta.transaction.Transactional;
+import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,34 +16,61 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-import static com.attendance.scheduler.config.TestDataSet.*;
+import static com.attendance.scheduler.config.TestDataSet.testStudentInformationDTO;
+import static com.attendance.scheduler.config.TestDataSet.testTeacherDataSet;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.doReturn;
 
 @SpringBootTest
 @Transactional
-class StudentServiceImplTest {
+class TeacherServiceImplTest {
 
     @Autowired private TeacherService teacherService;
-    @Autowired private StudentService studentService;
-    @Autowired private StudentRepository studentRepository;
     @Autowired private UserDetailService userDetailsService;
     @Autowired private TeacherRepository teacherRepository;
+    @Autowired private StudentRepository studentRepository;
+    @Autowired EntityManager entityManager;
+
 
     @BeforeEach
-    @Transactional
-    void beforeEach(){
+    void joinTestTeacherAccount(){
         boolean duplicateTeacherID = teacherService
                 .findDuplicateTeacherID(testTeacherDataSet());
 
         if (!duplicateTeacherID) {
             teacherService.joinTeacher(testTeacherDataSet());
         }
+    }
 
-        //Given, 교사 로그인
+    @Test
+    @DisplayName("교사 회원가입 확인")
+    void joinTeacher() {
+        boolean duplicateTeacherId = teacherService
+                .findDuplicateTeacherID(testTeacherDataSet());
+        assertTrue(duplicateTeacherId);
+    }
+
+    @Test
+    @DisplayName("교사 계정 삭제")
+    void deleteTeacher() {
+        teacherRepository.deleteByUsernameIs(testTeacherDataSet().getUsername());
+        boolean duplicateTeacherId = teacherService
+                .findDuplicateTeacherID(testTeacherDataSet());
+
+        assertFalse(duplicateTeacherId);
+    }
+
+    @Test
+    @DisplayName("교사가 학생 정보를 등록")
+    void registerStudentInformation() {
+
+        //Given
         LoginDTO loginDTO = new LoginDTO();
         loginDTO.setUsername(testTeacherDataSet().getUsername());
 
@@ -54,11 +79,21 @@ class StudentServiceImplTest {
 
         UsernamePasswordAuthenticationToken auth =
                 new UsernamePasswordAuthenticationToken(testTeacherDataSet().getUsername(),
-                        testTeacherDataSet().getPassword() , userDetails.getAuthorities());
+                        null , userDetails.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(auth);
 
-        StudentClassDTO studentClassDTO = new StudentClassDTO();
-        studentClassDTO.setStudentName(testStudentClassDataSet().getStudentName());
+
+        Optional<StudentEntity> studentEntityByStudentNameIs = studentRepository
+                .findStudentEntityByStudentNameIs(testStudentInformationDTO().getStudentName());
+
+        if(studentEntityByStudentNameIs.isEmpty()){
+            teacherService.registerStudentInformation(testStudentInformationDTO());
+        }
+
+        if (studentEntityByStudentNameIs.isPresent()) {
+            String studentName = studentEntityByStudentNameIs.get().getStudentName();
+            assertThat(testStudentInformationDTO().getStudentName()).isEqualTo(studentName);
+        }
     }
 
     @Test
@@ -80,9 +115,6 @@ class StudentServiceImplTest {
 
         //교사정보
         TeacherEntity teacherEntity = testTeacherDataSet().toEntity();
-
-        doReturn(teacherRepository.save(new TeacherEntity(1L, testTeacherDataSet().getUsername(), testTeacherDataSet().getName(), testTeacherDataSet().getPassword()
-                , testTeacherDataSet().getEmail(), testTeacherDataSet().isApproved())));
 
         //힉생정보
         doReturn(studentRepository.save(testStudentInformationDTO().toEntity()));

@@ -1,4 +1,4 @@
-package com.attendance.scheduler.Repository.jpa;
+package com.attendance.scheduler.course;
 
 import com.attendance.scheduler.course.repository.ClassTableRepository;
 import org.junit.jupiter.api.BeforeEach;

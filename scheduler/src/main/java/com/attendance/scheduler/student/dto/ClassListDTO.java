@@ -13,6 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 public class ClassListDTO {
 
+    private String studentName;
     private List<Integer> mondayClassList = new ArrayList<>();
     private List<Integer> tuesdayClassList = new ArrayList<>();
     private List<Integer> wednesdayClassList = new ArrayList<>();

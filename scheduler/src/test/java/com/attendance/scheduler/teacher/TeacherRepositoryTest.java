@@ -1,4 +1,4 @@
-package com.attendance.scheduler.Repository.jpa;
+package com.attendance.scheduler.teacher;
 
 import com.attendance.scheduler.teacher.domain.TeacherEntity;
 import com.attendance.scheduler.teacher.repository.TeacherRepository;

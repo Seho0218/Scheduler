@@ -1,5 +1,6 @@
 package com.attendance.scheduler.teacher.domain;
 
+import com.attendance.scheduler.course.domain.ClassEntity;
 import com.attendance.scheduler.student.domain.StudentEntity;
 import com.attendance.scheduler.teacher.dto.EditEmailDTO;
 import com.attendance.scheduler.teacher.dto.PwdEditDTO;
@@ -10,8 +11,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
@@ -20,6 +21,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Getter
 @DynamicUpdate
 @DynamicInsert
+@Table(name = "teacher")
 @NoArgsConstructor(access = PROTECTED)
 public class TeacherEntity {
 
@@ -29,7 +31,7 @@ public class TeacherEntity {
 
     private String username;
 
-    private String name;
+    private String teacherName;
 
     private String password;
 
@@ -42,9 +44,16 @@ public class TeacherEntity {
     private boolean approved;
 
     @OneToMany(mappedBy = "teacherEntity", cascade = CascadeType.PERSIST)
-    List<StudentEntity> studentEntityList = new ArrayList<>();
+    Set<StudentEntity> studentEntityList = new LinkedHashSet<>();
 
-    public void addForeignKey(StudentEntity studentEntity) {
+    @OneToMany(mappedBy = "teacherEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    Set<ClassEntity> classEntity = new LinkedHashSet<>();
+
+    public void setClassEntity(ClassEntity classEntity) {
+        this.classEntity.add(classEntity);
+    }
+
+    public void setStudentEntity(StudentEntity studentEntity) {
         this.studentEntityList.add(studentEntity);
     }
 
@@ -61,12 +70,15 @@ public class TeacherEntity {
     }
 
     @Builder
-    public TeacherEntity(Long id, String username, String name, String password, String email, boolean approved) {
+    public TeacherEntity(Long id, String username, String teacherName, String password, String email, String role, boolean approved, Set<StudentEntity> studentEntityList, Set<ClassEntity> classEntity) {
         this.id = id;
         this.username = username;
-        this.name = name;
+        this.teacherName = teacherName;
         this.password = password;
         this.email = email;
+        this.role = role;
         this.approved = approved;
+        this.studentEntityList = studentEntityList;
+        this.classEntity = classEntity;
     }
 }

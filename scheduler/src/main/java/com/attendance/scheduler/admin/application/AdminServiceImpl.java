@@ -16,6 +16,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -32,10 +34,10 @@ import java.util.stream.Collectors;
 public class AdminServiceImpl implements AdminService {
 
     private final AdminRepository adminRepository;
-    private final PasswordEncoder passwordEncoder;
     private final TeacherRepository teacherRepository;
-    private final TeacherMapper teacherMapper;
     private final StudentRepository studentRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final TeacherMapper teacherMapper;
     private final JavaMailSender mailSender;
 
     @Override
@@ -108,8 +110,9 @@ public class AdminServiceImpl implements AdminService {
     @Override
     @Transactional
     public void setupAuthNum(FindPasswordDTO findPasswordDTO, HttpSession session) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        String teacherId = findPasswordDTO.getUsername();
+        String adminId = auth.getName();
         String email = findPasswordDTO.getEmail();
 
         StringBuilder authNum = new StringBuilder();
@@ -127,11 +130,11 @@ public class AdminServiceImpl implements AdminService {
 
         LocalDateTime expiryDateTime= LocalDateTime.now().plusMinutes(5);
 
-        authNumMap.put(teacherId, authNum.toString());
+        authNumMap.put(adminId, authNum.toString());
         authNumMap.put("endTime", expiryDateTime);
 
         session.setMaxInactiveInterval(300);
-        session.setAttribute(teacherId, authNumMap);
+        session.setAttribute(adminId, authNumMap);
     }
 
     public void sendAuthNum(String userEmail, String authNum) {

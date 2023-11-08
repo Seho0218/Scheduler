@@ -1,4 +1,4 @@
-package com.attendance.scheduler.Repository.jpa;
+package com.attendance.scheduler.student;
 
 import com.attendance.scheduler.student.domain.StudentEntity;
 import com.attendance.scheduler.student.repository.StudentRepository;
@@ -13,7 +13,6 @@ import java.util.Optional;
 
 import static com.attendance.scheduler.config.TestDataSet.testStudentInformationDTO;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 

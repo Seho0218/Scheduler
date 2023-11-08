@@ -35,9 +35,9 @@
                 <tr>
                     <th><a th:href ="@{/admin/teacherList}"><button class="btn btn-primary"
                                                                     sec:authorize="hasRole('ROLE_ADMIN')">교사 관리</button></a></th>
-                    <th><a th:href ="@{/cert/changeEmail}"><button class="btn btn-primary"
+                    <th><a th:href ="@{/help/changeEmail}"><button class="btn btn-primary"
                                                                    sec:authorize="hasRole('ROLE_TEACHER')">이메일 변경</button></a></th>
-                    <th><a th:href ="@{/cert/changePassword}"><button class="btn btn-primary"
+                    <th><a th:href ="@{/help/changePassword}"><button class="btn btn-primary"
                                                                        sec:authorize="hasRole('ROLE_TEACHER')">비밀번호 변경</button></a></th>
                     <th><a th:href ="@{/manage/studentList}"><button class="btn btn-primary"
                                                          sec:authorize="isAuthenticated()">학생 명부</button></a></th>
@@ -56,13 +56,13 @@
                     <th scope="col">수요일</th>
                     <th scope="col">목요일</th>
                     <th scope="col">금요일</th>
+                    <th scope="col">담당 교사</th>
                     <th scope="col">수정시간</th>
                     <th scope="col">삭제</th>
                 </tr>
             </thead>
             <tbody th:each="class : ${findClassTable}">
                 <tr>
-
                     <td></td>
                     <td th:text="${class.getStudentName()}"></td>
                     <td th:text="${class.getMonday() == 0 ? '결석' : '오후 ' + class.getMonday() + '시'}"></td>
@@ -70,6 +70,7 @@
                     <td th:text="${class.getWednesday() == 0 ? '결석' : '오후 ' + class.getWednesday() + '시'}"></td>
                     <td th:text="${class.getThursday() == 0 ? '결석' : '오후 ' + class.getThursday() + '시'}"></td>
                     <td th:text="${class.getFriday() == 0 ? '결석' : '오후 ' + class.getFriday() + '시'}"></td>
+                    <td th:text="${class.getTeacherName()}"></td>
                     <td th:text="${class.getUpdateTimeStamp()}"></td>
                     <td>
                         <button class="btn btn-primary delete-button"

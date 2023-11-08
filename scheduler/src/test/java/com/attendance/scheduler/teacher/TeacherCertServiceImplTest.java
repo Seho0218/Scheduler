@@ -1,4 +1,4 @@
-package com.attendance.scheduler.Service.Impl;
+package com.attendance.scheduler.teacher;
 
 
 import com.attendance.scheduler.common.dto.LoginDTO;
@@ -6,6 +6,7 @@ import com.attendance.scheduler.config.Authority.UserDetailService;
 import com.attendance.scheduler.teacher.application.TeacherCertService;
 import com.attendance.scheduler.teacher.application.TeacherService;
 import com.attendance.scheduler.teacher.domain.TeacherEntity;
+import com.attendance.scheduler.teacher.dto.EmailDTO;
 import com.attendance.scheduler.teacher.dto.PwdEditDTO;
 import com.attendance.scheduler.teacher.repository.TeacherRepository;
 import jakarta.transaction.Transactional;
@@ -19,19 +20,22 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import static com.attendance.scheduler.config.TestDataSet.testTeacherDataSet;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @Transactional
-class CertServiceImplTest {
+class TeacherCertServiceImplTest {
 
+    @Autowired private UserDetailService userDetailsService;
     @Autowired private TeacherService teacherService;
     @Autowired private TeacherCertService teacherCertService;
     @Autowired private TeacherRepository teacherRepository;
-    @Autowired private UserDetailService userDetailsService;
     @Autowired private PasswordEncoder passwordEncoder;
 
     @BeforeEach
@@ -47,6 +51,24 @@ class CertServiceImplTest {
     }
 
     @Test
+    @DisplayName("교사 로그인")
+    void loginTeacher() {
+        LoginDTO loginDTO = new LoginDTO();
+        loginDTO.setUsername(testTeacherDataSet().getUsername());
+        loginDTO.setPassword(testTeacherDataSet().getPassword());
+
+        //when
+        UserDetails userDetails = userDetailsService
+                .loadUserByUsername(loginDTO.getUsername());
+
+        //then
+        boolean matches = passwordEncoder
+                .matches(loginDTO.getPassword(), userDetails.getPassword());
+        assertEquals(testTeacherDataSet().getUsername(), userDetails.getUsername());
+        assertTrue(matches);
+    }
+
+    @Test
     @DisplayName("아이디 찾을 때, 이메일 검증")
     void findIdByEmail() {
         boolean duplicateTeacherEmail = teacherService
@@ -55,7 +77,7 @@ class CertServiceImplTest {
     }
 
     @Test
-    @DisplayName("ID 유무 확인")
+    @DisplayName("ID 중복 확인")
     void idConfirmation(){
         boolean existedByUsername = teacherRepository
                 .existsByUsername(testTeacherDataSet().getUsername());
@@ -63,14 +85,35 @@ class CertServiceImplTest {
     }
 
     @Test
-    @DisplayName("Email 유무 확인")
+    @DisplayName("Email 중복 확인")
     void emailConfirmation(){
         boolean existedByUsername = teacherRepository
                 .existsByEmail(testTeacherDataSet().getEmail());
         assertTrue(existedByUsername);
     }
 
-        @Test
+    @Test
+    @DisplayName("아이디로 이메일 정보 찾기")
+    void findTeacherEmailByID() {
+        EmailDTO emailDTO = new EmailDTO();
+        emailDTO.setUsername(testTeacherDataSet().getUsername());
+
+        TeacherEntity teacherEntity = teacherRepository
+                .findByUsernameIs(emailDTO.getUsername());
+
+        EmailDTO build = EmailDTO.builder()
+                .username(teacherEntity.getUsername())
+                .email(teacherEntity.getEmail())
+                .build();
+
+        List<EmailDTO> emailDTOS = Collections.singletonList(build);
+
+        assertEquals(testTeacherDataSet().getUsername(), emailDTOS.get(0).getUsername());
+        assertEquals(testTeacherDataSet().getEmail(), emailDTOS.get(0).getEmail());
+
+    }
+
+    @Test
     @DisplayName("비밀번호 변경 참 거짓 확인")
     void pwdEdit() {
 

@@ -8,6 +8,7 @@ import com.attendance.scheduler.course.repository.ClassTableRepository;
 import com.attendance.scheduler.student.domain.StudentEntity;
 import com.attendance.scheduler.student.dto.ClassListDTO;
 import com.attendance.scheduler.student.repository.StudentRepository;
+import com.attendance.scheduler.teacher.domain.TeacherEntity;
 import com.attendance.scheduler.teacher.dto.DeleteClassDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,22 +27,37 @@ public class ClassServiceImpl implements ClassService {
     private final StudentRepository studentRepository;
 
     @Override
-    public List<ClassDTO> findClassByStudent() {
+    public List<ClassDTO> findStudentClassList() {
         return classTableRepository.findAll()
                 .stream()
-                .map(classMapper::toClassDTO)
+                .map(classEntity -> {
+                    ClassDTO classDTO = new ClassDTO();
+                    classDTO.setStudentName(classEntity.getStudentName());
+                    classDTO.setMonday(classEntity.getMonday());
+                    classDTO.setTuesday(classEntity.getTuesday());
+                    classDTO.setWednesday(classEntity.getWednesday());
+                    classDTO.setThursday(classEntity.getThursday());
+                    classDTO.setFriday(classEntity.getFriday());
+//                    classDTO.setTeacherName(classEntity);
+                    classDTO.setUpdateTimeStamp(classEntity.getUpdateTimeStamp());
+                    return classDTO;
+                })
                 .toList();
     }
 
     @Override
-    public ClassListDTO findAllClasses() {
-        List<ClassDTO> classDTOS = classTableRepository.findAll()
+    public ClassListDTO findTeachersClasses(String studentName) {
+        Optional<StudentEntity> studentEntityByStudentNameIs = studentRepository.findStudentEntityByStudentNameIs(studentName);
+
+        TeacherEntity teacherEntity = studentEntityByStudentNameIs.get().getTeacherEntity();
+        List<ClassDTO> classDTOS = classTableRepository.findClassEntitiesByTeacherEntity(teacherEntity)
                 .stream()
                 .map(classMapper::toClassDTO)
                 .toList();
 
         ClassListDTO classListDTO = ClassListDTO.getInstance();
 
+        classListDTO.setStudentName(studentName);
         for (ClassDTO classDTO : classDTOS) {
             classListDTO.getMondayClassList().add(classDTO.getMonday());
             classListDTO.getTuesdayClassList().add(classDTO.getTuesday());
@@ -75,13 +91,16 @@ public class ClassServiceImpl implements ClassService {
     public synchronized void saveClassTable(ClassDTO classDTO) {
 
         classValidator(classDTO);
-
-        Optional<StudentEntity> studentEntityByStudentName = studentRepository
+        Optional<StudentEntity> studentEntityByStudentNameIs = studentRepository
                 .findStudentEntityByStudentNameIs(classDTO.getStudentName());
-        ClassEntity entity = classDTO.toEntity();
-        entity.setStudentEntity(studentEntityByStudentName.get());
 
-        classTableRepository.save(entity);
+        if(studentEntityByStudentNameIs.isPresent()){
+            TeacherEntity teacherEntity = studentEntityByStudentNameIs.get().getTeacherEntity();
+            ClassEntity entity = classDTO.toEntity();
+            entity.setTeacherEntity(teacherEntity);
+
+            classTableRepository.save(entity);
+        }
     }
 
     private void classValidator(ClassDTO classDTO) {

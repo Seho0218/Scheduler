@@ -2,7 +2,6 @@ package com.attendance.scheduler.teacher.api;
 
 import com.attendance.scheduler.course.dto.ClassDTO;
 import com.attendance.scheduler.teacher.application.TeacherCertService;
-import com.attendance.scheduler.teacher.application.TeacherService;
 import com.attendance.scheduler.teacher.dto.*;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -18,29 +17,21 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.Optional;
 
 @Slf4j
 @Controller
-@RequestMapping("/manage/")
+@RequestMapping("/help/")
 @RequiredArgsConstructor
 public class TeacherCertController {
 
-    public final TeacherService teacherService;
     public final TeacherCertService teacherCertService;
 
     /*
      * Find ID Section
      */
-
-    /*
-     * findId Form
-     * */
-    @GetMapping("findId")
-    public String findId(Model model) {
-        model.addAttribute("account", new TeacherDTO());
-        return "cert/findId";
-    }
 
     /*
      * send id by Email
@@ -52,8 +43,10 @@ public class TeacherCertController {
         if (bindingResult.hasErrors()) {
             return "cert/findId";
         }
+
         Optional<FindIdDTO> idByEmail = teacherCertService.findIdByEmail(findIdDTO);
         log.info("email={}", idByEmail);
+
         if (idByEmail.isEmpty()) {
             model.addAttribute("account", new FindIdDTO());
             model.addAttribute("errorMessage", "등록된 이메일이 없습니다.");
@@ -74,15 +67,6 @@ public class TeacherCertController {
      * Find Password Section
      */
 
-    /**
-     * FindPassword Form
-     */
-    @GetMapping("findPassword")
-    public String findPassword(Model model) {
-        model.addAttribute("account", new TeacherDTO());
-        return "cert/findPwd";
-    }
-
     /*
      * Validate ID and Email and Send teacher AuthNum
      **/
@@ -99,12 +83,12 @@ public class TeacherCertController {
             model.addAttribute("account", new TeacherDTO());
             return "cert/findPwd";
         }
+
         if(!teacherCertService.idConfirmation(findPasswordDTO)){
             model.addAttribute("errorMessage", "등록된 아이디가 없습니다.");
             model.addAttribute("account", new TeacherDTO());
             return "cert/findPwd";
         }
-
 
         try {
             model.addAttribute("username", findPasswordDTO.getUsername());
@@ -115,6 +99,48 @@ public class TeacherCertController {
             model.addAttribute("account", new TeacherDTO());
             model.addAttribute("errorMessage", e.getMessage());
             return "cert/findPwd";
+        }
+    }
+
+    /*
+     * AuthNum Check
+     * */
+    @PostMapping("authNumCheck")
+    private String authNumCheck(Model model, CertDTO certDTO, HttpSession session) {
+        log.info("CertDTO={}", certDTO);
+
+        Map<String, Object> sessionAuthNumMap = (Map<String, Object>) session.getAttribute(certDTO.getUsername());
+        String teacherId = certDTO.getUsername();
+        String authNum = certDTO.getAuthNum();
+
+        if (sessionAuthNumMap.isEmpty()) {
+            model.addAttribute("auth", new CertDTO());
+            model.addAttribute("username", certDTO);
+            model.addAttribute("errorMessage","인증번호를 전송해주세요");
+            return "cert/authNum";
+        }
+
+        // 현재시간이 만료시간이 지났다면
+        if (LocalDateTime.now().isAfter((LocalDateTime)sessionAuthNumMap.get("endTime"))) {
+            model.addAttribute("auth", new CertDTO());
+            model.addAttribute("errorMessage","인증시간이 만료되었습니다");
+            session.setAttribute(authNum, null);
+            session.setMaxInactiveInterval(0);
+            return "cert/authNum";
+        }
+
+        // 인증번호
+        String sessionAuthNum = (String) sessionAuthNumMap.get(teacherId);
+        if (authNum.equals(sessionAuthNum)) {
+            // 인증번호가 일치하면
+            model.addAttribute("pwdEdit", new PwdEditDTO());
+            model.addAttribute("username", certDTO);
+            return "cert/changePassword";
+        } else {
+            model.addAttribute("auth", new CertDTO());
+            model.addAttribute("username", certDTO);
+            model.addAttribute("errorMessage","인증번호가 일치하지 않습니다");
+            return "cert/authNum";
         }
     }
 
@@ -149,18 +175,18 @@ public class TeacherCertController {
     @GetMapping("changeEmail")
     public String changeEmail(Model model){
 
-        EmailDTO emailDTO = new EmailDTO();
+        FindIdDTO findIdDTO = new FindIdDTO();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        emailDTO.setUsername(auth.getName());
+        findIdDTO.setUsername(auth.getName());
 
-        if (teacherService.findTeacherEmailByUsername(emailDTO).isPresent()) {
+        if (teacherCertService.findIdByEmail(findIdDTO).isPresent()) {
             // 교사 계정 정보가 있을 경우, emailDTO 정보 추가
-            emailDTO.setEmail(teacherService.findTeacherEmailByUsername(emailDTO).get().getEmail());
+            findIdDTO.setEmail(teacherCertService.findIdByEmail(findIdDTO).get().getEmail());
         }
 
         try {
             model.addAttribute("emailEdit", new EditEmailDTO());
-            model.addAttribute("username", emailDTO);
+            model.addAttribute("username", findIdDTO);
             return "cert/changeEmail";
         } catch (Exception e) {
             log.info("send Id error = {}", e.getMessage());
@@ -173,16 +199,12 @@ public class TeacherCertController {
     public String updateEmail(EditEmailDTO editEmailDTO) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         editEmailDTO.setUsername(auth.getName());
-        try{
+
+        try {
             teacherCertService.updateEmail(editEmailDTO);
             return "redirect:cert/completion";
-        }catch (Exception e){
+        } catch (Exception e) {
             return "manage/class";
         }
-    }
-
-    @GetMapping("completion")
-    public String updateCompletionForm() {
-        return "cert/updateCompletion";
     }
 }

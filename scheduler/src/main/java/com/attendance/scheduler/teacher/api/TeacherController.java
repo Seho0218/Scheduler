@@ -12,6 +12,8 @@ import com.attendance.scheduler.teacher.dto.TeacherDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -40,8 +42,7 @@ public class TeacherController {
     // 조회
     @GetMapping("class")
     public String managePage(Model model) {
-        List<ClassDTO> classTable = classService.findClassByStudent();
-        log.info("classTable ={} ",classTable);
+        List<ClassDTO> classTable = classService.findStudentClassList();
         model.addAttribute("classList", new DeleteClassDTO()); //있어야 빠름
         model.addAttribute("findClassTable", classTable);
         return "manage/class";
@@ -57,10 +58,9 @@ public class TeacherController {
 
     //학생 리스트
     @GetMapping("studentList")
-    public String studentList(StudentInformationDTO studentInformationDTO, Model model) {
-        List<StudentInformationDTO> studentInformationList = teacherService
-                .findStudentInformationList(studentInformationDTO);
+    public String studentList(Model model) {
         List<TeacherDTO> teacherList = adminService.getTeacherList();
+        List<StudentInformationDTO> studentInformationList = teacherService.findStudentInformationList();
 
         model.addAttribute("studentObject", new StudentInformationDTO());
         model.addAttribute("teacherList", teacherList);
@@ -83,16 +83,16 @@ public class TeacherController {
             return "manage/registerStudentInformation";
         }
 
-        StudentInformationDTO studentInformationDTO = new StudentInformationDTO();
-        studentInformationDTO.setStudentName(registerStudentDTO.getStudentName());
-
         Optional<StudentInformationDTO> studentEntityByStudentName = studentService
-                .findStudentEntityByStudentName(studentInformationDTO);
+                .findStudentEntityByStudentName(registerStudentDTO.getStudentName());
 
         if (studentEntityByStudentName.isPresent()) {
             model.addAttribute("studentInformation", "이미 등록된 학생의 이름입니다.");
             return "manage/registerStudentInformation";
         }
+
+        final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        registerStudentDTO.setTeacherEntity(auth.getName());
 
         try {
             teacherService.registerStudentInformation(registerStudentDTO);

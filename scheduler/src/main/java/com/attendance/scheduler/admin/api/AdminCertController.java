@@ -22,6 +22,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.time.LocalDateTime;
+import java.util.Map;
+
 @Slf4j
 @Controller
 @RequiredArgsConstructor
@@ -34,14 +37,6 @@ public class AdminCertController {
      * Find Password Section
      */
 
-    /**
-     * FindPassword Form
-     */
-    @GetMapping("findPassword")
-    public String findPassword(Model model) {
-        model.addAttribute("account", new TeacherDTO());
-        return "cert/findPwd";
-    }
 
     /*
      * Validate ID and Email and Send teacher AuthNum
@@ -61,14 +56,56 @@ public class AdminCertController {
         }
 
         try {
-            model.addAttribute("username", findPasswordDTO.getUsername());
-            model.addAttribute("auth", new CertDTO());
             adminService.setupAuthNum(findPasswordDTO, session);
+            model.addAttribute("auth", new CertDTO());
             return "cert/authNum";
         } catch (Exception e) {
             model.addAttribute("account", new TeacherDTO());
             model.addAttribute("errorMessage", e.getMessage());
             return "cert/findPwd";
+        }
+    }
+
+    /*
+     * AuthNum Check
+     * */
+    @PostMapping("authNumCheck")
+    private String authNumCheck(Model model, CertDTO certDTO, HttpSession session) {
+        log.info("CertDTO={}", certDTO);
+
+        Map<String, Object> sessionAuthNumMap = (Map<String, Object>) session.getAttribute(certDTO.getUsername());
+        String teacherId = certDTO.getUsername();
+        String authNum = certDTO.getAuthNum();
+
+        if (sessionAuthNumMap.isEmpty()) {
+            model.addAttribute("auth", new CertDTO());
+            model.addAttribute("username", certDTO);
+            model.addAttribute("errorMessage","인증번호를 전송해주세요");
+            return "cert/authNum";
+        }
+
+
+        // 현재시간이 만료시간이 지났다면
+        if (LocalDateTime.now().isAfter((LocalDateTime)sessionAuthNumMap.get("endTime"))) {
+            model.addAttribute("auth", new CertDTO());
+            model.addAttribute("errorMessage","인증시간이 만료되었습니다");
+            session.setAttribute(authNum, null);
+            session.setMaxInactiveInterval(0);
+            return "cert/authNum";
+        }
+
+        // 인증번호
+        String sessionAuthNum = (String) sessionAuthNumMap.get(teacherId);
+        if (authNum.equals(sessionAuthNum)) {
+            // 인증번호가 일치하면
+            model.addAttribute("pwdEdit", new PwdEditDTO());
+            model.addAttribute("username", certDTO);
+            return "cert/changePassword";
+        } else {
+            model.addAttribute("auth", new CertDTO());
+            model.addAttribute("username", certDTO);
+            model.addAttribute("errorMessage","인증번호가 일치하지 않습니다");
+            return "cert/authNum";
         }
     }
 
@@ -130,10 +167,5 @@ public class AdminCertController {
         }catch (Exception e){
             return "manage/class";
         }
-    }
-
-    @GetMapping("completion")
-    public String updateCompletionForm() {
-        return "cert/updateCompletion";
     }
 }

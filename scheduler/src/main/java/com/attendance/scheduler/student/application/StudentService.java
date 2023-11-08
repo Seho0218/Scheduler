@@ -6,6 +6,8 @@ import java.util.Optional;
 
 public interface StudentService {
 
-    Optional<StudentInformationDTO> findStudentEntityByStudentName(StudentInformationDTO studentInformationDTO);
+    Optional<StudentInformationDTO> findStudentEntityByStudentName(String studentName);
+
+
 
 }
