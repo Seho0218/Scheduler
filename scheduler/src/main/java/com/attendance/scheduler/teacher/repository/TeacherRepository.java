@@ -1,22 +1,31 @@
 package com.attendance.scheduler.teacher.repository;
 
 import com.attendance.scheduler.teacher.domain.TeacherEntity;
-import jakarta.transaction.Transactional;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
+import static com.attendance.scheduler.teacher.domain.QTeacherEntity.teacherEntity;
 
-public interface TeacherRepository extends JpaRepository<TeacherEntity, Long> {
+@Repository
+@RequiredArgsConstructor
+public class TeacherRepository {
+    public final JPAQueryFactory queryFactory;
 
-    boolean existsByUsername(String username);
-    boolean existsByEmail(String email);
+    public TeacherEntity getTeacherEntityById(Long teacherId){
+        return queryFactory
+                .select(Projections.fields(TeacherEntity.class,
+                        teacherEntity.id,
+                        teacherEntity.teacherName,
+                        teacherEntity.username,
+                        teacherEntity.password,
+                        teacherEntity.email,
+                        teacherEntity.approved))
+                .from(teacherEntity)
+                .where(teacherEntity.id.eq(teacherId))
+                .fetchOne();
+    }
 
-    TeacherEntity findByUsernameIs(String username);
-
-    Optional<TeacherEntity> findTeacherEntityById(Long id);
-    Optional<TeacherEntity> findByEmailIs(String email);
-
-    @Transactional
-    void deleteByUsernameIs(String username);
 
 }

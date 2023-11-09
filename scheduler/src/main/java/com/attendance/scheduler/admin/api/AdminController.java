@@ -51,8 +51,10 @@ public class AdminController {
         return ResponseEntity.ok("승인 취소되었습니다.");
     }
 
+    //TODO
     @PostMapping("changeTeacher")
     public ResponseEntity<String> changeTeacher(ChangeTeacherDTO changeTeacherDTO) {
+        System.out.println("changeTeacherDTO = " + changeTeacherDTO);
         adminService.changeExistTeacher(changeTeacherDTO);
         return ResponseEntity.ok("변경 되었습니다.");
     }

@@ -5,7 +5,7 @@ import com.attendance.scheduler.teacher.dto.EditEmailDTO;
 import com.attendance.scheduler.teacher.dto.FindIdDTO;
 import com.attendance.scheduler.teacher.dto.FindPasswordDTO;
 import com.attendance.scheduler.teacher.dto.PwdEditDTO;
-import com.attendance.scheduler.teacher.repository.TeacherRepository;
+import com.attendance.scheduler.teacher.repository.TeacherJpaRepository;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,26 +27,26 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class TeacherCertServiceImpl implements TeacherCertService {
 
-    private final TeacherRepository teacherRepository;
+    private final TeacherJpaRepository teacherJpaRepository;
     private final PasswordEncoder passwordEncoder;
     private final JavaMailSender mailSender;
 
     @Override
     public boolean idConfirmation(FindPasswordDTO findPasswordDTO) {
-        return teacherRepository
+        return teacherJpaRepository
                 .existsByUsername(findPasswordDTO.getUsername());
     }
 
     @Override
     public boolean emailConfirmation(FindPasswordDTO findPasswordDTO) {
-        return teacherRepository
+        return teacherJpaRepository
                 .existsByEmail(findPasswordDTO.getEmail());
     }
 
     @Override
     public Optional<FindIdDTO> findIdByEmail(FindIdDTO findIdDTO) {
         Optional<TeacherEntity> optionalTeacherEntity
-                = Optional.ofNullable(teacherRepository.findByUsernameIs(findIdDTO.getUsername()));
+                = Optional.ofNullable(teacherJpaRepository.findByUsernameIs(findIdDTO.getUsername()));
 
         return optionalTeacherEntity.map(teacherEntity -> {
             FindIdDTO resultDTO = new FindIdDTO();
@@ -120,16 +120,16 @@ public class TeacherCertServiceImpl implements TeacherCertService {
 
         pwdEditDTO.setPassword(encodePassword);
 
-        final TeacherEntity byTeacherIdIs = teacherRepository
+        final TeacherEntity byTeacherIdIs = teacherJpaRepository
                 .findByUsernameIs(auth.getName());
         byTeacherIdIs.updatePassword(pwdEditDTO);
-        teacherRepository.save(byTeacherIdIs);
+        teacherJpaRepository.save(byTeacherIdIs);
     }
 
     @Override
     public void updateEmail(EditEmailDTO editEmailDTO) {
-        TeacherEntity teacherEntity = teacherRepository.findByUsernameIs(editEmailDTO.getUsername());
+        TeacherEntity teacherEntity = teacherJpaRepository.findByUsernameIs(editEmailDTO.getUsername());
         teacherEntity.updateEmail(editEmailDTO);
-        teacherRepository.save(teacherEntity);
+        teacherJpaRepository.save(teacherEntity);
     }
 }

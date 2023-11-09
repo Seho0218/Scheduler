@@ -16,7 +16,7 @@ public class TeacherDTO {
 
     private String password;
 
-    private String name;
+    private String teacherName;
 
     private String email;
 

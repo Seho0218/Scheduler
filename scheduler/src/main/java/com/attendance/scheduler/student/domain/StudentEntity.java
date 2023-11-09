@@ -35,6 +35,8 @@ public class StudentEntity {
 
     private String studentParentPhoneNumber;
 
+    private String teacherName;
+
     @NotNull
     @ManyToOne(fetch = LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "teacherId")
@@ -57,14 +59,19 @@ public class StudentEntity {
         this.studentStatusEntity = studentStatusEntity;
     }
 
+    public void updateTeacherName(String teacherName) {
+        this.teacherName = teacherName;
+    }
+
     @Builder
-    public StudentEntity(Long id, String studentName, String studentPhoneNumber, String studentAddress, String studentDetailedAddress, String studentParentPhoneNumber, TeacherEntity teacherEntity, StudentStatusEntity studentStatusEntity) {
+    public StudentEntity(Long id, String studentName, String studentPhoneNumber, String studentAddress, String studentDetailedAddress, String studentParentPhoneNumber, String teacherName, TeacherEntity teacherEntity, StudentStatusEntity studentStatusEntity) {
         this.id = id;
         this.studentName = studentName;
         this.studentPhoneNumber = studentPhoneNumber;
         this.studentAddress = studentAddress;
         this.studentDetailedAddress = studentDetailedAddress;
         this.studentParentPhoneNumber = studentParentPhoneNumber;
+        this.teacherName = teacherName;
         this.teacherEntity = teacherEntity;
         this.studentStatusEntity = studentStatusEntity;
     }

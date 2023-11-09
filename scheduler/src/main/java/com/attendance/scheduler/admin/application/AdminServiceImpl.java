@@ -4,11 +4,13 @@ import com.attendance.scheduler.admin.domain.AdminEntity;
 import com.attendance.scheduler.admin.dto.*;
 import com.attendance.scheduler.admin.repository.AdminRepository;
 import com.attendance.scheduler.student.domain.StudentEntity;
+import com.attendance.scheduler.student.repository.StudentJpaRepository;
 import com.attendance.scheduler.student.repository.StudentRepository;
 import com.attendance.scheduler.teacher.domain.TeacherEntity;
 import com.attendance.scheduler.teacher.dto.PwdEditDTO;
 import com.attendance.scheduler.teacher.dto.TeacherDTO;
-import com.attendance.scheduler.teacher.repository.TeacherMapper;
+import com.attendance.scheduler.teacher.dto.TeacherMapper;
+import com.attendance.scheduler.teacher.repository.TeacherJpaRepository;
 import com.attendance.scheduler.teacher.repository.TeacherRepository;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
@@ -34,15 +36,17 @@ import java.util.stream.Collectors;
 public class AdminServiceImpl implements AdminService {
 
     private final AdminRepository adminRepository;
-    private final TeacherRepository teacherRepository;
+    private final TeacherJpaRepository teacherJpaRepository;
+    private final StudentJpaRepository studentJpaRepository;
     private final StudentRepository studentRepository;
+    private final TeacherRepository teacherRepository;
     private final PasswordEncoder passwordEncoder;
     private final TeacherMapper teacherMapper;
     private final JavaMailSender mailSender;
 
     @Override
     public List<TeacherDTO> getTeacherList() {
-        List<TeacherEntity> optionalTeacherEntity = teacherRepository.findAll();
+        List<TeacherEntity> optionalTeacherEntity = teacherJpaRepository.findAll();
         return optionalTeacherEntity.stream()
                 .map(teacherMapper::toTeacherDTO)
                 .collect(Collectors.toList());
@@ -62,40 +66,38 @@ public class AdminServiceImpl implements AdminService {
     @Override
     @Transactional
     public void grantAuth(ApproveTeacherDTO approveTeacherDTO) {
-        TeacherEntity teacherEntity = teacherRepository
+        TeacherEntity teacherEntity = teacherJpaRepository
                 .findByUsernameIs(approveTeacherDTO.getUsername());
         teacherEntity.updateApprove(true);
-        teacherRepository.save(teacherEntity);
+        teacherJpaRepository.save(teacherEntity);
     }
 
     @Override
     @Transactional
     public void revokeAuth(ApproveTeacherDTO approveTeacherDTO) {
-        TeacherEntity teacherEntity = teacherRepository
+        TeacherEntity teacherEntity = teacherJpaRepository
                 .findByUsernameIs(approveTeacherDTO.getUsername());
         teacherEntity.updateApprove(false);
-        teacherRepository.save(teacherEntity);
+        teacherJpaRepository.save(teacherEntity);
     }
 
     @Override
     @Transactional
+    //TODO
     public void changeExistTeacher(ChangeTeacherDTO changeTeacherDTO) {
-        Optional<StudentEntity> studentEntityById = studentRepository
-                .findStudentEntityById(changeTeacherDTO.getStudentId());
-        Optional<TeacherEntity> teacherEntityById = teacherRepository
-                .findTeacherEntityById(changeTeacherDTO.getTeacherId());
+        TeacherEntity teacherEntity = teacherRepository.getTeacherEntityById(changeTeacherDTO.getTeacherId());
+        StudentEntity studentEntity = studentRepository.getStudentEntityById(changeTeacherDTO.getStudentId());
 
-        TeacherEntity teacherEntity = teacherEntityById.get();
-        StudentEntity studentEntity = studentEntityById.get();
-
+        studentEntity.updateTeacherName(teacherEntity.getTeacherName());
         studentEntity.setTeacherEntity(teacherEntity);
-        studentRepository.save(studentEntity);
+
+        studentJpaRepository.save(studentEntity);
     }
 
     @Override
     @Transactional
     public void deleteTeacherAccount(ApproveTeacherDTO approveTeacherDTO) {
-        teacherRepository.deleteByUsernameIs(approveTeacherDTO.getUsername());
+        teacherJpaRepository.deleteByUsernameIs(approveTeacherDTO.getUsername());
     }
 
 

@@ -37,7 +37,7 @@ public class StudentStatusEntity {
     private Timestamp updateTimeStamp;
 
     @NotNull
-    @OneToOne(fetch = LAZY)
+    @OneToOne(fetch = LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "studentId")
     private StudentEntity studentEntity;
 

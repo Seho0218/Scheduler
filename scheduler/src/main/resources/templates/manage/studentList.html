@@ -71,15 +71,14 @@
                     <td th:text="${student.getTeacherName()}"></td>
                     <td sec:authorize="hasRole('ROLE_ADMIN')">
                         <label>
-                            <select class="form-select form-select-md mb-3 teacherId" aria-label=".form-select-md">
-                                <option th:each="teacher : ${teacherList}" th:text="${teacher.getName()}" th:value="${teacher.getId()}"></option>
+                            <select class="form-select form-select-md mb-3" id="teacherID" aria-label=".form-select-md">
+                                <option th:each="teacher : ${teacherList}" th:text="${teacher.getTeacherName()}" th:value="${teacher.getId()}"></option>
                             </select>
                         </label>
                         <button class="btn btn-primary save-button">저장</button>
                     </td>
                     <td>
-                        <button class="btn btn-primary delete-button"
-                                th:value="${student.getId()}">삭제</button>
+                        <button class="btn btn-primary" id="studentID" th:value="${student.getId()}">삭제</button>
                     </td>
                 </tr>
             </tbody>

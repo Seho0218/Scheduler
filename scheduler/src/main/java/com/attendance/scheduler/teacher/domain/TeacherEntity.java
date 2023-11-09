@@ -61,12 +61,12 @@ public class TeacherEntity {
         this.password = pwdEditDTO.getPassword();
     }
 
-    public void updateApprove(boolean approved) {
-        this.approved = approved;
-    }
-
     public void updateEmail(EditEmailDTO editEmailDTO) {
         this.email = editEmailDTO.getEmail();
+    }
+
+    public void updateApprove(boolean approved) {
+        this.approved = approved;
     }
 
     @Builder

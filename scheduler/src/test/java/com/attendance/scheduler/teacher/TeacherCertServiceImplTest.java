@@ -8,7 +8,7 @@ import com.attendance.scheduler.teacher.application.TeacherService;
 import com.attendance.scheduler.teacher.domain.TeacherEntity;
 import com.attendance.scheduler.teacher.dto.EmailDTO;
 import com.attendance.scheduler.teacher.dto.PwdEditDTO;
-import com.attendance.scheduler.teacher.repository.TeacherRepository;
+import com.attendance.scheduler.teacher.repository.TeacherJpaRepository;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -35,14 +35,14 @@ class TeacherCertServiceImplTest {
     @Autowired private UserDetailService userDetailsService;
     @Autowired private TeacherService teacherService;
     @Autowired private TeacherCertService teacherCertService;
-    @Autowired private TeacherRepository teacherRepository;
+    @Autowired private TeacherJpaRepository teacherJpaRepository;
     @Autowired private PasswordEncoder passwordEncoder;
 
     @BeforeEach
     @DisplayName("회원가입")
     public void joinTeacherDTO() {
         Optional<TeacherEntity> existingTeacher = Optional
-                .ofNullable(teacherRepository
+                .ofNullable(teacherJpaRepository
                         .findByUsernameIs(testTeacherDataSet().getUsername()));
 
         if (existingTeacher.isEmpty()) {
@@ -79,7 +79,7 @@ class TeacherCertServiceImplTest {
     @Test
     @DisplayName("ID 중복 확인")
     void idConfirmation(){
-        boolean existedByUsername = teacherRepository
+        boolean existedByUsername = teacherJpaRepository
                 .existsByUsername(testTeacherDataSet().getUsername());
         assertTrue(existedByUsername);
     }
@@ -87,7 +87,7 @@ class TeacherCertServiceImplTest {
     @Test
     @DisplayName("Email 중복 확인")
     void emailConfirmation(){
-        boolean existedByUsername = teacherRepository
+        boolean existedByUsername = teacherJpaRepository
                 .existsByEmail(testTeacherDataSet().getEmail());
         assertTrue(existedByUsername);
     }
@@ -98,7 +98,7 @@ class TeacherCertServiceImplTest {
         EmailDTO emailDTO = new EmailDTO();
         emailDTO.setUsername(testTeacherDataSet().getUsername());
 
-        TeacherEntity teacherEntity = teacherRepository
+        TeacherEntity teacherEntity = teacherJpaRepository
                 .findByUsernameIs(emailDTO.getUsername());
 
         EmailDTO build = EmailDTO.builder()
@@ -136,7 +136,7 @@ class TeacherCertServiceImplTest {
 
         //when
         teacherCertService.initializePassword(pwdEditDTO);
-        TeacherEntity byUsernameIs = teacherRepository
+        TeacherEntity byUsernameIs = teacherJpaRepository
                 .findByUsernameIs(pwdEditDTO.getUsername());
 
         //then

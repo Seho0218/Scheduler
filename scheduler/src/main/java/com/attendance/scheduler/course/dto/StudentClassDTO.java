@@ -27,5 +27,7 @@ public class StudentClassDTO {
 
     private Integer friday;
 
+    private String teacherName;
+
     private TeacherEntity teacherEntity;
 }

@@ -3,7 +3,7 @@ package com.attendance.scheduler.config;
 import com.attendance.scheduler.course.application.ClassService;
 import com.attendance.scheduler.course.dto.ClassDTO;
 import com.attendance.scheduler.student.dto.StudentInformationDTO;
-import com.attendance.scheduler.student.repository.StudentRepository;
+import com.attendance.scheduler.student.repository.StudentJpaRepository;
 import com.attendance.scheduler.teacher.application.TeacherService;
 import com.attendance.scheduler.teacher.dto.DeleteClassDTO;
 import com.attendance.scheduler.teacher.dto.JoinTeacherDTO;
@@ -29,7 +29,7 @@ public class SampleDataTest {
     private ClassService classService;
 
     @Autowired
-    private StudentRepository studentRepository;
+    private StudentJpaRepository studentJpaRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -39,7 +39,7 @@ public class SampleDataTest {
         joinTeacherDTO.setUsername("sampleTeacher");
         joinTeacherDTO.setPassword("123");
         joinTeacherDTO.setEmail("sampleTeacherDataSet@gmail.com");
-        joinTeacherDTO.setName("김교사");
+        joinTeacherDTO.setTeacherName("김교사");
         joinTeacherDTO.setApproved(true);
         return joinTeacherDTO;
     }

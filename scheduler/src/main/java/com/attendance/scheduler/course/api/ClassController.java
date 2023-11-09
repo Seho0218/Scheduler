@@ -5,7 +5,6 @@ import com.attendance.scheduler.course.dto.ClassDTO;
 import com.attendance.scheduler.course.dto.StudentClassDTO;
 import com.attendance.scheduler.student.application.StudentService;
 import com.attendance.scheduler.student.dto.ClassListDTO;
-import com.attendance.scheduler.student.dto.StudentInformationDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -37,25 +36,32 @@ public class ClassController {
             log.info("errors={}", bindingResult);
             return "index";
         }
+        System.out.println("0 = " + 0);
 
-        Optional<StudentInformationDTO> studentEntityByStudentName = studentService
-                .findStudentEntityByStudentName(studentClassDTO.getStudentName());
+        boolean existStudentEntityByStudentName = studentService
+                .existStudentEntityByStudentName(studentClassDTO.getStudentName());
 
-        if(studentEntityByStudentName.isEmpty()) {
+        System.out.println("1 = " + 1);
+
+        if(!existStudentEntityByStudentName) {
             model.addAttribute("nullStudentName", "등록 되지 않은 학생입니다.");
             //ToKnow th:text로 연결해야함.
             return "index";
         }
 
+        System.out.println("2 = " + 2);
         //학생 수업 조회
         Optional<StudentClassDTO> studentClasses = classService.findStudentClasses(studentClassDTO);
+        System.out.println("3 = " + 3);
 
         if(studentClasses.isPresent()) {
             searchStudentClass(studentClasses.get(), model);
+            System.out.println("4 = " + 4);
             return "class/findClass";
         }
 
         getClassList(studentClassDTO.getStudentName(), model);
+        System.out.println("5 = " + 5);
         return "class/findClass";
     }
 

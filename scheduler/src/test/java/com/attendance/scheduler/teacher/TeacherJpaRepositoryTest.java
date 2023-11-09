@@ -1,7 +1,7 @@
 package com.attendance.scheduler.teacher;
 
 import com.attendance.scheduler.teacher.domain.TeacherEntity;
-import com.attendance.scheduler.teacher.repository.TeacherRepository;
+import com.attendance.scheduler.teacher.repository.TeacherJpaRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,21 +17,21 @@ import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTest
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
-class TeacherRepositoryTest {
+class TeacherJpaRepositoryTest {
 
     @Autowired
-    private TeacherRepository teacherRepository;
+    private TeacherJpaRepository teacherJpaRepository;
 
     @BeforeEach
     void beforeEachTest(){
-        teacherRepository.save(testTeacherDataSet().toEntity());
+        teacherJpaRepository.save(testTeacherDataSet().toEntity());
     }
 
     @Test
     void existsByUsername() {
 
         //When
-        boolean existsByUsername = teacherRepository
+        boolean existsByUsername = teacherJpaRepository
                 .existsByUsername(testTeacherDataSet().getUsername());
 
         //Then
@@ -42,7 +42,7 @@ class TeacherRepositoryTest {
     void existsByEmail() {
 
         //When
-        boolean existsByEmail = teacherRepository
+        boolean existsByEmail = teacherJpaRepository
                 .existsByEmail(testTeacherDataSet().getEmail());
 
         //Then
@@ -52,7 +52,7 @@ class TeacherRepositoryTest {
     @Test
     void findByUsernameIs() {
         //When
-        TeacherEntity byUsernameIs = teacherRepository
+        TeacherEntity byUsernameIs = teacherJpaRepository
                 .findByUsernameIs(testTeacherDataSet().getUsername());
         //Then
         assertEquals(testTeacherDataSet().getUsername(), byUsernameIs.getUsername());
@@ -63,7 +63,7 @@ class TeacherRepositoryTest {
     void findByEmailIs() {
 
         //When
-        Optional<TeacherEntity> byEmailIs = teacherRepository
+        Optional<TeacherEntity> byEmailIs = teacherJpaRepository
                 .findByEmailIs(testTeacherDataSet().getEmail());
         //Then
         if(byEmailIs.isPresent()) {

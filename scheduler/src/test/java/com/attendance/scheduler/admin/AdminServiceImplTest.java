@@ -8,7 +8,7 @@ import com.attendance.scheduler.admin.dto.EmailDTO;
 import com.attendance.scheduler.admin.repository.AdminRepository;
 import com.attendance.scheduler.teacher.application.TeacherService;
 import com.attendance.scheduler.teacher.domain.TeacherEntity;
-import com.attendance.scheduler.teacher.repository.TeacherRepository;
+import com.attendance.scheduler.teacher.repository.TeacherJpaRepository;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -31,14 +31,14 @@ class AdminServiceImplTest {
     @Autowired public AdminService adminService;
     @Autowired public AdminRepository adminRepository;
     @Autowired private TeacherService teacherService;
-    @Autowired private TeacherRepository teacherRepository;
+    @Autowired private TeacherJpaRepository teacherJpaRepository;
 
     private ApproveTeacherDTO approveTeacherDTO;
 
     @BeforeEach
     void joinSampleTeacherAccount(){
         Optional<TeacherEntity> existingTeacher = Optional
-                .ofNullable(teacherRepository
+                .ofNullable(teacherJpaRepository
                         .findByUsernameIs(testTeacherDataSet().getUsername()));
         if (existingTeacher.isEmpty()) {
             teacherService.joinTeacher(testTeacherDataSet());
@@ -74,7 +74,7 @@ class AdminServiceImplTest {
         adminService.grantAuth(approveTeacherDTO);
 
         //Then
-        TeacherEntity teacherEntity = teacherRepository
+        TeacherEntity teacherEntity = teacherJpaRepository
                 .findByUsernameIs(testTeacherDataSet().getUsername());
         assertTrue(teacherEntity.isApproved());
     }
@@ -93,7 +93,7 @@ class AdminServiceImplTest {
         adminService.revokeAuth(approveTeacherDTO);
 
         //Then
-        TeacherEntity teacherEntity = teacherRepository
+        TeacherEntity teacherEntity = teacherJpaRepository
                 .findByUsernameIs(testTeacherDataSet().getUsername());
         assertFalse(teacherEntity.isApproved());
     }
@@ -101,7 +101,7 @@ class AdminServiceImplTest {
     @Test
     @DisplayName("교사 계정 삭제")
     void deleteTeacher() {
-        teacherRepository.deleteByUsernameIs(testTeacherDataSet().getUsername());
+        teacherJpaRepository.deleteByUsernameIs(testTeacherDataSet().getUsername());
         boolean duplicateTeacherId = teacherService
                 .findDuplicateTeacherID(testTeacherDataSet());
 

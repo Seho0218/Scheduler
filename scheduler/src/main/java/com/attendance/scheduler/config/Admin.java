@@ -3,7 +3,7 @@ package com.attendance.scheduler.config;
 import com.attendance.scheduler.admin.domain.AdminEntity;
 import com.attendance.scheduler.admin.repository.AdminRepository;
 import com.attendance.scheduler.teacher.domain.TeacherEntity;
-import com.attendance.scheduler.teacher.repository.TeacherRepository;
+import com.attendance.scheduler.teacher.repository.TeacherJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -18,7 +18,7 @@ import java.util.Optional;
 public class Admin implements ApplicationRunner{
 
     private final AdminRepository adminRepository;
-    private final TeacherRepository teacherRepository;
+    private final TeacherJpaRepository teacherJpaRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -34,8 +34,8 @@ public class Admin implements ApplicationRunner{
                         .build()));
 
         Optional<TeacherEntity> optionalTeacherEntity = Optional
-                .ofNullable(teacherRepository.findByUsernameIs("sampleTeacher"));
-        optionalTeacherEntity.orElseGet(() -> teacherRepository.save(
+                .ofNullable(teacherJpaRepository.findByUsernameIs("sampleTeacher"));
+        optionalTeacherEntity.orElseGet(() -> teacherJpaRepository.save(
                 TeacherEntity.builder()
                         .username("sampleTeacher")
                         .email("sampleTeacher@gmail.com")

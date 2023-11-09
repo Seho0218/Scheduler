@@ -1,7 +1,6 @@
-package com.attendance.scheduler.teacher.repository;
+package com.attendance.scheduler.teacher.dto;
 
 import com.attendance.scheduler.teacher.domain.TeacherEntity;
-import com.attendance.scheduler.teacher.dto.TeacherDTO;
 import org.mapstruct.Mapper;
 import org.springframework.stereotype.Component;
 

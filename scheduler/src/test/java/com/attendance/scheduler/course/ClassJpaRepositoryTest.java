@@ -1,6 +1,6 @@
 package com.attendance.scheduler.course;
 
-import com.attendance.scheduler.course.repository.ClassTableRepository;
+import com.attendance.scheduler.course.repository.ClassJpaRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,22 +14,22 @@ import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTest
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
-class ClassTableRepositoryTest {
+class ClassJpaRepositoryTest {
 
     @Autowired
-    private ClassTableRepository classTableRepository;
+    private ClassJpaRepository classJpaRepository;
 
     //Given
     @BeforeEach
     void beforeEach(){
-        classTableRepository.save(testStudentClassDataSet().toEntity());
+        classJpaRepository.save(testStudentClassDataSet().toEntity());
     }
 
     @Test
     void existsByStudentNameIs() {
 
         //When
-        boolean existsByStudentNameIs = classTableRepository
+        boolean existsByStudentNameIs = classJpaRepository
                 .existsByStudentNameIs(testStudentClassDataSet().getStudentName());
 
         //Then
@@ -41,7 +41,7 @@ class ClassTableRepositoryTest {
     void deleteByStudentName() {
 
         //When
-        classTableRepository.deleteByStudentName(testStudentClassDataSet().getStudentName());
+        classJpaRepository.deleteByStudentName(testStudentClassDataSet().getStudentName());
 
         //Then
         assertNull(testStudentClassDataSet().getStudentName());

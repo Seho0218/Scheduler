@@ -2,11 +2,12 @@ package com.attendance.scheduler.teacher.application;
 
 import com.attendance.scheduler.student.domain.StudentEntity;
 import com.attendance.scheduler.student.dto.StudentInformationDTO;
+import com.attendance.scheduler.student.repository.StudentJpaRepository;
 import com.attendance.scheduler.student.repository.StudentRepository;
 import com.attendance.scheduler.teacher.domain.TeacherEntity;
 import com.attendance.scheduler.teacher.dto.JoinTeacherDTO;
 import com.attendance.scheduler.teacher.dto.RegisterStudentDTO;
-import com.attendance.scheduler.teacher.repository.TeacherRepository;
+import com.attendance.scheduler.teacher.repository.TeacherJpaRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,62 +21,49 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TeacherServiceImpl implements TeacherService {
 
-    private final TeacherRepository teacherRepository;
+    private final TeacherJpaRepository teacherJpaRepository;
+    private final StudentJpaRepository studentJpaRepository;
     private final StudentRepository studentRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
     @Transactional
     public void joinTeacher(JoinTeacherDTO joinTeacherDTO) {
-        final String encode = passwordEncoder
-                .encode(joinTeacherDTO.getPassword());
+        final String encode = passwordEncoder.encode(joinTeacherDTO.getPassword());
         joinTeacherDTO.setPassword(encode);
-        teacherRepository.save(joinTeacherDTO.toEntity());
+        teacherJpaRepository.save(joinTeacherDTO.toEntity());
     }
 
     @Override
     public boolean findDuplicateTeacherID(JoinTeacherDTO joinTeacherDTO) {
-        return teacherRepository
-                .existsByUsername(joinTeacherDTO.getUsername());
+        return teacherJpaRepository.existsByUsername(joinTeacherDTO.getUsername());
     }
 
     @Override
     public boolean findDuplicateTeacherEmail(JoinTeacherDTO joinTeacherDTO) {
-        return teacherRepository
-                .existsByEmail(joinTeacherDTO.getEmail());
+        return teacherJpaRepository.existsByEmail(joinTeacherDTO.getEmail());
     }
 
     @Override
     @Transactional
     public void registerStudentInformation(RegisterStudentDTO registerStudentDTO) {
-        TeacherEntity teacherEntity = teacherRepository.findByUsernameIs(registerStudentDTO.getTeacherEntity());
+        TeacherEntity teacherEntity = teacherJpaRepository.findByUsernameIs(registerStudentDTO.getTeacherEntity());
+        registerStudentDTO.setTeacherName(teacherEntity.getTeacherName());
+
         StudentEntity studentEntity = registerStudentDTO.toEntity();
         studentEntity.setTeacherEntity(teacherEntity);
-        studentRepository.save(studentEntity);
+        studentJpaRepository.save(studentEntity);
     }
 
     @Override
     @Transactional
     public void deleteStudentInformation(StudentInformationDTO studentInformationDTO) {
-        studentRepository.deleteStudentEntityById(studentInformationDTO.getId());
+        studentJpaRepository.deleteStudentEntityById(studentInformationDTO.getId());
     }
 
     @Override
     @Transactional
     public List<StudentInformationDTO> findStudentInformationList() {
-        return studentRepository.findAll()
-                .stream().map(studentEntity -> {
-                    System.out.println("1 = " + 1);
-                    StudentInformationDTO informationDTO = new StudentInformationDTO();
-                    informationDTO.setId(studentEntity.getId());
-                    informationDTO.setStudentName(studentEntity.getStudentName());
-                    informationDTO.setStudentAddress(studentEntity.getStudentAddress());
-                    informationDTO.setStudentDetailedAddress(studentEntity.getStudentDetailedAddress());
-                    informationDTO.setStudentPhoneNumber(studentEntity.getStudentPhoneNumber());
-                    informationDTO.setStudentParentPhoneNumber(studentEntity.getStudentParentPhoneNumber());
-                    informationDTO.setTeacherName(studentEntity.getTeacherEntity().getUsername());
-                    System.out.println("2 = " + 2);
-                    return informationDTO;
-                }).toList();
+        return studentRepository.studentInformationDTOList();
     }
 }

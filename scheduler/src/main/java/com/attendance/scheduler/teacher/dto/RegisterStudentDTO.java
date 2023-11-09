@@ -28,6 +28,8 @@ public class RegisterStudentDTO {
     @NotEmpty(message = "학부모 전화번호를 입력해 주세요")
     private String studentParentPhoneNumber;
 
+    private String teacherName;
+
     private String teacherEntity;
 
     public StudentEntity toEntity(){
@@ -37,6 +39,7 @@ public class RegisterStudentDTO {
                 .studentParentPhoneNumber(studentPhoneNumber)
                 .studentAddress(studentAddress)
                 .studentDetailedAddress(studentDetailedAddress)
+                .teacherName(teacherName)
                 .build();
     }
 }

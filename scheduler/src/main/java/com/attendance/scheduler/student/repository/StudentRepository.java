@@ -1,17 +1,48 @@
 package com.attendance.scheduler.student.repository;
 
 import com.attendance.scheduler.student.domain.StudentEntity;
-import jakarta.transaction.Transactional;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.attendance.scheduler.student.dto.StudentInformationDTO;
+import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
+import java.util.List;
 
-public interface StudentRepository extends JpaRepository<StudentEntity, Long> {
+import static com.attendance.scheduler.student.domain.QStudentEntity.studentEntity;
 
-    Optional<StudentEntity> findStudentEntityByStudentNameIs(String StudentName);
+@Repository
+@RequiredArgsConstructor
+public class StudentRepository {
 
-    Optional<StudentEntity> findStudentEntityById(Long id);
+    public final JPAQueryFactory queryFactory;
 
-    @Transactional
-    void deleteStudentEntityById(long id);
+    public List<StudentInformationDTO> studentInformationDTOList(){
+        return queryFactory
+                .select(Projections.fields(StudentInformationDTO.class,
+                        studentEntity.id,
+                        studentEntity.studentName,
+                        studentEntity.studentAddress,
+                        studentEntity.studentDetailedAddress,
+                        studentEntity.studentPhoneNumber,
+                        studentEntity.studentParentPhoneNumber,
+                        studentEntity.teacherName
+                ))
+                .from(studentEntity)
+                .fetch();
+    }
+
+    public StudentEntity getStudentEntityById(Long studentId){
+        return queryFactory
+                .selectFrom(studentEntity)
+                .where(studentEntity.id.eq(studentId))
+                .fetchOne();
+    }
+
+    public StudentEntity getStudentEntityByStudentName(String studentName){
+        return queryFactory
+                .selectFrom(studentEntity)
+                .where(studentEntity.studentName.eq(studentName))
+                .fetchOne();
+    }
 }

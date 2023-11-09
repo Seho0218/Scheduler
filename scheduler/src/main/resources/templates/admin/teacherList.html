@@ -61,7 +61,7 @@
                 <tbody th:each="teacher : ${teacherList}">
                 <tr>
                     <td th:text="${teacher.getUsername()}"></td>
-                    <td th:text="${teacher.getName()}"></td>
+                    <td th:text="${teacher.getTeacherName()}"></td>
                     <td th:text="${teacher.isApproved() == true ? '승인' : '비승인'}"></td>
                     <td>
                         <button class="btn btn-primary approve-button"

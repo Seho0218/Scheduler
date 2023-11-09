@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Controller
@@ -83,10 +82,10 @@ public class TeacherController {
             return "manage/registerStudentInformation";
         }
 
-        Optional<StudentInformationDTO> studentEntityByStudentName = studentService
-                .findStudentEntityByStudentName(registerStudentDTO.getStudentName());
+        boolean studentEntityByStudentName = studentService
+                .existStudentEntityByStudentName(registerStudentDTO.getStudentName());
 
-        if (studentEntityByStudentName.isPresent()) {
+        if (!studentEntityByStudentName) {
             model.addAttribute("studentInformation", "이미 등록된 학생의 이름입니다.");
             return "manage/registerStudentInformation";
         }

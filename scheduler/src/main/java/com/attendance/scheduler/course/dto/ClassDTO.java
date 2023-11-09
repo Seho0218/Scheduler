@@ -47,6 +47,7 @@ public class ClassDTO {
                 .wednesday(wednesday)
                 .thursday(thursday)
                 .friday(friday)
+                .teacherName(teacherName)
                 .updateTimeStamp(updateTimeStamp)
                 .build();
     }

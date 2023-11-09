@@ -19,9 +19,8 @@ $(document).ready(function() {
     });
 
     $('.save-button').click(function() {
-        var teacherId = $('.teacherId').val();
-        console.log(teacherId);
-        var studentId = $('.delete-button').val();
+        var teacherId = $('#teacherID').val();
+        var studentId = $('#studentID').val();
         var confirmation = confirm('담당교사를 변경하시겠습니까?');
         if (confirmation) {
             $.ajax({

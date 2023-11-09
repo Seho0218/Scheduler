@@ -46,7 +46,7 @@ public class TestDataSet {
         joinTeacherDTO.setUsername("testTeacher");
         joinTeacherDTO.setPassword("123");
         joinTeacherDTO.setEmail("testTeacherDataSet@gmail.com");
-        joinTeacherDTO.setName("김교사");
+        joinTeacherDTO.setTeacherName("김교사");
         joinTeacherDTO.setApproved(true);
         return joinTeacherDTO;
     }
