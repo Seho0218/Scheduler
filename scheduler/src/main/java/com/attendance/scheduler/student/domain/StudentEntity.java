@@ -38,7 +38,7 @@ public class StudentEntity {
     private String teacherName;
 
     @NotNull
-    @ManyToOne(fetch = LAZY, cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = LAZY, optional = false, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "teacherId")
     private TeacherEntity teacherEntity;
 
@@ -52,7 +52,7 @@ public class StudentEntity {
         }
     }
 
-    @OneToOne(mappedBy = "studentEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "studentEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = LAZY, optional = false)
     private StudentStatusEntity studentStatusEntity;
 
     public void setStudentClassEntity(StudentStatusEntity studentStatusEntity) {

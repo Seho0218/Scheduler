@@ -25,9 +25,7 @@
             font-size: 1em; /* 여기에 적절한 크기 입력 */
         }
 
-        .teacherId,
-        .save-button,
-        .delete-button {
+        .save-button{
         }
 
     </style>
@@ -71,14 +69,16 @@
                     <td th:text="${student.getTeacherName()}"></td>
                     <td sec:authorize="hasRole('ROLE_ADMIN')">
                         <label>
-                            <select class="form-select form-select-md mb-3" id="teacherID" aria-label=".form-select-md">
-                                <option th:each="teacher : ${teacherList}" th:text="${teacher.getTeacherName()}" th:value="${teacher.getId()}"></option>
+                            <select class="form-select form-select-md mb-3 teacherID" aria-label=".form-select-md">
+                                <option th:each="teacher : ${teacherList}"
+                                        th:text="${teacher.getTeacherName()}" th:value="${teacher.getId()}">
+                                </option>
                             </select>
                         </label>
                         <button class="btn btn-primary save-button">저장</button>
                     </td>
                     <td>
-                        <button class="btn btn-primary" id="studentID" th:value="${student.getId()}">삭제</button>
+                        <button class="btn btn-primary studentID" th:value="${student.getId()}">삭제</button>
                     </td>
                 </tr>
             </tbody>

@@ -1,7 +1,6 @@
 package com.attendance.scheduler.course.application;
 
 import com.attendance.scheduler.course.domain.ClassEntity;
-import com.attendance.scheduler.course.domain.ClassMapper;
 import com.attendance.scheduler.course.dto.ClassDTO;
 import com.attendance.scheduler.course.dto.StudentClassDTO;
 import com.attendance.scheduler.course.repository.ClassJpaRepository;
@@ -9,7 +8,6 @@ import com.attendance.scheduler.course.repository.ClassRepository;
 import com.attendance.scheduler.student.domain.StudentEntity;
 import com.attendance.scheduler.student.dto.ClassListDTO;
 import com.attendance.scheduler.student.repository.StudentJpaRepository;
-import com.attendance.scheduler.student.repository.StudentRepository;
 import com.attendance.scheduler.teacher.dto.DeleteClassDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,8 +24,6 @@ public class ClassServiceImpl implements ClassService {
     private final ClassJpaRepository classJpaRepository;
     private final StudentJpaRepository studentJpaRepository;
     private final ClassRepository classRepository;
-    private final StudentRepository studentRepository;
-    private final ClassMapper classMapper;
 
     @Override
     @Transactional
@@ -38,11 +34,11 @@ public class ClassServiceImpl implements ClassService {
     @Override
     @Transactional
     public ClassListDTO findTeachersClasses(String studentName) {
+
         //학생 이름으로
+        Optional<StudentEntity> studentEntity = studentJpaRepository.findStudentEntityByStudentName(studentName);
 
-        StudentEntity studentEntity = studentRepository.getStudentEntityByStudentName(studentName);
-
-        String teacherName = studentEntity.getTeacherName();
+        String teacherName = studentEntity.get().getTeacherName();
         List<StudentClassDTO> studentClassByTeacherName = classRepository.getStudentClassByTeacherName(teacherName);
 
         ClassListDTO classListDTO = ClassListDTO.getInstance();
@@ -72,11 +68,11 @@ public class ClassServiceImpl implements ClassService {
         boolean existsByStudentNameIs = studentJpaRepository.existsByStudentNameIs(classDTO.getStudentName());
 
         if(existsByStudentNameIs){
-            StudentEntity studentEntity = studentRepository.getStudentEntityByStudentName(classDTO.getStudentName());
-            classDTO.setTeacherName(studentEntity.getTeacherName());
+            Optional<StudentEntity> studentEntity = studentJpaRepository.findStudentEntityByStudentName(classDTO.getStudentName());
+            classDTO.setTeacherName(studentEntity.get().getTeacherName());
 
             ClassEntity classEntity = classDTO.toEntity();
-            classEntity.setTeacherEntity(studentEntity.getTeacherEntity());
+            classEntity.setTeacherEntity(studentEntity.get().getTeacherEntity());
 
             classJpaRepository.save(classEntity);
         }
@@ -98,10 +94,7 @@ public class ClassServiceImpl implements ClassService {
         String errorCode = "다른 원생과 겹치는 시간이 있습니다. 새로고침 후, 다시 신청해 주세요.";
 
 
-        List<ClassDTO> allClassDTO = classJpaRepository.findAll()
-                .stream()
-                .map(classMapper::toClassDTO)
-                .toList();
+        List<ClassDTO> allClassDTO = classRepository.getStudentClassList();
 
         for (ClassDTO classDTOList: allClassDTO) {
             Integer mondayValue = classDTOList.getMonday();

@@ -5,11 +5,9 @@ import com.attendance.scheduler.admin.dto.*;
 import com.attendance.scheduler.admin.repository.AdminRepository;
 import com.attendance.scheduler.student.domain.StudentEntity;
 import com.attendance.scheduler.student.repository.StudentJpaRepository;
-import com.attendance.scheduler.student.repository.StudentRepository;
 import com.attendance.scheduler.teacher.domain.TeacherEntity;
 import com.attendance.scheduler.teacher.dto.PwdEditDTO;
 import com.attendance.scheduler.teacher.dto.TeacherDTO;
-import com.attendance.scheduler.teacher.dto.TeacherMapper;
 import com.attendance.scheduler.teacher.repository.TeacherJpaRepository;
 import com.attendance.scheduler.teacher.repository.TeacherRepository;
 import jakarta.servlet.http.HttpSession;
@@ -28,7 +26,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -36,20 +33,18 @@ import java.util.stream.Collectors;
 public class AdminServiceImpl implements AdminService {
 
     private final AdminRepository adminRepository;
+
     private final TeacherJpaRepository teacherJpaRepository;
-    private final StudentJpaRepository studentJpaRepository;
-    private final StudentRepository studentRepository;
     private final TeacherRepository teacherRepository;
+
+    private final StudentJpaRepository studentJpaRepository;
+
     private final PasswordEncoder passwordEncoder;
-    private final TeacherMapper teacherMapper;
     private final JavaMailSender mailSender;
 
     @Override
     public List<TeacherDTO> getTeacherList() {
-        List<TeacherEntity> optionalTeacherEntity = teacherJpaRepository.findAll();
-        return optionalTeacherEntity.stream()
-                .map(teacherMapper::toTeacherDTO)
-                .collect(Collectors.toList());
+        return teacherRepository.getTeacherList();
     }
 
 
@@ -83,15 +78,18 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     @Transactional
-    //TODO
     public void changeExistTeacher(ChangeTeacherDTO changeTeacherDTO) {
-        TeacherEntity teacherEntity = teacherRepository.getTeacherEntityById(changeTeacherDTO.getTeacherId());
-        StudentEntity studentEntity = studentRepository.getStudentEntityById(changeTeacherDTO.getStudentId());
+        System.out.println("1 = " + 1);
+        Optional<TeacherEntity> teacherEntity = teacherJpaRepository.findTeacherEntityById(changeTeacherDTO.getTeacherId());
+        System.out.println("2 = " + 2);
+        Optional<StudentEntity> studentEntity = studentJpaRepository.findStudentEntityById(changeTeacherDTO.getStudentId());
+        System.out.println("3 = " + 3);
+        studentEntity.get().updateTeacherName(teacherEntity.get().getTeacherName());
+        System.out.println("4 = " + 4);
+        studentEntity.get().setTeacherEntity(teacherEntity.get());
+        System.out.println("5 = " + 5);
 
-        studentEntity.updateTeacherName(teacherEntity.getTeacherName());
-        studentEntity.setTeacherEntity(teacherEntity);
-
-        studentJpaRepository.save(studentEntity);
+        studentJpaRepository.save(studentEntity.get());
     }
 
     @Override

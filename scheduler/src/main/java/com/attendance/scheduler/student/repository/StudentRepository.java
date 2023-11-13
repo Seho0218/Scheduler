@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.attendance.scheduler.student.domain.QStudentEntity.studentEntity;
 
@@ -32,17 +33,10 @@ public class StudentRepository {
                 .fetch();
     }
 
-    public StudentEntity getStudentEntityById(Long studentId){
-        return queryFactory
+    public Optional<StudentEntity> getStudentEntity(Long studentId) {
+        return Optional.ofNullable(queryFactory
                 .selectFrom(studentEntity)
                 .where(studentEntity.id.eq(studentId))
-                .fetchOne();
-    }
-
-    public StudentEntity getStudentEntityByStudentName(String studentName){
-        return queryFactory
-                .selectFrom(studentEntity)
-                .where(studentEntity.studentName.eq(studentName))
-                .fetchOne();
+                .fetchOne());
     }
 }

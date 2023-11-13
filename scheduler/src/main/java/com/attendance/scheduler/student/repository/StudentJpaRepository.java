@@ -13,6 +13,9 @@ public interface StudentJpaRepository extends JpaRepository<StudentEntity, Long>
 
     Optional<StudentEntity> findStudentEntityById(Long id);
 
+
+    Optional<StudentEntity> findStudentEntityByStudentName(String studentName);
+
     @Transactional
     void deleteStudentEntityById(long id);
 }

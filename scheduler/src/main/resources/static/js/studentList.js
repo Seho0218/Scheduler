@@ -1,12 +1,12 @@
 $(document).ready(function() {
     $('.delete-button').click(function() {
-        var studentId = $(this).attr('value');
-        var confirmation = confirm('정말 학생 정보를 삭제하시겠습니까?');
+        const studentId = $(this).attr('value');
+        const confirmation = confirm('정말 학생 정보를 삭제하시겠습니까?');
         if (confirmation) {
             $.ajax({
                 url: '/manage/deleteStudentList',
                 method: 'POST',
-                data: { id : studentId },
+                data: { id : studentID },
                 success: function() {
                     alert('삭제되었습니다.');
                     location.reload();
@@ -19,9 +19,14 @@ $(document).ready(function() {
     });
 
     $('.save-button').click(function() {
-        var teacherId = $('#teacherID').val();
-        var studentId = $('#studentID').val();
-        var confirmation = confirm('담당교사를 변경하시겠습니까?');
+        const row = $(this).closest('tr');
+
+        const studentId = row.find('.studentID').val();
+        const teacherId = row.find('.teacherID').val();
+
+        console.log(teacherId);
+        console.log(studentId);
+        const confirmation = confirm('담당교사를 변경하시겠습니까?');
         if (confirmation) {
             $.ajax({
                 url: '/admin/changeTeacher',
