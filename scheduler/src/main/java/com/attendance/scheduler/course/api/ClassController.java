@@ -36,12 +36,10 @@ public class ClassController {
             log.info("errors={}", bindingResult);
             return "index";
         }
-        System.out.println("0 = " + 0);
 
         boolean existStudentEntityByStudentName = studentService
                 .existStudentEntityByStudentName(studentClassDTO.getStudentName());
 
-        System.out.println("1 = " + 1);
 
         if(!existStudentEntityByStudentName) {
             model.addAttribute("nullStudentName", "등록 되지 않은 학생입니다.");
@@ -49,10 +47,8 @@ public class ClassController {
             return "index";
         }
 
-        System.out.println("2 = " + 2);
         //학생 수업 조회
         Optional<StudentClassDTO> studentClasses = classService.findStudentClasses(studentClassDTO);
-        System.out.println("3 = " + 3);
 
         if(studentClasses.isPresent()) {
             searchStudentClass(studentClasses.get(), model);
@@ -61,7 +57,6 @@ public class ClassController {
         }
 
         getClassList(studentClassDTO.getStudentName(), model);
-        System.out.println("5 = " + 5);
         return "class/findClass";
     }
 
@@ -80,6 +75,7 @@ public class ClassController {
             return "redirect:/completion";
         }catch (Exception e){
             getClassList(classDTO.getStudentName(), model);
+            model.addAttribute("error", e.getMessage());
             log.info("e.getMessage() = {}", e.getMessage());
             return "class/findClass";
         }

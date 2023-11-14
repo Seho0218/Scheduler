@@ -117,13 +117,11 @@ class AdminServiceImplTest {
         System.out.println("2 = " + 2);
         Optional<StudentEntity> studentEntity = studentRepository.getStudentEntity(changeTeacherDTO.getStudentId());
         System.out.println("3 = " + 3);
-        studentEntity.get().updateTeacherName(teacherEntity.get().getTeacherName());
-        System.out.println("4 = " + 4);
         studentEntity.get().setTeacherEntity(teacherEntity.get());
-        System.out.println("5 = " + 5);
-
+        System.out.println("4 = " + 4);
+        //문제
+        studentEntity.get().updateTeacherName(teacherEntity.get().getTeacherName());
         studentJpaRepository.save(studentEntity.get());
-        System.out.println("6 = " + 6);
     }
 
     @Test

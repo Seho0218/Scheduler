@@ -52,19 +52,12 @@ public class StudentEntity {
         }
     }
 
-    @OneToOne(mappedBy = "studentEntity", cascade = CascadeType.ALL, orphanRemoval = true, fetch = LAZY, optional = false)
-    private StudentStatusEntity studentStatusEntity;
-
-    public void setStudentClassEntity(StudentStatusEntity studentStatusEntity) {
-        this.studentStatusEntity = studentStatusEntity;
-    }
-
     public void updateTeacherName(String teacherName) {
         this.teacherName = teacherName;
     }
 
     @Builder
-    public StudentEntity(Long id, String studentName, String studentPhoneNumber, String studentAddress, String studentDetailedAddress, String studentParentPhoneNumber, String teacherName, TeacherEntity teacherEntity, StudentStatusEntity studentStatusEntity) {
+    public StudentEntity(Long id, String studentName, String studentPhoneNumber, String studentAddress, String studentDetailedAddress, String studentParentPhoneNumber, String teacherName, TeacherEntity teacherEntity) {
         this.id = id;
         this.studentName = studentName;
         this.studentPhoneNumber = studentPhoneNumber;
@@ -73,6 +66,5 @@ public class StudentEntity {
         this.studentParentPhoneNumber = studentParentPhoneNumber;
         this.teacherName = teacherName;
         this.teacherEntity = teacherEntity;
-        this.studentStatusEntity = studentStatusEntity;
     }
 }

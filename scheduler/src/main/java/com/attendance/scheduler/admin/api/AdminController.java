@@ -6,6 +6,7 @@ import com.attendance.scheduler.admin.dto.ChangeTeacherDTO;
 import com.attendance.scheduler.teacher.dto.TeacherDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -51,12 +52,14 @@ public class AdminController {
         return ResponseEntity.ok("승인 취소되었습니다.");
     }
 
-    //TODO
     @PostMapping("changeTeacher")
     public ResponseEntity<String> changeTeacher(ChangeTeacherDTO changeTeacherDTO) {
-        System.out.println("changeTeacherDTO = " + changeTeacherDTO);
-        adminService.changeExistTeacher(changeTeacherDTO);
-        return ResponseEntity.ok("변경 되었습니다.");
+        try {
+            adminService.changeExistTeacher(changeTeacherDTO);
+            return ResponseEntity.ok("변경 되었습니다.");
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
     }
 
     @PostMapping("delete")

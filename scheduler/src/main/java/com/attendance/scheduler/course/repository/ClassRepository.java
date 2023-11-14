@@ -1,5 +1,6 @@
 package com.attendance.scheduler.course.repository;
 
+import com.attendance.scheduler.course.domain.ClassEntity;
 import com.attendance.scheduler.course.dto.ClassDTO;
 import com.attendance.scheduler.course.dto.StudentClassDTO;
 import com.querydsl.core.types.Projections;
@@ -62,5 +63,12 @@ public class ClassRepository {
                 .from(classEntity)
                 .where(classEntity.teacherName.eq(teacherName))
                 .fetch();
+    }
+
+    public ClassEntity getStudentClassEntityByStudentName(String studentName) {
+        return queryFactory
+                .selectFrom(classEntity)
+                .where(classEntity.studentName.eq(studentName))
+                .fetchOne();
     }
 }

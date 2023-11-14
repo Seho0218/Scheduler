@@ -3,6 +3,10 @@ package com.attendance.scheduler.admin.application;
 import com.attendance.scheduler.admin.domain.AdminEntity;
 import com.attendance.scheduler.admin.dto.*;
 import com.attendance.scheduler.admin.repository.AdminRepository;
+import com.attendance.scheduler.course.domain.ClassEntity;
+import com.attendance.scheduler.course.dto.StudentClassDTO;
+import com.attendance.scheduler.course.repository.ClassJpaRepository;
+import com.attendance.scheduler.course.repository.ClassRepository;
 import com.attendance.scheduler.student.domain.StudentEntity;
 import com.attendance.scheduler.student.repository.StudentJpaRepository;
 import com.attendance.scheduler.teacher.domain.TeacherEntity;
@@ -31,6 +35,7 @@ import java.util.Optional;
 @Slf4j
 @RequiredArgsConstructor
 public class AdminServiceImpl implements AdminService {
+    private final ClassJpaRepository classJpaRepository;
 
     private final AdminRepository adminRepository;
 
@@ -38,6 +43,8 @@ public class AdminServiceImpl implements AdminService {
     private final TeacherRepository teacherRepository;
 
     private final StudentJpaRepository studentJpaRepository;
+
+    private final ClassRepository classRepository;
 
     private final PasswordEncoder passwordEncoder;
     private final JavaMailSender mailSender;
@@ -78,19 +85,46 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     @Transactional
-    public void changeExistTeacher(ChangeTeacherDTO changeTeacherDTO) {
-        System.out.println("1 = " + 1);
-        Optional<TeacherEntity> teacherEntity = teacherJpaRepository.findTeacherEntityById(changeTeacherDTO.getTeacherId());
-        System.out.println("2 = " + 2);
-        Optional<StudentEntity> studentEntity = studentJpaRepository.findStudentEntityById(changeTeacherDTO.getStudentId());
-        System.out.println("3 = " + 3);
-        studentEntity.get().updateTeacherName(teacherEntity.get().getTeacherName());
-        System.out.println("4 = " + 4);
-        studentEntity.get().setTeacherEntity(teacherEntity.get());
-        System.out.println("5 = " + 5);
+    public void changeExistTeacher(ChangeTeacherDTO changeTeacherDTO) throws IllegalStateException{
+        Long teacherId = changeTeacherDTO.getTeacherId();
+        Long studentId = changeTeacherDTO.getStudentId();
 
-        studentJpaRepository.save(studentEntity.get());
+        Optional<TeacherEntity> teacherEntity = teacherJpaRepository.findTeacherEntityById(teacherId);
+        Optional<StudentEntity> studentEntity = studentJpaRepository.findStudentEntityById(studentId);
+
+        if(studentEntity.isPresent() && teacherEntity.isPresent()){
+            studentEntity.get().updateTeacherName(teacherEntity.get().getTeacherName());
+            studentEntity.get().setTeacherEntity(teacherEntity.get());
+            //학생의 수업엔티티와 교사의 수업을 비교
+            StudentClassDTO studentClassByStudentName = classRepository.getStudentClassByStudentName(studentEntity.get().getStudentName());
+            List<StudentClassDTO> studentClassByTeacherName = classRepository.getStudentClassByTeacherName(teacherEntity.get().getTeacherName());
+
+            classValidator(studentClassByStudentName, studentClassByTeacherName);
+
+            ClassEntity classEntity= classRepository.getStudentClassEntityByStudentName(studentEntity.get().getStudentName());
+            classEntity.updateTeacherName(teacherEntity.get().getTeacherName());
+            classJpaRepository.save(classEntity);
+            studentJpaRepository.save(studentEntity.get());
+        }
     }
+
+    private void classValidator(StudentClassDTO studentClassByStudentName, List<StudentClassDTO> studentClassByTeacherName){
+
+        for (StudentClassDTO classDTOList: studentClassByTeacherName) {
+            Integer mondayValue = classDTOList.getMonday();
+            Integer tuesdayValue = classDTOList.getTuesday();
+            Integer wednesdayValue = classDTOList.getWednesday();
+            Integer thursdayValue = classDTOList.getThursday();
+            Integer fridayValue = classDTOList.getFriday();
+
+            if (mondayValue.equals(studentClassByStudentName.getMonday())) throw new IllegalStateException("월요일 수업 중에 겹치는 날이 있습니다.");
+            if (tuesdayValue.equals(studentClassByStudentName.getTuesday())) throw new IllegalStateException("화요일 수업 중에 겹치는 날이 있습니다.");
+            if (wednesdayValue.equals(studentClassByStudentName.getWednesday())) throw new IllegalStateException("수요일 수업 중에 겹치는 날이 있습니다.");
+            if (thursdayValue.equals(studentClassByStudentName.getThursday())) throw new IllegalStateException("목요일 수업 중에 겹치는 날이 있습니다.");
+            if (fridayValue.equals(studentClassByStudentName.getFriday())) throw new IllegalStateException("일요일 수업 중에 겹치는 날이 있습니다.");
+        }
+    }
+
 
     @Override
     @Transactional

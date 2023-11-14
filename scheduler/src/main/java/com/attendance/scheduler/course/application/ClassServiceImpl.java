@@ -79,8 +79,7 @@ public class ClassServiceImpl implements ClassService {
     }
 
     private void classValidator(ClassDTO classDTO) {
-        boolean byStudentNameIs = classJpaRepository
-                .existsByStudentNameIs(classDTO.getStudentName());
+        boolean byStudentNameIs = classJpaRepository.existsByStudentNameIs(classDTO.getStudentName());
 
         if (!byStudentNameIs) {
             duplicateClassValidator(classDTO);
@@ -92,7 +91,6 @@ public class ClassServiceImpl implements ClassService {
 
     private void duplicateClassValidator(ClassDTO classDTO) {
         String errorCode = "다른 원생과 겹치는 시간이 있습니다. 새로고침 후, 다시 신청해 주세요.";
-
 
         List<ClassDTO> allClassDTO = classRepository.getStudentClassList();
 

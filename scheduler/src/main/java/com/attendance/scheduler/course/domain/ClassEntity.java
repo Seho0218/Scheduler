@@ -55,6 +55,10 @@ public class ClassEntity {
         }
     }
 
+    public void updateTeacherName(String teacherName) {
+        this.teacherName = teacherName;
+    }
+
     @Builder
     public ClassEntity(Long id, String studentName, Integer monday, Integer tuesday, Integer wednesday, Integer thursday, Integer friday, Timestamp updateTimeStamp, String teacherName, TeacherEntity teacherEntity) {
         this.id = id;
