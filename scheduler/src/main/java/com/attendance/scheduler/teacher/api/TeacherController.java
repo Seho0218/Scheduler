@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 @Slf4j
 @Controller
@@ -41,8 +42,17 @@ public class TeacherController {
     // 조회
     @GetMapping("class")
     public String managePage(Model model) {
+        final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         List<ClassDTO> classTable = classService.findStudentClassList();
         model.addAttribute("classList", new DeleteClassDTO()); //있어야 빠름
+
+        if(auth.getAuthorities().toString().equals("[ROLE_TEACHER]")){
+            List<TeacherDTO> teacherInformation = adminService.findTeacherInformation(auth.getName());
+            Stream<ClassDTO> stream = classTable.stream().filter(
+                    h -> h.getTeacherName().equals(teacherInformation.get(0).getTeacherName()));
+            model.addAttribute("findClassTable", stream);
+            return "manage/class";
+        }
         model.addAttribute("findClassTable", classTable);
         return "manage/class";
     }
@@ -51,18 +61,23 @@ public class TeacherController {
     @PostMapping("delete")
     public ResponseEntity<String> deleteSchedule(@ModelAttribute("classList") DeleteClassDTO deleteClassDTO){
         classService.deleteClass(deleteClassDTO);
-        log.info("delete_List={}", deleteClassDTO.getDeleteClassList());
         return ResponseEntity.ok("삭제되었습니다.");
     }
 
     //학생 리스트
     @GetMapping("studentList")
     public String studentList(Model model) {
-        List<TeacherDTO> teacherList = adminService.getTeacherList();
+        final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         List<StudentInformationDTO> studentInformationList = teacherService.findStudentInformationList();
-
         model.addAttribute("studentObject", new StudentInformationDTO());
-        model.addAttribute("teacherList", teacherList);
+
+        if(auth.getAuthorities().toString().equals("[ROLE_ADMIN]")) {
+            List<TeacherDTO> teacherList = adminService.getTeacherList();
+            model.addAttribute("teacherList", teacherList);
+            model.addAttribute("studentList", studentInformationList);
+            return "manage/studentList";
+        }
+
         model.addAttribute("studentList", studentInformationList);
         return "manage/studentList";
     }

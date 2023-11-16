@@ -35,6 +35,7 @@ import java.util.Optional;
 @Slf4j
 @RequiredArgsConstructor
 public class AdminServiceImpl implements AdminService {
+
     private final ClassJpaRepository classJpaRepository;
 
     private final AdminRepository adminRepository;
@@ -52,6 +53,11 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public List<TeacherDTO> getTeacherList() {
         return teacherRepository.getTeacherList();
+    }
+
+    @Override
+    public List<TeacherDTO> findTeacherInformation(String username) {
+        return teacherRepository.getTeacherEntityByUsername(username);
     }
 
 
@@ -117,11 +123,11 @@ public class AdminServiceImpl implements AdminService {
             Integer thursdayValue = classDTOList.getThursday();
             Integer fridayValue = classDTOList.getFriday();
 
-            if (mondayValue.equals(studentClassByStudentName.getMonday())) throw new IllegalStateException("월요일 수업 중에 겹치는 날이 있습니다.");
-            if (tuesdayValue.equals(studentClassByStudentName.getTuesday())) throw new IllegalStateException("화요일 수업 중에 겹치는 날이 있습니다.");
-            if (wednesdayValue.equals(studentClassByStudentName.getWednesday())) throw new IllegalStateException("수요일 수업 중에 겹치는 날이 있습니다.");
-            if (thursdayValue.equals(studentClassByStudentName.getThursday())) throw new IllegalStateException("목요일 수업 중에 겹치는 날이 있습니다.");
-            if (fridayValue.equals(studentClassByStudentName.getFriday())) throw new IllegalStateException("일요일 수업 중에 겹치는 날이 있습니다.");
+            if (mondayValue.equals(studentClassByStudentName.getMonday())) throw new IllegalStateException("학생의 월요일 수업 중에 겹치는 날이 있습니다.");
+            if (tuesdayValue.equals(studentClassByStudentName.getTuesday())) throw new IllegalStateException("학생의 화요일 수업 중에 겹치는 날이 있습니다.");
+            if (wednesdayValue.equals(studentClassByStudentName.getWednesday())) throw new IllegalStateException("학생의 수요일 수업 중에 겹치는 날이 있습니다.");
+            if (thursdayValue.equals(studentClassByStudentName.getThursday())) throw new IllegalStateException("학생의 목요일 수업 중에 겹치는 날이 있습니다.");
+            if (fridayValue.equals(studentClassByStudentName.getFriday())) throw new IllegalStateException("학생의 일요일 수업 중에 겹치는 날이 있습니다.");
         }
     }
 

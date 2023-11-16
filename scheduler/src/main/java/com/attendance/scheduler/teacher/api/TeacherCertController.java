@@ -160,7 +160,7 @@ public class TeacherCertController {
     // 인증 완료 후
     @PostMapping("updatePassword")
     public String authCompletion(PwdEditDTO pwdEditDTO, Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         pwdEditDTO.setUsername(auth.getName());
         try {
             teacherCertService.initializePassword(pwdEditDTO);
