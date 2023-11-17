@@ -70,6 +70,7 @@
                     <td sec:authorize="hasRole('ROLE_ADMIN')">
                         <label>
                             <select class="form-select form-select-md mb-3 teacherID" aria-label=".form-select-md">
+                                <option value="" disabled selected>----</option>
                                 <option th:each="teacher : ${teacherList}"
                                         th:text="${teacher.getTeacherName()}" th:value="${teacher.getId()}">
                                 </option>

@@ -31,8 +31,8 @@ $(document).ready(function() {
                     teacherId : teacherID,
                     studentId : studentID
                 },
-                success: function(xhr) {
-                    alert(xhr.responseText);
+                success: function() {
+                    alert("변경되었습니다.");
                     location.reload();
                 },
                 error: function(xhr) {

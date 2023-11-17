@@ -56,7 +56,7 @@ public class AdminController {
     public ResponseEntity<String> changeTeacher(ChangeTeacherDTO changeTeacherDTO) {
         try {
             adminService.changeExistTeacher(changeTeacherDTO);
-            return ResponseEntity.ok("변경 되었습니다.");
+            return ResponseEntity.ok("변경되었습니다.");
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
