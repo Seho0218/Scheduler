@@ -37,9 +37,7 @@ public class ClassController {
             return "index";
         }
 
-        boolean existStudentEntityByStudentName = studentService
-                .existStudentEntityByStudentName(studentClassDTO.getStudentName());
-
+        boolean existStudentEntityByStudentName = studentService.existStudentEntityByStudentName(studentClassDTO.getStudentName());
 
         if(!existStudentEntityByStudentName) {
             model.addAttribute("nullStudentName", "등록 되지 않은 학생입니다.");

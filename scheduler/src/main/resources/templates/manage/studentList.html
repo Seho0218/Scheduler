@@ -37,12 +37,9 @@
         <div th:object="${studentObject}">
             <table>
                 <tr>
-                    <th><a th:href ="@{/manage/class}"><button class="btn btn-primary"
-                        sec:authorize="isAuthenticated()">수업 관리</button></a></th>
-                    <th><a th:href ="@{/manage/registerStudentInformation}"><button class="btn btn-primary"
-                                                               sec:authorize="isAuthenticated()">학생 등록</button></a></th>
-                    <th><a th:href ="@{/logout}"><button class="btn btn-primary"
-                                                         sec:authorize="isAuthenticated()">Logout</button></a></th>
+                    <th><a th:href ="@{/manage/class}"><button class="btn btn-primary" sec:authorize="isAuthenticated()">수업 관리</button></a></th>
+                    <th><a th:href ="@{/manage/registerStudentInformation}"><button class="btn btn-primary" sec:authorize="isAuthenticated()">학생 등록</button></a></th>
+                    <th><a th:href ="@{/logout}"><button class="btn btn-primary" sec:authorize="isAuthenticated()">Logout</button></a></th>
                 </tr>
             </table>
             <table class="table caption-top table-responsive" id="jb-table">
@@ -56,6 +53,7 @@
                     <th scope="col">부모님 전화번호</th>
                     <th scope="col">담당 선생님</th>
                     <th scope="col" sec:authorize="hasRole('ROLE_ADMIN')">담당 선생님 변경</th>
+                    <th scope="col">수정</th>
                     <th scope="col">삭제</th>
                 </tr>
             </thead>
@@ -79,8 +77,13 @@
                         <button class="btn btn-primary save-button">저장</button>
                     </td>
                     <td>
-                        <button class="btn btn-primary studentID" th:value="${student.getId()}">삭제</button>
+                        <div>
+                            <form method='post' role="form" th:action="@{/search/findClass}">
+                               <button class="btn btn-primary modify" name="studentName" th:value="${student.getStudentName()}">수정</button>
+                            </form>
+                        </div>
                     </td>
+                    <td><button class="btn btn-primary studentID" th:value="${student.getId()}">삭제</button></td>
                 </tr>
             </tbody>
             <tfoot>
