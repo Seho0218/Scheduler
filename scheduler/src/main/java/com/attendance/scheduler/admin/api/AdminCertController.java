@@ -41,7 +41,7 @@ public class AdminCertController {
     /*
      * Validate ID and Email and Send teacher AuthNum
      **/
-    @PostMapping("findPwd")
+    @GetMapping("findPwd")
     public String idEmailConfirm(@Validated @ModelAttribute("account") FindPasswordDTO findPasswordDTO,
                                  BindingResult bindingResult, HttpSession session, Model model) {
 

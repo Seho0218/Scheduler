@@ -4,6 +4,8 @@ import com.attendance.scheduler.course.dto.ClassDTO;
 import com.attendance.scheduler.teacher.dto.JoinTeacherDTO;
 import com.attendance.scheduler.teacher.dto.RegisterStudentDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 @RequiredArgsConstructor
 public class TestDataSet {
@@ -58,6 +60,9 @@ public class TestDataSet {
         studentInformationDTO.setStudentParentPhoneNumber("010-1234-1233");
         studentInformationDTO.setStudentAddress("대한민국 저기 어디");
         studentInformationDTO.setStudentDetailedAddress("어디");
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        studentInformationDTO.setTeacherEntity(auth.getName());
         return studentInformationDTO;
 
     }

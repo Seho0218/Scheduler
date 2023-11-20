@@ -1,6 +1,7 @@
 package com.attendance.scheduler.course.repository;
 
 import com.attendance.scheduler.course.domain.ClassEntity;
+import com.attendance.scheduler.teacher.domain.TeacherEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +19,9 @@ public interface ClassJpaRepository extends JpaRepository<ClassEntity, Long> {
     * */
     @Transactional
     void deleteByStudentName(String studentName);
+
+    @Transactional
+    void deleteByTeacherEntity(TeacherEntity teacherEntity);
 
     @Transactional
     void deleteByStudentNameIn(List<String> studentName);

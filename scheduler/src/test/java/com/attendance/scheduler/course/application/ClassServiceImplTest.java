@@ -1,8 +1,7 @@
-package com.attendance.scheduler.course;
+package com.attendance.scheduler.course.application;
 
 import com.attendance.scheduler.common.dto.LoginDTO;
 import com.attendance.scheduler.config.Authority.UserDetailService;
-import com.attendance.scheduler.course.application.ClassService;
 import com.attendance.scheduler.course.dto.ClassDTO;
 import com.attendance.scheduler.course.dto.StudentClassDTO;
 import com.attendance.scheduler.course.repository.ClassJpaRepository;
@@ -62,6 +61,7 @@ class ClassServiceImplTest {
         SecurityContextHolder.getContext().setAuthentication(auth);
 
 
+        //테스트 학생 등록
         boolean studentEntityByStudentName = studentService
                 .existStudentEntityByStudentName(testStudentClassDataSet().getStudentName());
 
@@ -72,7 +72,7 @@ class ClassServiceImplTest {
 
         boolean studentEntityByStudentName1 = studentService
                 .existStudentEntityByStudentName(test2StudentClassDataSet().getStudentName());
-
+        //테스트 학생1 등록
         if(!studentEntityByStudentName1){
             teacherService.registerStudentInformation(test2StudentInformationDTO());
             classService.saveClassTable(test2StudentClassDataSet());

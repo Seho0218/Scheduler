@@ -97,10 +97,9 @@ public class TeacherController {
             return "manage/registerStudentInformation";
         }
 
-        boolean studentEntityByStudentName = studentService
-                .existStudentEntityByStudentName(registerStudentDTO.getStudentName());
+        boolean studentEntityByStudentName = studentService.existStudentEntityByStudentName(registerStudentDTO.getStudentName());
 
-        if (!studentEntityByStudentName) {
+        if (studentEntityByStudentName) {
             model.addAttribute("studentInformation", "이미 등록된 학생의 이름입니다.");
             return "manage/registerStudentInformation";
         }

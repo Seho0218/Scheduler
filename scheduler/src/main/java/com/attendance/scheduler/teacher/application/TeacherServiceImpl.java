@@ -1,5 +1,6 @@
 package com.attendance.scheduler.teacher.application;
 
+import com.attendance.scheduler.course.repository.ClassJpaRepository;
 import com.attendance.scheduler.student.domain.StudentEntity;
 import com.attendance.scheduler.student.dto.StudentInformationDTO;
 import com.attendance.scheduler.student.repository.StudentJpaRepository;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -23,6 +25,7 @@ public class TeacherServiceImpl implements TeacherService {
 
     private final TeacherJpaRepository teacherJpaRepository;
     private final StudentJpaRepository studentJpaRepository;
+    private final ClassJpaRepository classJpaRepository;
     private final StudentRepository studentRepository;
     private final PasswordEncoder passwordEncoder;
 
@@ -58,6 +61,9 @@ public class TeacherServiceImpl implements TeacherService {
     @Override
     @Transactional
     public void deleteStudentInformation(StudentInformationDTO studentInformationDTO) {
+        Optional<StudentEntity> studentEntityById = studentJpaRepository.findStudentEntityById(studentInformationDTO.getId());
+
+        studentEntityById.ifPresent(studentEntity -> classJpaRepository.deleteByStudentName(studentEntity.getStudentName()));
         studentJpaRepository.deleteStudentEntityById(studentInformationDTO.getId());
     }
 

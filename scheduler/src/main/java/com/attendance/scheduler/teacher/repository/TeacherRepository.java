@@ -27,7 +27,7 @@ public class TeacherRepository {
                 .fetch();
     }
 
-    public List<TeacherDTO> getTeacherEntityByUsername(String username){
+    public List<TeacherDTO> getTeacherInfoByUsername(String username){
         return queryFactory
                 .select(Projections.fields(TeacherDTO.class,
                         teacherEntity.id,

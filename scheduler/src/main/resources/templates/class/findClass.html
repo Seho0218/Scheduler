@@ -55,8 +55,7 @@
         <div class="py-2">
             <div class="board rounded-3 border border-2">
                 <div class="header">
-                    <input name="studentName" th:value="${studentName}" type="hidden">
-                    <p th:text="${studentName}"></p>
+                     <p> 학생 이름 :<span th:text="${studentName}" th:field="${studentName}"></span></p>
                 </div>
                 <div class="field-error" th:text="${error}"></div>
             </div>
@@ -198,7 +197,7 @@
             </div>
             <!--friday div ends-->
             <div class="text-end">
-                <button class="btn btn-primary" type="submit">제출하기</button><br><br><br>
+                <button class="btn btn-primary" type="submit">제출하기</button><br>
             </div>
         </div>
     </form>

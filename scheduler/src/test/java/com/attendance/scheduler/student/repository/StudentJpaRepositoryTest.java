@@ -1,6 +1,5 @@
-package com.attendance.scheduler.student;
+package com.attendance.scheduler.student.repository;
 
-import com.attendance.scheduler.student.repository.StudentJpaRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,8 +14,8 @@ import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 class StudentJpaRepositoryTest {
 
-    @Autowired
-    private StudentJpaRepository studentJpaRepository;
+    @Autowired private StudentJpaRepository studentJpaRepository;
+    @Autowired private StudentRepository studentRepository;
 
     @BeforeEach
     void beforeEach(){
@@ -26,11 +25,11 @@ class StudentJpaRepositoryTest {
 //    @Test
     @DisplayName("학생 인적 사항 정보 저장")
     void findStudentEntityByStudentName() {
-//        Optional<StudentEntity> studentEntityByStudentName = studentJpaRepository
-//                .existsByStudentNameIs(testStudentInformationDTO().getStudentName());
+//        boolean existsByStudentNameIs = studentRepository.getStudentEntity(testStudentInformationDTO().getStudentName());
 //
-//        studentEntityByStudentName.ifPresent(studentEntity -> assertThat(testStudentInformationDTO().getStudentName())
-//                .isEqualTo(studentEntity.getStudentName()));
+//        if(existsByStudentNameIs){
+//            assertThat(testStudentInformationDTO().getStudentName()).isEqualTo(studentEntity.getStudentName()));
+//        }
     }
 
     @Test //TODO

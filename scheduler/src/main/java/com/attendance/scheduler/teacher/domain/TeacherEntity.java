@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
@@ -44,10 +44,10 @@ public class TeacherEntity {
     private boolean approved;
 
     @OneToMany(mappedBy = "teacherEntity", cascade = CascadeType.PERSIST)
-    Set<StudentEntity> studentEntityList = new LinkedHashSet<>();
+    List<StudentEntity> studentEntityList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "teacherEntity", cascade = CascadeType.ALL, orphanRemoval = true)
-    Set<ClassEntity> classEntity = new LinkedHashSet<>();
+    @OneToMany(mappedBy = "teacherEntity", cascade = CascadeType.ALL)
+    List<ClassEntity> classEntity = new ArrayList<>();
 
     public void setClassEntity(ClassEntity classEntity) {
         this.classEntity.add(classEntity);
@@ -70,7 +70,8 @@ public class TeacherEntity {
     }
 
     @Builder
-    public TeacherEntity(Long id, String username, String teacherName, String password, String email, String role, boolean approved, Set<StudentEntity> studentEntityList, Set<ClassEntity> classEntity) {
+
+    public TeacherEntity(Long id, String username, String teacherName, String password, String email, String role, boolean approved, List<StudentEntity> studentEntityList, List<ClassEntity> classEntity) {
         this.id = id;
         this.username = username;
         this.teacherName = teacherName;

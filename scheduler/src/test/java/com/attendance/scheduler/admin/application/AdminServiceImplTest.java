@@ -6,14 +6,11 @@ import com.attendance.scheduler.admin.dto.ChangeTeacherDTO;
 import com.attendance.scheduler.admin.dto.EditEmailDTO;
 import com.attendance.scheduler.admin.dto.EmailDTO;
 import com.attendance.scheduler.admin.repository.AdminRepository;
-import com.attendance.scheduler.student.domain.StudentEntity;
-import com.attendance.scheduler.student.repository.StudentJpaRepository;
-import com.attendance.scheduler.student.repository.StudentRepository;
 import com.attendance.scheduler.teacher.application.TeacherService;
 import com.attendance.scheduler.teacher.domain.TeacherEntity;
 import com.attendance.scheduler.teacher.repository.TeacherJpaRepository;
-import com.attendance.scheduler.teacher.repository.TeacherRepository;
 import jakarta.transaction.Transactional;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,17 +28,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Transactional
 class AdminServiceImplTest {
 
-    @Autowired public AdminService adminService;
-    @Autowired public AdminRepository adminRepository;
+    @Autowired private AdminService adminService;
+    @Autowired private AdminRepository adminRepository;
     @Autowired private TeacherService teacherService;
     @Autowired private TeacherJpaRepository teacherJpaRepository;
-    @Autowired private TeacherRepository teacherRepository;
-    @Autowired private StudentJpaRepository studentJpaRepository;
-    @Autowired private StudentRepository studentRepository;
 
     private ApproveTeacherDTO approveTeacherDTO;
 
-//    @BeforeEach
+    @BeforeEach
     void joinSampleTeacherAccount(){
         Optional<TeacherEntity> existingTeacher = Optional
                 .ofNullable(teacherJpaRepository
@@ -106,23 +100,19 @@ class AdminServiceImplTest {
 
 
 
-    @Test
+    @Test//TODO
     void changeExistTeacher() {
+
         ChangeTeacherDTO changeTeacherDTO = new ChangeTeacherDTO();
         changeTeacherDTO.setTeacherId(2L);
         changeTeacherDTO.setStudentId(2L);
 
-        System.out.println("1 = " + 1);
-        Optional<TeacherEntity> teacherEntity = teacherRepository.getTeacherEntity(changeTeacherDTO.getTeacherId());
-        System.out.println("2 = " + 2);
-        Optional<StudentEntity> studentEntity = studentRepository.getStudentEntity(changeTeacherDTO.getStudentId());
-        System.out.println("3 = " + 3);
-        studentEntity.get().setTeacherEntity(teacherEntity.get());
-        System.out.println("4 = " + 4);
-        //문제
-        studentEntity.get().updateTeacherName(teacherEntity.get().getTeacherName());
-        studentJpaRepository.save(studentEntity.get());
+        adminService.changeExistTeacher(changeTeacherDTO);
+
+
     }
+
+
 
     @Test
     @DisplayName("교사 계정 삭제")
@@ -152,3 +142,4 @@ class AdminServiceImplTest {
         assertThat(editEmailDTO.getEmail()).isEqualTo(byUsernameIs.getEmail());
     }
 }
+

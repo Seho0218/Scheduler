@@ -37,16 +37,11 @@ import java.util.Optional;
 public class AdminServiceImpl implements AdminService {
 
     private final ClassJpaRepository classJpaRepository;
-
     private final AdminRepository adminRepository;
-
     private final TeacherJpaRepository teacherJpaRepository;
     private final TeacherRepository teacherRepository;
-
     private final StudentJpaRepository studentJpaRepository;
-
     private final ClassRepository classRepository;
-
     private final PasswordEncoder passwordEncoder;
     private final JavaMailSender mailSender;
 
@@ -57,7 +52,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public List<TeacherDTO> findTeacherInformation(String username) {
-        return teacherRepository.getTeacherEntityByUsername(username);
+        return teacherRepository.getTeacherInfoByUsername(username);
     }
 
 
@@ -135,7 +130,22 @@ public class AdminServiceImpl implements AdminService {
     @Override
     @Transactional
     public void deleteTeacherAccount(ApproveTeacherDTO approveTeacherDTO) {
-        teacherJpaRepository.deleteByUsernameIs(approveTeacherDTO.getUsername());
+        Optional<TeacherEntity> teacherEntity = Optional.ofNullable(
+                teacherJpaRepository.findByUsernameIs(approveTeacherDTO.getUsername()));
+
+        //교사 엔티티가 존재
+        if(teacherEntity.isPresent()) {
+            //수업이 있는 교사 엔티티를 찾는다.
+            List<StudentClassDTO> studentClassByTeacherName
+                    = classRepository.getStudentClassByTeacherName(teacherEntity.get().getTeacherName());
+
+            if(!studentClassByTeacherName.isEmpty())
+                throw new IllegalStateException("학생 수업 시간이 남아 있습니다.");
+
+            //교사 엔티티를 가져온다.
+            classJpaRepository.deleteByTeacherEntity(teacherEntity.get());
+            teacherJpaRepository.deleteByUsernameIs(approveTeacherDTO.getUsername());
+        }
     }
 
 
