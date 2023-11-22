@@ -1,6 +1,6 @@
 package com.attendance.scheduler.course.domain;
 
-import com.attendance.scheduler.teacher.domain.TeacherEntity;
+import com.attendance.scheduler.member.teacher.domain.TeacherEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;

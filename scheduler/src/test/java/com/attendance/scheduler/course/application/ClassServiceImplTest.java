@@ -1,13 +1,13 @@
 package com.attendance.scheduler.course.application;
 
 import com.attendance.scheduler.common.dto.LoginDTO;
-import com.attendance.scheduler.config.Authority.UserDetailService;
+import com.attendance.scheduler.infra.config.Authority.UserDetailService;
 import com.attendance.scheduler.course.dto.ClassDTO;
 import com.attendance.scheduler.course.dto.StudentClassDTO;
 import com.attendance.scheduler.course.repository.ClassJpaRepository;
-import com.attendance.scheduler.student.application.StudentService;
-import com.attendance.scheduler.student.dto.ClassListDTO;
-import com.attendance.scheduler.teacher.application.TeacherService;
+import com.attendance.scheduler.member.student.application.StudentService;
+import com.attendance.scheduler.member.student.dto.ClassListDTO;
+import com.attendance.scheduler.member.teacher.application.TeacherService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

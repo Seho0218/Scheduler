@@ -1,7 +1,7 @@
 package com.attendance.scheduler.course.repository;
 
 import com.attendance.scheduler.common.dto.LoginDTO;
-import com.attendance.scheduler.config.Authority.UserDetailService;
+import com.attendance.scheduler.infra.config.Authority.UserDetailService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

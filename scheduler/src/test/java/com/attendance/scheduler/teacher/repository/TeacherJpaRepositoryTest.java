@@ -1,6 +1,7 @@
 package com.attendance.scheduler.teacher.repository;
 
-import com.attendance.scheduler.teacher.domain.TeacherEntity;
+import com.attendance.scheduler.member.teacher.domain.TeacherEntity;
+import com.attendance.scheduler.member.teacher.repository.TeacherJpaRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

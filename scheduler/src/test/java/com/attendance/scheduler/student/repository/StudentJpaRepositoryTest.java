@@ -1,5 +1,7 @@
 package com.attendance.scheduler.student.repository;
 
+import com.attendance.scheduler.member.student.repository.StudentJpaRepository;
+import com.attendance.scheduler.member.student.repository.StudentRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
