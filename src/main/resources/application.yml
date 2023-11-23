@@ -1,0 +1,53 @@
+#portfolio
+#3205
+
+server:
+  port: 3205
+
+spring:
+  sql:
+    init:
+      mode: always
+  messages:
+    basename: errors
+
+  datasource: # jdbc
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://seho0218.synology.me:3306/scheduler_portfolio?characterEncoding=utf-8
+    username: root
+    password: Root123!@#
+
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    database: mysql
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+        highlight_sql: true
+      defer-datasource-initialization: true
+
+  thymeleaf:
+    cache: true #운영시 true
+    enabled: true
+
+  servlet: #fileupload
+    multipart:
+      max-file-size: 20MB
+      enabled: true
+
+  mail: #email
+    host: smtp.gmail.com
+    port: 587
+    username: dev.hsayho@gmail.com
+    password:
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+      protocol: smtp
