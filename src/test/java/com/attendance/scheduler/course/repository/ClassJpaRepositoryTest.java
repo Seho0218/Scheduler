@@ -17,8 +17,8 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 
-@DataJpaTest
-@AutoConfigureTestDatabase(replace = Replace.NONE)
+//@DataJpaTest
+//@AutoConfigureTestDatabase(replace = Replace.NONE)
 class ClassJpaRepositoryTest {
 
     @Autowired private ClassJpaRepository classJpaRepository;
