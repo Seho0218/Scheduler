@@ -65,7 +65,6 @@ public class HtmlEmailService implements EmailService {
                 .build());
     }
 
-    @Override
     public void sendEmail(EmailMessageDTO emailMessageDTO) {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper;

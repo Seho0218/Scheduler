@@ -3,8 +3,8 @@ package com.attendance.scheduler.member.teacher.ui;
 import com.attendance.scheduler.course.dto.ClassDTO;
 import com.attendance.scheduler.infra.email.FindPasswordDTO;
 import com.attendance.scheduler.infra.email.HtmlEmailService;
-import com.attendance.scheduler.member.teacher.dto.*;
 import com.attendance.scheduler.member.teacher.application.TeacherCertService;
+import com.attendance.scheduler.member.teacher.dto.*;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -138,7 +138,7 @@ public class TeacherCertController {
             // 인증번호가 일치하면
             model.addAttribute("pwdEdit", new PwdEditDTO());
             model.addAttribute("username", certDTO);
-            return "cert/changePassword";
+            return "cert/initializePassword";
         } else {
             model.addAttribute("auth", new CertDTO());
             model.addAttribute("username", certDTO);
@@ -147,34 +147,32 @@ public class TeacherCertController {
         }
     }
 
-
+    //로그인 상태에서 변경
     @GetMapping("changePassword")
-    public String changePassword(Model model){
-        try {
-            model.addAttribute("pwdEdit", new PwdEditDTO());
-            return "cert/changePassword";
-        } catch (Exception e) {
-            log.info("send Id error = {}", e.getMessage());
-            model.addAttribute("class", new ClassDTO());
-            return "redirect:/";
-        }
+    public String changePassword(Model model) {
+        model.addAttribute("pwdEdit", new PwdEditDTO());
+        return "cert/changePassword";
     }
 
-    // 인증 완료 후
     @PostMapping("updatePassword")
     public String authCompletion(PwdEditDTO pwdEditDTO, Model model) {
         final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        pwdEditDTO.setUsername(auth.getName());
+        if(!auth.getName().equals("anonymousUser")) {
+            pwdEditDTO.setUsername(auth.getName());
+        }
+        System.out.println("pwdEditDTO = " + pwdEditDTO);
+
         try {
             teacherCertService.initializePassword(pwdEditDTO);
             return "redirect:/cert/completion";
         }catch (Exception e) {
-            log.info("send Id error = {}", e.getMessage());
+            log.info("error = {}", e.getMessage());
             model.addAttribute("class", new ClassDTO());
             return "redirect:/";
         }
     }
 
+    //로그인 상태에서
     @GetMapping("changeEmail")
     public String changeEmail(Model model){
 
@@ -198,7 +196,7 @@ public class TeacherCertController {
         }
     }
 
-    @PostMapping("updateEmail")
+    @PostMapping("changeEmail")
     public String updateEmail(EditEmailDTO editEmailDTO) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         editEmailDTO.setUsername(auth.getName());

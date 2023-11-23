@@ -1,7 +1,10 @@
 package com.attendance.scheduler.member.admin.application;
 
 import com.attendance.scheduler.infra.email.FindPasswordDTO;
-import com.attendance.scheduler.member.admin.dto.*;
+import com.attendance.scheduler.member.admin.dto.ApproveTeacherDTO;
+import com.attendance.scheduler.member.admin.dto.ChangeTeacherDTO;
+import com.attendance.scheduler.member.admin.dto.EditEmailDTO;
+import com.attendance.scheduler.member.admin.dto.EmailDTO;
 import com.attendance.scheduler.member.teacher.dto.PwdEditDTO;
 import com.attendance.scheduler.member.teacher.dto.TeacherDTO;
 

@@ -5,10 +5,10 @@ import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-@Service
 @Slf4j
+@Service
 public class ConsoleEmailService implements EmailService {
-    @Override
+
     public void sendEmail(EmailMessageDTO emailMessageDTO) {
         log.info("sent email: {}", emailMessageDTO.getMessage());
     }
@@ -22,6 +22,5 @@ public class ConsoleEmailService implements EmailService {
     @Override
     public void sendAuthNum(FindPasswordDTO findPasswordDTO, HttpSession session) {
         log.info("sent email info: {}", findPasswordDTO);
-
     }
 }

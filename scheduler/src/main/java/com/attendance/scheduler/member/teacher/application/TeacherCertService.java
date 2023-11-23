@@ -1,8 +1,8 @@
 package com.attendance.scheduler.member.teacher.application;
 
 import com.attendance.scheduler.infra.email.FindPasswordDTO;
-import com.attendance.scheduler.member.teacher.dto.FindIdDTO;
 import com.attendance.scheduler.member.teacher.dto.EditEmailDTO;
+import com.attendance.scheduler.member.teacher.dto.FindIdDTO;
 import com.attendance.scheduler.member.teacher.dto.PwdEditDTO;
 
 import java.util.Optional;

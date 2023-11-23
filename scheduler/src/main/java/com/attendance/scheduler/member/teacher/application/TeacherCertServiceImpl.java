@@ -1,15 +1,13 @@
 package com.attendance.scheduler.member.teacher.application;
 
 import com.attendance.scheduler.infra.email.FindPasswordDTO;
+import com.attendance.scheduler.member.teacher.domain.TeacherEntity;
 import com.attendance.scheduler.member.teacher.dto.EditEmailDTO;
 import com.attendance.scheduler.member.teacher.dto.FindIdDTO;
 import com.attendance.scheduler.member.teacher.dto.PwdEditDTO;
 import com.attendance.scheduler.member.teacher.repository.TeacherJpaRepository;
-import com.attendance.scheduler.member.teacher.domain.TeacherEntity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,7 +37,7 @@ public class TeacherCertServiceImpl implements TeacherCertService {
     @Override
     public Optional<FindIdDTO> findIdByEmail(FindIdDTO findIdDTO) {
         Optional<TeacherEntity> optionalTeacherEntity
-                = Optional.ofNullable(teacherJpaRepository.findByUsernameIs(findIdDTO.getUsername()));
+                = teacherJpaRepository.findByEmailIs(findIdDTO.getEmail());
 
         return optionalTeacherEntity.map(teacherEntity -> {
             FindIdDTO resultDTO = new FindIdDTO();
@@ -52,15 +50,13 @@ public class TeacherCertServiceImpl implements TeacherCertService {
     @Override
     @Transactional
     public void initializePassword(PwdEditDTO pwdEditDTO) {
-        final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         final String encodePassword = passwordEncoder.encode(pwdEditDTO.getPassword());
-
         pwdEditDTO.setPassword(encodePassword);
 
-        final TeacherEntity byTeacherIdIs = teacherJpaRepository
-                .findByUsernameIs(auth.getName());
-        byTeacherIdIs.updatePassword(pwdEditDTO);
-        teacherJpaRepository.save(byTeacherIdIs);
+        final TeacherEntity teacherEntity = teacherJpaRepository
+                .findByUsernameIs(pwdEditDTO.getUsername());
+        teacherEntity.updatePassword(pwdEditDTO);
+        teacherJpaRepository.save(teacherEntity);
     }
 
     @Override

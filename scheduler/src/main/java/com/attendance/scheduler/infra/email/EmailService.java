@@ -9,5 +9,4 @@ public interface EmailService {
 
     void sendAuthNum(FindPasswordDTO findPasswordDTO, HttpSession session);
 
-    void sendEmail(EmailMessageDTO emailMessageDTO);
 }
