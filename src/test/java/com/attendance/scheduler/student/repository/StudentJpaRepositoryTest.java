@@ -12,8 +12,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import static com.attendance.scheduler.config.TestDataSet.testStudentInformationDTO;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 
-//@DataJpaTest
-//@AutoConfigureTestDatabase(replace = Replace.NONE)
+@DataJpaTest
+@AutoConfigureTestDatabase(replace = Replace.NONE)
 class StudentJpaRepositoryTest {
 
     @Autowired private StudentJpaRepository studentJpaRepository;

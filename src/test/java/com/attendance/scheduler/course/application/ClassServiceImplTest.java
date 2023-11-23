@@ -26,7 +26,7 @@ import static com.attendance.scheduler.config.TestDataSet.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
-//@SpringBootTest
+@SpringBootTest
 @Transactional
 class ClassServiceImplTest {
 
