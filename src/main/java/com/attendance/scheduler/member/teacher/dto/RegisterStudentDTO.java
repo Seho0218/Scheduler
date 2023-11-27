@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.sql.Timestamp;
+
 @Getter
 @Setter
 @ToString
@@ -32,6 +34,8 @@ public class RegisterStudentDTO {
 
     private String teacherEntity;
 
+    private Timestamp creationTimestamp;
+
     public StudentEntity toEntity(){
         return StudentEntity.builder()
                 .studentName(studentName)
@@ -40,6 +44,7 @@ public class RegisterStudentDTO {
                 .studentAddress(studentAddress)
                 .studentDetailedAddress(studentDetailedAddress)
                 .teacherName(teacherName)
+                .creationTimestamp(creationTimestamp)
                 .build();
     }
 }

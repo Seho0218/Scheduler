@@ -15,7 +15,7 @@ public class BasicController {
 
     @GetMapping("/")
     public String basic(Model model){
-        model.addAttribute("class", new StudentClassDTO());
+        model.addAttribute("studentClassDTO", new StudentClassDTO());
         return "index";
     }
 

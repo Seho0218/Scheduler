@@ -53,7 +53,8 @@
                     <th scope="col">부모님 전화번호</th>
                     <th scope="col">담당 선생님</th>
                     <th scope="col" sec:authorize="hasRole('ROLE_ADMIN')">담당 선생님 변경</th>
-                    <th scope="col">수정</th>
+                    <th scope="col">등록 일자</th>
+                    <th scope="col">수업 수정</th>
                     <th scope="col">삭제</th>
                 </tr>
             </thead>
@@ -76,6 +77,7 @@
                         </label>
                         <button class="btn btn-primary save-button">저장</button>
                     </td>
+                    <td th:text="${#dates.format(student.getCreationTimestamp(), 'yyyy-MM-dd')}"></td>
                     <td>
                         <div>
                             <form method='post' role="form" th:action="@{/search/findClass}">
@@ -83,6 +85,7 @@
                             </form>
                         </div>
                     </td>
+
                     <td><button class="btn btn-primary studentID delete-button" th:value="${student.getId()}">삭제</button></td>
                 </tr>
             </tbody>

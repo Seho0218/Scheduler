@@ -28,7 +28,8 @@ public class StudentRepository {
                         studentEntity.studentDetailedAddress,
                         studentEntity.studentPhoneNumber,
                         studentEntity.studentParentPhoneNumber,
-                        studentEntity.teacherName
+                        studentEntity.teacherName,
+                        studentEntity.creationTimestamp
                 ))
                 .from(studentEntity)
                 .fetch();

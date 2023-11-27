@@ -47,7 +47,7 @@
 </head>
 <body>
 <div class="container">
-    <form method='post' role="form" th:action="@{/search/submit}" th:object="${class}">
+    <form method='post' role="form" th:action="@{/search/submit}" th:object="${classDTO}">
         <div class="py-2">
 
         </div>
@@ -55,7 +55,8 @@
         <div class="py-2">
             <div class="board rounded-3 border border-2">
                 <div class="header">
-                     <p> 학생 이름 :<span th:text="${studentName}" th:field="${studentName}"></span></p>
+                    <input name="studentName" th:value="${studentName}" type="hidden">
+                    <p th:text="${studentName}"></p>
                 </div>
                 <div class="field-error" th:text="${error}"></div>
             </div>

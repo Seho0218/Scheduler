@@ -69,7 +69,6 @@ public class TeacherController {
     public String studentList(Model model) {
         final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         List<StudentInformationDTO> studentInformationList = teacherService.findStudentInformationList();
-        model.addAttribute("studentObject", new StudentInformationDTO());
 
         if(auth.getAuthorities().toString().equals("[ROLE_ADMIN]")) {
             List<TeacherDTO> teacherList = adminService.getTeacherList();

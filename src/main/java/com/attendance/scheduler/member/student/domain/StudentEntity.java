@@ -6,8 +6,11 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+
+import java.sql.Timestamp;
 
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
@@ -37,6 +40,9 @@ public class StudentEntity {
 
     private String teacherName;
 
+    @CreationTimestamp
+    private Timestamp creationTimestamp;
+
     @NotNull
     @ManyToOne(fetch = LAZY, optional = false, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "teacherId")
@@ -57,7 +63,7 @@ public class StudentEntity {
     }
 
     @Builder
-    public StudentEntity(Long id, String studentName, String studentPhoneNumber, String studentAddress, String studentDetailedAddress, String studentParentPhoneNumber, String teacherName, TeacherEntity teacherEntity) {
+    public StudentEntity(Long id, String studentName, String studentPhoneNumber, String studentAddress, String studentDetailedAddress, String studentParentPhoneNumber, String teacherName, Timestamp creationTimestamp, TeacherEntity teacherEntity) {
         this.id = id;
         this.studentName = studentName;
         this.studentPhoneNumber = studentPhoneNumber;
@@ -65,6 +71,7 @@ public class StudentEntity {
         this.studentDetailedAddress = studentDetailedAddress;
         this.studentParentPhoneNumber = studentParentPhoneNumber;
         this.teacherName = teacherName;
+        this.creationTimestamp = creationTimestamp;
         this.teacherEntity = teacherEntity;
     }
 }

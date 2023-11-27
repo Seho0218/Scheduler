@@ -3,7 +3,7 @@ package com.attendance.scheduler.course.application;
 import com.attendance.scheduler.common.dto.LoginDTO;
 import com.attendance.scheduler.course.dto.ClassDTO;
 import com.attendance.scheduler.course.dto.StudentClassDTO;
-import com.attendance.scheduler.course.repository.ClassJpaRepository;
+import com.attendance.scheduler.course.repository.ClassRepository;
 import com.attendance.scheduler.infra.config.Authority.UserDetailService;
 import com.attendance.scheduler.member.student.application.StudentService;
 import com.attendance.scheduler.member.student.dto.ClassListDTO;
@@ -33,7 +33,7 @@ class ClassServiceImplTest {
     @Autowired private ClassService classService;
     @Autowired private TeacherService teacherService;
     @Autowired private StudentService studentService;
-    @Autowired private ClassJpaRepository classJpaRepository;
+    @Autowired private ClassRepository classRepository;
     @Autowired private UserDetailService userDetailsService;
 
     private StudentClassDTO studentClassDTO;
@@ -82,26 +82,28 @@ class ClassServiceImplTest {
         studentClassDTO.setStudentName(testStudentClassDataSet().getStudentName());
     }
 
+    @Test
     @DisplayName("(무작위로 호출)값이 제대로 저장되었는지 확인")
     void checkClassList() {
 
         ClassListDTO classListDTO = ClassListDTO.getInstance();
+        List<ClassDTO> studentClassList = classRepository.getStudentClassList();
 
-//        for (ClassDTO classDTO : dtoList) {
-//            classListDTO.getMondayClassList().add(classDTO.getMonday());
-//            classListDTO.getTuesdayClassList().add(classDTO.getTuesday());
-//            classListDTO.getWednesdayClassList().add(classDTO.getWednesday());
-//            classListDTO.getThursdayClassList().add(classDTO.getThursday());
-//            classListDTO.getFridayClassList().add(classDTO.getFriday());
-//        }
-//
-//        for (int i = 0; i < dtoList.size(); i++) {
-//            assertEquals(classListDTO.getMondayClassList().get(i), dtoList.get(i).getMonday());
-//            assertEquals(classListDTO.getTuesdayClassList().get(i), dtoList.get(i).getTuesday());
-//            assertEquals(classListDTO.getWednesdayClassList().get(i), dtoList.get(i).getWednesday());
-//            assertEquals(classListDTO.getThursdayClassList().get(i), dtoList.get(i).getThursday());
-//            assertEquals(classListDTO.getFridayClassList().get(i), dtoList.get(i).getFriday());
-//        }
+        for (ClassDTO classDTO : studentClassList) {
+            classListDTO.getMondayClassList().add(classDTO.getMonday());
+            classListDTO.getTuesdayClassList().add(classDTO.getTuesday());
+            classListDTO.getWednesdayClassList().add(classDTO.getWednesday());
+            classListDTO.getThursdayClassList().add(classDTO.getThursday());
+            classListDTO.getFridayClassList().add(classDTO.getFriday());
+        }
+
+        for (int i = 0; i < studentClassList.size(); i++) {
+            assertEquals(classListDTO.getMondayClassList().get(i), studentClassList.get(i).getMonday());
+            assertEquals(classListDTO.getTuesdayClassList().get(i), studentClassList.get(i).getTuesday());
+            assertEquals(classListDTO.getWednesdayClassList().get(i), studentClassList.get(i).getWednesday());
+            assertEquals(classListDTO.getThursdayClassList().get(i), studentClassList.get(i).getThursday());
+            assertEquals(classListDTO.getFridayClassList().get(i), studentClassList.get(i).getFriday());
+        }
     }
 
     @Test
@@ -148,7 +150,6 @@ class ClassServiceImplTest {
         studentClasses.ifPresent(classDTO ->
                 assertThat(testStudentClassDataSet().getStudentName())
                         .isEqualTo(classDTO.getStudentName()));
-
     }
 
     @Test
@@ -181,11 +182,9 @@ class ClassServiceImplTest {
 
     @Test
     @DisplayName("수업 변경 확인")
-    @Transactional
     void modifyClass(){
 
         //찾는 로직
-
         ClassDTO classDTO = testStudentClassDataSet();
         classDTO.setMonday(4);
 

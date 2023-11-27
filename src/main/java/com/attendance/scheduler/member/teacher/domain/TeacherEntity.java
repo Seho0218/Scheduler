@@ -47,13 +47,15 @@ public class TeacherEntity {
     List<StudentEntity> studentEntityList = new ArrayList<>();
 
     @OneToMany(mappedBy = "teacherEntity", cascade = CascadeType.ALL)
-    List<ClassEntity> classEntity = new ArrayList<>();
+    List<ClassEntity> classEntityList = new ArrayList<>();
 
     public void setClassEntity(ClassEntity classEntity) {
-        this.classEntity.add(classEntity);
+        if(classEntityList == null) classEntityList = new ArrayList<>();
+        this.classEntityList.add(classEntity);
     }
 
     public void setStudentEntity(StudentEntity studentEntity) {
+        if(studentEntityList == null) studentEntityList = new ArrayList<>();
         this.studentEntityList.add(studentEntity);
     }
 
@@ -70,8 +72,7 @@ public class TeacherEntity {
     }
 
     @Builder
-
-    public TeacherEntity(Long id, String username, String teacherName, String password, String email, String role, boolean approved, List<StudentEntity> studentEntityList, List<ClassEntity> classEntity) {
+    public TeacherEntity(Long id, String username, String teacherName, String password, String email, String role, boolean approved, List<StudentEntity> studentEntityList, List<ClassEntity> classEntityList) {
         this.id = id;
         this.username = username;
         this.teacherName = teacherName;
@@ -80,6 +81,6 @@ public class TeacherEntity {
         this.role = role;
         this.approved = approved;
         this.studentEntityList = studentEntityList;
-        this.classEntity = classEntity;
+        this.classEntityList = classEntityList;
     }
 }

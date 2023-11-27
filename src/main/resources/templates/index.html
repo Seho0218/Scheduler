@@ -41,7 +41,7 @@
             </tr>
         </table>
     </div>
-    <form method='post' role="form" th:action="@{/search/findClass}" th:object="${class}">
+    <form method='post' role="form" th:action="@{/search/findClass}" th:object="${studentClassDTO}">
         <!--학생 이름-->
         <div class="py-2">
             <div class="board rounded-3 border border-2">
@@ -55,7 +55,6 @@
                 <div class="text-end">
                     <button class="btn btn-primary" type="submit">수업 조회</button></div>
                 <br><br>
-
             </div>
         </div>
     </form>

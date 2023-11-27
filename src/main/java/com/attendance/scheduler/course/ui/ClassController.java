@@ -29,7 +29,7 @@ public class ClassController {
 
     //   수업 조회
     @PostMapping("findClass")
-    public String findClass(@Validated @ModelAttribute("class") StudentClassDTO studentClassDTO,
+    public String findClass(@Validated @ModelAttribute("studentClassDTO") StudentClassDTO studentClassDTO,
                             BindingResult bindingResult, Model model) {
 
         if (bindingResult.hasErrors()) {
@@ -50,7 +50,6 @@ public class ClassController {
 
         if(studentClasses.isPresent()) {
             searchStudentClass(studentClasses.get(), model);
-            System.out.println("4 = " + 4);
             return "class/findClass";
         }
 
@@ -60,8 +59,11 @@ public class ClassController {
 
     //제출
     @PostMapping("submit")
-    public String submitForm(@Validated @ModelAttribute("class") ClassDTO classDTO,
+    public String submitForm(@Validated @ModelAttribute("classDTO") ClassDTO classDTO,
                              BindingResult bindingResult, Model model) {
+
+        System.out.println("classDTO = " + classDTO);
+
         if (bindingResult.hasErrors()) {
             getClassList(classDTO.getStudentName(), model);
             log.info("errors={}", bindingResult);
@@ -89,7 +91,7 @@ public class ClassController {
         List<Integer> thursdayClassList = allClasses.getThursdayClassList();
         List<Integer> fridayClassList = allClasses.getFridayClassList();
 
-        model.addAttribute("class", new ClassDTO());
+        model.addAttribute("classDTO", new ClassDTO());
         model.addAttribute("studentClassList", new StudentClassDTO());
 
         model.addAttribute("studentName", studentName);
@@ -122,7 +124,7 @@ public class ClassController {
         thursdayClassList.remove(studentClassesList.getThursday());
         fridayClassList.remove(studentClassesList.getFriday());
 
-        model.addAttribute("class", new ClassDTO());
+        model.addAttribute("classDTO", new ClassDTO());
 
         model.addAttribute("studentName", studentClassesList.getStudentName());
         model.addAttribute("classInMondayList", mondayClassList);

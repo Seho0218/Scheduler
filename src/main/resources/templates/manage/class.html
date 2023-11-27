@@ -72,7 +72,7 @@
                     <td th:text="${class.getThursday() == 0 ? '결석' : '오후 ' + class.getThursday() + '시'}"></td>
                     <td th:text="${class.getFriday() == 0 ? '결석' : '오후 ' + class.getFriday() + '시'}"></td>
                     <td th:text="${class.getTeacherName()}"></td>
-                    <td th:text="${class.getUpdateTimeStamp()}"></td>
+                    <td th:text="${#dates.format(class.getUpdateTimeStamp(), 'yyyy-MM-dd HH:mm')}"></td>
                     <td>
                         <button class="btn btn-primary delete-button"
                                 th:value="${class.getStudentName()}">삭제</button>
