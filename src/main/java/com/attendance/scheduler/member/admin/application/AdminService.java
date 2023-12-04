@@ -1,7 +1,6 @@
 package com.attendance.scheduler.member.admin.application;
 
 import com.attendance.scheduler.infra.email.FindPasswordDTO;
-import com.attendance.scheduler.member.admin.dto.ApproveTeacherDTO;
 import com.attendance.scheduler.member.admin.dto.ChangeTeacherDTO;
 import com.attendance.scheduler.member.admin.dto.EditEmailDTO;
 import com.attendance.scheduler.member.admin.dto.EmailDTO;
@@ -18,11 +17,11 @@ public interface AdminService {
     List<TeacherDTO> findTeacherInformation(String username);
 
     Optional<EmailDTO> findAdminEmailByID(EmailDTO emailDTO);
-    void grantAuth(ApproveTeacherDTO approveTeacherDTO);
-    void revokeAuth(ApproveTeacherDTO approveTeacherDTO);
+    void grantAuth(String teacherId);
+    void revokeAuth(String teacherId);
 
     void changeExistTeacher(ChangeTeacherDTO changeTeacherDTO);
-    void deleteTeacherAccount(ApproveTeacherDTO approveTeacherDTO);
+    void deleteTeacherAccount(String teacherId);
 
     boolean emailConfirmation(FindPasswordDTO findPasswordDTO);
 

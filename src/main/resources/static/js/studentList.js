@@ -7,8 +7,8 @@ $(document).ready(function() {
                 url: '/manage/deleteStudentList',
                 method: 'POST',
                 data: { id : studentID },
-                success: function() {
-                    alert("삭제되었습니다");
+                success: function(data) {
+                    alert(data.responseJSON.message);
                     location.reload();
                 },
                 error: function(xhr) {

@@ -5,11 +5,10 @@ $(document).ready(function() {
 
         if (confirmation) {
             $.ajax({
-                url: '/admin/grant',
+                url: '/admin/api/grant/'+teacherId,
                 method: 'POST',
-                data: { username : teacherId },
-                success: function() {
-                    alert('승인되었습니다');
+                success: function(data) {
+                    alert(data);
                     location.reload();
                 },
                 error: function() {
@@ -25,11 +24,10 @@ $(document).ready(function() {
 
         if (confirmation) {
             $.ajax({
-                url: '/admin/revoke',
+                url: '/admin/api/revoke/'+teacherId,
                 method: 'POST',
-                data: { username : teacherId },
-                success: function() {
-                    alert('승인 취소 되었습니다');
+                success: function(data) {
+                    alert(data);
                     location.reload();
                 },
                 error: function() {
@@ -45,11 +43,10 @@ $(document).ready(function() {
 
         if (confirmation) {
             $.ajax({
-                url: '/admin/delete',
+                url: '/admin/api/delete'+teacherId,
                 method: 'POST',
-                data: { username : teacherId },
-                success: function() {
-                    alert('삭제 되었습니다');
+                success: function(data) {
+                    alert(data);
                     location.reload();
                 },
                 error: function() {

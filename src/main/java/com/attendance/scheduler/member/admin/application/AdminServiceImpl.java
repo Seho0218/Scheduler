@@ -6,7 +6,6 @@ import com.attendance.scheduler.course.repository.ClassJpaRepository;
 import com.attendance.scheduler.course.repository.ClassRepository;
 import com.attendance.scheduler.infra.email.FindPasswordDTO;
 import com.attendance.scheduler.member.admin.domain.AdminEntity;
-import com.attendance.scheduler.member.admin.dto.ApproveTeacherDTO;
 import com.attendance.scheduler.member.admin.dto.ChangeTeacherDTO;
 import com.attendance.scheduler.member.admin.dto.EditEmailDTO;
 import com.attendance.scheduler.member.admin.dto.EmailDTO;
@@ -64,18 +63,16 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     @Transactional
-    public void grantAuth(ApproveTeacherDTO approveTeacherDTO) {
-        TeacherEntity teacherEntity = teacherJpaRepository
-                .findByUsernameIs(approveTeacherDTO.getUsername());
+    public void grantAuth(String teacherId) {
+        TeacherEntity teacherEntity = teacherJpaRepository.findByUsernameIs(teacherId);
         teacherEntity.updateApprove(true);
         teacherJpaRepository.save(teacherEntity);
     }
 
     @Override
     @Transactional
-    public void revokeAuth(ApproveTeacherDTO approveTeacherDTO) {
-        TeacherEntity teacherEntity = teacherJpaRepository
-                .findByUsernameIs(approveTeacherDTO.getUsername());
+    public void revokeAuth(String teacherId) {
+        TeacherEntity teacherEntity = teacherJpaRepository.findByUsernameIs(teacherId);
         teacherEntity.updateApprove(false);
         teacherJpaRepository.save(teacherEntity);
     }
@@ -125,9 +122,9 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     @Transactional
-    public void deleteTeacherAccount(ApproveTeacherDTO approveTeacherDTO) {
+    public void deleteTeacherAccount(String teacherId) {
         Optional<TeacherEntity> teacherEntity = Optional.ofNullable(
-                teacherJpaRepository.findByUsernameIs(approveTeacherDTO.getUsername()));
+                teacherJpaRepository.findByUsernameIs(teacherId));
 
         //교사 엔티티가 존재
         if(teacherEntity.isPresent()) {
@@ -140,7 +137,7 @@ public class AdminServiceImpl implements AdminService {
 
             //교사 엔티티를 가져온다.
             classJpaRepository.deleteByTeacherEntity(teacherEntity.get());
-            teacherJpaRepository.deleteByUsernameIs(approveTeacherDTO.getUsername());
+            teacherJpaRepository.deleteByUsernameIs(teacherId);
         }
     }
 
