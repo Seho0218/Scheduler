@@ -43,7 +43,7 @@ $(document).ready(function() {
 
         if (confirmation) {
             $.ajax({
-                url: '/admin/api/delete'+teacherId,
+                url: '/admin/api/delete/'+teacherId,
                 method: 'POST',
                 success: function(data) {
                     alert(data);

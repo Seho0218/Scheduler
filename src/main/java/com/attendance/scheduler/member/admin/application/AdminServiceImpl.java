@@ -95,9 +95,12 @@ public class AdminServiceImpl implements AdminService {
 
             classValidator(studentClassByStudentName, studentClassByTeacherName);
 
-            ClassEntity classEntity= classRepository.getStudentClassEntityByStudentName(studentEntity.get().getStudentName());
-            classEntity.updateTeacherName(teacherEntity.get().getTeacherName());
-            classJpaRepository.save(classEntity);
+            List<ClassEntity> classEntity= classRepository.getStudentClassEntityByStudentName(studentEntity.get().getStudentName());
+            if(!classEntity.isEmpty()) {
+                ClassEntity entity = classEntity.get(0);
+                entity.updateTeacherName(teacherEntity.get().getTeacherName());
+                classJpaRepository.save(entity);
+            }
             studentJpaRepository.save(studentEntity.get());
         }
     }
@@ -156,9 +159,7 @@ public class AdminServiceImpl implements AdminService {
     @Transactional
     public void initializePassword(PwdEditDTO pwdEditDTO) {
         final String encodePassword = passwordEncoder.encode(pwdEditDTO.getPassword());
-
         pwdEditDTO.setPassword(encodePassword);
-
         AdminEntity adminEntity = adminRepository.findByUsernameIs(pwdEditDTO.getUsername());
         adminRepository.save(adminEntity);
     }

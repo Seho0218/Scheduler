@@ -44,7 +44,7 @@ public class TeacherCertController {
                             BindingResult bindingResult, Model model) {
 
         if (bindingResult.hasErrors()) {
-            return "cert/findId";
+            return "member/help/findId";
         }
 
         Optional<FindIdDTO> idByEmail = teacherCertService.findIdByEmail(findIdDTO);
@@ -53,7 +53,7 @@ public class TeacherCertController {
         if (idByEmail.isEmpty()) {
             model.addAttribute("account", new FindIdDTO());
             model.addAttribute("errorMessage", "등록된 이메일이 없습니다.");
-            return "cert/findId";
+            return "member/help/findId";
         }
 
         try {
@@ -63,7 +63,7 @@ public class TeacherCertController {
             log.info("send Id error = {}", e.getMessage());
         }
 
-        return "cert/idCompletion";
+        return "member/help/idCompletion";
     }
 
     /*
@@ -78,30 +78,30 @@ public class TeacherCertController {
                                  BindingResult bindingResult, HttpSession session, Model model) {
 
         if (bindingResult.hasErrors()) {
-            return "cert/findPwd";
+            return "member/help/findPwd";
         }
 
         if(!teacherCertService.emailConfirmation(findPasswordDTO)) {
             model.addAttribute("errorMessage", "등록된 이메일이 없습니다.");
             model.addAttribute("account", new TeacherDTO());
-            return "cert/findPwd";
+            return "member/help/findPwd";
         }
 
         if(!teacherCertService.idConfirmation(findPasswordDTO)){
             model.addAttribute("errorMessage", "등록된 아이디가 없습니다.");
             model.addAttribute("account", new TeacherDTO());
-            return "cert/findPwd";
+            return "member/help/findPwd";
         }
 
         try {
             model.addAttribute("username", findPasswordDTO.getUsername());
             model.addAttribute("auth", new CertDTO());
             htmlEmailService.sendAuthNum(findPasswordDTO, session);
-            return "cert/authNum";
+            return "member/help/authNum";
         } catch (Exception e) {
             model.addAttribute("account", new TeacherDTO());
             model.addAttribute("errorMessage", e.getMessage());
-            return "cert/findPwd";
+            return "member/help/findPwd";
         }
     }
 
@@ -120,7 +120,7 @@ public class TeacherCertController {
             model.addAttribute("auth", new CertDTO());
             model.addAttribute("username", certDTO);
             model.addAttribute("errorMessage","인증번호를 전송해주세요");
-            return "cert/authNum";
+            return "member/help/authNum";
         }
 
         // 현재시간이 만료시간이 지났다면
@@ -129,7 +129,7 @@ public class TeacherCertController {
             model.addAttribute("errorMessage","인증시간이 만료되었습니다");
             session.setAttribute(authNum, null);
             session.setMaxInactiveInterval(0);
-            return "cert/authNum";
+            return "member/help/authNum";
         }
 
         // 인증번호
@@ -138,33 +138,32 @@ public class TeacherCertController {
             // 인증번호가 일치하면
             model.addAttribute("pwdEdit", new PwdEditDTO());
             model.addAttribute("username", certDTO);
-            return "cert/initializePassword";
+            return "member/help/initializePassword";
         } else {
             model.addAttribute("auth", new CertDTO());
             model.addAttribute("username", certDTO);
             model.addAttribute("errorMessage","인증번호가 일치하지 않습니다");
-            return "cert/authNum";
+            return "member/help/authNum";
         }
     }
 
     //로그인 상태에서 변경
-    @GetMapping("changePassword")
+    @GetMapping("password")
     public String changePassword(Model model) {
         model.addAttribute("pwdEdit", new PwdEditDTO());
-        return "cert/changePassword";
+        return "member/help/changePassword";
     }
 
-    @PostMapping("updatePassword")
+    @PostMapping("password")
     public String authCompletion(PwdEditDTO pwdEditDTO, Model model) {
         final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if(!auth.getName().equals("anonymousUser")) {
             pwdEditDTO.setUsername(auth.getName());
         }
-        System.out.println("pwdEditDTO = " + pwdEditDTO);
 
         try {
             teacherCertService.initializePassword(pwdEditDTO);
-            return "redirect:/cert/completion";
+            return "redirect:member/help/completion";
         }catch (Exception e) {
             log.info("error = {}", e.getMessage());
             model.addAttribute("class", new ClassDTO());
@@ -173,7 +172,7 @@ public class TeacherCertController {
     }
 
     //로그인 상태에서
-    @GetMapping("changeEmail")
+    @GetMapping("email")
     public String changeEmail(Model model){
 
         FindIdDTO findIdDTO = new FindIdDTO();
@@ -188,7 +187,7 @@ public class TeacherCertController {
         try {
             model.addAttribute("emailEdit", new EditEmailDTO());
             model.addAttribute("username", findIdDTO);
-            return "cert/changeEmail";
+            return "member/help/changeEmail";
         } catch (Exception e) {
             log.info("send Id error = {}", e.getMessage());
             model.addAttribute("class", new ClassDTO());
@@ -196,14 +195,14 @@ public class TeacherCertController {
         }
     }
 
-    @PostMapping("changeEmail")
+    @PostMapping("email")
     public String updateEmail(EditEmailDTO editEmailDTO) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         editEmailDTO.setUsername(auth.getName());
 
         try {
             teacherCertService.updateEmail(editEmailDTO);
-            return "redirect:cert/completion";
+            return "redirect:member/help/completion";
         } catch (Exception e) {
             return "manage/class";
         }

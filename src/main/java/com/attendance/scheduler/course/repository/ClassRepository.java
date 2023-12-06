@@ -65,10 +65,10 @@ public class ClassRepository {
                 .fetch();
     }
 
-    public ClassEntity getStudentClassEntityByStudentName(String studentName) {
+    public List<ClassEntity> getStudentClassEntityByStudentName(String studentName) {
         return queryFactory
                 .selectFrom(classEntity)
                 .where(classEntity.studentName.eq(studentName))
-                .fetchOne();
+                .fetch();
     }
 }

@@ -25,7 +25,7 @@ $(document).ready(function() {
         const confirmation = confirm('담당교사를 변경하시겠습니까?');
         if (confirmation) {
             $.ajax({
-                url: '/admin/changeTeacher',
+                url: '/admin/api/changeTeacher',
                 method: 'POST',
                 data: {
                     teacherId : teacherID,
