@@ -44,15 +44,17 @@ public class TeacherController {
     public String managePage(Model model) {
         final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         List<ClassDTO> classTable = classService.findStudentClassList();
-        model.addAttribute("classList", new DeleteClassDTO()); //있어야 빠름
 
         if(auth.getAuthorities().toString().equals("[ROLE_TEACHER]")){
             List<TeacherDTO> teacherInformation = adminService.findTeacherInformation(auth.getName());
-            Stream<ClassDTO> stream = classTable.stream().filter(
-                    h -> h.getTeacherName().equals(teacherInformation.get(0).getTeacherName()));
+            Stream<ClassDTO> stream = classTable
+                    .stream().filter(h -> h.getTeacherName()
+                            .equals(teacherInformation.get(0).getTeacherName()));
             model.addAttribute("findClassTable", stream);
             return "manage/class";
         }
+
+        model.addAttribute("classList", new DeleteClassDTO()); //있어야 빠름
         model.addAttribute("findClassTable", classTable);
         return "manage/class";
     }
@@ -118,7 +120,6 @@ public class TeacherController {
     @PostMapping("deleteStudentList")
     public ResponseEntity<String> deleteStudentList(@Validated @ModelAttribute StudentInformationDTO studentInformationDTO) {
         teacherService.deleteStudentInformation(studentInformationDTO);
-        log.info("delete List={}", studentInformationDTO);
         return ResponseEntity.ok("삭제되었습니다.");
     }
 }

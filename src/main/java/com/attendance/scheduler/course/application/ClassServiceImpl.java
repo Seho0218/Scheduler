@@ -55,8 +55,7 @@ public class ClassServiceImpl implements ClassService {
     }
 
     @Override
-    public Optional<StudentClassDTO> findStudentClasses(StudentClassDTO studentClassDTO) {
-        String studentName = studentClassDTO.getStudentName().trim();
+    public Optional<StudentClassDTO> findStudentClasses(String studentName) {
         return Optional.ofNullable(classRepository.getStudentClassByStudentName(studentName));
     }
 

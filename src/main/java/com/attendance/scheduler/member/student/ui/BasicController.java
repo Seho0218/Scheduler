@@ -12,16 +12,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 @RequiredArgsConstructor
 public class BasicController {
 
-
     @GetMapping("/")
     public String basic(Model model){
         model.addAttribute("studentClassDTO", new StudentClassDTO());
         return "index";
-    }
-
-//  제출 완료 폼
-    @GetMapping("/help/completion")
-    public String completeForm() {
-        return "/member/help/completion";
     }
 }

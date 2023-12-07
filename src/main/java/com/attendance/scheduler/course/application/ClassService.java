@@ -16,7 +16,7 @@ public interface ClassService {
       ClassListDTO findTeachersClasses(String studentName);
       // 수업 유무 조회
 
-      Optional<StudentClassDTO> findStudentClasses(StudentClassDTO studentClassDTO);
+      Optional<StudentClassDTO> findStudentClasses(String studentName);
 
       void saveClassTable(ClassDTO classDTO);
 
