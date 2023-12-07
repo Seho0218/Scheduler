@@ -53,13 +53,13 @@ public class TeacherCertServiceImpl implements TeacherCertService {
         final String encodePassword = passwordEncoder.encode(pwdEditDTO.getPassword());
         pwdEditDTO.setPassword(encodePassword);
 
-        final TeacherEntity teacherEntity = teacherJpaRepository
-                .findByUsernameIs(pwdEditDTO.getUsername());
+        TeacherEntity teacherEntity = teacherJpaRepository.findByUsernameIs(pwdEditDTO.getUsername());
         teacherEntity.updatePassword(pwdEditDTO);
         teacherJpaRepository.save(teacherEntity);
     }
 
     @Override
+    @Transactional
     public void updateEmail(EditEmailDTO editEmailDTO) {
         TeacherEntity teacherEntity = teacherJpaRepository.findByUsernameIs(editEmailDTO.getUsername());
         teacherEntity.updateEmail(editEmailDTO);

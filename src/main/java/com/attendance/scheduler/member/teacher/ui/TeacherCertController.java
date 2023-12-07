@@ -163,7 +163,7 @@ public class TeacherCertController {
 
         try {
             teacherCertService.initializePassword(pwdEditDTO);
-            return "redirect:member/help/completion";
+            return "redirect:/help/completion";
         }catch (Exception e) {
             log.info("error = {}", e.getMessage());
             model.addAttribute("class", new ClassDTO());
@@ -202,7 +202,7 @@ public class TeacherCertController {
 
         try {
             teacherCertService.updateEmail(editEmailDTO);
-            return "redirect:member/help/completion";
+            return "redirect:/help/completion";
         } catch (Exception e) {
             return "manage/class";
         }

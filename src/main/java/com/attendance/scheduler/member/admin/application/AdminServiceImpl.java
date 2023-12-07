@@ -161,14 +161,14 @@ public class AdminServiceImpl implements AdminService {
         final String encodePassword = passwordEncoder.encode(pwdEditDTO.getPassword());
         pwdEditDTO.setPassword(encodePassword);
         AdminEntity adminEntity = adminRepository.findByUsernameIs(pwdEditDTO.getUsername());
+        adminEntity.updatePassword(encodePassword);
         adminRepository.save(adminEntity);
     }
 
     @Override
     @Transactional
     public void updateEmail(EditEmailDTO editEmailDTO) {
-        AdminEntity adminEntity = adminRepository
-                .findByUsernameIs(editEmailDTO.getUsername());
+        AdminEntity adminEntity = adminRepository.findByUsernameIs(editEmailDTO.getUsername());
         adminEntity.updateEmail(editEmailDTO);
         adminRepository.save(adminEntity);
     }

@@ -48,7 +48,7 @@ public class AdminCertController {
         pwdEditDTO.setUsername(auth.getName());
         try {
             adminService.initializePassword(pwdEditDTO);
-            return "redirect:/cert/completion";
+            return "redirect:/help/completion";
         }catch (Exception e) {
             model.addAttribute("class", new ClassDTO());
             return "redirect:/";

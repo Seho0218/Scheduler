@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/cert/")
+@RequestMapping("/help/")
 public class CertController {
 
     /*
@@ -16,17 +16,17 @@ public class CertController {
     @GetMapping("findId")
     public String findId(Model model) {
         model.addAttribute("account", new TeacherDTO());
-        return "cert/findId";
+        return "member/help/findId";
     }
 
     @GetMapping("findPassword")
     public String findPassword(Model model) {
         model.addAttribute("account", new TeacherDTO());
-        return "cert/findPwd";
+        return "member/help/findPwd";
     }
 
     @GetMapping("completion")
     public String updateCompletionForm() {
-        return "cert/updateCompletion";
+        return "member/help/completion";
     }
 }

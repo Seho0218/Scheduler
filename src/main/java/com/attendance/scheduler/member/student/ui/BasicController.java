@@ -20,8 +20,8 @@ public class BasicController {
     }
 
 //  제출 완료 폼
-    @GetMapping("completion")
+    @GetMapping("/help/completion")
     public String completeForm() {
-        return "class/completion";
+        return "/member/help/completion";
     }
 }
