@@ -1,12 +1,17 @@
 package com.attendance.scheduler.member.admin.domain;
 
+import com.attendance.scheduler.course.domain.ClassEntity;
 import com.attendance.scheduler.member.admin.dto.EditEmailDTO;
+import com.attendance.scheduler.notification.domain.BoardEntity;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
@@ -38,6 +43,14 @@ public class AdminEntity {
         this.username = username;
         this.password = password;
         this.email = email;
+    }
+
+    @OneToMany(mappedBy = "adminEntity")
+    List<BoardEntity> boardEntityList = new ArrayList<>();
+
+
+    public void setBoardEntity(BoardEntity boardEntity) {
+        this.boardEntityList.add(boardEntity);
     }
 
     public void updatePassword(String newPassword) {
