@@ -1,4 +1,4 @@
-package com.attendance.scheduler.member.teacher.ui;
+package com.attendance.scheduler.member.teacher.controller;
 
 import com.attendance.scheduler.member.teacher.application.TeacherService;
 import com.attendance.scheduler.member.teacher.dto.JoinTeacherDTO;

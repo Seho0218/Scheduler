@@ -1,4 +1,4 @@
-package com.attendance.scheduler.member.admin.ui;
+package com.attendance.scheduler.member.admin.controller;
 
 import com.attendance.scheduler.course.dto.ClassDTO;
 import com.attendance.scheduler.infra.email.HtmlEmailService;

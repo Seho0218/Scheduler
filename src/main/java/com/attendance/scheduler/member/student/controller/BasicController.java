@@ -1,4 +1,4 @@
-package com.attendance.scheduler.member.student.ui;
+package com.attendance.scheduler.member.student.controller;
 
 import com.attendance.scheduler.course.dto.StudentClassDTO;
 import lombok.RequiredArgsConstructor;

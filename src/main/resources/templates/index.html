@@ -44,10 +44,11 @@
             </tr>
         </table>
     </div>
-    <form method='post' role="form" th:action="@{/search/findClass}" th:object="${studentClassDTO}">
         <!--학생 이름-->
         <div class="py-2">
             <div class="board rounded-3 border border-2">
+                <div class="text-end"><a href="board"><button class="btn btn-primary">공지사항</button></a></div>
+                <form method='post' role="form" th:action="@{/search/findClass}" th:object="${studentClassDTO}">
                 <h1> 시간표 조회 </h1>
                 <p>학생 이름을 입력해주세요 :)<br></p>
                 <label for="studentName"></label>
@@ -57,10 +58,10 @@
                 <div class="field-error" th:text="${nullStudentName}"></div><br>
                 <div class="text-end">
                     <button class="btn btn-primary" type="submit">수업 조회</button></div>
-                <br><br>
+                <br>
+                </form>
             </div>
         </div>
-    </form>
 </div><!-- container-->
 </body>
 </html>

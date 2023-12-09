@@ -19,6 +19,7 @@ public class SecurityConfig{
 	public static final String[] ENDPOINTS_WHITELIST = {
 			"/", "/submit", "/completion",
 			"/search/**",
+			"/board/**",
 			"/join/**",
 			"/login/**",
 			"/cert/**",

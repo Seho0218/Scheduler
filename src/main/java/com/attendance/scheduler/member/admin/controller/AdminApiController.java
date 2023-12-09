@@ -1,4 +1,4 @@
-package com.attendance.scheduler.member.admin.ui;
+package com.attendance.scheduler.member.admin.controller;
 
 import com.attendance.scheduler.member.admin.application.AdminService;
 import com.attendance.scheduler.member.admin.dto.ChangeTeacherDTO;
@@ -12,24 +12,24 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/admin/api/")
+@RequestMapping("/admin/api")
 public class AdminApiController {
 
     public final AdminService adminService;
 
-    @PostMapping("grant/{teacherId}")
+    @PostMapping("/grant/{teacherId}")
     public ResponseEntity<String> grantAuth(@PathVariable String teacherId) {
         adminService.grantAuth(teacherId);
         return ResponseEntity.ok("승인되었습니다.");
     }
 
-    @PostMapping("revoke/{teacherId}")
+    @PostMapping("/revoke/{teacherId}")
     public ResponseEntity<String> revokeAuth(@PathVariable String teacherId) {
         adminService.revokeAuth(teacherId);
         return ResponseEntity.ok("승인 취소되었습니다.");
     }
 
-    @PostMapping("changeTeacher")
+    @PostMapping("/changeTeacher")
     public ResponseEntity<String> changeTeacher(ChangeTeacherDTO changeTeacherDTO) {
         try {
             adminService.changeExistTeacher(changeTeacherDTO);
@@ -39,7 +39,7 @@ public class AdminApiController {
         }
     }
 
-    @PostMapping("delete/{teacherId}")
+    @PostMapping("/delete/{teacherId}")
     public ResponseEntity<String> delete(@PathVariable String teacherId) {
         adminService.deleteTeacherAccount(teacherId);
         return ResponseEntity.ok("삭제 되었습니다.");

@@ -1,4 +1,4 @@
-package com.attendance.scheduler.member.admin.ui;
+package com.attendance.scheduler.member.admin.controller;
 
 import com.attendance.scheduler.member.admin.application.AdminService;
 import com.attendance.scheduler.member.teacher.dto.TeacherDTO;
@@ -14,12 +14,12 @@ import java.util.List;
 @Slf4j
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/admin/")
+@RequestMapping("/admin")
 public class AdminController {
 
     public final AdminService adminService;
 
-    @GetMapping("teacherList")
+    @GetMapping("/teacherList")
     public String teacherList(Model model) {
         List<TeacherDTO> teacherList = adminService.getTeacherList();
         model.addAttribute("teacherList", teacherList);

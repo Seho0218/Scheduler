@@ -1,8 +1,7 @@
 package com.attendance.scheduler.member.admin.domain;
 
-import com.attendance.scheduler.course.domain.ClassEntity;
 import com.attendance.scheduler.member.admin.dto.EditEmailDTO;
-import com.attendance.scheduler.notification.domain.BoardEntity;
+import com.attendance.scheduler.notification.domain.notice.NoticeEntity;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,11 +24,10 @@ import static lombok.AccessLevel.PROTECTED;
 @NoArgsConstructor(access = PROTECTED)
 public class AdminEntity {
 
-    @Id
-    @GeneratedValue(strategy = IDENTITY)
+    @Id @GeneratedValue(strategy = IDENTITY)
+    @Column(name = "adminId")
     private Long id;
 
-    @Column(name = "adminId")
     private String username;
 
     private String password;
@@ -46,11 +44,11 @@ public class AdminEntity {
     }
 
     @OneToMany(mappedBy = "adminEntity")
-    List<BoardEntity> boardEntityList = new ArrayList<>();
+    List<NoticeEntity> noticeEntityList = new ArrayList<>();
 
 
-    public void setBoardEntity(BoardEntity boardEntity) {
-        this.boardEntityList.add(boardEntity);
+    public void setBoardEntity(NoticeEntity noticeEntity) {
+        this.noticeEntityList.add(noticeEntity);
     }
 
     public void updatePassword(String newPassword) {
