@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -18,7 +18,7 @@
         background-color: white;
     }
 
-    section.notice {
+    section {
         padding: 80px 0;
     }
 
@@ -102,11 +102,8 @@
 
 </style>
 <body>
-<section class="notice">
-    <div class="page-title">
-
-    </div>
-
+<div class="notice">
+    <div class="page-title"></div>
     <div id="board-search">
         <div class="container">
             <div class="search-window">
@@ -129,24 +126,27 @@
                 <tbody th:each="notice : ${noticeList}">
                 <tr>
                     <td th:text="${notice.getId()}"></td>
-
-                    <td th:text="${notice.getTitle()}" onclick="toggleContent(1)"></td>
-                        <td id="1">
-                            <p th:text="${notice.getContent()}"></p>
-<!--                        <a href="#">수정</a> |-->
-<!--                        <a href="#">삭제</a>-->
-                        </td>
+                    <td><a href="" th:text="${notice.getTitle()}" onclick="toggleContent()"></a></td>
+                    <td th:id="${notice.getId()}" class="content">
+                        <p th:text="${notice.getContent()}"></p>
+                        <a href="#" class="modify">수정</a> |
+                        <a href="#" class="delete">삭제</a>
+                    </td>
                     <td th:text="${#dates.format(notice.getCreationTimestamp(), 'yyyy-MM-dd')}"></td>
                 </tr>
                 </tbody>
             </table>
         </div>
     </div>
-</section>
+</div>
 </body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
-    function toggleContent(contentId) {
-        const contentDiv = document.getElementById(contentId);
+    function toggleContent() {
+        const id = this.parent('td').siblings('td').val();
+        console.log(id);
+
+        const contentDiv = document.getElementById(id);
         if (contentDiv.style.display === 'none') {
             contentDiv.style.display = 'block';
         } else {
@@ -154,4 +154,5 @@
         }
     }
 </script>
+<script src="js/board/list.js"></script>
 </html>
