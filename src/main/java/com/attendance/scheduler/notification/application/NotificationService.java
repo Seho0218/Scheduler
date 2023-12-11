@@ -1,13 +1,13 @@
 package com.attendance.scheduler.notification.application;
 
 import com.attendance.scheduler.notification.dto.NoticeDTO;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface NotificationService {
 
 
-    List<NoticeDTO> findAllNoticeList();
+    Page<NoticeDTO> pageNoticeList(String condition, Pageable pageable);
 
     void writeNotice(NoticeDTO notificationDTO);
 

@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/html"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -123,36 +125,62 @@
                     <th scope="col" class="th-date">등록일</th>
                 </tr>
                 </thead>
-                <tbody th:each="notice : ${noticeList}">
-                <tr>
+
+                <tbody>
+                <tr th:each="notice : ${noticeList}">
                     <td th:text="${notice.getId()}"></td>
-                    <td><a href="" th:text="${notice.getTitle()}" onclick="toggleContent()"></a></td>
-                    <td th:id="${notice.getId()}" class="content">
-                        <p th:text="${notice.getContent()}"></p>
-                        <a href="#" class="modify">수정</a> |
-                        <a href="#" class="delete">삭제</a>
-                    </td>
+                    <td><a th:href="@{'/board/' + ${notice.getId()}}" th:text="${notice.getTitle()}"></a></td>
                     <td th:text="${#dates.format(notice.getCreationTimestamp(), 'yyyy-MM-dd')}"></td>
                 </tr>
+
+
+                <tr class="d-flex justify-content-end">
+                    <td sec:authorize="hasRole('ROLE_ADMIN')"><a class="btn btn-danger">글삭제</a></td>
+                    <td sec:authorize="hasRole('ROLE_ADMIN')"><a href="/board/createNotice" class="btn btn-primary">글쓰기</a></td>
+                </tr>
+
+
+                <tr class="container d-flex align-items-center justify-content-center" aria-label="Page navigation example"
+                    th:with="start=${(noticeList.number/maxPage)*maxPage + 1},
+                    end=(${(noticeList.totalPages == 0) ? 1 : (start + (maxPage - 1) < noticeList.totalPages ? start + (maxPage - 1) : noticeList.totalPages)})">
+
+                    <td class="pagination">
+                        <th th:if="${start > 1}" class="page-item">
+                            <a th:href="@{/board/?page=0}" class="page-link" href="#" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;&laquo;</span>
+                            </a>
+                        </th>
+
+                        <th th:if="${start > 1}" class="page-item">
+                            <a th:href="@{/board/?page=${(start - maxPage -1)}}" class="page-link" href="#" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </th>
+
+                        <th th:each="page: ${#numbers.sequence(start, end)}" class="page-item" th:classappend="${noticeList.number+1 == page} ? active">
+                            <a th:href="@{/board/?(page=${page-1})}" th:text="${page}" class="page-link" href="#">1</a>
+                        </th>
+
+                        <th th:if="${end < noticeList.totalPages}" class="page-item">
+                            <a th:href="@{/board/?page=${(start + maxPage - 1)}}" class="page-link" href="#" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </th>
+
+                        <th th:if="${end < noticeList.totalPages}" class="page-item">
+                            <a th:href="@{/board/?page=${(noticeList.totalPages - 1)}}" class="page-link" href="#" aria-label="Next">
+                                <span aria-hidden="true">&raquo;&raquo;</span>
+                            </a>
+                        </th>
+                    </td>
+                </tr>
                 </tbody>
+                <tfoot></tfoot>
             </table>
         </div>
     </div>
 </div>
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script>
-    function toggleContent() {
-        const id = this.parent('td').siblings('td').val();
-        console.log(id);
-
-        const contentDiv = document.getElementById(id);
-        if (contentDiv.style.display === 'none') {
-            contentDiv.style.display = 'block';
-        } else {
-            contentDiv.style.display = 'none';
-        }
-    }
-</script>
 <script src="js/board/list.js"></script>
 </html>

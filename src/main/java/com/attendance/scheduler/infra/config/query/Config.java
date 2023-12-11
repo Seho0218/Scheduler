@@ -1,4 +1,4 @@
-package com.attendance.scheduler.infra.config;
+package com.attendance.scheduler.infra.config.query;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;

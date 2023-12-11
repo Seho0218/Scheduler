@@ -1,13 +1,13 @@
 package com.attendance.scheduler.notification.application;
 
 import com.attendance.scheduler.notification.dto.NoticeDTO;
-import com.attendance.scheduler.notification.repository.NotificationJpaRepository;
 import com.attendance.scheduler.notification.repository.NoticeRepository;
+import com.attendance.scheduler.notification.repository.NotificationJpaRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -17,8 +17,10 @@ public class NotificationServiceImpl implements NotificationService {
     private final NoticeRepository noticeRepository;
 
     @Override
-    public List<NoticeDTO> findAllNoticeList() {
-        return noticeRepository.findAllNoticeList();
+    public Page<NoticeDTO> pageNoticeList(String condition, Pageable pageable) {
+        System.out.println("pageable = " + pageable);
+
+        return noticeRepository.pageNoticeList(condition, pageable);
     }
 
     @Override

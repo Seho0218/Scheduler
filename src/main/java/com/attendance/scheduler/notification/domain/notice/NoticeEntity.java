@@ -41,7 +41,7 @@ public class NoticeEntity {
     private Timestamp modifiedDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "adminId")
+    @JoinColumn(name = "admin_id")
     private AdminEntity adminEntity;
 
     public void setAdminEntity(AdminEntity adminEntity) {

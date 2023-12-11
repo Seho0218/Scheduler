@@ -25,8 +25,10 @@ import static lombok.AccessLevel.PROTECTED;
 public class AdminEntity {
 
     @Id @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "adminId")
+    @Column(name = "admin_id")
     private Long id;
+
+    private String name;
 
     private String username;
 
@@ -36,8 +38,9 @@ public class AdminEntity {
     private String email;
 
     @Builder
-    public AdminEntity(Long id, String username, String password, String email) {
+    public AdminEntity(Long id, String name, String username, String password, String email) {
         this.id = id;
+        this.name = name;
         this.username = username;
         this.password = password;
         this.email = email;

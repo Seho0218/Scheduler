@@ -1,7 +1,7 @@
 package com.attendance.scheduler.teacher.application;
 
 import com.attendance.scheduler.common.dto.LoginDTO;
-import com.attendance.scheduler.infra.config.Authority.UserDetailService;
+import com.attendance.scheduler.infra.config.Security.Authority.UserDetailService;
 import com.attendance.scheduler.member.student.domain.StudentEntity;
 import com.attendance.scheduler.member.student.repository.StudentJpaRepository;
 import com.attendance.scheduler.member.teacher.application.TeacherService;

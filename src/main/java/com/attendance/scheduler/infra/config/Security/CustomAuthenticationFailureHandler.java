@@ -1,4 +1,4 @@
-package com.attendance.scheduler.infra.config;
+package com.attendance.scheduler.infra.config.Security;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
