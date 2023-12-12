@@ -1,7 +1,9 @@
 package com.attendance.scheduler.notification.repository;
 
+import com.attendance.scheduler.notification.dto.Condition;
 import com.attendance.scheduler.notification.dto.NoticeDTO;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 import static com.attendance.scheduler.notification.domain.notice.QNoticeEntity.noticeEntity;
+import static org.springframework.util.StringUtils.hasText;
 
 @Repository
 @RequiredArgsConstructor
@@ -21,8 +24,7 @@ public class NoticeRepository {
     public final JPAQueryFactory queryFactory;
 
 
-    public Page<NoticeDTO> pageNoticeList(String condition, Pageable pageable){
-
+    public Page<NoticeDTO> pageNoticeList(Condition condition, Pageable pageable){
         List<NoticeDTO> content = queryFactory
                 .select(Projections.fields(NoticeDTO.class,
                         noticeEntity.id,
@@ -33,10 +35,10 @@ public class NoticeRepository {
                         noticeEntity.creationTimestamp,
                         noticeEntity.modifiedDate))
                 .from(noticeEntity)
-//                .where(
-//                        noticeEntity.title.eq(condition),
-//                        noticeEntity.content.eq(condition)
-//                )
+                .where(
+                        titleEq(condition.getTitleContent()),
+                        contentEq(condition.getTitleContent())
+                )
                 .orderBy(noticeEntity.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -44,14 +46,22 @@ public class NoticeRepository {
 
         JPAQuery<Long> counts = queryFactory
                 .select(noticeEntity.count())
-                .from(noticeEntity);
-//                .where(
-//                        noticeEntity.title.eq(condition),
-//                        noticeEntity.content.eq(condition)
-//                );
+                .from(noticeEntity)
+                .where(
+                        titleEq(condition.getTitleContent()),
+                        contentEq(condition.getTitleContent())
+                );
 
 
         return PageableExecutionUtils.getPage(content, pageable, counts::fetchOne);
+    }
+
+    private BooleanExpression titleEq(String title){
+        return hasText(title) ? noticeEntity.title.eq(title) : null;
+    }
+
+    private BooleanExpression contentEq(String content){
+        return hasText(content) ? noticeEntity.content.eq(content) : null;
     }
 
     public NoticeDTO findPostById(Long id) {

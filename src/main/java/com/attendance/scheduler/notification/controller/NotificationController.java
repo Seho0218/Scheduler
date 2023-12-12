@@ -1,6 +1,7 @@
 package com.attendance.scheduler.notification.controller;
 
 import com.attendance.scheduler.notification.application.NotificationService;
+import com.attendance.scheduler.notification.dto.Condition;
 import com.attendance.scheduler.notification.dto.NoticeDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,12 +27,14 @@ public class NotificationController {
     public final NotificationService notificationService;
 
     @GetMapping("")
-    public String getNoticeList(String condition, Pageable pageable, Model model){
+    public String getNoticeList(Condition condition, Pageable pageable, Model model){
+        System.out.println("pageable.toString() = " + pageable.toString());
         Page<NoticeDTO> allBoardList = notificationService.pageNoticeList(condition, pageable);
         model.addAttribute("noticeList", allBoardList);
         model.addAttribute("maxPage", 5);
         return "board/list";
     }
+
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/createNotice")
     public String writeNoticeForm(Model model){

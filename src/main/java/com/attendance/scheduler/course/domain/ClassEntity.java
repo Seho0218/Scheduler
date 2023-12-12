@@ -23,7 +23,7 @@ import static lombok.AccessLevel.PROTECTED;
 public class ClassEntity {
 
     @Id @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "classId")
+    @Column(name = "class_id")
     private Long id;
 
     private String studentName;
@@ -42,7 +42,7 @@ public class ClassEntity {
 
     @NotNull
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "teacherId")
+    @JoinColumn(name = "teacher_id")
     private TeacherEntity teacherEntity;
 
     public void setTeacherEntity(TeacherEntity teacherEntity) {

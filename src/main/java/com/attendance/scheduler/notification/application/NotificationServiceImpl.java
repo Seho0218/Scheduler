@@ -1,5 +1,6 @@
 package com.attendance.scheduler.notification.application;
 
+import com.attendance.scheduler.notification.dto.Condition;
 import com.attendance.scheduler.notification.dto.NoticeDTO;
 import com.attendance.scheduler.notification.repository.NoticeRepository;
 import com.attendance.scheduler.notification.repository.NotificationJpaRepository;
@@ -17,9 +18,7 @@ public class NotificationServiceImpl implements NotificationService {
     private final NoticeRepository noticeRepository;
 
     @Override
-    public Page<NoticeDTO> pageNoticeList(String condition, Pageable pageable) {
-        System.out.println("pageable = " + pageable);
-
+    public Page<NoticeDTO> pageNoticeList(Condition condition, Pageable pageable) {
         return noticeRepository.pageNoticeList(condition, pageable);
     }
 
