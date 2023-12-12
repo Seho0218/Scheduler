@@ -8,14 +8,16 @@ import com.attendance.scheduler.member.student.repository.StudentRepository;
 import com.attendance.scheduler.member.teacher.domain.TeacherEntity;
 import com.attendance.scheduler.member.teacher.dto.JoinTeacherDTO;
 import com.attendance.scheduler.member.teacher.dto.RegisterStudentDTO;
+import com.attendance.scheduler.member.teacher.dto.StudentSearchCondition;
 import com.attendance.scheduler.member.teacher.repository.TeacherJpaRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -69,7 +71,7 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     @Transactional
-    public List<StudentInformationDTO> findStudentInformationList() {
-        return studentRepository.studentInformationDTOList();
+    public Page<StudentInformationDTO> findStudentInformationList(StudentSearchCondition studentSearchCondition, Pageable pageable) {
+        return studentRepository.studentInformationDTOList(studentSearchCondition, pageable);
     }
 }

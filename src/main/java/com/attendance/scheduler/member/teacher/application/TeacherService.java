@@ -3,8 +3,10 @@ package com.attendance.scheduler.member.teacher.application;
 import com.attendance.scheduler.member.student.dto.StudentInformationDTO;
 import com.attendance.scheduler.member.teacher.dto.JoinTeacherDTO;
 import com.attendance.scheduler.member.teacher.dto.RegisterStudentDTO;
+import com.attendance.scheduler.member.teacher.dto.StudentSearchCondition;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
-import java.util.List;
 
 public interface TeacherService {
 
@@ -22,5 +24,5 @@ public interface TeacherService {
 
     void deleteStudentInformation(StudentInformationDTO studentInformationDTO);
 
-    List<StudentInformationDTO> findStudentInformationList();
+    Page<StudentInformationDTO> findStudentInformationList(StudentSearchCondition studentSearchCondition, Pageable pageable);
 }

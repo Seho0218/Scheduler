@@ -52,7 +52,6 @@ public class NoticeRepository {
                         contentEq(condition.getTitleContent())
                 );
 
-
         return PageableExecutionUtils.getPage(content, pageable, counts::fetchOne);
     }
 

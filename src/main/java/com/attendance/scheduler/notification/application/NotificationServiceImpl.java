@@ -25,7 +25,7 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     @Transactional
     public void writeNotice(NoticeDTO noticeDTO) {
-        notificationJpaRepository.save(noticeDTO.toEntity());
+         notificationJpaRepository.save(noticeDTO.toEntity());
     }
 
     @Override

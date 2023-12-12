@@ -8,9 +8,12 @@ import com.attendance.scheduler.member.student.dto.StudentInformationDTO;
 import com.attendance.scheduler.member.teacher.application.TeacherService;
 import com.attendance.scheduler.member.teacher.dto.DeleteClassDTO;
 import com.attendance.scheduler.member.teacher.dto.RegisterStudentDTO;
+import com.attendance.scheduler.member.teacher.dto.StudentSearchCondition;
 import com.attendance.scheduler.member.teacher.dto.TeacherDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -68,9 +71,10 @@ public class TeacherController {
 
     //학생 리스트
     @GetMapping("studentList")
-    public String studentList(Model model) {
+    public String studentList(StudentSearchCondition studentSearchCondition, Pageable pageable, Model model) {
         final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        List<StudentInformationDTO> studentInformationList = teacherService.findStudentInformationList();
+        Page<StudentInformationDTO> studentInformationList = teacherService
+                .findStudentInformationList(studentSearchCondition, pageable);
 
         if(auth.getAuthorities().toString().equals("[ROLE_ADMIN]")) {
             List<TeacherDTO> teacherList = adminService.getTeacherList();
