@@ -128,49 +128,56 @@
                     <td th:text="${#dates.format(notice.getCreationTimestamp(), 'yyyy-MM-dd')}"></td>
                 </tr>
                 </tbody>
-
-                <tfoot>
+                <tfoot></tfoot>
+            </table>
+        </div>
+    </div>
+    <div id="board-bottom">
+        <div class="container">
+            <table class="board-table">
+                <thead></thead>
+                <tbody>
                 <tr class="d-flex justify-content-end">
                     <th sec:authorize="hasRole('ROLE_ADMIN')"><button class="btn btn-danger">글삭제</button></th>
                     <th sec:authorize="hasRole('ROLE_ADMIN')"><button href="/board/createNotice" class="btn btn-primary">글쓰기</button></th>
                 </tr>
-                <tr></tr>
-
-                <tr class="container d-flex align-items-center justify-content-center align-items-center" aria-label="Page navigation example"
+                <tr class="container"
                     th:with="start=${(noticeList.number/maxPage)*maxPage + 1},
                     end=(${(noticeList.totalPages == 0) ? 1 : (start + (maxPage - 1) < noticeList.totalPages ? start + (maxPage - 1) : noticeList.totalPages)})">
 
                     <td class="pagination">
-                    <th th:if="${start > 1}" class="page-item">
-                        <a th:href="@{/board?page=0}" class="page-link" href="#" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;&laquo;</span>
-                        </a>
-                    </th>
+                        <th th:if="${start > 1}" class="page-item">
+                            <a th:href="@{/board?page=0}" class="page-link" href="#" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;&laquo;</span>
+                            </a>
+                        </th>
 
-                    <th th:if="${start > 1}" class="page-item">
-                        <a th:href="@{/board?(page=${start-maxPage-1})}" class="page-link" href="#" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </th>
+                        <th th:if="${start > 1}" class="page-item">
+                            <a th:href="@{/board?(page=${start-maxPage-1})}" class="page-link" href="#" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </th>
 
-                    <th th:each="page: ${#numbers.sequence(start, end)}" class="page-item" th:classappend="${noticeList.number+1 == page} ? active">
-                        <a th:href="@{/board?(page=${page-1})}" th:text="${page}" class="page-link" href="#"></a>
-                    </th>
+                        <th th:each="page: ${#numbers.sequence(start, end)}" class="page-item" th:classappend="${noticeList.number+1 == page} ? active">
+                            <a th:href="@{/board?(page=${page-1})}" th:text="${page}" class="page-link" href="#"></a>
+                        </th>
 
-                    <th th:if="${end < noticeList.totalPages}" class="page-item">
-                        <a th:href="@{/board?(page=${start+maxPage-1})}" class="page-link" href="#" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </th>
+                        <th th:if="${end < noticeList.totalPages}" class="page-item">
+                            <a th:href="@{/board?(page=${start+maxPage-1})}" class="page-link" href="#" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </th>
 
-                    <th th:if="${end < noticeList.totalPages}" class="page-item">
-                        <a th:href="@{/board?(page=${noticeList.totalPages-1})}" class="page-link" href="#" aria-label="Next">
-                            <span aria-hidden="true">&raquo;&raquo;</span>
-                        </a>
-                    </th></tr>
-                </tfoot>
+                        <th th:if="${end < noticeList.totalPages}" class="page-item">
+                            <a th:href="@{/board?(page=${noticeList.totalPages-1})}" class="page-link" href="#" aria-label="Next">
+                                <span aria-hidden="true">&raquo;&raquo;</span>
+                            </a>
+                        </th>
+                    </td>
+                </tr>
+                </tbody>
+                <tfoot></tfoot>
             </table>
-            <div></div>
         </div>
     </div>
 </div>
