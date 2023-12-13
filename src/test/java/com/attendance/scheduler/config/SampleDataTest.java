@@ -2,12 +2,12 @@ package com.attendance.scheduler.config;
 
 import com.attendance.scheduler.course.application.ClassService;
 import com.attendance.scheduler.course.dto.ClassDTO;
-import com.attendance.scheduler.member.student.dto.StudentInformationDTO;
-import com.attendance.scheduler.member.student.repository.StudentJpaRepository;
-import com.attendance.scheduler.member.teacher.application.TeacherService;
-import com.attendance.scheduler.member.teacher.dto.DeleteClassDTO;
-import com.attendance.scheduler.member.teacher.dto.JoinTeacherDTO;
-import com.attendance.scheduler.member.teacher.dto.TeacherDTO;
+import com.attendance.scheduler.student.dto.StudentInformationDTO;
+import com.attendance.scheduler.student.repository.StudentJpaRepository;
+import com.attendance.scheduler.teacher.application.TeacherService;
+import com.attendance.scheduler.teacher.dto.DeleteClassDTO;
+import com.attendance.scheduler.teacher.dto.JoinTeacherDTO;
+import com.attendance.scheduler.teacher.dto.TeacherDTO;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

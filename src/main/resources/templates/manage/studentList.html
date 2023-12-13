@@ -10,7 +10,9 @@
         href="/static/css/bootstrap.min.css" rel="stylesheet">
     <style>
 
-        body { background-color: lightgoldenrodyellow; }
+        body {
+            background-color: lightgoldenrodyellow;
+        }
 
         .form-check-label input {
             margin-right: 10px;
@@ -21,11 +23,8 @@
             padding: 1em;
         }
 
-        table {
-            font-size: 1em; /* 여기에 적절한 크기 입력 */
-        }
-
-        .save-button{
+        .pagination {
+            justify-content: center;
         }
 
     </style>
@@ -94,9 +93,34 @@
                 </tr>
             </tfoot>
             </table>
+        <nav class="page-number"
+             th:with="start=${(studentList.number/maxPage)*maxPage + 1},
+                    end=(${(studentList.totalPages == 0) ? 1 : (start + (maxPage - 1) < studentList.totalPages ? start + (maxPage - 1) : studentList.totalPages)})">
+            <ul class="pagination">
+                <li th:if="${start > 1}" class="page-item">
+                    <a th:href="@{/board?page=0}" class="page-link" href="#" aria-label="Previous"><span aria-hidden="true">&laquo;&laquo;</span></a>
+                </li>
+                <li th:if="${start > 1}" class="page-item">
+                    <a th:href="@{/board?(page=${start-maxPage-1})}" class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li th:each="page: ${#numbers.sequence(start, end)}" class="page-item" th:classappend="${studentList.number+1 == page} ? active"><a th:href="@{/board?(page=${page-1})}" th:text="${page}" class="page-link" href="#"></a></li>
+                <li th:if="${end < studentList.totalPages}" class="page-item">
+                    <a th:href="@{/board?(page=${start+maxPage-1})}" class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+                <li th:if="${end < studentList.totalPages}" class="page-item">
+                    <a th:href="@{/board?(page=${studentList.totalPages-1})}" class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        </div>
         </div>
     </div>
-</div>
 </div>
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>

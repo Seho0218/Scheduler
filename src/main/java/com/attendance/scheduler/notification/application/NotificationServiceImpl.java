@@ -1,5 +1,8 @@
 package com.attendance.scheduler.notification.application;
 
+import com.attendance.scheduler.admin.domain.AdminEntity;
+import com.attendance.scheduler.admin.repository.AdminRepository;
+import com.attendance.scheduler.notification.domain.notice.NoticeEntity;
 import com.attendance.scheduler.notification.dto.Condition;
 import com.attendance.scheduler.notification.dto.NoticeDTO;
 import com.attendance.scheduler.notification.repository.NoticeRepository;
@@ -10,12 +13,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class NotificationServiceImpl implements NotificationService {
 
     private final NotificationJpaRepository notificationJpaRepository;
     private final NoticeRepository noticeRepository;
+    private final AdminRepository adminRepository;
 
     @Override
     public Page<NoticeDTO> pageNoticeList(Condition condition, Pageable pageable) {
@@ -25,12 +31,15 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     @Transactional
     public void writeNotice(NoticeDTO noticeDTO) {
-         notificationJpaRepository.save(noticeDTO.toEntity());
+        AdminEntity admin = adminRepository.findByUsernameIs(noticeDTO.getAuthor());
+        NoticeEntity entity = noticeDTO.toEntity();
+        entity.setAdminEntity(admin);
+        notificationJpaRepository.save(entity);
     }
 
     @Override
-    public NoticeDTO findNoticeById(Long id) {
-        return noticeRepository.findPostById(id);
+    public Optional<NoticeDTO> findNoticeById(Long id) {
+        return Optional.ofNullable(noticeRepository.findPostById(id));
     }
 
     @Override

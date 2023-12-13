@@ -1,6 +1,6 @@
 package com.attendance.scheduler.infra.email;
 
-import com.attendance.scheduler.member.teacher.dto.FindIdDTO;
+import com.attendance.scheduler.teacher.dto.FindIdDTO;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.http.HttpSession;

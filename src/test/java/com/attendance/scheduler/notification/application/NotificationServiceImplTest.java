@@ -1,7 +1,7 @@
 package com.attendance.scheduler.notification.application;
 
-import com.attendance.scheduler.member.admin.domain.AdminEntity;
-import com.attendance.scheduler.member.admin.repository.AdminRepository;
+import com.attendance.scheduler.admin.domain.AdminEntity;
+import com.attendance.scheduler.admin.repository.AdminRepository;
 import com.attendance.scheduler.notification.domain.notice.NoticeEntity;
 import com.attendance.scheduler.notification.domain.notice.NoticeType;
 import com.attendance.scheduler.notification.dto.NoticeDTO;

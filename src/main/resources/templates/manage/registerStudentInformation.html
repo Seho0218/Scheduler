@@ -59,7 +59,7 @@
                 <input class="form-control" id="studentPhoneNumber" placeholder="학생 휴대전화 번호를 입력해 주세요" th:maxlength="13"
                        th:errorclass="field-error" th:field="*{studentPhoneNumber}"
                        oninput="autoHyphen(this)"
-                       type="text">
+                       type="tel">
                 <div class="field-error" th:errors="*{studentPhoneNumber}"></div>
 
 
@@ -84,7 +84,7 @@
                 <input class="form-control" id="studentParentPhoneNumber" placeholder="부모님 전화번호를 입력해 주세요" th:maxlength="13"
                        th:errorclass="field-error" th:field="*{studentParentPhoneNumber}"
                        oninput="autoHyphen(this)"
-                       type="text">
+                       type="tel">
                 <div class="field-error" th:errors="*{studentParentPhoneNumber}"></div>
 
 

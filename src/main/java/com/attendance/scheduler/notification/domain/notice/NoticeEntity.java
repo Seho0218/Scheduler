@@ -1,6 +1,6 @@
 package com.attendance.scheduler.notification.domain.notice;
 
-import com.attendance.scheduler.member.admin.domain.AdminEntity;
+import com.attendance.scheduler.admin.domain.AdminEntity;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
