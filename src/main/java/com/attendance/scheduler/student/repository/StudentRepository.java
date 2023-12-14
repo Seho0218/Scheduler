@@ -43,6 +43,8 @@ public class StudentRepository {
                         studentNameEq(studentSearchCondition.getStudentName()),
                         teacherNameEq(studentSearchCondition.getTeacherName())
                 )
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .fetch();
 
         JPAQuery<Long> counts = queryFactory

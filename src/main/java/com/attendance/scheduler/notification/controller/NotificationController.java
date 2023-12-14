@@ -76,7 +76,6 @@ public class NotificationController {
     @PostMapping("/edit/")
     public String editNotice(@RequestParam(name = "id") Long id, NoticeDTO noticeDTO){
         noticeDTO.setId(id);
-        System.out.println("id = " + id);
         notificationService.editNotice(noticeDTO);
         return "redirect:/board";
     }

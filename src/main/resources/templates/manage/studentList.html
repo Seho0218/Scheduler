@@ -32,7 +32,7 @@
 <div class="container">
     <div class="py-2">
         <div class="board rounded-3 border border-2">
-        <div th:object="${studentObject}">
+        <div>
             <table>
                 <tr>
                     <th><a th:href ="@{/manage/class}"><button class="btn btn-primary" sec:authorize="isAuthenticated()">수업 관리</button></a></th>
@@ -56,15 +56,15 @@
                     <th scope="col">삭제</th>
                 </tr>
             </thead>
-            <tbody th:each="student : ${studentList}">
-                <tr>
-                    <td th:text="${student.getStudentName()}"></td>
-                    <td th:text="${student.getStudentPhoneNumber()}"></td>
-                    <td th:text="${student.getStudentAddress()}"></td>
-                    <td th:text="${student.getStudentDetailedAddress()}"></td>
-                    <td th:text="${student.getStudentParentPhoneNumber()}"></td>
-                    <td th:text="${student.getTeacherName()}"></td>
-                    <td sec:authorize="hasRole('ROLE_ADMIN')">
+            <tbody>
+            <tr th:each="student : ${studentList}">
+                <td th:text="${student.getStudentName()}"></td>
+                <td th:text="${student.getStudentPhoneNumber()}"></td>
+                <td th:text="${student.getStudentAddress()}"></td>
+                <td th:text="${student.getStudentDetailedAddress()}"></td>
+                <td th:text="${student.getStudentParentPhoneNumber()}"></td>
+                <td th:text="${student.getTeacherName()}"></td>
+                <td sec:authorize="hasRole('ROLE_ADMIN')">
                         <label>
                             <select class="form-select form-select-md mb-3 teacherID" aria-label=".form-select-md">
                                 <option value="" disabled selected>----</option>
@@ -75,17 +75,16 @@
                         </label>
                         <button class="btn btn-primary save-button">저장</button>
                     </td>
-                    <td th:text="${#dates.format(student.getCreationTimestamp(), 'yyyy-MM-dd')}"></td>
-                    <td>
+                <td th:text="${#dates.format(student.getCreationTimestamp(), 'yyyy-MM-dd')}"></td>
+                <td>
                         <div>
                             <form method='post' role="form" th:action="@{/search/findClass}">
                                <button class="btn btn-primary modify" name="studentName" th:value="${student.getStudentName()}">수정</button>
                             </form>
                         </div>
                     </td>
-
-                    <td><button class="btn btn-primary studentID delete-button" th:value="${student.getId()}">삭제</button></td>
-                </tr>
+                <td><button class="btn btn-primary studentID delete-button" th:value="${student.getId()}">삭제</button></td>
+            </tr>
             </tbody>
             <tfoot>
                 <tr>
@@ -97,21 +96,21 @@
                     end=(${(studentList.totalPages == 0) ? 1 : (start + (maxPage - 1) < studentList.totalPages ? start + (maxPage - 1) : studentList.totalPages)})">
             <ul class="pagination">
                 <li th:if="${start > 1}" class="page-item">
-                    <a th:href="@{/board?page=0}" class="page-link" href="#" aria-label="Previous"><span aria-hidden="true">&laquo;&laquo;</span></a>
+                    <a th:href="@{/manage/studentList?page=0}" class="page-link" href="#" aria-label="Previous"><span aria-hidden="true">&laquo;&laquo;</span></a>
                 </li>
                 <li th:if="${start > 1}" class="page-item">
-                    <a th:href="@{/board?(page=${start-maxPage-1})}" class="page-link" href="#" aria-label="Previous">
+                    <a th:href="@{/manage/studentList?(page=${start-maxPage-1})}" class="page-link" href="#" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
-                <li th:each="page: ${#numbers.sequence(start, end)}" class="page-item" th:classappend="${studentList.number+1 == page} ? active"><a th:href="@{/board?(page=${page-1})}" th:text="${page}" class="page-link" href="#"></a></li>
+                <li th:each="page: ${#numbers.sequence(start, end)}" class="page-item" th:classappend="${studentList.number+1 == page} ? active"><a th:href="@{/manage/studentList?(page=${page-1})}" th:text="${page}" class="page-link" href="#"></a></li>
                 <li th:if="${end < studentList.totalPages}" class="page-item">
-                    <a th:href="@{/board?(page=${start+maxPage-1})}" class="page-link" href="#" aria-label="Next">
+                    <a th:href="@{/manage/studentList?(page=${start+maxPage-1})}" class="page-link" href="#" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                     </a>
                 </li>
                 <li th:if="${end < studentList.totalPages}" class="page-item">
-                    <a th:href="@{/board?(page=${studentList.totalPages-1})}" class="page-link" href="#" aria-label="Next">
+                    <a th:href="@{/manage/studentList?(page=${studentList.totalPages-1})}" class="page-link" href="#" aria-label="Next">
                         <span aria-hidden="true">&raquo;&raquo;</span>
                     </a>
                 </li>
