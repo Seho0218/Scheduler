@@ -2,7 +2,7 @@ package com.attendance.scheduler.teacher.application;
 
 
 import com.attendance.scheduler.common.dto.LoginDTO;
-import com.attendance.scheduler.infra.config.Security.Authority.UserDetailService;
+import com.attendance.scheduler.infra.config.security.Authority.UserDetailService;
 import com.attendance.scheduler.teacher.domain.TeacherEntity;
 import com.attendance.scheduler.teacher.dto.EmailDTO;
 import com.attendance.scheduler.teacher.dto.PwdEditDTO;

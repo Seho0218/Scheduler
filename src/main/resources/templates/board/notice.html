@@ -1,10 +1,127 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/html"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-  <meta charset="UTF-8">
-  <title>Title</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Scheduler</title>
+  <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
 </head>
-<body>
+<style>
+  body { background-color: lightgoldenrodyellow; }
 
+  table {
+    margin: 0 auto;
+    border-collapse: collapse;
+    border-spacing: 0;
+    background-color: white;
+  }
+
+  .page-title{
+    justify-content: center;
+  }
+
+  .search-window {
+    background-color: #ccc; /* 회색 배경색 설정 */
+    text-align: center; /* 텍스트를 가운데 정렬 */
+    padding: 1em; /* 내용과 경계 사이의 간격 조정 */
+    margin-top: 1em; /* 공지사항 위쪽에 20px의 여백 추가 */
+  }
+
+  /* 게시판 목록 스타일 */
+  .board-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .th-num,
+  .th-title,
+  .th-date {
+    border: 1px solid #ddd; /* 테이블 헤더의 선 스타일 설정 */
+    padding: 8px;
+    text-align: left;
+  }
+
+  .th-num {
+    width: 20%;
+  }
+
+  .th-title {
+    width: 60%;
+  }
+
+  .th-date {
+    width: 20%;
+  }
+
+  /* 게시글 간에 선 추가 */
+  .board-table tbody tr {
+    border: 1px solid #ddd;
+  }
+
+  /*게시글 스타일 */
+  #board-list tbody td {
+    padding: 0.3em;
+  }
+
+  #board-list tbody a {
+    color: #333;
+    text-decoration: none;
+    font-weight: bold;
+  }
+
+  #board-list tbody a:hover {
+    text-decoration: underline;
+  }
+
+  /* 테이블 스타일 */
+  .board-bottom {
+    width: 100%;
+    background-color : white;
+    padding: 1em;
+    border: 1px solid #ddd;
+  }
+
+  .pagination {
+    justify-content: center;
+  }
+</style>
+<body>
+<div class="notice">
+  <div class="page-title"></div>
+  <div id="board-search">
+    <div class="container">
+      <div class="search-window">
+        <h3>공지사항</h3>
+      </div>
+    </div>
+  </div>
+  <div id="board-list">
+    <div class="container">
+      <table class="board-table">
+        <thead>
+        <tr>
+          <th scope="col" style="width: 15%" class="th-num">번호</th>
+          <th scope="col" style="width: 60%" class="th-title">제목</th>
+          <th scope="col" style="width: 25%" class="th-date">등록일</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <th th:text="${notice.getId()}"></th>
+          <th th:text="${notice.getTitle()}"></th>
+          <th th:text="${#dates.format(notice.getCreationTimestamp(), 'yyyy-MM-dd')}"></th>
+        </tr>
+        </tbody>
+      </table>
+      <div class="board-bottom">
+          <div class="title" th:text="${notice.getTitle()}"></div><br>
+          <div class="content" th:text="${notice.getContent()}"></div>
+          <div sec:authorize="hasRole('ROLE_ADMIN')" class="text-end"><a th:href="@{/board/edit/(id=${notice.getId()})}" class="btn btn-primary">수정</a></div>
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 </html>

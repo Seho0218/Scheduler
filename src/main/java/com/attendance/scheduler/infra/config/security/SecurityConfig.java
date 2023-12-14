@@ -1,4 +1,4 @@
-package com.attendance.scheduler.infra.config.Security;
+package com.attendance.scheduler.infra.config.security;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

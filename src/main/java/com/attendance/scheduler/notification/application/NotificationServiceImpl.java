@@ -32,6 +32,8 @@ public class NotificationServiceImpl implements NotificationService {
     @Transactional
     public void writeNotice(NoticeDTO noticeDTO) {
         AdminEntity admin = adminRepository.findByUsernameIs(noticeDTO.getAuthor());
+        noticeDTO.setAuthor(admin.getName());
+
         NoticeEntity entity = noticeDTO.toEntity();
         entity.setAdminEntity(admin);
         notificationJpaRepository.save(entity);
@@ -40,6 +42,18 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public Optional<NoticeDTO> findNoticeById(Long id) {
         return Optional.ofNullable(noticeRepository.findPostById(id));
+    }
+
+    @Override
+    @Transactional
+    public void editNotice(NoticeDTO noticeDTO) {
+        Optional<NoticeEntity> byId = notificationJpaRepository.findById(noticeDTO.getId());
+        if (byId.isPresent()) {
+            NoticeEntity noticeEntity = byId.get();
+            noticeEntity.updateTitle(noticeDTO.getTitle());
+            noticeEntity.updateContent(noticeDTO.getContent());
+            notificationJpaRepository.save(noticeEntity);
+        }
     }
 
     @Override

@@ -12,10 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
@@ -35,7 +32,6 @@ public class NotificationController {
         return "board/list";
     }
 
-//    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/createNotice")
     public String writeNoticeForm(Model model){
         model.addAttribute("noticeObject", new NoticeDTO());
@@ -48,45 +44,41 @@ public class NotificationController {
         try {
             noticeDTO.setAuthor(auth.getName());
             notificationService.writeNotice(noticeDTO);
-            return "redirect:board";
+            return "redirect:/board";
         } catch (Exception e) {
             model.addAttribute("errorMessage", e.getMessage());
             return "board/createNotice";
         }
     }
 
-    @GetMapping("/edit/{id}")
-    public String editNoticeForm(@PathVariable Long id, Model model) {
+    @GetMapping("/{id}")
+    public String noticeForm(@PathVariable Long id, Model model){
         Optional<NoticeDTO> noticeById = notificationService.findNoticeById(id);
         if(noticeById.isPresent()) {
+            model.addAttribute("notice", noticeById.get());
+            return "board/notice";
+        }
+        return "redirect:/board";
+    }
+
+    @GetMapping("/edit/")
+    public String editNoticeForm(@RequestParam(name = "id") Long id, Model model) {
+
+        Optional<NoticeDTO> noticeById = notificationService.findNoticeById(id);
+        if(noticeById.isPresent()) {
+            model.addAttribute("noticeObject", new NoticeDTO());
             model.addAttribute("notice", noticeById.get());
             return "board/editNotice";
         }
-        return "redirect:board";
+        return "redirect:/board";
     }
 
-    @PostMapping("/edit/{id}")
-    public String editNotice(@PathVariable Long id, Model model){
-        final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String username = auth.getName();
-        Optional<NoticeDTO> noticeById = notificationService.findNoticeById(id);
-        if(noticeById.isPresent() && noticeById.get().getAuthor().equals(username)) {
-            model.addAttribute("notice", noticeById.get());
-            return "board/notice";
-        }
-        model.addAttribute("errorMessage", "권한이 없습니다.");
-        return "redirect:board";
-    }
-
-    //보기
-    @GetMapping("/{id}")
-    public String getNotice(@PathVariable Long id, Model model){
-        Optional<NoticeDTO> noticeById = notificationService.findNoticeById(id);
-        if(noticeById.isPresent()) {
-            model.addAttribute("notice", noticeById);
-            return "board/notice";
-        }
-        return "redirect:board";
+    @PostMapping("/edit/")
+    public String editNotice(@RequestParam(name = "id") Long id, NoticeDTO noticeDTO){
+        noticeDTO.setId(id);
+        System.out.println("id = " + id);
+        notificationService.editNotice(noticeDTO);
+        return "redirect:/board";
     }
 
     //삭제

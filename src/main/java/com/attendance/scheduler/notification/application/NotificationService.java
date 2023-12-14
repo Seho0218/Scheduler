@@ -12,9 +12,11 @@ public interface NotificationService {
 
     Page<NoticeDTO> pageNoticeList(Condition condition, Pageable pageable);
 
-    void writeNotice(NoticeDTO notificationDTO);
+    void writeNotice(NoticeDTO noticeDTO);
 
     Optional<NoticeDTO> findNoticeById(Long id);
+
+    void editNotice(NoticeDTO noticeDTO);
 
     void deleteNotice(Long id);
 }

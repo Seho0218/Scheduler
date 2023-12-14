@@ -54,6 +54,13 @@ public class NoticeEntity {
         }
     }
 
+    public void updateTitle(String title) {
+        this.title = title;
+    }
+    public void updateContent(String content) {
+        this.content = content;
+    }
+
     @Builder
     public NoticeEntity(Long id, String title, String content, String author, NoticeType type, Timestamp creationTimestamp, Timestamp modifiedDate, AdminEntity adminEntity) {
         this.id = id;

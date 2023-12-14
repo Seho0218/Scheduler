@@ -1,4 +1,4 @@
-package com.attendance.scheduler.infra.config.Security;
+package com.attendance.scheduler.infra.config.security;
 
 import com.attendance.scheduler.admin.domain.AdminEntity;
 import com.attendance.scheduler.admin.repository.AdminRepository;
