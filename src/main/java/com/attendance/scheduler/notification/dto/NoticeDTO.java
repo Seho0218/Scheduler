@@ -17,7 +17,7 @@ public class NoticeDTO {
     private Long id;
     private String title;
     private String content;
-    private String author;
+    private String name;
     private NoticeType type;
     private Timestamp creationTimestamp;
     private Timestamp modifiedDate;
@@ -27,7 +27,6 @@ public class NoticeDTO {
                 .id(id)
                 .title(title)
                 .content(content)
-                .author(author)
                 .type(type)
                 .creationTimestamp(creationTimestamp)
                 .modifiedDate(modifiedDate)

@@ -31,9 +31,7 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     @Transactional
     public void writeNotice(NoticeDTO noticeDTO) {
-        AdminEntity admin = adminRepository.findByUsernameIs(noticeDTO.getAuthor());
-        noticeDTO.setAuthor(admin.getName());
-
+        AdminEntity admin = adminRepository.findByUsernameIs(noticeDTO.getName());
         NoticeEntity entity = noticeDTO.toEntity();
         entity.setAdminEntity(admin);
         notificationJpaRepository.save(entity);

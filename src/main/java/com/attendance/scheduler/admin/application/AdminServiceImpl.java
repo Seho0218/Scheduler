@@ -87,7 +87,6 @@ public class AdminServiceImpl implements AdminService {
         Optional<StudentEntity> studentEntity = studentJpaRepository.findStudentEntityById(studentId);
 
         if(studentEntity.isPresent() && teacherEntity.isPresent()){
-            studentEntity.get().updateTeacherName(teacherEntity.get().getTeacherName());
             studentEntity.get().setTeacherEntity(teacherEntity.get());
             //학생의 수업엔티티와 교사의 수업을 비교
             StudentClassDTO studentClassByStudentName = classRepository.getStudentClassByStudentName(studentEntity.get().getStudentName());

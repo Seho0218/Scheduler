@@ -111,7 +111,7 @@ public class TeacherController {
         }
 
         final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        registerStudentDTO.setTeacherEntity(auth.getName());
+        registerStudentDTO.setTeacherUsername(auth.getName());
 
         try {
             teacherService.registerStudentInformation(registerStudentDTO);

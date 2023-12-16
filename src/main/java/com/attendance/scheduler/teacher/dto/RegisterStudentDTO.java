@@ -32,7 +32,7 @@ public class RegisterStudentDTO {
 
     private String teacherName;
 
-    private String teacherEntity;
+    private String teacherUsername;
 
     private Timestamp creationTimestamp;
 
@@ -43,7 +43,6 @@ public class RegisterStudentDTO {
                 .studentParentPhoneNumber(studentPhoneNumber)
                 .studentAddress(studentAddress)
                 .studentDetailedAddress(studentDetailedAddress)
-                .teacherName(teacherName)
                 .creationTimestamp(creationTimestamp)
                 .build();
     }

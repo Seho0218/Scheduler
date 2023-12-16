@@ -38,7 +38,7 @@ public class ClassServiceImpl implements ClassService {
         //학생 이름으로
         Optional<StudentEntity> studentEntity = studentJpaRepository.findStudentEntityByStudentName(studentName);
 
-        String teacherName = studentEntity.get().getTeacherName();
+        String teacherName = studentEntity.get().getTeacherEntity().getTeacherName();
         List<StudentClassDTO> studentClassByTeacherName = classRepository.getStudentClassByTeacherName(teacherName);
 
         ClassListDTO classListDTO = ClassListDTO.getInstance();
@@ -68,7 +68,6 @@ public class ClassServiceImpl implements ClassService {
 
         if(existsByStudentNameIs){
             Optional<StudentEntity> studentEntity = studentJpaRepository.findStudentEntityByStudentName(classDTO.getStudentName());
-            classDTO.setTeacherName(studentEntity.get().getTeacherName());
 
             ClassEntity classEntity = classDTO.toEntity();
             classEntity.setTeacherEntity(studentEntity.get().getTeacherEntity());

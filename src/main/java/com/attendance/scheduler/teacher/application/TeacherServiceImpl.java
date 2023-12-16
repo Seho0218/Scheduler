@@ -5,7 +5,6 @@ import com.attendance.scheduler.student.domain.StudentEntity;
 import com.attendance.scheduler.student.dto.StudentInformationDTO;
 import com.attendance.scheduler.student.repository.StudentJpaRepository;
 import com.attendance.scheduler.student.repository.StudentRepository;
-import com.attendance.scheduler.teacher.domain.TeacherEntity;
 import com.attendance.scheduler.teacher.dto.JoinTeacherDTO;
 import com.attendance.scheduler.teacher.dto.RegisterStudentDTO;
 import com.attendance.scheduler.teacher.dto.StudentSearchCondition;
@@ -52,11 +51,8 @@ public class TeacherServiceImpl implements TeacherService {
     @Override
     @Transactional
     public void registerStudentInformation(RegisterStudentDTO registerStudentDTO) {
-        TeacherEntity teacherEntity = teacherJpaRepository.findByUsernameIs(registerStudentDTO.getTeacherEntity());
-        registerStudentDTO.setTeacherName(teacherEntity.getTeacherName());
-
         StudentEntity studentEntity = registerStudentDTO.toEntity();
-        studentEntity.setTeacherEntity(teacherEntity);
+        studentEntity.setTeacherEntity(teacherJpaRepository.findByUsernameIs(registerStudentDTO.getTeacherUsername()));
         studentJpaRepository.save(studentEntity);
     }
 

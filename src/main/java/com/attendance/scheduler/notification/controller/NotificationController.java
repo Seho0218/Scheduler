@@ -42,7 +42,7 @@ public class NotificationController {
     public  String writeNotice(NoticeDTO noticeDTO, Model model) {
         final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         try {
-            noticeDTO.setAuthor(auth.getName());
+            noticeDTO.setName(auth.getName());
             notificationService.writeNotice(noticeDTO);
             return "redirect:/board";
         } catch (Exception e) {

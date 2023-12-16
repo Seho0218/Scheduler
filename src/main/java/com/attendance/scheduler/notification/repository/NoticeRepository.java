@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+import static com.attendance.scheduler.admin.domain.QAdminEntity.adminEntity;
 import static com.attendance.scheduler.notification.domain.notice.QNoticeEntity.noticeEntity;
 import static org.springframework.util.StringUtils.hasText;
 
@@ -31,10 +32,12 @@ public class NoticeRepository {
                         noticeEntity.title,
                         noticeEntity.type,
                         noticeEntity.content,
-                        noticeEntity.author,
+                        adminEntity.name,
                         noticeEntity.creationTimestamp,
                         noticeEntity.modifiedDate))
                 .from(noticeEntity)
+                .join(adminEntity)
+                .on(noticeEntity.adminEntity.id.eq(adminEntity.id))
                 .where(
                         titleEq(condition.getTitleContent()),
                         contentEq(condition.getTitleContent())
@@ -70,10 +73,12 @@ public class NoticeRepository {
                         noticeEntity.title,
                         noticeEntity.type,
                         noticeEntity.content,
-                        noticeEntity.author,
+                        adminEntity.name,
                         noticeEntity.creationTimestamp,
                         noticeEntity.modifiedDate))
                 .from(noticeEntity)
+                .join(adminEntity)
+                .on(noticeEntity.adminEntity.id.eq(adminEntity.id))
                 .where(noticeEntity.id.eq(id))
                 .fetchOne();
     }

@@ -29,7 +29,6 @@ public class NoticeEntity {
 
     private String title;
     private String content;
-    private String author;
 
     @Enumerated(EnumType.STRING)
     private NoticeType type;
@@ -62,11 +61,10 @@ public class NoticeEntity {
     }
 
     @Builder
-    public NoticeEntity(Long id, String title, String content, String author, NoticeType type, Timestamp creationTimestamp, Timestamp modifiedDate, AdminEntity adminEntity) {
+    public NoticeEntity(Long id, String title, String content, NoticeType type, Timestamp creationTimestamp, Timestamp modifiedDate, AdminEntity adminEntity) {
         this.id = id;
         this.title = title;
         this.content = content;
-        this.author = author;
         this.type = type;
         this.creationTimestamp = creationTimestamp;
         this.modifiedDate = modifiedDate;

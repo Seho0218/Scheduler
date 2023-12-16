@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.attendance.scheduler.student.domain.QStudentEntity.studentEntity;
+import static com.attendance.scheduler.teacher.domain.QTeacherEntity.teacherEntity;
 import static org.springframework.util.StringUtils.hasText;
 
 
@@ -35,10 +36,12 @@ public class StudentRepository {
                         studentEntity.studentDetailedAddress,
                         studentEntity.studentPhoneNumber,
                         studentEntity.studentParentPhoneNumber,
-                        studentEntity.teacherName,
+                        teacherEntity.teacherName,
                         studentEntity.creationTimestamp
                 ))
                 .from(studentEntity)
+                .join(teacherEntity)
+                .on(studentEntity.teacherEntity.id.eq(teacherEntity.id))
                 .where(
                         studentNameEq(studentSearchCondition.getStudentName()),
                         teacherNameEq(studentSearchCondition.getTeacherName())
@@ -63,7 +66,7 @@ public class StudentRepository {
     }
 
     private BooleanExpression teacherNameEq(String teacherName) {
-        return hasText(teacherName) ? studentEntity.teacherName.eq(teacherName) : null;
+        return hasText(teacherName) ? teacherEntity.teacherName.eq(teacherName) : null;
     }
 
     public Optional<StudentEntity> getStudentEntity(Long studentId) {

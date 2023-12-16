@@ -27,6 +27,7 @@ public class Admin implements ApplicationRunner{
                 AdminEntity.builder()
                         .username("admin")
                         .email("adminTest@gmail.com")
+                        .name("관리자")
                         .password(passwordEncoder.encode("root123!@#"))
                         .build()));
     }

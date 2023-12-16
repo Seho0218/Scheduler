@@ -82,14 +82,14 @@ public class SampleDataTest {
         }
 
     @Test
-    @DisplayName("샘플 교사 정보")
+    @DisplayName("샘플 학생 정보")
     @Transactional
     @Rollback(value = false)
     void addStudentDataSet(){
 
         RegisterStudentDTO registerStudentDTO = new RegisterStudentDTO();
-        TeacherEntity testTeacher = teacherJpaRepository.findByUsernameIs("testTeacher");
-        for (int i = 0; i < 50; i++) {
+        TeacherEntity testTeacher = teacherJpaRepository.findByUsernameIs("sampleTeacher");
+        for (int i = 0; i < 31; i++) {
             registerStudentDTO.setStudentName("김샘플"+i);
             registerStudentDTO.setStudentPhoneNumber("010-1234-1234");
             registerStudentDTO.setStudentParentPhoneNumber("010-1234-1233");

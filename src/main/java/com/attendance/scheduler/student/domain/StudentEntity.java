@@ -38,8 +38,6 @@ public class StudentEntity {
 
     private String studentParentPhoneNumber;
 
-    private String teacherName;
-
     @CreationTimestamp
     private Timestamp creationTimestamp;
 
@@ -58,19 +56,14 @@ public class StudentEntity {
         }
     }
 
-    public void updateTeacherName(String teacherName) {
-        this.teacherName = teacherName;
-    }
-
     @Builder
-    public StudentEntity(Long id, String studentName, String studentPhoneNumber, String studentAddress, String studentDetailedAddress, String studentParentPhoneNumber, String teacherName, Timestamp creationTimestamp, TeacherEntity teacherEntity) {
+    public StudentEntity(Long id, String studentName, String studentPhoneNumber, String studentAddress, String studentDetailedAddress, String studentParentPhoneNumber, Timestamp creationTimestamp, TeacherEntity teacherEntity) {
         this.id = id;
         this.studentName = studentName;
         this.studentPhoneNumber = studentPhoneNumber;
         this.studentAddress = studentAddress;
         this.studentDetailedAddress = studentDetailedAddress;
         this.studentParentPhoneNumber = studentParentPhoneNumber;
-        this.teacherName = teacherName;
         this.creationTimestamp = creationTimestamp;
         this.teacherEntity = teacherEntity;
     }

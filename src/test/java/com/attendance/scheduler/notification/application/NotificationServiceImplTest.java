@@ -29,7 +29,7 @@ class NotificationServiceImplTest {
         for (int i = 0; i < 150; i++) {
             noticeDTO.setTitle(String.valueOf(i));
             noticeDTO.setContent("123");
-            noticeDTO.setAuthor("관리자");
+            noticeDTO.setName("관리자");
             noticeDTO.setType(NoticeType.FAQ);
             AdminEntity admin = adminRepository.findByUsernameIs("admin");
             NoticeEntity entity = noticeDTO.toEntity();

@@ -59,7 +59,7 @@ public class TestDataSet {
         studentInformationDTO.setStudentAddress("대한민국 저기 어디");
         studentInformationDTO.setStudentDetailedAddress("어디");
 
-        studentInformationDTO.setTeacherEntity("testTeacher");
+        studentInformationDTO.setTeacherUsername("testTeacher");
         return studentInformationDTO;
 
     }
@@ -71,7 +71,7 @@ public class TestDataSet {
         studentInformationDTO.setStudentParentPhoneNumber("010-4321-4322");
         studentInformationDTO.setStudentAddress("대한민국 저기 먼데");
         studentInformationDTO.setStudentDetailedAddress("먼데");
-        studentInformationDTO.setTeacherEntity("testTeacher");
+        studentInformationDTO.setTeacherUsername("testTeacher");
 
         return studentInformationDTO;
 
