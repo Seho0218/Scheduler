@@ -11,6 +11,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 import static com.attendance.scheduler.course.domain.QClassEntity.classEntity;
+import static com.attendance.scheduler.teacher.domain.QTeacherEntity.teacherEntity;
+
 
 @Repository
 @RequiredArgsConstructor
@@ -28,10 +30,11 @@ public class ClassRepository {
                         classEntity.wednesday,
                         classEntity.thursday,
                         classEntity.friday,
-                        classEntity.teacherName,
-                        classEntity.updateTimeStamp
-                        ))
+                        teacherEntity.teacherName,
+                        classEntity.updateTimeStamp))
                 .from(classEntity)
+                .join(teacherEntity)
+                .on(classEntity.teacherEntity.eq(teacherEntity))
                 .fetch();
     }
 
@@ -43,8 +46,7 @@ public class ClassRepository {
                         classEntity.tuesday,
                         classEntity.wednesday,
                         classEntity.thursday,
-                        classEntity.friday,
-                        classEntity.teacherName))
+                        classEntity.friday))
                 .from(classEntity)
                 .where(classEntity.studentName.eq(studentName))
                 .fetchOne();
@@ -58,10 +60,10 @@ public class ClassRepository {
                         classEntity.tuesday,
                         classEntity.wednesday,
                         classEntity.thursday,
-                        classEntity.friday,
-                        classEntity.teacherName))
+                        classEntity.friday))
                 .from(classEntity)
-                .where(classEntity.teacherName.eq(teacherName))
+                .join(teacherEntity)
+                .on(teacherEntity.teacherName.eq(teacherName))
                 .fetch();
     }
 

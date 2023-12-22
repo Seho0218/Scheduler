@@ -13,6 +13,7 @@ import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.attendance.scheduler.admin.domain.QAdminEntity.adminEntity;
 import static com.attendance.scheduler.notification.domain.notice.QNoticeEntity.noticeEntity;
@@ -33,6 +34,7 @@ public class NoticeRepository {
                         noticeEntity.type,
                         noticeEntity.content,
                         adminEntity.name,
+                        noticeEntity.views,
                         noticeEntity.creationTimestamp,
                         noticeEntity.modifiedDate))
                 .from(noticeEntity)
@@ -66,20 +68,46 @@ public class NoticeRepository {
         return hasText(content) ? noticeEntity.content.eq(content) : null;
     }
 
-    public NoticeDTO findPostById(Long id) {
-        return queryFactory
+    public Optional<NoticeDTO> findNoticeById(Long id) {
+
+        queryFactory
+                .update(noticeEntity)
+                .set(noticeEntity.views, noticeEntity.views.add(1))
+                .where(noticeEntity.id.eq(id))
+                .execute();
+
+        return Optional.ofNullable(queryFactory
                 .select(Projections.fields(NoticeDTO.class,
                         noticeEntity.id,
                         noticeEntity.title,
                         noticeEntity.type,
                         noticeEntity.content,
                         adminEntity.name,
+                        noticeEntity.views,
+                        noticeEntity.creationTimestamp))
+                .from(noticeEntity)
+                .join(adminEntity)
+                .on(noticeEntity.adminEntity.id.eq(adminEntity.id))
+                .where(noticeEntity.id.eq(id))
+                .fetchOne());
+    }
+
+    public Optional<NoticeDTO> editNoticeForm(Long id){
+        return Optional.ofNullable(queryFactory
+                .select(Projections.fields(NoticeDTO.class,
+                        noticeEntity.id,
+                        noticeEntity.title,
+                        noticeEntity.type,
+                        noticeEntity.content,
+                        adminEntity.name,
+                        noticeEntity.views,
                         noticeEntity.creationTimestamp,
                         noticeEntity.modifiedDate))
                 .from(noticeEntity)
                 .join(adminEntity)
                 .on(noticeEntity.adminEntity.id.eq(adminEntity.id))
                 .where(noticeEntity.id.eq(id))
-                .fetchOne();
+                .fetchOne());
+
     }
 }

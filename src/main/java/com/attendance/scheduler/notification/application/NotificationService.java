@@ -16,6 +16,8 @@ public interface NotificationService {
 
     Optional<NoticeDTO> findNoticeById(Long id);
 
+    Optional<NoticeDTO> editNoticeForm(Long id);
+
     void editNotice(NoticeDTO noticeDTO);
 
     void deleteNotice(Long id);

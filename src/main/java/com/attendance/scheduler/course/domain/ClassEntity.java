@@ -37,9 +37,6 @@ public class ClassEntity {
     @UpdateTimestamp
     private Timestamp updateTimeStamp;
 
-    private String teacherName;
-
-
     @NotNull
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "teacher_id")
@@ -55,12 +52,8 @@ public class ClassEntity {
         }
     }
 
-    public void updateTeacherName(String teacherName) {
-        this.teacherName = teacherName;
-    }
-
     @Builder
-    public ClassEntity(Long id, String studentName, Integer monday, Integer tuesday, Integer wednesday, Integer thursday, Integer friday, Timestamp updateTimeStamp, String teacherName, TeacherEntity teacherEntity) {
+    public ClassEntity(Long id, String studentName, Integer monday, Integer tuesday, Integer wednesday, Integer thursday, Integer friday, Timestamp updateTimeStamp, TeacherEntity teacherEntity) {
         this.id = id;
         this.studentName = studentName;
         this.monday = monday;
@@ -69,7 +62,6 @@ public class ClassEntity {
         this.thursday = thursday;
         this.friday = friday;
         this.updateTimeStamp = updateTimeStamp;
-        this.teacherName = teacherName;
         this.teacherEntity = teacherEntity;
     }
 }

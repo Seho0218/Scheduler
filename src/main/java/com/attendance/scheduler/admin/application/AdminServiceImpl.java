@@ -97,7 +97,6 @@ public class AdminServiceImpl implements AdminService {
             List<ClassEntity> classEntity= classRepository.getStudentClassEntityByStudentName(studentEntity.get().getStudentName());
             if(!classEntity.isEmpty()) {
                 ClassEntity entity = classEntity.get(0);
-                entity.updateTeacherName(teacherEntity.get().getTeacherName());
                 classJpaRepository.save(entity);
             }
             studentJpaRepository.save(studentEntity.get());

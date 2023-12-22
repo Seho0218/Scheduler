@@ -18,6 +18,7 @@ public class NoticeDTO {
     private String title;
     private String content;
     private String name;
+    private Integer views;
     private NoticeType type;
     private Timestamp creationTimestamp;
     private Timestamp modifiedDate;
@@ -28,6 +29,7 @@ public class NoticeDTO {
                 .title(title)
                 .content(content)
                 .type(type)
+                .views(views)
                 .creationTimestamp(creationTimestamp)
                 .modifiedDate(modifiedDate)
                 .build();

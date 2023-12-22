@@ -38,8 +38,14 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
+    @Transactional
     public Optional<NoticeDTO> findNoticeById(Long id) {
-        return Optional.ofNullable(noticeRepository.findPostById(id));
+        return noticeRepository.findNoticeById(id);
+    }
+
+    @Override
+    public Optional<NoticeDTO> editNoticeForm(Long id) {
+        return noticeRepository.editNoticeForm(id);
     }
 
     @Override

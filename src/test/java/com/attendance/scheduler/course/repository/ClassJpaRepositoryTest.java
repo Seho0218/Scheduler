@@ -15,7 +15,7 @@ import static com.attendance.scheduler.teacher.domain.QTeacherEntity.teacherEnti
 @SpringBootTest
 class ClassJpaRepositoryTest {
 
-    @Autowired(required=true)
+    @Autowired
     private JPAQueryFactory queryFactory;
 
 
@@ -29,12 +29,11 @@ class ClassJpaRepositoryTest {
                         classEntity.wednesday,
                         classEntity.thursday,
                         classEntity.friday,
-                        classEntity.teacherName,
-                        classEntity.updateTimeStamp
-                ))
+                        teacherEntity.teacherName,
+                        classEntity.updateTimeStamp))
                 .from(classEntity)
-                .join(classEntity.teacherEntity, teacherEntity)
-                .on(classEntity.studentName.eq(teacherEntity.teacherName))
+                .join(teacherEntity)
+                .where(classEntity.teacherEntity.eq(teacherEntity))
                 .fetch();
         System.out.println("fetch = " + fetch);
     }

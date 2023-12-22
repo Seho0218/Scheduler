@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -52,7 +51,7 @@ public class NotificationController {
     }
 
     @GetMapping("/{id}")
-    public String noticeForm(@PathVariable Long id, Model model){
+    public String noticeForm(@PathVariable("id") Long id, Model model){
         Optional<NoticeDTO> noticeById = notificationService.findNoticeById(id);
         if(noticeById.isPresent()) {
             model.addAttribute("notice", noticeById.get());
@@ -80,14 +79,4 @@ public class NotificationController {
         return "redirect:/board";
     }
 
-    //삭제
-    @PostMapping("/delete/{id}")
-    public ResponseEntity<String> deleteNotice(@PathVariable Long id){
-        try{
-            notificationService.deleteNotice(id);
-            return ResponseEntity.ok("삭제되었습니다");
-        }catch (Exception e){
-            return ResponseEntity.ok(e.getMessage());
-        }
-    }
 }
