@@ -4,6 +4,7 @@ import com.attendance.scheduler.notification.application.NotificationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,7 @@ public class NotificationApiController {
 
     public final NotificationService notificationService;
 
+    @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/delete/{id}")
     public ResponseEntity<String> deleteNotice(@PathVariable Long id){
         try{

@@ -1,5 +1,6 @@
 package com.attendance.scheduler.notification.domain.notice;
 
+import com.attendance.scheduler.student.domain.StudentEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,6 +10,7 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import java.sql.Timestamp;
 
+import static jakarta.persistence.FetchType.*;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
@@ -33,7 +35,7 @@ public class CommentEntity {
     @CreationTimestamp
     private Timestamp creationTimestamp;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "notice_id")
     private NoticeEntity noticeEntity;
 
@@ -42,8 +44,22 @@ public class CommentEntity {
             this.noticeEntity.getCommentEntityList().remove(this);
         }
         this.noticeEntity = noticeEntity;
-        if(noticeEntity != null){
+        if (noticeEntity != null) {
             noticeEntity.setCommentEntity(this);
+        }
+    }
+
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "student_id")
+    private StudentEntity studentEntity;
+
+    public void setStudentEntity(StudentEntity studentEntity) {
+        if (this.studentEntity != null) {
+            this.studentEntity.getCommentEntityList().remove(this);
+        }
+        this.studentEntity = studentEntity;
+        if (studentEntity != null) {
+            studentEntity.setCommentEntity(this);
         }
     }
 }

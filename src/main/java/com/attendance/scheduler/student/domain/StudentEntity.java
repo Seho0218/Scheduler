@@ -1,5 +1,6 @@
 package com.attendance.scheduler.student.domain;
 
+import com.attendance.scheduler.notification.domain.notice.CommentEntity;
 import com.attendance.scheduler.teacher.domain.TeacherEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -11,6 +12,8 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
@@ -56,6 +59,13 @@ public class StudentEntity {
         }
     }
 
+    @OneToMany(mappedBy = "studentEntity")
+    List<CommentEntity> commentEntityList = new ArrayList<>();
+
+    public void setCommentEntity(CommentEntity commentEntity) {
+        if(commentEntityList == null) commentEntityList = new ArrayList<>();
+        this.commentEntityList.add(commentEntity);
+    }
     @Builder
     public StudentEntity(Long id, String studentName, String studentPhoneNumber, String studentAddress, String studentDetailedAddress, String studentParentPhoneNumber, Timestamp creationTimestamp, TeacherEntity teacherEntity) {
         this.id = id;

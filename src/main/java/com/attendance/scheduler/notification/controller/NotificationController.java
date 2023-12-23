@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -31,12 +32,14 @@ public class NotificationController {
         return "board/list";
     }
 
+    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/createNotice")
     public String writeNoticeForm(Model model){
         model.addAttribute("noticeObject", new NoticeDTO());
         return "board/createNotice";
     }
 
+    @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/write")
     public  String writeNotice(NoticeDTO noticeDTO, Model model) {
         final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -60,10 +63,11 @@ public class NotificationController {
         return "redirect:/board";
     }
 
+    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/edit/")
     public String editNoticeForm(@RequestParam(name = "id") Long id, Model model) {
 
-        Optional<NoticeDTO> noticeById = notificationService.findNoticeById(id);
+        Optional<NoticeDTO> noticeById = notificationService.editNoticeForm(id);
         if(noticeById.isPresent()) {
             model.addAttribute("noticeObject", new NoticeDTO());
             model.addAttribute("notice", noticeById.get());
@@ -72,6 +76,7 @@ public class NotificationController {
         return "redirect:/board";
     }
 
+    @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/edit/")
     public String editNotice(@RequestParam(name = "id") Long id, NoticeDTO noticeDTO){
         noticeDTO.setId(id);

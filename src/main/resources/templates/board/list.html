@@ -118,7 +118,7 @@
                     <td th:text="${notice.getId()}"></td>
                     <td th:text="${notice.getName()}"></td>
                     <td><a th:href="@{'/board/'+${notice.getId()}}" th:text="${notice.getTitle()}"></a></td>
-                    <td th:text="${#dates.format(notice.getCreationTimestamp(), 'yyyy-MM-dd')}"></td>
+                    <td th:text="${#dates.format(notice.getCreationTimestamp(), 'yyyy-MM-dd HH:mm')}"></td>
                     <td th:text="${notice.getViews()}"></td>
                 </tr>
                 </tbody>
@@ -130,7 +130,6 @@
         <div class="container d-flex align-items-center justify-content-center">
             <div class="board-bottom">
                 <div class="d-flex justify-content-end">
-                    <div><a th:href="@{/}"><button class="btn btn-danger" sec:authorize="hasRole('ROLE_ADMIN')">글삭제</button></a></div>
                     <div><a th:href="@{/board/createNotice}"><button class="btn btn-primary" sec:authorize="hasRole('ROLE_ADMIN')">글쓰기</button></a></div>
                 </div>
 

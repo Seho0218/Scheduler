@@ -102,23 +102,35 @@
       <table class="board-table">
         <thead>
         <tr>
-          <th scope="col" style="width: 15%" class="th-num">번호</th>
+          <th scope="col" style="width: 5%" class="th-num">번호</th>
+          <th scope="col" style="width: 10%" class="th-num">작성자</th>
           <th scope="col" style="width: 60%" class="th-title">제목</th>
-          <th scope="col" style="width: 25%" class="th-date">등록일</th>
+          <th scope="col" style="width: 15%" class="th-date">등록일</th>
+          <th scope="col" style="width: 10%" class="th-date">조회수</th>
         </tr>
         </thead>
         <tbody>
         <tr>
-          <th th:text="${notice.getId()}"></th>
-          <th th:text="${notice.getTitle()}"></th>
-          <th th:text="${#dates.format(notice.getCreationTimestamp(), 'yyyy-MM-dd')}"></th>
+          <td th:text="${notice.getId()}"></td>
+          <td th:text="${notice.getName()}"></td>
+          <td th:text="${notice.getTitle()}"></td>
+          <td th:text="${#dates.format(notice.getCreationTimestamp(), 'yyyy-MM-dd HH:mm')}"></td>
+          <td th:text="${notice.getViews()}"></td>
         </tr>
         </tbody>
       </table>
       <div class="board-bottom">
-          <div class="title" th:text="${notice.getTitle()}"></div><br>
-          <div class="content" th:text="${notice.getContent()}"></div>
-          <div sec:authorize="hasRole('ROLE_ADMIN')" class="text-end"><a th:href="@{/board/edit/(id=${notice.getId()})}" class="btn btn-primary">수정</a></div>
+        <div class="title" th:text="${notice.getTitle()}"></div><br>
+        <div class="content" th:text="${notice.getContent()}"></div>
+        <div sec:authorize="hasRole('ROLE_ADMIN')">
+          <a th:href="@{/board/edit/(id=${notice.getId()})}" class="btn btn-primary">수정</a>
+        </div>
+        <div sec:authorize="hasRole('ROLE_ADMIN')">
+          <a th:href="@{/board/edit/(id=${notice.getId()})}" class="btn btn-danger">글삭제</a>
+        </div>
+      </div>
+      <div class="board-comment">
+
       </div>
     </div>
   </div>
