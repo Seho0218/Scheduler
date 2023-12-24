@@ -32,14 +32,14 @@ public class NotificationController {
         return "board/list";
     }
 
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/createNotice")
     public String writeNoticeForm(Model model){
         model.addAttribute("noticeObject", new NoticeDTO());
         return "board/createNotice";
     }
 
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/write")
     public  String writeNotice(NoticeDTO noticeDTO, Model model) {
         final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -63,7 +63,7 @@ public class NotificationController {
         return "redirect:/board";
     }
 
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/edit/")
     public String editNoticeForm(@RequestParam(name = "id") Long id, Model model) {
 
@@ -76,7 +76,7 @@ public class NotificationController {
         return "redirect:/board";
     }
 
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/edit/")
     public String editNotice(@RequestParam(name = "id") Long id, NoticeDTO noticeDTO){
         noticeDTO.setId(id);
@@ -84,4 +84,10 @@ public class NotificationController {
         return "redirect:/board";
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/delete/")
+    public String deleteNotice(@RequestParam(name = "id") Long id){
+        notificationService.deleteNotice(id);
+        return "redirect:/board";
+    }
 }
