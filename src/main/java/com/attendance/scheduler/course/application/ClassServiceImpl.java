@@ -8,7 +8,6 @@ import com.attendance.scheduler.course.repository.ClassRepository;
 import com.attendance.scheduler.student.domain.StudentEntity;
 import com.attendance.scheduler.student.dto.ClassListDTO;
 import com.attendance.scheduler.student.repository.StudentJpaRepository;
-import com.attendance.scheduler.teacher.dto.DeleteClassDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -38,8 +37,7 @@ public class ClassServiceImpl implements ClassService {
         //학생 이름으로
         Optional<StudentEntity> studentEntity = studentJpaRepository.findStudentEntityByStudentName(studentName);
 
-        String teacherName = studentEntity.get().getTeacherEntity().getTeacherName();
-        List<StudentClassDTO> studentClassByTeacherName = classRepository.getStudentClassByTeacherName(teacherName);
+        List<StudentClassDTO> studentClassByTeacherName = classRepository.getStudentClassByTeacherEntity(studentEntity.get().getTeacherEntity());
 
         ClassListDTO classListDTO = ClassListDTO.getInstance();
 
@@ -69,21 +67,23 @@ public class ClassServiceImpl implements ClassService {
         if(existsByStudentNameIs){
             Optional<StudentEntity> studentEntity = studentJpaRepository.findStudentEntityByStudentName(classDTO.getStudentName());
 
-            ClassEntity classEntity = classDTO.toEntity();
-            classEntity.setTeacherEntity(studentEntity.get().getTeacherEntity());
-
-            classJpaRepository.save(classEntity);
+            if(studentEntity.isPresent()) {
+                ClassEntity classEntity = classDTO.toEntity();
+                classEntity.setTeacherEntity(studentEntity.get().getTeacherEntity());
+                classEntity.setStudentEntity(studentEntity.get());
+                classJpaRepository.save(classEntity);
+            }
         }
     }
 
     private void classValidator(ClassDTO classDTO) {
-        boolean byStudentNameIs = classJpaRepository.existsByStudentNameIs(classDTO.getStudentName());
+        Optional<StudentEntity> studentEntityByStudentName = studentJpaRepository.findStudentEntityByStudentName(classDTO.getStudentName());
 
-        if (!byStudentNameIs) {
+        if (studentEntityByStudentName.isEmpty()) {
             duplicateClassValidator(classDTO);
         }
 
-        classJpaRepository.deleteByStudentName(classDTO.getStudentName());
+        classJpaRepository.deleteById(studentEntityByStudentName.get().getId());
         duplicateClassValidator(classDTO);
     }
 
@@ -108,8 +108,11 @@ public class ClassServiceImpl implements ClassService {
     }
 
     @Override
-    public void deleteClass(DeleteClassDTO deleteClassDTO) {
-        classJpaRepository
-                .deleteByStudentNameIn(deleteClassDTO.getDeleteClassList());
+    @Transactional
+    public void deleteClass(String studentName) {
+        Optional<StudentEntity> optionalStudentEntity = studentJpaRepository.findStudentEntityByStudentName(studentName);
+        if(optionalStudentEntity.isPresent()){
+            classJpaRepository.deleteClassEntityByStudentEntity(optionalStudentEntity.get());
+        }
     }
 }

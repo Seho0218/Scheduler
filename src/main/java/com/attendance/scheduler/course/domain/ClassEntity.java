@@ -1,5 +1,6 @@
 package com.attendance.scheduler.course.domain;
 
+import com.attendance.scheduler.student.domain.StudentEntity;
 import com.attendance.scheduler.teacher.domain.TeacherEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -26,8 +27,6 @@ public class ClassEntity {
     @Column(name = "class_id")
     private Long id;
 
-    private String studentName;
-
     private Integer monday;
     private Integer tuesday;
     private Integer wednesday;
@@ -52,10 +51,23 @@ public class ClassEntity {
         }
     }
 
+    @OneToOne
+    @JoinColumn(name = "student_id")
+    private StudentEntity studentEntity;
+
+    public void setStudentEntity(StudentEntity studentEntity) {
+        if(this.studentEntity != null){
+            this.studentEntity.addClassEntity(null);
+        }
+        this.studentEntity = studentEntity;
+        if (studentEntity != null) {
+            studentEntity.addClassEntity(this);
+        }
+    }
+
     @Builder
-    public ClassEntity(Long id, String studentName, Integer monday, Integer tuesday, Integer wednesday, Integer thursday, Integer friday, Timestamp updateTimeStamp, TeacherEntity teacherEntity) {
+    public ClassEntity(Long id, Integer monday, Integer tuesday, Integer wednesday, Integer thursday, Integer friday, Timestamp updateTimeStamp, TeacherEntity teacherEntity, StudentEntity studentEntity) {
         this.id = id;
-        this.studentName = studentName;
         this.monday = monday;
         this.tuesday = tuesday;
         this.wednesday = wednesday;
@@ -63,5 +75,6 @@ public class ClassEntity {
         this.friday = friday;
         this.updateTimeStamp = updateTimeStamp;
         this.teacherEntity = teacherEntity;
+        this.studentEntity = studentEntity;
     }
 }

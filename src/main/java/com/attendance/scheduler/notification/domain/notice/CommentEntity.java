@@ -10,7 +10,7 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import java.sql.Timestamp;
 
-import static jakarta.persistence.FetchType.*;
+import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
@@ -59,7 +59,7 @@ public class CommentEntity {
         }
         this.studentEntity = studentEntity;
         if (studentEntity != null) {
-            studentEntity.setCommentEntity(this);
+            studentEntity.addCommentEntity(this);
         }
     }
 }

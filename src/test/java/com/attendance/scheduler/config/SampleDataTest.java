@@ -7,10 +7,8 @@ import com.attendance.scheduler.student.dto.StudentInformationDTO;
 import com.attendance.scheduler.student.repository.StudentJpaRepository;
 import com.attendance.scheduler.teacher.application.TeacherService;
 import com.attendance.scheduler.teacher.domain.TeacherEntity;
-import com.attendance.scheduler.teacher.dto.DeleteClassDTO;
 import com.attendance.scheduler.teacher.dto.JoinTeacherDTO;
 import com.attendance.scheduler.teacher.dto.RegisterStudentDTO;
-import com.attendance.scheduler.teacher.dto.TeacherDTO;
 import com.attendance.scheduler.teacher.repository.TeacherJpaRepository;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.DisplayName;
@@ -20,9 +18,6 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.annotation.Rollback;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @SpringBootTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -53,6 +48,16 @@ public class SampleDataTest {
         return joinTeacherDTO;
     }
 
+    public JoinTeacherDTO sample2TeacherDataSet(){
+        JoinTeacherDTO joinTeacherDTO = new JoinTeacherDTO();
+        joinTeacherDTO.setUsername("sample2Teacher");
+        joinTeacherDTO.setPassword("123");
+        joinTeacherDTO.setEmail("sample2TeacherDataSet@gmail.com");
+        joinTeacherDTO.setTeacherName("박교사");
+        joinTeacherDTO.setApproved(true);
+        return joinTeacherDTO;
+    }
+
     public static StudentInformationDTO sampleStudentInformationDTO() {
         StudentInformationDTO studentInformationDTO = new StudentInformationDTO();
         studentInformationDTO.setStudentName("김샘플");
@@ -76,9 +81,14 @@ public class SampleDataTest {
         @Test
         @DisplayName("샘플 교사 정보")
         void saveSampleTeacherDataSet(){
-            String encode = passwordEncoder.encode(sampleTeacherDataSet().getPassword());
-            sampleTeacherDataSet().setPassword(encode);
-            teacherService.joinTeacher(sampleTeacherDataSet());
+//            String encode = passwordEncoder.encode(sampleTeacherDataSet().getPassword());
+//            sampleTeacherDataSet().setPassword(encode);
+//            teacherService.joinTeacher(sampleTeacherDataSet());
+
+            String encode2 = passwordEncoder.encode(sample2TeacherDataSet().getPassword());
+            sample2TeacherDataSet().setPassword(encode2);
+            teacherService.joinTeacher(sample2TeacherDataSet());
+
         }
 
     @Test
@@ -112,15 +122,6 @@ public class SampleDataTest {
 
         @DisplayName("샘플 데이터 삭제")
         void deleteSampleData(){
-            DeleteClassDTO deleteClassDTO = new DeleteClassDTO();
-            List<String> classList = new ArrayList<>();
 
-            classList.add("sampleStudent");
-            deleteClassDTO.setDeleteClassList(classList);
-            classService.deleteClass(deleteClassDTO);
-
-
-            TeacherDTO teacherDTO = new TeacherDTO();
-            teacherDTO.setUsername("김교사");
         }
     }

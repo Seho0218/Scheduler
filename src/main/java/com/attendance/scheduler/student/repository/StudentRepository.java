@@ -37,11 +37,10 @@ public class StudentRepository {
                         studentEntity.studentPhoneNumber,
                         studentEntity.studentParentPhoneNumber,
                         teacherEntity.teacherName,
-                        studentEntity.creationTimestamp
-                ))
+                        studentEntity.creationTimestamp))
                 .from(studentEntity)
                 .join(teacherEntity)
-                .on(studentEntity.teacherEntity.id.eq(teacherEntity.id))
+                .on(studentEntity.teacherEntity.eq(teacherEntity))
                 .where(
                         studentNameEq(studentSearchCondition.getStudentName()),
                         teacherNameEq(studentSearchCondition.getTeacherName())
@@ -49,6 +48,8 @@ public class StudentRepository {
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
+
+        System.out.println("studentInformationList = " + studentInformationList);
 
         JPAQuery<Long> counts = queryFactory
                 .select(studentEntity.count())

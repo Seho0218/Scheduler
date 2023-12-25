@@ -1,7 +1,6 @@
 package com.attendance.scheduler.course.dto;
 
 import com.attendance.scheduler.course.domain.ClassEntity;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +15,6 @@ import java.sql.Timestamp;
 public class ClassDTO {
 
     //    학생 이름
-    @NotEmpty(message = "학생 이름을 정확히 입력해 주세요")
     private String studentName;
 
     //    수업 시간
@@ -41,7 +39,6 @@ public class ClassDTO {
 
     public ClassEntity toEntity() {
         return ClassEntity.builder()
-                .studentName(studentName)
                 .monday(monday)
                 .tuesday(tuesday)
                 .wednesday(wednesday)

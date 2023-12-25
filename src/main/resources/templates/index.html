@@ -48,12 +48,12 @@
         <div class="py-2">
             <div class="board rounded-3 border border-2">
                 <div class="text-end"><a href="board"><button class="btn btn-primary">공지사항</button></a></div>
-                <form method='post' role="form" th:action="@{/search/findClass}" th:object="${studentClassDTO}">
+                <form method='post' role="form" th:action="@{/class/findClass}" th:object="${studentClassDTO}">
                 <h1> 시간표 조회 </h1>
                 <p>학생 이름을 입력해주세요 :)<br></p>
                 <label for="studentName"></label>
                 <input type="text" id="studentName" th:field="*{studentName}"
-                       th:errorclass="field-error" class="form-control" placeholder="이름을 정확히 입력해주세요">
+                       th:errorclass="field-error" class="form-control" placeholder="이름을 정확히 입력해주세요" required="required">
                 <div class="field-error" th:errors="*{studentName}"></div>
                 <div class="field-error" th:text="${nullStudentName}"></div><br>
                 <div class="text-end">

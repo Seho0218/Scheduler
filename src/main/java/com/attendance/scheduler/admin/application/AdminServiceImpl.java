@@ -83,40 +83,48 @@ public class AdminServiceImpl implements AdminService {
         Long teacherId = changeTeacherDTO.getTeacherId();
         Long studentId = changeTeacherDTO.getStudentId();
 
-        Optional<TeacherEntity> teacherEntity = teacherJpaRepository.findTeacherEntityById(teacherId);
-        Optional<StudentEntity> studentEntity = studentJpaRepository.findStudentEntityById(studentId);
+        Optional<TeacherEntity> optionalTeacherEntity = teacherJpaRepository.findTeacherEntityById(teacherId);
+        Optional<StudentEntity> optionalStudentEntity = studentJpaRepository.findStudentEntityById(studentId);
 
-        if(studentEntity.isPresent() && teacherEntity.isPresent()){
-            studentEntity.get().setTeacherEntity(teacherEntity.get());
+        if(optionalTeacherEntity.isPresent() && optionalStudentEntity.isPresent()){
+            TeacherEntity teacherEntity = optionalTeacherEntity.get();
+            StudentEntity studentEntity = optionalStudentEntity.get();
+
             //학생의 수업엔티티와 교사의 수업을 비교
-            StudentClassDTO studentClassByStudentName = classRepository.getStudentClassByStudentName(studentEntity.get().getStudentName());
-            List<StudentClassDTO> studentClassByTeacherName = classRepository.getStudentClassByTeacherName(teacherEntity.get().getTeacherName());
+            List<StudentClassDTO> studentClassByTeacherEntity = classRepository.getStudentClassByTeacherEntity(teacherEntity);
+            StudentClassDTO studentClassByStudentName = classRepository.getStudentClassByStudentName(studentEntity.getStudentName());
 
-            classValidator(studentClassByStudentName, studentClassByTeacherName);
+            classValidator(studentClassByStudentName, studentClassByTeacherEntity);
+            studentEntity.setTeacherEntity(teacherEntity);
 
-            List<ClassEntity> classEntity= classRepository.getStudentClassEntityByStudentName(studentEntity.get().getStudentName());
-            if(!classEntity.isEmpty()) {
-                ClassEntity entity = classEntity.get(0);
-                classJpaRepository.save(entity);
+            Optional<ClassEntity> optionalClassEntity = classRepository.getStudentClassEntityByStudentName(studentEntity.getStudentName());
+            if(optionalClassEntity.isPresent()) {
+                ClassEntity classEntity = optionalClassEntity.get();
+                classEntity.setTeacherEntity(teacherEntity);
+                classJpaRepository.save(classEntity);
             }
-            studentJpaRepository.save(studentEntity.get());
+            studentJpaRepository.save(studentEntity);
         }
     }
 
-    private void classValidator(StudentClassDTO studentClassByStudentName, List<StudentClassDTO> studentClassByTeacherName){
+    private void classValidator(StudentClassDTO studentClassByStudentName, List<StudentClassDTO> studentClassByTeacherEntity) {
 
-        for (StudentClassDTO classDTOList: studentClassByTeacherName) {
+        for (StudentClassDTO classDTOList : studentClassByTeacherEntity) {
             Integer mondayValue = classDTOList.getMonday();
             Integer tuesdayValue = classDTOList.getTuesday();
             Integer wednesdayValue = classDTOList.getWednesday();
             Integer thursdayValue = classDTOList.getThursday();
             Integer fridayValue = classDTOList.getFriday();
-
-            if (mondayValue.equals(studentClassByStudentName.getMonday())) throw new IllegalStateException("학생의 월요일 수업 중에 겹치는 날이 있습니다.");
-            if (tuesdayValue.equals(studentClassByStudentName.getTuesday())) throw new IllegalStateException("학생의 화요일 수업 중에 겹치는 날이 있습니다.");
-            if (wednesdayValue.equals(studentClassByStudentName.getWednesday())) throw new IllegalStateException("학생의 수요일 수업 중에 겹치는 날이 있습니다.");
-            if (thursdayValue.equals(studentClassByStudentName.getThursday())) throw new IllegalStateException("학생의 목요일 수업 중에 겹치는 날이 있습니다.");
-            if (fridayValue.equals(studentClassByStudentName.getFriday())) throw new IllegalStateException("학생의 일요일 수업 중에 겹치는 날이 있습니다.");
+            if (mondayValue.equals(studentClassByStudentName.getMonday()))
+                throw new IllegalStateException("학생의 월요일 수업 중에 겹치는 날이 있습니다.");
+            if (tuesdayValue.equals(studentClassByStudentName.getTuesday()))
+                throw new IllegalStateException("학생의 화요일 수업 중에 겹치는 날이 있습니다.");
+            if (wednesdayValue.equals(studentClassByStudentName.getWednesday()))
+                throw new IllegalStateException("학생의 수요일 수업 중에 겹치는 날이 있습니다.");
+            if (thursdayValue.equals(studentClassByStudentName.getThursday()))
+                throw new IllegalStateException("학생의 목요일 수업 중에 겹치는 날이 있습니다.");
+            if (fridayValue.equals(studentClassByStudentName.getFriday()))
+                throw new IllegalStateException("학생의 일요일 수업 중에 겹치는 날이 있습니다.");
         }
     }
 
@@ -131,7 +139,7 @@ public class AdminServiceImpl implements AdminService {
         if(teacherEntity.isPresent()) {
             //수업이 있는 교사 엔티티를 찾는다.
             List<StudentClassDTO> studentClassByTeacherName
-                    = classRepository.getStudentClassByTeacherName(teacherEntity.get().getTeacherName());
+                    = classRepository.getStudentClassByTeacherEntity(teacherEntity.get());
 
             if(!studentClassByTeacherName.isEmpty())
                 throw new IllegalStateException("학생 수업 시간이 남아 있습니다.");

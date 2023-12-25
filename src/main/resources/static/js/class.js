@@ -6,7 +6,7 @@ $(document).ready(function() {
             $.ajax({
                 url: '/manage/delete',
                 method: 'POST',
-                data: { deleteClassList : studentName },
+                data: { studentName : studentName },
                 success: function() {
                     alert('삭제되었습니다.');
                     location.reload();

@@ -1,5 +1,6 @@
 package com.attendance.scheduler.student.domain;
 
+import com.attendance.scheduler.course.domain.ClassEntity;
 import com.attendance.scheduler.notification.domain.notice.CommentEntity;
 import com.attendance.scheduler.teacher.domain.TeacherEntity;
 import jakarta.persistence.*;
@@ -62,12 +63,19 @@ public class StudentEntity {
     @OneToMany(mappedBy = "studentEntity")
     List<CommentEntity> commentEntityList = new ArrayList<>();
 
-    public void setCommentEntity(CommentEntity commentEntity) {
-        if(commentEntityList == null) commentEntityList = new ArrayList<>();
+    public void addCommentEntity(CommentEntity commentEntity) {
         this.commentEntityList.add(commentEntity);
     }
+
+    @OneToOne(mappedBy = "studentEntity")
+    private ClassEntity classEntity;
+
+    public void addClassEntity(ClassEntity classEntity) {
+        this.classEntity = classEntity;
+    }
+
     @Builder
-    public StudentEntity(Long id, String studentName, String studentPhoneNumber, String studentAddress, String studentDetailedAddress, String studentParentPhoneNumber, Timestamp creationTimestamp, TeacherEntity teacherEntity) {
+    public StudentEntity(Long id, String studentName, String studentPhoneNumber, String studentAddress, String studentDetailedAddress, String studentParentPhoneNumber, Timestamp creationTimestamp, TeacherEntity teacherEntity, List<CommentEntity> commentEntityList, ClassEntity classEntity) {
         this.id = id;
         this.studentName = studentName;
         this.studentPhoneNumber = studentPhoneNumber;
@@ -76,5 +84,7 @@ public class StudentEntity {
         this.studentParentPhoneNumber = studentParentPhoneNumber;
         this.creationTimestamp = creationTimestamp;
         this.teacherEntity = teacherEntity;
+        this.commentEntityList = commentEntityList;
+        this.classEntity = classEntity;
     }
 }

@@ -6,7 +6,6 @@ import com.attendance.scheduler.course.dto.ClassDTO;
 import com.attendance.scheduler.student.application.StudentService;
 import com.attendance.scheduler.student.dto.StudentInformationDTO;
 import com.attendance.scheduler.teacher.application.TeacherService;
-import com.attendance.scheduler.teacher.dto.DeleteClassDTO;
 import com.attendance.scheduler.teacher.dto.RegisterStudentDTO;
 import com.attendance.scheduler.teacher.dto.StudentSearchCondition;
 import com.attendance.scheduler.teacher.dto.TeacherDTO;
@@ -57,15 +56,14 @@ public class TeacherController {
             return "manage/class";
         }
 
-        model.addAttribute("classList", new DeleteClassDTO()); //있어야 빠름
         model.addAttribute("findClassTable", classTable);
         return "manage/class";
     }
 
     // 삭제
     @PostMapping("delete")
-    public ResponseEntity<String> deleteSchedule(@ModelAttribute("classList") DeleteClassDTO deleteClassDTO){
-        classService.deleteClass(deleteClassDTO);
+    public ResponseEntity<String> deleteSchedule(String studentName){
+        classService.deleteClass(studentName);
         return ResponseEntity.ok("삭제되었습니다.");
     }
 

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +21,7 @@ import java.util.Optional;
 
 @Slf4j
 @Controller
-@RequestMapping("/search/")
+@RequestMapping("/class/")
 @RequiredArgsConstructor
 public class ClassController {
 
@@ -29,30 +30,28 @@ public class ClassController {
 
     //   수업 조회
     @PostMapping("findClass")
-    public String findClass(@Validated @ModelAttribute("studentClassDTO") StudentClassDTO studentClassDTO,
-                            BindingResult bindingResult, Model model) {
+    public String findClass(String studentName, Model model) {
 
-        if (bindingResult.hasErrors()) {
-            log.info("errors={}", bindingResult);
-            return "index";
-        }
+//        if (bindingResult.hasErrors()) {
+//            log.info("errors={}", bindingResult);
+//            return "index";
+//        }
 
-        boolean existStudentEntityByStudentName = studentService.existStudentEntityByStudentName(studentClassDTO.getStudentName());
+        boolean existStudentEntityByStudentName = studentService.existStudentEntityByStudentName(studentName);
 
         if(!existStudentEntityByStudentName) {
+            model.addAttribute("studentClassDTO", new StudentClassDTO());
             model.addAttribute("nullStudentName", "등록 되지 않은 학생입니다.");
-            //ToKnow th:text로 연결해야함.
             return "index";
         }
 
-        searchStudentClass(studentClassDTO.getStudentName(), model);
+        searchStudentClass(studentName, model);
         return "class/findClass";
     }
 
     //제출
     @PostMapping("submit")
-    public String submitForm(@Validated @ModelAttribute("classDTO") ClassDTO classDTO,
-                             BindingResult bindingResult, Model model) {
+    public String submitForm(@Validated @ModelAttribute("classDTO") ClassDTO classDTO, BindingResult bindingResult, Model model) {
 
         if (bindingResult.hasErrors()) {
             searchStudentClass(classDTO.getStudentName(), model);
@@ -62,13 +61,15 @@ public class ClassController {
 
         try {
             classService.saveClassTable(classDTO);
-            return "redirect:/completion";
+            return "redirect:completion";
         }catch (Exception e){
-            searchStudentClass(classDTO.getStudentName(), model);
-            model.addAttribute("error", e.getMessage());
-            log.info("e.getMessage() = {}", e.getMessage());
-            return "class/findClass";
+            return "redirect:index";
         }
+    }
+
+    @GetMapping("completion")
+    public String classCompletion() {
+        return "class/completion";
     }
 
 /*

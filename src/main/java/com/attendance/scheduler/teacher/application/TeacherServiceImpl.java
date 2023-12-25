@@ -60,8 +60,7 @@ public class TeacherServiceImpl implements TeacherService {
     @Transactional
     public void deleteStudentInformation(StudentInformationDTO studentInformationDTO) {
         Optional<StudentEntity> studentEntityById = studentJpaRepository.findStudentEntityById(studentInformationDTO.getId());
-
-        studentEntityById.ifPresent(studentEntity -> classJpaRepository.deleteByStudentName(studentEntity.getStudentName()));
+        studentEntityById.ifPresent(studentEntity -> classJpaRepository.deleteById(studentEntity.getId()));
         studentJpaRepository.deleteStudentEntityById(studentInformationDTO.getId());
     }
 

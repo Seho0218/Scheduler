@@ -20,7 +20,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig{
 	public static final String[] ENDPOINTS_WHITELIST = {
 			"/", "/submit", "/completion",
-			"/search/**",
+			"/class/**",
 			"/board/**",
 			"/join/**",
 			"/login/**",
