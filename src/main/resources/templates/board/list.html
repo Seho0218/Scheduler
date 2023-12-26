@@ -138,23 +138,23 @@
                     end=(${(noticeList.totalPages == 0) ? 1 : (start + (maxPage - 1) < noticeList.totalPages ? start + (maxPage - 1) : noticeList.totalPages)})">
                     <ul class="pagination">
                     <li th:if="${start > 1}" class="page-item">
-                            <a th:href="@{/board?page=0}" class="page-link" href="#" aria-label="Previous"><span aria-hidden="true">&laquo;&laquo;</span></a>
+                        <a th:href="@{/board?page=0}" class="page-link" href="#" aria-label="Previous"><span aria-hidden="true">&laquo;&laquo;</span></a>
                     </li>
                     <li th:if="${start > 1}" class="page-item">
-                            <a th:href="@{/board?(page=${start-maxPage-1})}" class="page-link" href="#" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
+                        <a th:href="@{/board?(page=${start-maxPage-1})}" class="page-link" href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
                     <li th:each="page: ${#numbers.sequence(start, end)}" class="page-item" th:classappend="${noticeList.number+1 == page} ? active"><a th:href="@{/board?(page=${page-1})}" th:text="${page}" class="page-link" href="#"></a></li>
                     <li th:if="${end < noticeList.totalPages}" class="page-item">
-                            <a th:href="@{/board?(page=${start+maxPage-1})}" class="page-link" href="#" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
+                        <a th:href="@{/board?(page=${start+maxPage-1})}" class="page-link" href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
                     </li>
                     <li th:if="${end < noticeList.totalPages}" class="page-item">
-                            <a th:href="@{/board?(page=${noticeList.totalPages-1})}" class="page-link" href="#" aria-label="Next">
-                                <span aria-hidden="true">&raquo;&raquo;</span>
-                            </a>
+                        <a th:href="@{/board?(page=${noticeList.totalPages-1})}" class="page-link" href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;&raquo;</span>
+                        </a>
                     </li>
                     </ul>
                 </nav>
