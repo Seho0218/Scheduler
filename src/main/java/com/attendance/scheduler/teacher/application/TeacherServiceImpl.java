@@ -59,7 +59,8 @@ public class TeacherServiceImpl implements TeacherService {
     @Override
     @Transactional
     public void deleteStudentInformation(StudentInformationDTO studentInformationDTO) {
-        Optional<StudentEntity> studentEntityById = studentJpaRepository.findStudentEntityById(studentInformationDTO.getId());
+        Optional<StudentEntity> studentEntityById = Optional.ofNullable(studentJpaRepository.findStudentEntityById(studentInformationDTO.getId()));
+        //cascade
         studentEntityById.ifPresent(studentEntity -> classJpaRepository.deleteById(studentEntity.getId()));
         studentJpaRepository.deleteStudentEntityById(studentInformationDTO.getId());
     }

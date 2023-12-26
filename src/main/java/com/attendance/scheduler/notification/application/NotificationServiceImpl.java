@@ -13,8 +13,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 public class NotificationServiceImpl implements NotificationService {
@@ -39,25 +37,22 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     @Transactional
-    public Optional<NoticeDTO> findNoticeById(Long id) {
+    public NoticeDTO findNoticeById(Long id) {
         return noticeRepository.findNoticeById(id);
     }
 
     @Override
-    public Optional<NoticeDTO> editNoticeForm(Long id) {
+    public NoticeDTO editNoticeForm(Long id) {
         return noticeRepository.editNoticeForm(id);
     }
 
     @Override
     @Transactional
     public void editNotice(NoticeDTO noticeDTO) {
-        Optional<NoticeEntity> byId = notificationJpaRepository.findById(noticeDTO.getId());
-        if (byId.isPresent()) {
-            NoticeEntity noticeEntity = byId.get();
-            noticeEntity.updateTitle(noticeDTO.getTitle());
-            noticeEntity.updateContent(noticeDTO.getContent());
-            notificationJpaRepository.save(noticeEntity);
-        }
+        NoticeEntity noticeEntityById = notificationJpaRepository.findNoticeEntityById(noticeDTO.getId());
+        noticeEntityById.updateTitle(noticeDTO.getTitle());
+        noticeEntityById.updateContent(noticeDTO.getContent());
+        notificationJpaRepository.save(noticeEntityById);
     }
 
     @Override

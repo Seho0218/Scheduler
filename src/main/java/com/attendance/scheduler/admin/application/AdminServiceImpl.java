@@ -83,28 +83,23 @@ public class AdminServiceImpl implements AdminService {
         Long teacherId = changeTeacherDTO.getTeacherId();
         Long studentId = changeTeacherDTO.getStudentId();
 
-        Optional<TeacherEntity> optionalTeacherEntity = teacherJpaRepository.findTeacherEntityById(teacherId);
-        Optional<StudentEntity> optionalStudentEntity = studentJpaRepository.findStudentEntityById(studentId);
+        TeacherEntity teacherEntity = teacherJpaRepository.findTeacherEntityById(teacherId);
+        StudentEntity studentEntity = studentJpaRepository.findStudentEntityById(studentId);
 
-        if(optionalTeacherEntity.isPresent() && optionalStudentEntity.isPresent()){
-            TeacherEntity teacherEntity = optionalTeacherEntity.get();
-            StudentEntity studentEntity = optionalStudentEntity.get();
+        //학생의 수업엔티티와 교사의 수업을 비교
+        List<StudentClassDTO> studentClassByTeacherEntity = classRepository.getStudentClassByTeacherEntity(teacherEntity);
+        StudentClassDTO studentClassByStudentName = classRepository.getStudentClassByStudentName(studentEntity.getStudentName());
 
-            //학생의 수업엔티티와 교사의 수업을 비교
-            List<StudentClassDTO> studentClassByTeacherEntity = classRepository.getStudentClassByTeacherEntity(teacherEntity);
-            StudentClassDTO studentClassByStudentName = classRepository.getStudentClassByStudentName(studentEntity.getStudentName());
+        classValidator(studentClassByStudentName, studentClassByTeacherEntity);
+        studentEntity.setTeacherEntity(teacherEntity);
 
-            classValidator(studentClassByStudentName, studentClassByTeacherEntity);
-            studentEntity.setTeacherEntity(teacherEntity);
-
-            Optional<ClassEntity> optionalClassEntity = classRepository.getStudentClassEntityByStudentName(studentEntity.getStudentName());
-            if(optionalClassEntity.isPresent()) {
-                ClassEntity classEntity = optionalClassEntity.get();
-                classEntity.setTeacherEntity(teacherEntity);
-                classJpaRepository.save(classEntity);
-            }
-            studentJpaRepository.save(studentEntity);
+        Optional<ClassEntity> optionalClassEntity = classRepository.getStudentClassEntityByStudentName(studentEntity.getStudentName());
+        if(optionalClassEntity.isPresent()) {
+            ClassEntity classEntity = optionalClassEntity.get();
+            classEntity.setTeacherEntity(teacherEntity);
+            classJpaRepository.save(classEntity);
         }
+        studentJpaRepository.save(studentEntity);
     }
 
     private void classValidator(StudentClassDTO studentClassByStudentName, List<StudentClassDTO> studentClassByTeacherEntity) {
@@ -165,7 +160,6 @@ public class AdminServiceImpl implements AdminService {
     @Transactional
     public void initializePassword(PwdEditDTO pwdEditDTO) {
         final String encodePassword = passwordEncoder.encode(pwdEditDTO.getPassword());
-        pwdEditDTO.setPassword(encodePassword);
         AdminEntity adminEntity = adminRepository.findByUsernameIs(pwdEditDTO.getUsername());
         adminEntity.updatePassword(encodePassword);
         adminRepository.save(adminEntity);

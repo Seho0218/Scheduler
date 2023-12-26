@@ -13,7 +13,6 @@ import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 import static com.attendance.scheduler.admin.domain.QAdminEntity.adminEntity;
 import static com.attendance.scheduler.notification.domain.notice.QNoticeEntity.noticeEntity;
@@ -68,7 +67,7 @@ public class NoticeRepository {
         return hasText(content) ? noticeEntity.content.eq(content) : null;
     }
 
-    public Optional<NoticeDTO> findNoticeById(Long id) {
+    public NoticeDTO findNoticeById(Long id) {
 
         queryFactory
                 .update(noticeEntity)
@@ -76,7 +75,7 @@ public class NoticeRepository {
                 .where(noticeEntity.id.eq(id))
                 .execute();
 
-        return Optional.ofNullable(queryFactory
+        return queryFactory
                 .select(Projections.fields(NoticeDTO.class,
                         noticeEntity.id,
                         noticeEntity.title,
@@ -89,11 +88,11 @@ public class NoticeRepository {
                 .join(adminEntity)
                 .on(noticeEntity.adminEntity.id.eq(adminEntity.id))
                 .where(noticeEntity.id.eq(id))
-                .fetchOne());
+                .fetchOne();
     }
 
-    public Optional<NoticeDTO> editNoticeForm(Long id){
-        return Optional.ofNullable(queryFactory
+    public NoticeDTO editNoticeForm(Long id){
+        return queryFactory
                 .select(Projections.fields(NoticeDTO.class,
                         noticeEntity.id,
                         noticeEntity.title,
@@ -107,7 +106,7 @@ public class NoticeRepository {
                 .join(adminEntity)
                 .on(noticeEntity.adminEntity.id.eq(adminEntity.id))
                 .where(noticeEntity.id.eq(id))
-                .fetchOne());
+                .fetchOne();
 
     }
 }

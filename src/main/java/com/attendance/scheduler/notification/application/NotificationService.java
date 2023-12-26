@@ -5,8 +5,6 @@ import com.attendance.scheduler.notification.dto.NoticeDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.util.Optional;
-
 public interface NotificationService {
 
 
@@ -14,9 +12,9 @@ public interface NotificationService {
 
     void writeNotice(NoticeDTO noticeDTO);
 
-    Optional<NoticeDTO> findNoticeById(Long id);
+    NoticeDTO findNoticeById(Long id);
 
-    Optional<NoticeDTO> editNoticeForm(Long id);
+    NoticeDTO editNoticeForm(Long id);
 
     void editNotice(NoticeDTO noticeDTO);
 

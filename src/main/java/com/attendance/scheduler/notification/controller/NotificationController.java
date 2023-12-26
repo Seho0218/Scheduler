@@ -55,7 +55,7 @@ public class NotificationController {
 
     @GetMapping("/{id}")
     public String noticeForm(@PathVariable("id") Long id, Model model){
-        Optional<NoticeDTO> noticeById = notificationService.findNoticeById(id);
+        Optional<NoticeDTO> noticeById = Optional.ofNullable(notificationService.findNoticeById(id));
         if(noticeById.isPresent()) {
             model.addAttribute("notice", noticeById.get());
             return "board/notice";
@@ -67,7 +67,7 @@ public class NotificationController {
     @GetMapping("/edit/")
     public String editNoticeForm(@RequestParam(name = "id") Long id, Model model) {
 
-        Optional<NoticeDTO> noticeById = notificationService.editNoticeForm(id);
+        Optional<NoticeDTO> noticeById = Optional.ofNullable(notificationService.editNoticeForm(id));
         if(noticeById.isPresent()) {
             model.addAttribute("noticeObject", new NoticeDTO());
             model.addAttribute("notice", noticeById.get());

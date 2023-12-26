@@ -37,7 +37,7 @@ public class TeacherCertServiceImpl implements TeacherCertService {
     @Override
     public Optional<FindIdDTO> findIdByEmail(FindIdDTO findIdDTO) {
         Optional<TeacherEntity> optionalTeacherEntity
-                = teacherJpaRepository.findByEmailIs(findIdDTO.getEmail());
+                = Optional.ofNullable(teacherJpaRepository.findByEmailIs(findIdDTO.getEmail()));
 
         return optionalTeacherEntity.map(teacherEntity -> {
             FindIdDTO resultDTO = new FindIdDTO();
