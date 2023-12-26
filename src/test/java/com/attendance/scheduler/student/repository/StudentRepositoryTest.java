@@ -1,6 +1,6 @@
 package com.attendance.scheduler.student.repository;
 
-import com.attendance.scheduler.member.student.dto.StudentInformationDTO;
+import com.attendance.scheduler.student.dto.StudentInformationDTO;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.junit.jupiter.api.Test;

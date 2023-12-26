@@ -1,11 +1,11 @@
 package com.attendance.scheduler.notification.application;
 
-import com.attendance.scheduler.member.admin.domain.AdminEntity;
-import com.attendance.scheduler.member.admin.repository.AdminRepository;
-import com.attendance.scheduler.posts.notification.domain.notice.NoticeEntity;
-import com.attendance.scheduler.posts.notification.domain.notice.NoticeType;
-import com.attendance.scheduler.posts.notification.dto.NoticeDTO;
-import com.attendance.scheduler.posts.notification.repository.NoticeJpaRepository;
+import com.attendance.scheduler.admin.domain.AdminEntity;
+import com.attendance.scheduler.admin.repository.AdminRepository;
+import com.attendance.scheduler.notification.domain.notice.NoticeEntity;
+import com.attendance.scheduler.notification.domain.notice.NoticeType;
+import com.attendance.scheduler.notification.dto.NoticeDTO;
+import com.attendance.scheduler.notification.repository.NoticeJpaRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;

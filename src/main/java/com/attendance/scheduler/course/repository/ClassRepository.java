@@ -3,7 +3,7 @@ package com.attendance.scheduler.course.repository;
 import com.attendance.scheduler.course.domain.ClassEntity;
 import com.attendance.scheduler.course.dto.ClassDTO;
 import com.attendance.scheduler.course.dto.StudentClassDTO;
-import com.attendance.scheduler.member.teacher.domain.TeacherEntity;
+import com.attendance.scheduler.teacher.domain.TeacherEntity;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;

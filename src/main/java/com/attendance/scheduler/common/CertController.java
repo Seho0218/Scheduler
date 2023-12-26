@@ -1,6 +1,6 @@
 package com.attendance.scheduler.common;
 
-import com.attendance.scheduler.member.teacher.dto.TeacherDTO;
+import com.attendance.scheduler.teacher.dto.TeacherDTO;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

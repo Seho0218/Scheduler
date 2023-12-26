@@ -2,12 +2,11 @@ package com.attendance.scheduler.teacher.application;
 
 import com.attendance.scheduler.common.dto.LoginDTO;
 import com.attendance.scheduler.infra.config.security.Authority.UserDetailService;
-import com.attendance.scheduler.member.student.domain.StudentEntity;
-import com.attendance.scheduler.member.student.repository.StudentJpaRepository;
-import com.attendance.scheduler.member.student.repository.StudentRepository;
-import com.attendance.scheduler.member.teacher.application.TeacherService;
-import com.attendance.scheduler.member.teacher.domain.TeacherEntity;
-import com.attendance.scheduler.member.teacher.repository.TeacherJpaRepository;
+import com.attendance.scheduler.student.domain.StudentEntity;
+import com.attendance.scheduler.student.repository.StudentJpaRepository;
+import com.attendance.scheduler.student.repository.StudentRepository;
+import com.attendance.scheduler.teacher.domain.TeacherEntity;
+import com.attendance.scheduler.teacher.repository.TeacherJpaRepository;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
