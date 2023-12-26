@@ -1,7 +1,7 @@
 package com.attendance.scheduler.infra.config.security;
 
-import com.attendance.scheduler.admin.domain.AdminEntity;
-import com.attendance.scheduler.admin.repository.AdminRepository;
+import com.attendance.scheduler.member.admin.domain.AdminEntity;
+import com.attendance.scheduler.member.admin.repository.AdminRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;

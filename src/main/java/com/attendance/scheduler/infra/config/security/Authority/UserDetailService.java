@@ -1,9 +1,9 @@
 package com.attendance.scheduler.infra.config.security.Authority;
 
-import com.attendance.scheduler.admin.domain.AdminEntity;
-import com.attendance.scheduler.admin.repository.AdminRepository;
-import com.attendance.scheduler.teacher.domain.TeacherEntity;
-import com.attendance.scheduler.teacher.repository.TeacherJpaRepository;
+import com.attendance.scheduler.member.admin.domain.AdminEntity;
+import com.attendance.scheduler.member.admin.repository.AdminRepository;
+import com.attendance.scheduler.member.teacher.domain.TeacherEntity;
+import com.attendance.scheduler.member.teacher.repository.TeacherJpaRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;

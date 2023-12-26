@@ -3,7 +3,7 @@ package com.attendance.scheduler.course.application;
 
 import com.attendance.scheduler.course.dto.ClassDTO;
 import com.attendance.scheduler.course.dto.StudentClassDTO;
-import com.attendance.scheduler.student.dto.ClassListDTO;
+import com.attendance.scheduler.member.student.dto.ClassListDTO;
 
 import java.util.List;
 import java.util.Optional;

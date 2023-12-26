@@ -1,6 +1,6 @@
 package com.attendance.scheduler.infra.email;
 
-import com.attendance.scheduler.teacher.dto.FindIdDTO;
+import com.attendance.scheduler.member.teacher.dto.FindIdDTO;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

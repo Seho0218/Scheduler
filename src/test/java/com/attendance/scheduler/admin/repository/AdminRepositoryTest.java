@@ -1,6 +1,7 @@
 package com.attendance.scheduler.admin.repository;
 
-import com.attendance.scheduler.admin.domain.AdminEntity;
+import com.attendance.scheduler.member.admin.domain.AdminEntity;
+import com.attendance.scheduler.member.admin.repository.AdminRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
