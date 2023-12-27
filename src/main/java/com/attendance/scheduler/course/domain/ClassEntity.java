@@ -13,7 +13,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.sql.Timestamp;
 
 import static jakarta.persistence.FetchType.LAZY;
-import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
 @Entity
@@ -37,8 +36,7 @@ public class ClassEntity {
 
     @NotNull
     @ManyToOne(fetch = LAZY)
-    @MapsId
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "teacher_id")
     private TeacherEntity teacherEntity;
 
     public void setTeacherEntity(TeacherEntity teacherEntity) {
@@ -51,9 +49,9 @@ public class ClassEntity {
         }
     }
 
-    @OneToOne
+    @OneToOne(fetch = LAZY)
     @MapsId
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "student_id")
     private StudentEntity studentEntity;
 
     public void setStudentEntity(StudentEntity studentEntity) {

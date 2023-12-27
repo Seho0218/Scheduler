@@ -48,7 +48,7 @@ public class NoticeEntity {
 
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "admin_id")
     private AdminEntity adminEntity;
 
     public void setAdminEntity(AdminEntity adminEntity) {
