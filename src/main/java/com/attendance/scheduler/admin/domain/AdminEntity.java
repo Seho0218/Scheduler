@@ -25,7 +25,6 @@ import static lombok.AccessLevel.PROTECTED;
 public class AdminEntity {
 
     @Id @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "admin_id")
     private Long id;
 
     private String name;

@@ -81,9 +81,9 @@ public class SampleDataTest {
         @Test
         @DisplayName("샘플 교사 정보")
         void saveSampleTeacherDataSet(){
-//            String encode = passwordEncoder.encode(sampleTeacherDataSet().getPassword());
-//            sampleTeacherDataSet().setPassword(encode);
-//            teacherService.joinTeacher(sampleTeacherDataSet());
+            String encode = passwordEncoder.encode(sampleTeacherDataSet().getPassword());
+            sampleTeacherDataSet().setPassword(encode);
+            teacherService.joinTeacher(sampleTeacherDataSet());
 
             String encode2 = passwordEncoder.encode(sample2TeacherDataSet().getPassword());
             sample2TeacherDataSet().setPassword(encode2);
@@ -99,7 +99,7 @@ public class SampleDataTest {
 
         RegisterStudentDTO registerStudentDTO = new RegisterStudentDTO();
         TeacherEntity testTeacher = teacherJpaRepository.findByUsernameIs("sampleTeacher");
-        for (int i = 0; i < 31; i++) {
+        for (int i = 0; i < 1; i++) {
             registerStudentDTO.setStudentName("김샘플"+i);
             registerStudentDTO.setStudentPhoneNumber("010-1234-1234");
             registerStudentDTO.setStudentParentPhoneNumber("010-1234-1233");

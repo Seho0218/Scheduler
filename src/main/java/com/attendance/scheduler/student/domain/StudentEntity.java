@@ -47,7 +47,7 @@ public class StudentEntity {
 
     @NotNull
     @ManyToOne(fetch = LAZY, optional = false, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "teacher_id")
+    @JoinColumn(name = "id")
     private TeacherEntity teacherEntity;
 
     public void setTeacherEntity(TeacherEntity teacherEntity) {
@@ -68,6 +68,7 @@ public class StudentEntity {
     }
 
     @OneToOne(mappedBy = "studentEntity")
+    @PrimaryKeyJoinColumn
     private ClassEntity classEntity;
 
     public void addClassEntity(ClassEntity classEntity) {

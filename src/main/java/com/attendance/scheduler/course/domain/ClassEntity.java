@@ -23,8 +23,7 @@ import static lombok.AccessLevel.PROTECTED;
 @NoArgsConstructor(access = PROTECTED)
 public class ClassEntity {
 
-    @Id @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "class_id")
+    @Id
     private Long id;
 
     private Integer monday;
@@ -38,7 +37,8 @@ public class ClassEntity {
 
     @NotNull
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "teacher_id")
+    @MapsId
+    @JoinColumn(name = "id")
     private TeacherEntity teacherEntity;
 
     public void setTeacherEntity(TeacherEntity teacherEntity) {
@@ -52,7 +52,8 @@ public class ClassEntity {
     }
 
     @OneToOne
-    @JoinColumn(name = "student_id")
+    @MapsId
+    @JoinColumn(name = "id")
     private StudentEntity studentEntity;
 
     public void setStudentEntity(StudentEntity studentEntity) {
