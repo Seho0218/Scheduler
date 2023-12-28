@@ -131,6 +131,17 @@
         </div>
       </div>
       <div class="board-comment">
+        <table>
+          <tr th:each="comment: ${commentList}">
+            <td th:text="${comment.getCommentAuthor()}"></td>
+            <td th:text="${comment.getComment()}" th:data="${comment.getCommentId()}"></td>
+            <td th:text="${#dates.format(comment.getCreationTimeStamp(), 'yyyy-MM-dd HH:mm')}"></td>
+            <th><a class="btn btn-primary btn-block modify-button">수정</a>
+              <a class="btn btn-primary btn-danger delete-button">삭제</a></th>
+          </tr>
+        </table>
+      </div>
+      <div class="board-comment-form">
           <!-- Login Form -->
         <form action="/login" method="post">
           <div class="row">
@@ -166,4 +177,6 @@
   </div>
 </div>
 </body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script type="application/text/javascript" src="/js/board/notice.js"></script>
 </html>

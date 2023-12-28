@@ -3,6 +3,7 @@ package com.attendance.scheduler.comment.domain.entity;
 import com.attendance.scheduler.notification.domain.notice.NoticeEntity;
 import com.attendance.scheduler.student.domain.StudentEntity;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -25,13 +26,9 @@ public class CommentEntity {
 
     @Id @GeneratedValue(strategy = IDENTITY)
     private Long id;
-
     private String commentAuthor;
-
-    private String comment;
-
     private String password;
-
+    private String comment;
 
     @CreationTimestamp
     private Timestamp creationTimestamp;
@@ -62,5 +59,16 @@ public class CommentEntity {
         if (studentEntity != null) {
             studentEntity.addCommentEntity(this);
         }
+    }
+
+    @Builder
+    public CommentEntity(Long id, String commentAuthor, String password, String comment, Timestamp creationTimestamp, NoticeEntity noticeEntity, StudentEntity studentEntity) {
+        this.id = id;
+        this.commentAuthor = commentAuthor;
+        this.password = password;
+        this.comment = comment;
+        this.creationTimestamp = creationTimestamp;
+        this.noticeEntity = noticeEntity;
+        this.studentEntity = studentEntity;
     }
 }

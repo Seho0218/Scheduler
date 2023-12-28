@@ -1,5 +1,6 @@
 package com.attendance.scheduler.student.repository;
 
+import com.attendance.scheduler.comment.dto.CommentDTO;
 import com.attendance.scheduler.student.domain.StudentEntity;
 import com.attendance.scheduler.student.dto.StudentInformationDTO;
 import com.attendance.scheduler.teacher.dto.StudentSearchCondition;
@@ -75,5 +76,17 @@ public class StudentRepository {
                 .selectFrom(studentEntity)
                 .where(studentEntity.id.eq(studentId))
                 .fetchOne());
+    }
+
+
+
+
+    public boolean existStudentEntityByStudentNameAndStudentParentPhoneNumber(CommentDTO commentDTO) {
+        Integer fetchOne = queryFactory.selectOne()
+                .from(studentEntity)
+                .where(studentEntity.studentName.eq(commentDTO.getCommentAuthor()),
+                        studentEntity.studentParentPhoneNumber.eq(commentDTO.getPassword()))
+                .fetchOne();
+        return fetchOne!=null;
     }
 }

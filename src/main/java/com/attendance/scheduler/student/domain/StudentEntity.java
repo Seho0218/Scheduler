@@ -33,13 +33,9 @@ public class StudentEntity {
     private Long id;
 
     private String studentName;
-
     private String studentPhoneNumber;
-
     private String studentAddress;
-
     private String studentDetailedAddress;
-
     private String studentParentPhoneNumber;
 
     @CreationTimestamp

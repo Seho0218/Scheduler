@@ -27,11 +27,8 @@ public class AdminEntity {
     @Id @GeneratedValue(strategy = IDENTITY)
     @Column(name = "admin_id")
     private Long id;
-
     private String name;
-
     private String username;
-
     private String password;
 
     @Column(columnDefinition = "varchar(255) default '이메일을 입력해 주세요'")
@@ -48,7 +45,6 @@ public class AdminEntity {
 
     @OneToMany(mappedBy = "adminEntity")
     List<NoticeEntity> noticeEntityList = new ArrayList<>();
-
 
     public void setBoardEntity(NoticeEntity noticeEntity) {
         this.noticeEntityList.add(noticeEntity);

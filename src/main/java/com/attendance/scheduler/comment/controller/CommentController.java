@@ -19,13 +19,44 @@ public class CommentController {
     public final CommentService commentService;
     public final StudentService studentService;
 
-    @PostMapping("/")
-    public ResponseEntity<String> grantAuth(CommentDTO commentDTO) {
+    @PostMapping("comment_submit")
+    public ResponseEntity<String> submitComment(CommentDTO commentDTO) {
+        boolean existed = studentService.existStudentEntityByStudentNameAndStudentParentPhoneNumber(commentDTO);
+        if(!existed){
+            return ResponseEntity.ok("허가되지 않은 사용자 입니다.");
+        }
 
-        return ResponseEntity.ok("승인되었습니다.");
+        try {
+            commentService.saveComment(commentDTO);
+            return ResponseEntity.ok("승인되었습니다.");
+        }catch (Exception e){
+            return ResponseEntity.ok(e.getMessage());
+        }
     }
 
+    @PostMapping("modify_submit")
+    public ResponseEntity<String> modifyComment(CommentDTO commentDTO) {
+        boolean existed = studentService.existStudentEntityByStudentNameAndStudentParentPhoneNumber(commentDTO);
+        if(!existed){
+            return ResponseEntity.ok("허가되지 않은 사용자 입니다.");
+        }
 
+        try {
+            commentService.saveComment(commentDTO);
+            return ResponseEntity.ok("승인되었습니다.");
+        }catch (Exception e){
+            return ResponseEntity.ok(e.getMessage());
+        }
+    }
 
+    @PostMapping("comment_delete")
+    public ResponseEntity<String> deleteComment(CommentDTO commentDTO) {
 
+        try{
+            commentService.deleteComment(commentDTO);
+            return ResponseEntity.ok("삭제되었습니다.");
+        }catch (Exception e){
+            return ResponseEntity.ok(e.getMessage());
+        }
+    }
 }

@@ -1,23 +1,4 @@
 $(document).ready(function() {
-    $('.delete-button').click(function() {
-        const studentID = $(this).attr('value');
-        const confirmation = confirm('정말 학생 정보를 삭제하시겠습니까?');
-        if (confirmation) {
-            $.ajax({
-                url: '/manage/deleteStudentList',
-                method: 'POST',
-                data: { id : studentID },
-                success: function(data) {
-                    alert(data.responseJSON.message);
-                    location.reload();
-                },
-                error: function(xhr) {
-                    alert(xhr.responseText);
-                }
-            });
-        }
-    });
-
     $('.save-button').click(function() {
         const teacherID = $(this).siblings('label').children('.teacherID').val();
         const studentID = $(this).parent('td').siblings('td').children('.studentID').val();
@@ -33,6 +14,25 @@ $(document).ready(function() {
                 },
                 success: function() {
                     alert("변경되었습니다.");
+                    location.reload();
+                },
+                error: function(xhr) {
+                    alert(xhr.responseText);
+                }
+            });
+        }
+    });
+
+    $('.delete-button').click(function() {
+        const studentID = $(this).attr('value');
+        const confirmation = confirm('정말 학생 정보를 삭제하시겠습니까?');
+        if (confirmation) {
+            $.ajax({
+                url: '/manage/deleteStudentList',
+                method: 'POST',
+                data: { id : studentID },
+                success: function(data) {
+                    alert(data.responseJSON.message);
                     location.reload();
                 },
                 error: function(xhr) {

@@ -6,6 +6,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -37,5 +38,17 @@ class StudentRepositoryTest {
                 .fetch();
 
         System.out.println("studentInformationList = " + studentInformationList);
+    }
+
+    @Test
+    @Transactional
+    void existStudentEntityByStudentNameAndStudentParentPhoneNumber() {
+        Integer fetchOne = queryFactory.selectOne()
+                .from(studentEntity)
+                .where(studentEntity.studentName.eq("김샘플0"),
+                        studentEntity.studentParentPhoneNumber.eq("010-1234-1234"))
+                .fetchOne();
+
+        fetchOne != null
     }
 }

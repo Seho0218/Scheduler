@@ -1,5 +1,7 @@
 package com.attendance.scheduler.notification.controller;
 
+import com.attendance.scheduler.comment.application.CommentService;
+import com.attendance.scheduler.comment.dto.CommentDTO;
 import com.attendance.scheduler.notification.application.NotificationService;
 import com.attendance.scheduler.notification.dto.Condition;
 import com.attendance.scheduler.notification.dto.NoticeDTO;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -23,6 +26,7 @@ import java.util.Optional;
 public class NotificationController {
 
     public final NotificationService notificationService;
+    public final CommentService commentService;
 
     @GetMapping("")
     public String getNoticeList(Condition condition, Pageable pageable, Model model){
@@ -56,8 +60,10 @@ public class NotificationController {
     @GetMapping("/{id}")
     public String noticeForm(@PathVariable("id") Long id, Model model){
         Optional<NoticeDTO> noticeById = Optional.ofNullable(notificationService.findNoticeById(id));
+        List<CommentDTO> commentList = commentService.getCommentList();
         if(noticeById.isPresent()) {
             model.addAttribute("notice", noticeById.get());
+            model.addAttribute("commentList", commentList);
             return "board/notice";
         }
         return "redirect:/board";
