@@ -32,7 +32,7 @@ $(document).ready(function() {
                 method: 'POST',
                 data: { id : studentID },
                 success: function(data) {
-                    alert(data.responseJSON.message);
+                    alert(data);
                     location.reload();
                 },
                 error: function(xhr) {

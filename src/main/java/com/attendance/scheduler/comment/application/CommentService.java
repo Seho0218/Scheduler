@@ -5,7 +5,7 @@ import com.attendance.scheduler.comment.dto.CommentDTO;
 import java.util.List;
 
 public interface CommentService {
-    List<CommentDTO> getCommentList();
+    List<CommentDTO> getCommentList(Long id);
 
     void saveComment(CommentDTO commentDTO);
 

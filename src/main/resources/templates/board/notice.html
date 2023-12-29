@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns="http://www.w3.org/1999/html"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
   <meta charset="utf-8">
@@ -112,7 +111,7 @@
         </thead>
         <tbody>
         <tr>
-          <td th:text="${notice.getId()}"></td>
+          <td id="noticeId" th:text="${notice.getId()}" th:value="${notice.getId()}"></td>
           <td th:text="${notice.getName()}"></td>
           <td th:text="${notice.getTitle()}"></td>
           <td th:text="${#dates.format(notice.getCreationTimestamp(), 'yyyy-MM-dd HH:mm')}"></td>
@@ -131,6 +130,7 @@
         </div>
       </div>
       <div class="board-comment">
+        <div class="comment">
         <table>
           <tr th:each="comment: ${commentList}">
             <td th:text="${comment.getCommentAuthor()}"></td>
@@ -141,9 +141,8 @@
           </tr>
         </table>
       </div>
-      <div class="board-comment-form">
+        <div class="comment-form">
           <!-- Login Form -->
-        <form action="/login" method="post">
           <div class="row">
             <!-- Username and Password Section -->
             <div class="col-md-2">
@@ -166,17 +165,17 @@
             <!-- Submit Button Section -->
               <div class="comment text-end">
                 <div class="form-group">
-                  <button type="submit" class="btn btn-primary btn-block">Submit Comment</button>
+                  <button id="save-button" class="btn btn-primary btn-block save-button">Submit Comment</button>
                 </div>
               </div>
             </div>
           </div>
-        </form>
+      </div>
       </div>
     </div>
   </div>
 </div>
 </body>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script type="application/text/javascript" src="/js/board/notice.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="/js/board/notice.js"></script>
 </html>

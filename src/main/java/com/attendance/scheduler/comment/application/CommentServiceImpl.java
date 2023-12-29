@@ -26,8 +26,8 @@ public class CommentServiceImpl implements CommentService {
     public final CommentJpaRepository commentJpaRepository;
 
     @Override
-    public List<CommentDTO> getCommentList() {
-        return commentRepository.getCommentList();
+    public List<CommentDTO> getCommentList(Long id) {
+        return commentRepository.getCommentList(id);
     }
 
     @Override

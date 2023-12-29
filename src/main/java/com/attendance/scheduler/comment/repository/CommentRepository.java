@@ -16,7 +16,7 @@ public class CommentRepository {
 
     public final JPAQueryFactory queryFactory;
 
-    public List<CommentDTO> getCommentList() {
+    public List<CommentDTO> getCommentList(Long id) {
         return queryFactory
                 .select(Projections.fields(CommentDTO.class,
                         commentEntity.id,
@@ -24,6 +24,7 @@ public class CommentRepository {
                         commentEntity.comment,
                         commentEntity.creationTimestamp))
                 .from(commentEntity)
+                .where(commentEntity.noticeEntity.id.eq(id))
                 .fetch();
     }
 }

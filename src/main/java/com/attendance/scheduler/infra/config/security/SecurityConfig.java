@@ -26,7 +26,8 @@ public class SecurityConfig{
 			"/login/**",
 			"/cert/**",
 			"/help/**",
-			"/css/*"
+			"/css/**",
+			"/js/**"
 	};
 
 	@Bean

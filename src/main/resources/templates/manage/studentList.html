@@ -77,12 +77,12 @@
                     </td>
                 <td th:text="${#dates.format(student.getCreationTimestamp(), 'yyyy-MM-dd')}"></td>
                 <td>
-                        <div>
-                            <form method='post' role="form" th:action="@{/search/findClass}">
-                               <button class="btn btn-primary modify" name="studentName" th:value="${student.getStudentName()}">수정</button>
-                            </form>
-                        </div>
-                    </td>
+                    <div>
+                        <form method='post' role="form" th:action="@{/search/findClass}">
+                            <button class="btn btn-primary modify" name="studentName" th:value="${student.getStudentName()}">수정</button>
+                        </form>
+                    </div>
+                </td>
                 <td><button class="btn btn-primary studentID delete-button" th:value="${student.getId()}">삭제</button></td>
             </tr>
             </tbody>
@@ -121,6 +121,6 @@
     </div>
 </div>
 </body>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="/js/studentList.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="/js/manage/studentList.js"></script>
 </html>
