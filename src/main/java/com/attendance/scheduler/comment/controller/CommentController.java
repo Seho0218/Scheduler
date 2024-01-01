@@ -5,6 +5,7 @@ import com.attendance.scheduler.comment.dto.CommentDTO;
 import com.attendance.scheduler.student.application.StudentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,25 +24,29 @@ public class CommentController {
     public ResponseEntity<String> submitComment(CommentDTO commentDTO) {
         boolean existed = studentService.existStudentEntityByStudentNameAndStudentParentPhoneNumber(commentDTO);
         if(!existed){
-            return ResponseEntity.ok("허가되지 않은 사용자 입니다.");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("허가되지 않은 사용자 입니다.");
         }
 
         try {
             commentService.saveComment(commentDTO);
             return ResponseEntity.ok("");
         }catch (Exception e){
-            return ResponseEntity.ok(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 
     @PostMapping("comment_delete")
     public ResponseEntity<String> deleteComment(CommentDTO commentDTO) {
+        boolean existed = studentService.existStudentEntityByStudentNameAndStudentParentPhoneNumber(commentDTO);
+        if(!existed){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("권한이 없습니다.");
+        }
 
         try{
             commentService.deleteComment(commentDTO);
             return ResponseEntity.ok("삭제되었습니다.");
         }catch (Exception e){
-            return ResponseEntity.ok(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 }

@@ -15,11 +15,11 @@ $(document).ready(function() {
                 password: password,
                 comment: comment
             },
-            success: function (data) {
+            success: function () {
                 location.reload();
                 },
-            error: function () {
-                alert("잘못된 접근입니다.");
+            error: function (xhr) {
+                alert(xhr.responseText);
             }
         });
     });
