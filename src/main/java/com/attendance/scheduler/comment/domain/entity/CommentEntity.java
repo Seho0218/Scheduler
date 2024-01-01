@@ -24,14 +24,14 @@ import static lombok.AccessLevel.PROTECTED;
 @NoArgsConstructor(access = PROTECTED)
 public class CommentEntity {
 
-    @Id @GeneratedValue(strategy = IDENTITY)
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
     private Long id;
     private String commentAuthor;
-    private String password;
     private String comment;
 
     @CreationTimestamp
-    private Timestamp creationTimestamp;
+    private Timestamp creationTimeStamp;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "notice_id")
@@ -62,12 +62,11 @@ public class CommentEntity {
     }
 
     @Builder
-    public CommentEntity(Long id, String commentAuthor, String password, String comment, Timestamp creationTimestamp, NoticeEntity noticeEntity, StudentEntity studentEntity) {
+    public CommentEntity(Long id, String commentAuthor, String comment, Timestamp creationTimeStamp, NoticeEntity noticeEntity, StudentEntity studentEntity) {
         this.id = id;
         this.commentAuthor = commentAuthor;
-        this.password = password;
         this.comment = comment;
-        this.creationTimestamp = creationTimestamp;
+        this.creationTimeStamp = creationTimeStamp;
         this.noticeEntity = noticeEntity;
         this.studentEntity = studentEntity;
     }

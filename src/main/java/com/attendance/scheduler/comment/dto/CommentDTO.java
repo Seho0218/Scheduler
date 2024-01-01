@@ -23,9 +23,8 @@ public class CommentDTO {
     public CommentEntity toEntity() {
         return CommentEntity.builder()
                 .commentAuthor(commentAuthor)
-                .password(password)
                 .comment(comment)
-                .creationTimestamp(creationTimeStamp)
+                .creationTimeStamp(creationTimeStamp)
                 .build();
     }
 }

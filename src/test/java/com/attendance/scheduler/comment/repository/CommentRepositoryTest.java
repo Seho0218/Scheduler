@@ -4,27 +4,33 @@ import com.attendance.scheduler.comment.dto.CommentDTO;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
 import static com.attendance.scheduler.comment.domain.entity.QCommentEntity.commentEntity;
 
-@Repository
+@SpringBootTest
 @RequiredArgsConstructor
-public class CommentRepository {
+class CommentRepositoryTest {
 
-    public final JPAQueryFactory queryFactory;
+    @Autowired
+    public JPAQueryFactory queryFactory;
 
-    public List<CommentDTO> getCommentList(Long id) {
-        return queryFactory
+    @Test
+    void getCommentList() {
+        List<CommentDTO> fetch = queryFactory
                 .select(Projections.fields(CommentDTO.class,
                         commentEntity.id,
                         commentEntity.commentAuthor,
                         commentEntity.comment,
                         commentEntity.creationTimeStamp))
                 .from(commentEntity)
-                .where(commentEntity.noticeEntity.id.eq(id))
+                .where(commentEntity.noticeEntity.id.eq(1L))
                 .fetch();
+
+        System.out.println("fetch = " + fetch);
     }
 }

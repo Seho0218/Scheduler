@@ -99,7 +99,7 @@ public class SampleDataTest {
 
         RegisterStudentDTO registerStudentDTO = new RegisterStudentDTO();
         TeacherEntity testTeacher = teacherJpaRepository.findByUsernameIs("sampleTeacher");
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 4; i++) {
             registerStudentDTO.setStudentName("김샘플"+i);
             registerStudentDTO.setStudentPhoneNumber("010-1234-1234");
             registerStudentDTO.setStudentParentPhoneNumber("010-1234-1233");

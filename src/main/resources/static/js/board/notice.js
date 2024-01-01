@@ -16,8 +16,8 @@ $(document).ready(function() {
                 comment: comment
             },
             success: function (data) {
-                alert(data);
-                location.reload();},
+                location.reload();
+                },
             error: function () {
                 alert("잘못된 접근입니다.");
             }
@@ -28,7 +28,7 @@ $(document).ready(function() {
         const teacherId = $(this).parent('tr').attr('data');
         if (confirmation) {
             $.ajax({
-                url: '/comment/comment_submit',
+                url: '/comment/comment_modify',
                 method: 'POST',
                 data:{
 

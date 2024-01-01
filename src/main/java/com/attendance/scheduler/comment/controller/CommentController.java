@@ -28,22 +28,7 @@ public class CommentController {
 
         try {
             commentService.saveComment(commentDTO);
-            return ResponseEntity.ok("승인되었습니다.");
-        }catch (Exception e){
-            return ResponseEntity.ok(e.getMessage());
-        }
-    }
-
-    @PostMapping("modify_submit")
-    public ResponseEntity<String> modifyComment(CommentDTO commentDTO) {
-        boolean existed = studentService.existStudentEntityByStudentNameAndStudentParentPhoneNumber(commentDTO);
-        if(!existed){
-            return ResponseEntity.ok("허가되지 않은 사용자 입니다.");
-        }
-
-        try {
-            commentService.saveComment(commentDTO);
-            return ResponseEntity.ok("승인되었습니다.");
+            return ResponseEntity.ok("");
         }catch (Exception e){
             return ResponseEntity.ok(e.getMessage());
         }

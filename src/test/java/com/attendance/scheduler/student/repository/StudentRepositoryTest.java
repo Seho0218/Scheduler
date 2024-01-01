@@ -49,6 +49,5 @@ class StudentRepositoryTest {
                         studentEntity.studentParentPhoneNumber.eq("010-1234-1234"))
                 .fetchOne();
 
-        fetchOne != null
     }
 }

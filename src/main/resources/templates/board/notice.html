@@ -136,11 +136,10 @@
             <td th:text="${comment.getCommentAuthor()}"></td>
             <td th:text="${comment.getComment()}" th:data="${comment.getCommentId()}"></td>
             <td th:text="${#dates.format(comment.getCreationTimeStamp(), 'yyyy-MM-dd HH:mm')}"></td>
-            <th><a class="btn btn-primary btn-block modify-button">수정</a>
-              <a class="btn btn-primary btn-danger delete-button">삭제</a></th>
+            <th><a class="btn btn-primary btn-danger delete-button">삭제</a></th>
           </tr>
         </table>
-      </div>
+        </div>
         <div class="comment-form">
           <!-- Login Form -->
           <div class="row">
