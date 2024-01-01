@@ -13,6 +13,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 public class CommentDTO {
 
+    private Long id;
     private Long noticeId;
     private Long commentId;
     private String commentAuthor;

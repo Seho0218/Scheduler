@@ -61,6 +61,7 @@ public class NotificationController {
     public String noticeForm(@PathVariable("id") Long id, Model model){
         Optional<NoticeDTO> noticeById = Optional.ofNullable(notificationService.findNoticeById(id));
         List<CommentDTO> commentList = commentService.getCommentList(id);
+        System.out.println("commentList = " + commentList);
         if(noticeById.isPresent()) {
             model.addAttribute("notice", noticeById.get());
             model.addAttribute("commentList", commentList);

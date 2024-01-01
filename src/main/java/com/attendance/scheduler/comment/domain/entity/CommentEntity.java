@@ -24,8 +24,8 @@ import static lombok.AccessLevel.PROTECTED;
 @NoArgsConstructor(access = PROTECTED)
 public class CommentEntity {
 
-    @Id
-    @GeneratedValue(strategy = IDENTITY)
+    @Id @GeneratedValue(strategy = IDENTITY)
+    @Column(name = "comment_id")
     private Long id;
     private String commentAuthor;
     private String comment;
