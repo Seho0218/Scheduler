@@ -46,6 +46,6 @@ public class CommentServiceImpl implements CommentService {
     @Override
     @Transactional
     public void deleteComment(CommentDTO commentDTO) {
-
+        commentJpaRepository.deleteById(commentDTO.getCommentId());
     }
 }
