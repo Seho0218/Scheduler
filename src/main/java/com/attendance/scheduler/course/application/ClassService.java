@@ -17,7 +17,7 @@ public interface ClassService {
       // 수업 유무 조회
       Optional<StudentClassDTO> findStudentClasses(String studentName);
 
-      void saveClassTable(ClassDTO classDTO);
+      void saveClassTable(ClassDTO classDTO) throws InterruptedException;
 
       // 수업 삭제
       void deleteClass(String studentName);

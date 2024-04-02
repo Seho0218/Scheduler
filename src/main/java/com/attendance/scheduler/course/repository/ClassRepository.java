@@ -6,7 +6,9 @@ import com.attendance.scheduler.course.dto.StudentClassDTO;
 import com.attendance.scheduler.teacher.domain.TeacherEntity;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import jakarta.persistence.LockModeType;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -23,7 +25,7 @@ public class ClassRepository {
 
     public final JPAQueryFactory queryFactory;
 
-
+    @Lock(LockModeType.OPTIMISTIC)
     public List<ClassDTO> getStudentClassList(){
         return queryFactory
                 .select(Projections.fields(ClassDTO.class,

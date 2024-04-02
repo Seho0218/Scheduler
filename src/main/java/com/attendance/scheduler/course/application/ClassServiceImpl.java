@@ -59,18 +59,24 @@ public class ClassServiceImpl implements ClassService {
 
     @Override
     @Transactional(isolation = Isolation.REPEATABLE_READ)
-    public synchronized void saveClassTable(ClassDTO classDTO) {
+    public void saveClassTable(ClassDTO classDTO) throws InterruptedException {
 
-        classValidator(classDTO);
-        boolean existsByStudentNameIs = studentJpaRepository.existsByStudentNameIs(classDTO.getStudentName());
+        while(true) {
+            try {
+                classValidator(classDTO);
+                boolean existsByStudentNameIs = studentJpaRepository.existsByStudentNameIs(classDTO.getStudentName());
+                if (existsByStudentNameIs) {
+                    StudentEntity studentEntity = studentJpaRepository.findStudentEntityByStudentName(classDTO.getStudentName());
 
-        if(existsByStudentNameIs){
-            StudentEntity studentEntity = studentJpaRepository.findStudentEntityByStudentName(classDTO.getStudentName());
-
-            ClassEntity classEntity = classDTO.toEntity();
-            classEntity.setTeacherEntity(studentEntity.getTeacherEntity());
-            classEntity.setStudentEntity(studentEntity);
-            classJpaRepository.save(classEntity);
+                    ClassEntity classEntity = classDTO.toEntity();
+                    classEntity.setTeacherEntity(studentEntity.getTeacherEntity());
+                    classEntity.setStudentEntity(studentEntity);
+                    classJpaRepository.save(classEntity);
+                    break;
+                }
+            }catch (Exception e){
+                Thread.sleep(50);
+            }
         }
     }
 
