@@ -115,7 +115,7 @@ public class SampleDataTest {
 
         @Test
         @DisplayName("샘플 학생 수강 정보")
-        void saveSampleStudent(){
+        void saveSampleStudent() throws InterruptedException {
             classService.saveClassTable(sampleClass());
         }
 

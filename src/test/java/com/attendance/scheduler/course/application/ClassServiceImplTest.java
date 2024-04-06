@@ -39,7 +39,7 @@ class ClassServiceImplTest {
     private StudentClassDTO studentClassDTO;
 
     @BeforeEach
-    void beforeEach(){
+    void beforeEach() throws InterruptedException {
 
         boolean duplicateTeacherID = teacherService
                 .findDuplicateTeacherID(testTeacherDataSet());
@@ -182,7 +182,7 @@ class ClassServiceImplTest {
 
     @Test
     @DisplayName("수업 변경 확인")
-    void modifyClass(){
+    void modifyClass() throws InterruptedException {
 
         //찾는 로직
         ClassDTO classDTO = testStudentClassDataSet();

@@ -34,6 +34,9 @@ public class ClassEntity {
     @UpdateTimestamp
     private Timestamp updateTimeStamp;
 
+    @Version
+    private Long version;
+
     @NotNull
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "teacher_id")
