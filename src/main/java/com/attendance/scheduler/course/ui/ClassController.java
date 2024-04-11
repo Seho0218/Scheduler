@@ -30,14 +30,9 @@ public class ClassController {
 
     //   수업 조회
     @PostMapping("findClass")
-    public String findClass(String studentName, Model model) {
+    public String findClass(@Validated @ModelAttribute("studentClassDTO") StudentClassDTO studentClassDTO, Model model) {
 
-//        if (bindingResult.hasErrors()) {
-//            log.info("errors={}", bindingResult);
-//            return "index";
-//        }
-
-        boolean existStudentEntityByStudentName = studentService.existStudentEntityByStudentName(studentName);
+        boolean existStudentEntityByStudentName = studentService.existStudentEntityByStudentName(studentClassDTO.getStudentName());
 
         if(!existStudentEntityByStudentName) {
             model.addAttribute("studentClassDTO", new StudentClassDTO());
@@ -45,7 +40,14 @@ public class ClassController {
             return "index";
         }
 
-        searchStudentClass(studentName, model);
+        Optional<StudentClassDTO> studentClasses = classService.findStudentClasses(studentClassDTO.getStudentName());
+
+        if(studentClasses.isPresent()) {
+            searchStudentClass(studentClasses.get(), model);
+            return "class/findClass";
+        }
+
+        getClassList(studentClassDTO.getStudentName(), model);
         return "class/findClass";
     }
 
@@ -54,7 +56,7 @@ public class ClassController {
     public String submitForm(@Validated @ModelAttribute("classDTO") ClassDTO classDTO, BindingResult bindingResult, Model model) {
 
         if (bindingResult.hasErrors()) {
-            searchStudentClass(classDTO.getStudentName(), model);
+            getClassList(classDTO.getStudentName(), model);
             log.info("errors={}", bindingResult);
             return "class/findClass";
         }
@@ -63,7 +65,12 @@ public class ClassController {
             classService.saveClassTable(classDTO);
             return "redirect:completion";
         }catch (Exception e){
-            return "redirect:index";
+            StudentClassDTO studentClassesList = new StudentClassDTO();
+            studentClassesList.setStudentName(classDTO.getStudentName());
+            Optional<StudentClassDTO> studentClasses = classService.findStudentClasses(classDTO.getStudentName());
+            searchStudentClass(studentClasses.get(), model);
+            model.addAttribute("error", e.getMessage());
+            return "class/findClass";
         }
     }
 
@@ -72,17 +79,36 @@ public class ClassController {
         return "class/completion";
     }
 
-/*
-* 수업 수정시 할 경우, 학생 이름으로 조회한 결과.
-*
-* 수업 리스트 정보를 가져온 후, 조회 학생의 시간표를 제외하여 수업 시간표를 출력한 후
-* 그 결과에 조회 학생의 정보를 재출력
-* */
-    private void searchStudentClass(String studentName, Model model) {
-
-        Optional<StudentClassDTO> studentClasses = classService.findStudentClasses(studentName);
+    private void getClassList(String studentName, Model model) {
 
         ClassListDTO allClasses = classService.findTeachersClasses(studentName);
+        List<Integer> mondayClassList = allClasses.getMondayClassList();
+        List<Integer> tuesdayClassList = allClasses.getTuesdayClassList();
+        List<Integer> wednesdayClassList = allClasses.getWednesdayClassList();
+        List<Integer> thursdayClassList = allClasses.getThursdayClassList();
+        List<Integer> fridayClassList = allClasses.getFridayClassList();
+
+        model.addAttribute("classDTO", new ClassDTO());
+        model.addAttribute("studentClassList", new StudentClassDTO());
+
+        model.addAttribute("studentName", studentName);
+        model.addAttribute("classInMondayList", mondayClassList);
+        model.addAttribute("classInTuesdayList", tuesdayClassList);
+        model.addAttribute("classInWednesdayList", wednesdayClassList);
+        model.addAttribute("classInThursdayList", thursdayClassList);
+        model.addAttribute("classInFridayList", fridayClassList);
+    }
+
+    /*
+     * 수업 수정시 할 경우, 학생 이름으로 조회한 결과.
+     *
+     * 수업 리스트 정보를 가져온 후, 조회 학생의 시간표를 제외하여 수업 시간표를 출력한 후
+     * 그 결과에 조회 학생의 정보를 재출력
+     * */
+
+    private void searchStudentClass(StudentClassDTO studentClassesList, Model model) {
+
+        ClassListDTO allClasses = classService.findTeachersClasses(studentClassesList.getStudentName());
 
         List<Integer> mondayClassList = allClasses.getMondayClassList();
         List<Integer> tuesdayClassList = allClasses.getTuesdayClassList();
@@ -90,23 +116,22 @@ public class ClassController {
         List<Integer> thursdayClassList = allClasses.getThursdayClassList();
         List<Integer> fridayClassList = allClasses.getFridayClassList();
 
+        mondayClassList.remove(studentClassesList.getMonday());
+        tuesdayClassList.remove(studentClassesList.getTuesday());
+        wednesdayClassList.remove(studentClassesList.getWednesday());
+        thursdayClassList.remove(studentClassesList.getThursday());
+        fridayClassList.remove(studentClassesList.getFriday());
 
         model.addAttribute("classDTO", new ClassDTO());
-        model.addAttribute("studentName", studentName);
+
+        model.addAttribute("studentName", studentClassesList.getStudentName());
+
         model.addAttribute("classInMondayList", mondayClassList);
         model.addAttribute("classInTuesdayList", tuesdayClassList);
         model.addAttribute("classInWednesdayList", wednesdayClassList);
         model.addAttribute("classInThursdayList", thursdayClassList);
         model.addAttribute("classInFridayList", fridayClassList);
-        model.addAttribute("studentClassList", new StudentClassDTO());
 
-        if(studentClasses.isPresent()) {
-            mondayClassList.remove(studentClasses.get().getMonday());
-            tuesdayClassList.remove(studentClasses.get().getTuesday());
-            wednesdayClassList.remove(studentClasses.get().getWednesday());
-            thursdayClassList.remove(studentClasses.get().getThursday());
-            fridayClassList.remove(studentClasses.get().getFriday());
-            model.addAttribute("studentClassList", studentClasses.get());
-        }
+        model.addAttribute("studentClassList", studentClassesList);
     }
 }

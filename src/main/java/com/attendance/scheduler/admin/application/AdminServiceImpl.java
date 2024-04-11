@@ -94,11 +94,13 @@ public class AdminServiceImpl implements AdminService {
         studentEntity.setTeacherEntity(teacherEntity);
 
         Optional<ClassEntity> optionalClassEntity = classRepository.getStudentClassEntityByStudentName(studentEntity.getStudentName());
+
         if(optionalClassEntity.isPresent()) {
             ClassEntity classEntity = optionalClassEntity.get();
             classEntity.setTeacherEntity(teacherEntity);
             classJpaRepository.save(classEntity);
         }
+
         studentJpaRepository.save(studentEntity);
     }
 
@@ -119,7 +121,7 @@ public class AdminServiceImpl implements AdminService {
             if (thursdayValue.equals(studentClassByStudentName.getThursday()))
                 throw new IllegalStateException("학생의 목요일 수업 중에 겹치는 날이 있습니다.");
             if (fridayValue.equals(studentClassByStudentName.getFriday()))
-                throw new IllegalStateException("학생의 일요일 수업 중에 겹치는 날이 있습니다.");
+                throw new IllegalStateException("학생의 요일 수업 중에 겹치는 날이 있습니다.");
         }
     }
 

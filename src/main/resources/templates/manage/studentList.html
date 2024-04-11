@@ -78,7 +78,7 @@
                 <td th:text="${#dates.format(student.getCreationTimestamp(), 'yyyy-MM-dd')}"></td>
                 <td>
                     <div>
-                        <form method='post' role="form" th:action="@{/search/findClass}">
+                        <form method='post' role="form" th:action="@{/class/findClass}">
                             <button class="btn btn-primary modify" name="studentName" th:value="${student.getStudentName()}">수정</button>
                         </form>
                     </div>

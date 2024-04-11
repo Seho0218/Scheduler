@@ -29,20 +29,28 @@ public class StudentInformationDTO {
 
     private Timestamp creationTimestamp;
 
-    public String getStudentPhoneNumber(){
-        return studentPhoneNumber.substring(0,3) + "-" + studentPhoneNumber.substring(3,7) + "-" + studentPhoneNumber.substring(7,11);
-    }
-
-    public void setStudentPhoneNumber(String studentPhoneNumber){
-        this.studentPhoneNumber = studentPhoneNumber.replace("-", "");
-    }
-
-    public String getStudentParentPhoneNumber(){
-        return studentParentPhoneNumber.substring(0,3) + "-" + studentParentPhoneNumber.substring(3,7) + "-" + studentParentPhoneNumber.substring(7,11);
-    }
-
-    public void setStudentParentPhoneNumber(String studentParentPhoneNumber){
-        this.studentParentPhoneNumber = studentParentPhoneNumber.replace("-", "");
-    }
+//    public String getStudentPhoneNumber(){
+//        if (studentPhoneNumber != null) {
+//            return studentPhoneNumber.substring(0, 3) + "-" + studentPhoneNumber.substring(3, 7) + "-" + studentPhoneNumber.substring(7, 11);
+//        } else {
+//            return "";
+//        }
+//    }
+//
+//    public void setStudentPhoneNumber(String studentPhoneNumber){
+//        this.studentPhoneNumber = studentPhoneNumber.replace("-", "");
+//    }
+//
+//    public String getStudentParentPhoneNumber(){
+//        if (studentParentPhoneNumber != null) {
+//            return studentParentPhoneNumber.substring(0, 3) + "-" + studentParentPhoneNumber.substring(3, 7) + "-" + studentParentPhoneNumber.substring(7, 11);
+//        } else {
+//            return "";
+//        }
+//    }
+//
+//    public void setStudentParentPhoneNumber(String studentParentPhoneNumber){
+//        this.studentParentPhoneNumber = studentParentPhoneNumber.replace("-", "");
+//    }
 
 }

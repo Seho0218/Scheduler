@@ -55,7 +55,6 @@ public class ClassRepository {
                         classEntity.thursday,
                         classEntity.friday))
                 .from(classEntity)
-                .join(studentEntity)
                 .where(studentEntity.studentName.eq(studentName))
                 .fetchOne();
     }

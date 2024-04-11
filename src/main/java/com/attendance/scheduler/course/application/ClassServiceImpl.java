@@ -59,24 +59,20 @@ public class ClassServiceImpl implements ClassService {
 
     @Override
     @Transactional(isolation = Isolation.REPEATABLE_READ)
-    public void saveClassTable(ClassDTO classDTO) throws InterruptedException {
+    public void saveClassTable(ClassDTO classDTO)  {
 
-        while(true) {
-            try {
-                classValidator(classDTO);
-                boolean existsByStudentNameIs = studentJpaRepository.existsByStudentNameIs(classDTO.getStudentName());
-                if (existsByStudentNameIs) {
-                    StudentEntity studentEntity = studentJpaRepository.findStudentEntityByStudentName(classDTO.getStudentName());
+        classValidator(classDTO);
 
-                    ClassEntity classEntity = classDTO.toEntity();
-                    classEntity.setTeacherEntity(studentEntity.getTeacherEntity());
-                    classEntity.setStudentEntity(studentEntity);
-                    classJpaRepository.save(classEntity);
-                    break;
-                }
-            }catch (Exception e){
-                Thread.sleep(50);
-            }
+        boolean existsByStudentNameIs = studentJpaRepository.existsByStudentNameIs(classDTO.getStudentName());
+
+        if (existsByStudentNameIs) {
+
+            StudentEntity studentEntity = studentJpaRepository.findStudentEntityByStudentName(classDTO.getStudentName());
+
+            ClassEntity classEntity = classDTO.toEntity();
+            classEntity.setTeacherEntity(studentEntity.getTeacherEntity());
+            classEntity.setStudentEntity(studentEntity);
+            classJpaRepository.save(classEntity);
         }
     }
 
@@ -85,14 +81,13 @@ public class ClassServiceImpl implements ClassService {
 
         if (studentEntityByStudentName.isEmpty()) {
             duplicateClassValidator(classDTO);
+        }else {
+            classJpaRepository.deleteById(studentEntityByStudentName.get().getId());
+            duplicateClassValidator(classDTO);
         }
-
-        classJpaRepository.deleteById(studentEntityByStudentName.get().getId());
-        duplicateClassValidator(classDTO);
     }
 
     private void duplicateClassValidator(ClassDTO classDTO) {
-        String errorCode = "다른 원생과 겹치는 시간이 있습니다. 새로고침 후, 다시 신청해 주세요.";
 
         List<ClassDTO> allClassDTO = classRepository.getStudentClassList();
 
@@ -103,11 +98,11 @@ public class ClassServiceImpl implements ClassService {
             Integer thursdayValue = classDTOList.getThursday();
             Integer fridayValue = classDTOList.getFriday();
 
-            if (mondayValue.equals(classDTO.getMonday())) throw new IllegalStateException(errorCode);
-            if (tuesdayValue.equals(classDTO.getTuesday())) throw new IllegalStateException(errorCode);
-            if (wednesdayValue.equals(classDTO.getWednesday())) throw new IllegalStateException(errorCode);
-            if (thursdayValue.equals(classDTO.getThursday())) throw new IllegalStateException(errorCode);
-            if (fridayValue.equals(classDTO.getFriday())) throw new IllegalStateException(errorCode);
+            if (mondayValue.equals(classDTO.getMonday())) throw new IllegalStateException("월요일 수업 중에 겹치는 날이 있습니다.");
+            if (tuesdayValue.equals(classDTO.getTuesday())) throw new IllegalStateException("화요일 수업 중에 겹치는 날이 있습니다.");
+            if (wednesdayValue.equals(classDTO.getWednesday())) throw new IllegalStateException("수요일 수업 중에 겹치는 날이 있습니다.");
+            if (thursdayValue.equals(classDTO.getThursday())) throw new IllegalStateException("목요일 수업 중에 겹치는 날이 있습니다.");
+            if (fridayValue.equals(classDTO.getFriday())) throw new IllegalStateException("금요일 수업 중에 겹치는 날이 있습니다.");
         }
     }
 
