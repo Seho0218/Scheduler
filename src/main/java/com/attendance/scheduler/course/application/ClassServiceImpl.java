@@ -35,9 +35,11 @@ public class ClassServiceImpl implements ClassService {
     public ClassListDTO findTeachersClasses(String studentName) {
 
         //학생 이름으로
-        StudentEntity studentEntity = studentJpaRepository.findStudentEntityByStudentName(studentName);
+        StudentEntity studentEntity
+                = studentJpaRepository.findStudentEntityByStudentName(studentName);
 
-        List<StudentClassDTO> studentClassByTeacherName = classRepository.getStudentClassByTeacherEntity(studentEntity.getTeacherEntity());
+        List<StudentClassDTO> studentClassByTeacherName
+                = classRepository.getStudentClassByTeacherEntity(studentEntity.getTeacherEntity());
 
         ClassListDTO classListDTO = ClassListDTO.getInstance();
 

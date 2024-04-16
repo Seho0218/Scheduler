@@ -29,12 +29,14 @@ dependencies {
 
 	//JPA
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'com.mysql:mysql-connector-j'
-
 	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}:jakarta"
 	implementation "com.querydsl:querydsl-core:${queryDslVersion}"
 
-	implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+	//aop
+	implementation 'org.springframework.boot:spring-boot-starter-aop'
+	//database
+	implementation 'com.mysql:mysql-connector-j'
+
 	annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jakarta"
 	annotationProcessor "jakarta.annotation:jakarta.annotation-api"
 	annotationProcessor "jakarta.persistence:jakarta.persistence-api"
@@ -43,7 +45,6 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	annotationProcessor "jakarta.annotation:jakarta.annotation-api"
 	annotationProcessor "jakarta.persistence:jakarta.persistence-api"
-	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
 
 	//Web
 	implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -88,7 +89,7 @@ sourceSets {
 	main.java.srcDirs += [ querydslDir ]
 }
 
-tasks.withType(JavaCompile) {
+tasks.withType(JavaCompile).configureEach {
 	options.generatedSourceOutputDirectory = file(querydslDir)
 }
 
