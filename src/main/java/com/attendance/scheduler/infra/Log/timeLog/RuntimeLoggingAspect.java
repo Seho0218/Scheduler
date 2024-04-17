@@ -18,7 +18,7 @@ public class RuntimeLoggingAspect {
         Object result = joinPoint.proceed();
         long endTime = System.currentTimeMillis();
         long runtime = endTime - startTime;
-        log.info("At Controller " + methodName + " takes " + runtime + "ms");
+        log.info("Controller :  " + methodName + " takes " + runtime + "ms");
         return result;
     }
 
@@ -29,7 +29,7 @@ public class RuntimeLoggingAspect {
         Object result = joinPoint.proceed();
         long endTime = System.currentTimeMillis();
         long runtime = endTime - startTime;
-        log.info("At Application " + methodName + " takes " + runtime + "ms");
+        log.info("Application : " + methodName + " takes " + runtime + "ms");
         return result;
     }
 
@@ -40,7 +40,7 @@ public class RuntimeLoggingAspect {
         Object result = joinPoint.proceed();
         long endTime = System.currentTimeMillis();
         long runtime = endTime - startTime;
-        log.info("At Repository " + methodName + " takes " + runtime + "ms");
+        log.info("Repository :  " + methodName + " takes " + runtime + "ms");
         return result;
     }
 }
