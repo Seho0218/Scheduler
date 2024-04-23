@@ -4,7 +4,7 @@ import com.attendance.scheduler.admin.domain.AdminEntity;
 import com.attendance.scheduler.admin.dto.ChangeTeacherDTO;
 import com.attendance.scheduler.admin.dto.EditEmailDTO;
 import com.attendance.scheduler.admin.dto.EmailDTO;
-import com.attendance.scheduler.admin.repository.AdminRepository;
+import com.attendance.scheduler.admin.repository.AdminJpaRepository;
 import com.attendance.scheduler.course.domain.ClassEntity;
 import com.attendance.scheduler.course.dto.StudentClassDTO;
 import com.attendance.scheduler.course.repository.ClassJpaRepository;
@@ -32,12 +32,12 @@ import java.util.Optional;
 public class AdminServiceImpl implements AdminService {
 
     private final ClassJpaRepository classJpaRepository;
-    private final AdminRepository adminRepository;
+    private final AdminJpaRepository adminJpaRepository;
     private final TeacherJpaRepository teacherJpaRepository;
     private final TeacherRepository teacherRepository;
     private final StudentJpaRepository studentJpaRepository;
     private final ClassRepository classRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder adminEncoder;
 
 
     @Override
@@ -53,7 +53,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public Optional<EmailDTO> findAdminEmailByID(EmailDTO emailDTO) {
-        Optional<AdminEntity> adminAccount = Optional.ofNullable(adminRepository
+        Optional<AdminEntity> adminAccount = Optional.ofNullable(adminJpaRepository
                 .findByUsernameIs(emailDTO.getUsername()));
         return adminAccount.map(adminEntity -> EmailDTO.builder()
                 .username(adminEntity.getUsername())
@@ -153,7 +153,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public boolean emailConfirmation(FindPasswordDTO findPasswordDTO) {
-        return adminRepository.existsByEmail(findPasswordDTO.getEmail());
+        return adminJpaRepository.existsByEmail(findPasswordDTO.getEmail());
     }
 
 
@@ -161,17 +161,17 @@ public class AdminServiceImpl implements AdminService {
     @Override
     @Transactional
     public void initializePassword(PwdEditDTO pwdEditDTO) {
-        final String encodePassword = passwordEncoder.encode(pwdEditDTO.getPassword());
-        AdminEntity adminEntity = adminRepository.findByUsernameIs(pwdEditDTO.getUsername());
+        final String encodePassword = adminEncoder.encode(pwdEditDTO.getPassword());
+        AdminEntity adminEntity = adminJpaRepository.findByUsernameIs(pwdEditDTO.getUsername());
         adminEntity.updatePassword(encodePassword);
-        adminRepository.save(adminEntity);
+        adminJpaRepository.save(adminEntity);
     }
 
     @Override
     @Transactional
     public void updateEmail(EditEmailDTO editEmailDTO) {
-        AdminEntity adminEntity = adminRepository.findByUsernameIs(editEmailDTO.getUsername());
+        AdminEntity adminEntity = adminJpaRepository.findByUsernameIs(editEmailDTO.getUsername());
         adminEntity.updateEmail(editEmailDTO);
-        adminRepository.save(adminEntity);
+        adminJpaRepository.save(adminEntity);
     }
 }

@@ -1,7 +1,7 @@
 package com.attendance.scheduler.notification.application;
 
 import com.attendance.scheduler.admin.domain.AdminEntity;
-import com.attendance.scheduler.admin.repository.AdminRepository;
+import com.attendance.scheduler.admin.repository.AdminJpaRepository;
 import com.attendance.scheduler.notification.domain.notice.NoticeEntity;
 import com.attendance.scheduler.notification.dto.Condition;
 import com.attendance.scheduler.notification.dto.NoticeDTO;
@@ -19,7 +19,7 @@ public class NotificationServiceImpl implements NotificationService {
 
     private final NoticeJpaRepository noticeJpaRepository;
     private final NoticeRepository noticeRepository;
-    private final AdminRepository adminRepository;
+    private final AdminJpaRepository adminJpaRepository;
 
     @Override
     public Page<NoticeDTO> pageNoticeList(Condition condition, Pageable pageable) {
@@ -29,7 +29,7 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     @Transactional
     public void writeNotice(NoticeDTO noticeDTO) {
-        AdminEntity admin = adminRepository.findByUsernameIs(noticeDTO.getName());
+        AdminEntity admin = adminJpaRepository.findByUsernameIs(noticeDTO.getName());
         NoticeEntity entity = noticeDTO.toEntity();
         entity.setAdminEntity(admin);
         noticeJpaRepository.save(entity);

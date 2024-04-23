@@ -28,12 +28,12 @@ public class TeacherServiceImpl implements TeacherService {
     private final StudentJpaRepository studentJpaRepository;
     private final ClassJpaRepository classJpaRepository;
     private final StudentRepository studentRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder teacherPasswordEncoder;
 
     @Override
     @Transactional
     public void joinTeacher(JoinTeacherDTO joinTeacherDTO) {
-        final String encode = passwordEncoder.encode(joinTeacherDTO.getPassword());
+        final String encode = teacherPasswordEncoder.encode(joinTeacherDTO.getPassword());
         joinTeacherDTO.setPassword(encode);
         teacherJpaRepository.save(joinTeacherDTO.toEntity());
     }

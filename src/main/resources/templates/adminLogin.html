@@ -37,7 +37,7 @@
 </head>
 <body>
 <div class="container">
-    <form method='post' th:action="@{/login/login}" th:object="${login}">
+    <form method='post' th:action="@{/adminLogin/login}" th:object="${login}">
         <div class="py-2">
             <div class="header">
                 <br><br>
@@ -47,7 +47,7 @@
         <!--학생 이름-->
         <div class="py-2">
             <div class="board rounded-3 border border-2">
-                <h1> 교사 로그인 </h1>
+                <h1> 관리자 로그인 </h1>
                 <label for="username"></label>
                 <input class="form-control" id="username" placeholder="아이디를 입력해주세요"
                        th:errorclass="field-error" th:field="*{username}"

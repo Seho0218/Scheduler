@@ -1,7 +1,7 @@
 package com.attendance.scheduler.notification.application;
 
 import com.attendance.scheduler.admin.domain.AdminEntity;
-import com.attendance.scheduler.admin.repository.AdminRepository;
+import com.attendance.scheduler.admin.repository.AdminJpaRepository;
 import com.attendance.scheduler.notification.domain.notice.NoticeEntity;
 import com.attendance.scheduler.notification.domain.notice.NoticeType;
 import com.attendance.scheduler.notification.dto.NoticeDTO;
@@ -22,7 +22,7 @@ class NotificationServiceImplTest {
 
     @Autowired private NoticeJpaRepository noticeJpaRepository;
     @Autowired private NoticeRepository noticeRepository;
-    @Autowired private AdminRepository adminRepository;
+    @Autowired private AdminJpaRepository adminJpaRepository;
     @Autowired private EntityManager entityManager;
 
     @Test
@@ -37,7 +37,7 @@ class NotificationServiceImplTest {
             noticeDTO.setContent("123");
             noticeDTO.setName("관리자");
             noticeDTO.setType(NoticeType.FAQ);
-            AdminEntity admin = adminRepository.findByUsernameIs("admin");
+            AdminEntity admin = adminJpaRepository.findByUsernameIs("admin");
             NoticeEntity entity = noticeDTO.toEntity();
             entity.setAdminEntity(admin);
             noticeJpaRepository.save(entity);
@@ -58,7 +58,7 @@ class NotificationServiceImplTest {
             noticeDTO.setContent("123");
             noticeDTO.setName("관리자");
             noticeDTO.setType(NoticeType.FAQ);
-            AdminEntity admin = adminRepository.findByUsernameIs("admin");
+            AdminEntity admin = adminJpaRepository.findByUsernameIs("admin");
             NoticeEntity entity = noticeDTO.toEntity();
             entity.setAdminEntity(admin);
             noticeJpaRepository.save(entity);

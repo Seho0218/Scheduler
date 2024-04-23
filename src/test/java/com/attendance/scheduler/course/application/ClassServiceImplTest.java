@@ -4,7 +4,7 @@ import com.attendance.scheduler.common.dto.LoginDTO;
 import com.attendance.scheduler.course.dto.ClassDTO;
 import com.attendance.scheduler.course.dto.StudentClassDTO;
 import com.attendance.scheduler.course.repository.ClassRepository;
-import com.attendance.scheduler.infra.config.security.Authority.UserDetailService;
+import com.attendance.scheduler.infra.config.security.User.TeacherDetailService;
 import com.attendance.scheduler.student.application.StudentService;
 import com.attendance.scheduler.student.dto.ClassListDTO;
 import com.attendance.scheduler.teacher.application.TeacherService;
@@ -34,7 +34,7 @@ class ClassServiceImplTest {
     @Autowired private TeacherService teacherService;
     @Autowired private StudentService studentService;
     @Autowired private ClassRepository classRepository;
-    @Autowired private UserDetailService userDetailsService;
+    @Autowired private TeacherDetailService userDetailsService;
 
     private StudentClassDTO studentClassDTO;
 

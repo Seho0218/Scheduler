@@ -11,16 +11,16 @@ import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTest
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
-class AdminRepositoryTest {
+class AdminJpaRepositoryTest {
 
     @Autowired
-    private AdminRepository adminRepository;
+    private AdminJpaRepository adminJpaRepository;
 
     @Test
     void findByUsernameIs() {
 
         //When
-        AdminEntity byUsernameIs = adminRepository
+        AdminEntity byUsernameIs = adminJpaRepository
                 .findByUsernameIs("admin");
 
         //Then

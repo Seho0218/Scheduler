@@ -1,7 +1,7 @@
-package com.attendance.scheduler.infra.config.security;
+package com.attendance.scheduler.infra.config.security.Admin;
 
 import com.attendance.scheduler.admin.domain.AdminEntity;
-import com.attendance.scheduler.admin.repository.AdminRepository;
+import com.attendance.scheduler.admin.repository.AdminJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -15,32 +15,32 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class Admin implements ApplicationRunner{
 
-    private final AdminRepository adminRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final AdminJpaRepository adminJpaRepository;
+    private final PasswordEncoder adminEncoder;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
 
         Optional<AdminEntity> optionalAdminEntity = Optional
-                .ofNullable(adminRepository.findByUsernameIs("admin"));
-        optionalAdminEntity.orElseGet(() -> adminRepository.save(
+                .ofNullable(adminJpaRepository.findByUsernameIs("admin"));
+        optionalAdminEntity.orElseGet(() -> adminJpaRepository.save(
                 AdminEntity.builder()
                         .username("admin")
                         .email("adminTest@gmail.com")
                         .name("관리자")
-                        .password(passwordEncoder.encode("root123!@#"))
+                        .password(adminEncoder.encode("root123!@#"))
                         .build()));
     }
 
     @Scheduled(fixedRate = 3600000)
     public void updatePassword(){
         Optional<AdminEntity> optionalAdminEntity = Optional
-                .ofNullable(adminRepository
+                .ofNullable(adminJpaRepository
                         .findByUsernameIs("admin"));
         optionalAdminEntity.ifPresent(
                 adminEntity -> {
-                    adminEntity.updatePassword(passwordEncoder.encode("root123!@#"));
-                    adminRepository.save(adminEntity);
+                    adminEntity.updatePassword(adminEncoder.encode("root123!@#"));
+                    adminJpaRepository.save(adminEntity);
         });
     }
 }

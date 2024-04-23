@@ -2,7 +2,7 @@ package com.attendance.scheduler.teacher.application;
 
 
 import com.attendance.scheduler.common.dto.LoginDTO;
-import com.attendance.scheduler.infra.config.security.Authority.UserDetailService;
+import com.attendance.scheduler.infra.config.security.User.TeacherDetailService;
 import com.attendance.scheduler.teacher.domain.TeacherEntity;
 import com.attendance.scheduler.teacher.dto.EmailDTO;
 import com.attendance.scheduler.teacher.dto.PwdEditDTO;
@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Transactional
 class TeacherCertServiceImplTest {
 
-    @Autowired private UserDetailService userDetailsService;
+    @Autowired private TeacherDetailService userDetailsService;
     @Autowired private TeacherService teacherService;
     @Autowired private TeacherCertService teacherCertService;
     @Autowired private TeacherJpaRepository teacherJpaRepository;

@@ -1,11 +1,10 @@
-package com.attendance.scheduler.infra.config.security.Authority;
+package com.attendance.scheduler.infra.config.security.User;
 
-import com.attendance.scheduler.admin.domain.AdminEntity;
-import com.attendance.scheduler.admin.repository.AdminRepository;
 import com.attendance.scheduler.teacher.domain.TeacherEntity;
 import com.attendance.scheduler.teacher.repository.TeacherJpaRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -14,10 +13,10 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class UserDetailService implements UserDetailsService {
+public class TeacherDetailService implements UserDetailsService {
 
-    private final TeacherJpaRepository teacherJpaRepository;
-    private final AdminRepository adminRepository;
+    @Autowired
+    private TeacherJpaRepository teacherJpaRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -27,12 +26,6 @@ public class UserDetailService implements UserDetailsService {
                 .findByUsernameIs(username);
         if(teacherEntity != null){
             return new TeacherDetails(teacherEntity);
-        }
-
-        final AdminEntity adminEntity = adminRepository
-                .findByUsernameIs(username);
-        if(adminEntity != null){
-            return new AdminDetails(adminEntity);
         }
 
         throw new UsernameNotFoundException(username);

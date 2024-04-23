@@ -10,7 +10,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 @RequiredArgsConstructor
-class SecurityConfigTest {
+class TeacherSecurityConfigTest {
 
     private MockMvc mockMvc;
 

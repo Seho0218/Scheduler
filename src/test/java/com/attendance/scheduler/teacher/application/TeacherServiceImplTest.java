@@ -1,7 +1,7 @@
 package com.attendance.scheduler.teacher.application;
 
 import com.attendance.scheduler.common.dto.LoginDTO;
-import com.attendance.scheduler.infra.config.security.Authority.UserDetailService;
+import com.attendance.scheduler.infra.config.security.User.TeacherDetailService;
 import com.attendance.scheduler.student.domain.StudentEntity;
 import com.attendance.scheduler.student.repository.StudentJpaRepository;
 import com.attendance.scheduler.teacher.repository.TeacherJpaRepository;
@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class TeacherServiceImplTest {
 
     @Autowired private TeacherService teacherService;
-    @Autowired private UserDetailService userDetailsService;
+    @Autowired private TeacherDetailService userDetailsService;
     @Autowired private TeacherJpaRepository teacherJpaRepository;
     @Autowired private StudentJpaRepository studentJpaRepository;
     @Autowired EntityManager entityManager;

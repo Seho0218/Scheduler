@@ -1,6 +1,6 @@
-package com.attendance.scheduler.infra.config.security.Authority;
+package com.attendance.scheduler.infra.config.security.User;
 
-import com.attendance.scheduler.admin.domain.AdminEntity;
+import com.attendance.scheduler.teacher.domain.TeacherEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -10,24 +10,24 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 @RequiredArgsConstructor
-public class AdminDetails implements UserDetails {
+public class TeacherDetails implements UserDetails {
 
-    private final AdminEntity adminEntity;
+    private final TeacherEntity teacherEntity;
 
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> collection = new ArrayList<>();
-        collection.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        collection.add(new SimpleGrantedAuthority("ROLE_TEACHER"));
         return collection;
     }
 
     @Override
     public String getPassword() {
-        return adminEntity.getPassword();
+        return teacherEntity.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return adminEntity.getUsername();
+        return teacherEntity.getUsername();
     }
 
     @Override
@@ -47,6 +47,6 @@ public class AdminDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return teacherEntity.isApproved();
     }
 }

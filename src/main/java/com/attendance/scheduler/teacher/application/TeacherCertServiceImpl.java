@@ -20,7 +20,7 @@ import java.util.Optional;
 public class TeacherCertServiceImpl implements TeacherCertService {
 
     private final TeacherJpaRepository teacherJpaRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder teacherPasswordEncoder;
 
     @Override
     public boolean idConfirmation(FindPasswordDTO findPasswordDTO) {
@@ -50,7 +50,7 @@ public class TeacherCertServiceImpl implements TeacherCertService {
     @Override
     @Transactional
     public void initializePassword(PwdEditDTO pwdEditDTO) {
-        final String encodePassword = passwordEncoder.encode(pwdEditDTO.getPassword());
+        final String encodePassword = teacherPasswordEncoder.encode(pwdEditDTO.getPassword());
         pwdEditDTO.setPassword(encodePassword);
 
         TeacherEntity teacherEntity = teacherJpaRepository.findByUsernameIs(pwdEditDTO.getUsername());

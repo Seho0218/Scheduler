@@ -4,7 +4,7 @@ import com.attendance.scheduler.admin.domain.AdminEntity;
 import com.attendance.scheduler.admin.dto.ChangeTeacherDTO;
 import com.attendance.scheduler.admin.dto.EditEmailDTO;
 import com.attendance.scheduler.admin.dto.EmailDTO;
-import com.attendance.scheduler.admin.repository.AdminRepository;
+import com.attendance.scheduler.admin.repository.AdminJpaRepository;
 import com.attendance.scheduler.teacher.application.TeacherService;
 import com.attendance.scheduler.teacher.domain.TeacherEntity;
 import com.attendance.scheduler.teacher.repository.TeacherJpaRepository;
@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class AdminServiceImplTest {
 
     @Autowired private AdminService adminService;
-    @Autowired private AdminRepository adminRepository;
+    @Autowired private AdminJpaRepository adminJpaRepository;
     @Autowired private TeacherService teacherService;
     @Autowired private TeacherJpaRepository teacherJpaRepository;
 
@@ -47,7 +47,7 @@ class AdminServiceImplTest {
     void findAdminEmailByID() {
         EmailDTO emailDTO = new EmailDTO();
         emailDTO.setUsername("admin");
-        AdminEntity adminAccount = adminRepository
+        AdminEntity adminAccount = adminJpaRepository
                 .findByUsernameIs(emailDTO.getUsername());
 
         EmailDTO build = EmailDTO.builder()
@@ -126,7 +126,7 @@ class AdminServiceImplTest {
 
         //When
         adminService.updateEmail(editEmailDTO);
-        AdminEntity byUsernameIs = adminRepository
+        AdminEntity byUsernameIs = adminJpaRepository
                 .findByUsernameIs(editEmailDTO.getUsername());
 
         //Then

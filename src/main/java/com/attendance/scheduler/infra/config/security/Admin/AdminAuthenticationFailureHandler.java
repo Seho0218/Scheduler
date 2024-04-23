@@ -1,4 +1,4 @@
-package com.attendance.scheduler.infra.config.security;
+package com.attendance.scheduler.infra.config.security.Admin;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -15,7 +15,7 @@ import java.io.IOException;
 
 @Slf4j
 @Component
-public class CustomAuthenticationFailureHandler implements AuthenticationFailureHandler {
+public class AdminAuthenticationFailureHandler implements AuthenticationFailureHandler {
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
@@ -23,7 +23,7 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
 
         String errorMessage;
         if(exception instanceof UsernameNotFoundException){
-            errorMessage = "등록되지 않은 아이디거나 아이디를 입력해주세요";
+            errorMessage = "등록되지 않은 아이디입니다";
         } else if (exception instanceof InternalAuthenticationServiceException) {
             errorMessage = "아이디가 존재하지 않습니다. 아이디를 확인해주세요";
         } else if (exception instanceof BadCredentialsException) {
@@ -36,6 +36,6 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
 
         log.info("errorMessage = {}", errorMessage);
         request.getSession().setAttribute("errorMessage", errorMessage);
-        response.sendRedirect("/login/error");
+        response.sendRedirect("/adminLogin/error");
     }
 }
