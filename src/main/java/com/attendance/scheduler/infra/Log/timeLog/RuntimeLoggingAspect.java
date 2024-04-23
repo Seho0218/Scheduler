@@ -14,12 +14,17 @@ public class RuntimeLoggingAspect {
     @Around("execution(* com.attendance.scheduler.*.controller.*.*(..))")
     public Object logController(ProceedingJoinPoint joinPoint) throws Throwable {
         String methodName = joinPoint.getSignature().getName();
-        long startTime = System.currentTimeMillis();
-        Object result = joinPoint.proceed();
-        long endTime = System.currentTimeMillis();
-        long runtime = endTime - startTime;
-        log.info("Controller :  " + methodName + " takes " + runtime + "ms");
-        return result;
+        try {
+            long startTime = System.currentTimeMillis();
+            Object result = joinPoint.proceed();
+            long endTime = System.currentTimeMillis();
+            long runtime = endTime - startTime;
+            log.info("Controller :  " + methodName + " takes " + runtime + "ms");
+            return result;
+        }catch(Throwable e) {
+            log.info(e.getMessage());
+            throw e;
+        }
     }
 
     @Around("execution(* com.attendance.scheduler.*.application.*.*(..))")
