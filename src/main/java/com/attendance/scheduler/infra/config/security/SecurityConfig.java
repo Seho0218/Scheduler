@@ -21,6 +21,7 @@ public class SecurityConfig {
             "/board/**",
             "/join/**",
             "/cert/**",
+            "/login/**",
             "/help/**",
             "/comment/**",
             "/css/**",
@@ -39,12 +40,13 @@ public class SecurityConfig {
 
         httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
-                .securityMatcher("/admin/**","/manage/**")
+                .securityMatcher("/**")
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(ENDPOINTS_WHITELIST).permitAll()
                         .requestMatchers("/admin/**")
-                        .hasAuthority("ADMIN")
-                        .requestMatchers("/manage/**")
-                        .hasAnyAuthority("ADMIN", "TEACHER")
+                        .hasAuthority("ROLE_ADMIN")
+                        .requestMatchers("/manage/*")
+                        .hasAnyAuthority("ROLE_ADMIN", "ROLE_TEACHER")
                         .anyRequest().authenticated())
 
                 .formLogin(httpSecurityFormLoginConfigurer -> httpSecurityFormLoginConfigurer
@@ -52,6 +54,7 @@ public class SecurityConfig {
                         .failureHandler(customAuthenticationFailureHandler)
                         .loginPage("/login")
                         .loginProcessingUrl("/login")
+                        .permitAll()
                 )
 
                 .logout(httpSecurityFormLogoutConfigurer -> httpSecurityFormLogoutConfigurer
