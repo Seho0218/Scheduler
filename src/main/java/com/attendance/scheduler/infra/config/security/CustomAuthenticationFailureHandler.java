@@ -1,4 +1,4 @@
-package com.attendance.scheduler.infra.config.security.Admin;
+package com.attendance.scheduler.infra.config.security;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -15,7 +15,7 @@ import java.io.IOException;
 
 @Slf4j
 @Component
-public class AdminAuthenticationFailureHandler implements AuthenticationFailureHandler {
+public class CustomAuthenticationFailureHandler implements AuthenticationFailureHandler {
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
@@ -36,6 +36,6 @@ public class AdminAuthenticationFailureHandler implements AuthenticationFailureH
 
         log.info("errorMessage = {}", errorMessage);
         request.getSession().setAttribute("errorMessage", errorMessage);
-        response.sendRedirect("/adminLogin/error");
+        response.sendRedirect("/login/error");
     }
 }

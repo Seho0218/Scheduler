@@ -1,7 +1,6 @@
 package com.attendance.scheduler.teacher.application;
 
 import com.attendance.scheduler.common.dto.LoginDTO;
-import com.attendance.scheduler.infra.config.security.User.TeacherDetailService;
 import com.attendance.scheduler.student.domain.StudentEntity;
 import com.attendance.scheduler.student.repository.StudentJpaRepository;
 import com.attendance.scheduler.teacher.repository.TeacherJpaRepository;
@@ -14,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.attendance.scheduler.config.TestDataSet.testStudentInformationDTO;
@@ -27,9 +27,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class TeacherServiceImplTest {
 
     @Autowired private TeacherService teacherService;
-    @Autowired private TeacherDetailService userDetailsService;
     @Autowired private TeacherJpaRepository teacherJpaRepository;
     @Autowired private StudentJpaRepository studentJpaRepository;
+    @Autowired private UserDetailsService userDetailsService;
+
     @Autowired EntityManager entityManager;
 
 

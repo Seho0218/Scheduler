@@ -1,7 +1,6 @@
 package com.attendance.scheduler.notification.dto;
 
 import com.attendance.scheduler.notification.domain.notice.NoticeEntity;
-import com.attendance.scheduler.notification.domain.notice.NoticeType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,7 +18,6 @@ public class NoticeDTO {
     private String content;
     private String name;
     private Integer views;
-    private NoticeType type;
     private Timestamp creationTimestamp;
     private Timestamp modifiedDate;
 
@@ -28,7 +26,6 @@ public class NoticeDTO {
                 .id(id)
                 .title(title)
                 .content(content)
-                .type(type)
                 .views(views)
                 .creationTimestamp(creationTimestamp)
                 .modifiedDate(modifiedDate)

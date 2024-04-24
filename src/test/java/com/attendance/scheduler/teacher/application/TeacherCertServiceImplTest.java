@@ -2,7 +2,6 @@ package com.attendance.scheduler.teacher.application;
 
 
 import com.attendance.scheduler.common.dto.LoginDTO;
-import com.attendance.scheduler.infra.config.security.User.TeacherDetailService;
 import com.attendance.scheduler.teacher.domain.TeacherEntity;
 import com.attendance.scheduler.teacher.dto.EmailDTO;
 import com.attendance.scheduler.teacher.dto.PwdEditDTO;
@@ -16,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Collections;
@@ -30,11 +30,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Transactional
 class TeacherCertServiceImplTest {
 
-    @Autowired private TeacherDetailService userDetailsService;
     @Autowired private TeacherService teacherService;
     @Autowired private TeacherCertService teacherCertService;
     @Autowired private TeacherJpaRepository teacherJpaRepository;
     @Autowired private PasswordEncoder passwordEncoder;
+    @Autowired private UserDetailsService userDetailsService;
 
     @BeforeEach
     @DisplayName("회원가입")

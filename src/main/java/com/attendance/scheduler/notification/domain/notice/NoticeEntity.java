@@ -33,9 +33,6 @@ public class NoticeEntity {
     private String title;
     private String content;
 
-    @Enumerated(EnumType.STRING)
-    private NoticeType type;
-
     @Column(columnDefinition = "integer default '0'")
     private Integer views;
 
@@ -77,11 +74,10 @@ public class NoticeEntity {
 
 
     @Builder
-    public NoticeEntity(Long id, String title, String content, NoticeType type, Integer views, Timestamp creationTimestamp, Timestamp modifiedDate, AdminEntity adminEntity, List<CommentEntity> commentEntityList) {
+    public NoticeEntity(Long id, String title, String content, Integer views, Timestamp creationTimestamp, Timestamp modifiedDate, AdminEntity adminEntity, List<CommentEntity> commentEntityList) {
         this.id = id;
         this.title = title;
         this.content = content;
-        this.type = type;
         this.views = views;
         this.creationTimestamp = creationTimestamp;
         this.modifiedDate = modifiedDate;

@@ -16,26 +16,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 @RequiredArgsConstructor
 public class LoginController {
 
-    //교사 로그인 폼
-    @GetMapping("/login")
+    @GetMapping(value = "/login")
     public String teacherLoginForm(Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth.getPrincipal() instanceof UserDetails) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication instanceof UserDetails) {
             return "redirect:/";
         }
         model.addAttribute("login", new LoginDTO());
         return "login";
-    }
-
-    //관리자 로그인 폼
-    @GetMapping("/adminLogin")
-    public String adminLoginForm(Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth.getPrincipal() instanceof UserDetails) {
-            return "redirect:/";
-        }
-        model.addAttribute("login", new LoginDTO());
-        return "adminLogin";
     }
 
     @GetMapping("/logout")
@@ -44,21 +32,11 @@ public class LoginController {
         return "redirect:/";
     }
 
-    //교사 로그인
     @GetMapping("/login/error")
     public String teacherLogin(HttpSession session, Model model){
         log.info("errorMessage = {}", session.getAttribute("errorMessage"));
         model.addAttribute("login", new LoginDTO());
         model.addAttribute("errorMessage", session.getAttribute("errorMessage"));
         return "login";
-    }
-
-    //관리자 로그인
-    @GetMapping("/adminLogin/error")
-    public String adminLogin(HttpSession session, Model model){
-        log.info("errorMessage = {}", session.getAttribute("errorMessage"));
-        model.addAttribute("login", new LoginDTO());
-        model.addAttribute("errorMessage", session.getAttribute("errorMessage"));
-        return "adminLogin";
     }
 }

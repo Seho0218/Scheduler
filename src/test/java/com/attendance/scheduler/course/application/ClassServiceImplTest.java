@@ -4,7 +4,6 @@ import com.attendance.scheduler.common.dto.LoginDTO;
 import com.attendance.scheduler.course.dto.ClassDTO;
 import com.attendance.scheduler.course.dto.StudentClassDTO;
 import com.attendance.scheduler.course.repository.ClassRepository;
-import com.attendance.scheduler.infra.config.security.User.TeacherDetailService;
 import com.attendance.scheduler.student.application.StudentService;
 import com.attendance.scheduler.student.dto.ClassListDTO;
 import com.attendance.scheduler.teacher.application.TeacherService;
@@ -16,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
@@ -34,7 +34,8 @@ class ClassServiceImplTest {
     @Autowired private TeacherService teacherService;
     @Autowired private StudentService studentService;
     @Autowired private ClassRepository classRepository;
-    @Autowired private TeacherDetailService userDetailsService;
+    @Autowired private UserDetailsService userDetailsService;
+
 
     private StudentClassDTO studentClassDTO;
 
