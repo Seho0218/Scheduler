@@ -1,6 +1,6 @@
-package com.attendance.scheduler.Notification.repository;
+package com.attendance.scheduler.notification.repository;
 
-import com.attendance.scheduler.Notification.dto.NotificationDTO;
+import com.attendance.scheduler.notification.dto.NotificationDTO;
 import com.attendance.scheduler.teacher.domain.TeacherEntity;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import static com.attendance.scheduler.Notification.domain.QNotificationEntity.notificationEntity;
+import static com.attendance.scheduler.notification.domain.QNotificationEntity.notificationEntity;
 
 @Repository
 @RequiredArgsConstructor

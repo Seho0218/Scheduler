@@ -1,5 +1,6 @@
 package com.attendance.scheduler.admin.controller;
 
+import com.attendance.scheduler.admin.application.AdminCertService;
 import com.attendance.scheduler.admin.application.AdminService;
 import com.attendance.scheduler.admin.dto.EditEmailDTO;
 import com.attendance.scheduler.admin.dto.EmailDTO;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class AdminCertController {
 
     public final AdminService adminService;
+    public final AdminCertService adminCertService;
     public final HtmlEmailService htmlEmailService;
 
     /*
@@ -47,7 +49,7 @@ public class AdminCertController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         pwdEditDTO.setUsername(auth.getName());
         try {
-            adminService.initializePassword(pwdEditDTO);
+            adminCertService.initializePassword(pwdEditDTO);
             return "redirect:/help/completion";
         }catch (Exception e) {
             model.addAttribute("class", new ClassDTO());
@@ -81,7 +83,7 @@ public class AdminCertController {
     @PostMapping("email")
     public String updateEmail(EditEmailDTO editEmailDTO) {
         try{
-            adminService.updateEmail(editEmailDTO);
+            adminCertService.updateEmail(editEmailDTO);
             return "redirect:cert/completion";
         }catch (Exception e){
             return "manage/class";

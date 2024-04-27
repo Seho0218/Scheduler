@@ -1,10 +1,7 @@
 package com.attendance.scheduler.admin.application;
 
 import com.attendance.scheduler.admin.dto.ChangeTeacherDTO;
-import com.attendance.scheduler.admin.dto.EditEmailDTO;
 import com.attendance.scheduler.admin.dto.EmailDTO;
-import com.attendance.scheduler.infra.email.FindPasswordDTO;
-import com.attendance.scheduler.teacher.dto.PwdEditDTO;
 import com.attendance.scheduler.teacher.dto.TeacherDTO;
 
 import java.util.List;
@@ -23,8 +20,4 @@ public interface AdminService {
     void changeExistTeacher(ChangeTeacherDTO changeTeacherDTO);
     void deleteTeacherAccount(String teacherId);
 
-    boolean emailConfirmation(FindPasswordDTO findPasswordDTO);
-
-    void initializePassword(PwdEditDTO pwdEditDTO);
-    void updateEmail(EditEmailDTO editEmailDTO);
 }

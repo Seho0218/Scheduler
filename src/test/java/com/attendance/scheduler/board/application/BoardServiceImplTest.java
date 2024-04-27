@@ -35,7 +35,6 @@ class BoardServiceImplTest {
             boardDTO.setTitle(String.valueOf(i));
             boardDTO.setContent("123");
             boardDTO.setName("관리자");
-            boardDTO.setType(NoticeType.FAQ);
             AdminEntity admin = adminJpaRepository.findByUsernameIs("admin");
             BoardEntity entity = boardDTO.toEntity();
             entity.setAdminEntity(admin);
@@ -56,7 +55,6 @@ class BoardServiceImplTest {
             boardDTO.setTitle(String.valueOf(i));
             boardDTO.setContent("123");
             boardDTO.setName("관리자");
-            boardDTO.setType(NoticeType.FAQ);
             AdminEntity admin = adminJpaRepository.findByUsernameIs("admin");
             BoardEntity entity = boardDTO.toEntity();
             entity.setAdminEntity(admin);

@@ -1,4 +1,4 @@
-package com.attendance.scheduler.config;
+package com.attendance.scheduler.testDataSet;
 
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;

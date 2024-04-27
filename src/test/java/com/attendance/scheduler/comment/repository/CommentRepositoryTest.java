@@ -28,7 +28,7 @@ class CommentRepositoryTest {
                         commentEntity.comment,
                         commentEntity.creationTimeStamp))
                 .from(commentEntity)
-                .where(commentEntity.noticeEntity.id.eq(1L))
+                .where(commentEntity.boardEntity.id.eq(1L))
                 .fetch();
 
         System.out.println("fetch = " + fetch);

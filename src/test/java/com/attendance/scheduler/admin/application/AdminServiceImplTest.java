@@ -17,7 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Optional;
 
-import static com.attendance.scheduler.config.TestDataSet.testTeacherDataSet;
+import static com.attendance.scheduler.testDataSet.TestDataSet.testTeacherDataSet;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -30,6 +30,7 @@ class AdminServiceImplTest {
     @Autowired private AdminService adminService;
     @Autowired private AdminJpaRepository adminJpaRepository;
     @Autowired private TeacherService teacherService;
+    @Autowired private AdminCertService adminCertService;
     @Autowired private TeacherJpaRepository teacherJpaRepository;
 
     @BeforeEach
@@ -125,7 +126,7 @@ class AdminServiceImplTest {
         editEmailDTO.setEmail("adminTest@gmail.com");
 
         //When
-        adminService.updateEmail(editEmailDTO);
+        adminCertService.updateEmail(editEmailDTO);
         AdminEntity byUsernameIs = adminJpaRepository
                 .findByUsernameIs(editEmailDTO.getUsername());
 

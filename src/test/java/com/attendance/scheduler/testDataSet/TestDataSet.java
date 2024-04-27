@@ -1,4 +1,4 @@
-package com.attendance.scheduler.config;
+package com.attendance.scheduler.testDataSet;
 
 import com.attendance.scheduler.course.dto.ClassDTO;
 import com.attendance.scheduler.teacher.dto.JoinTeacherDTO;

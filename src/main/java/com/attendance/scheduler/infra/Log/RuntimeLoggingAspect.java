@@ -1,4 +1,4 @@
-package com.attendance.scheduler.infra.Log.timeLog;
+package com.attendance.scheduler.infra.Log;
 
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;

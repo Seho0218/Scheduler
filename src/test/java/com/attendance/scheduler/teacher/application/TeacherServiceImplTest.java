@@ -16,15 +16,16 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.attendance.scheduler.config.TestDataSet.testStudentInformationDTO;
-import static com.attendance.scheduler.config.TestDataSet.testTeacherDataSet;
+import static com.attendance.scheduler.testDataSet.TestDataSet.testStudentInformationDTO;
+import static com.attendance.scheduler.testDataSet.TestDataSet.testTeacherDataSet;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @Transactional
-class TeacherServiceImplTest {
+class
+TeacherServiceImplTest {
 
     @Autowired private TeacherService teacherService;
     @Autowired private TeacherJpaRepository teacherJpaRepository;

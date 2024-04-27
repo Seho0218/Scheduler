@@ -1,9 +1,9 @@
-package com.attendance.scheduler.Notification.application;
+package com.attendance.scheduler.notification.application;
 
-import com.attendance.scheduler.Notification.domain.NotificationEntity;
-import com.attendance.scheduler.Notification.dto.NotificationDTO;
-import com.attendance.scheduler.Notification.repository.NotificationJpaRepository;
-import com.attendance.scheduler.Notification.repository.NotificationRepository;
+import com.attendance.scheduler.notification.domain.NotificationEntity;
+import com.attendance.scheduler.notification.dto.NotificationDTO;
+import com.attendance.scheduler.notification.repository.NotificationJpaRepository;
+import com.attendance.scheduler.notification.repository.NotificationRepository;
 import com.attendance.scheduler.teacher.domain.TeacherEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

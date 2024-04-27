@@ -1,6 +1,6 @@
-package com.attendance.scheduler.Notification.repository;
+package com.attendance.scheduler.notification.repository;
 
-import com.attendance.scheduler.Notification.domain.NotificationEntity;
+import com.attendance.scheduler.notification.domain.NotificationEntity;
 import com.attendance.scheduler.teacher.domain.TeacherEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 

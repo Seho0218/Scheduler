@@ -2,25 +2,21 @@ package com.attendance.scheduler.admin.application;
 
 import com.attendance.scheduler.admin.domain.AdminEntity;
 import com.attendance.scheduler.admin.dto.ChangeTeacherDTO;
-import com.attendance.scheduler.admin.dto.EditEmailDTO;
 import com.attendance.scheduler.admin.dto.EmailDTO;
 import com.attendance.scheduler.admin.repository.AdminJpaRepository;
 import com.attendance.scheduler.course.domain.ClassEntity;
 import com.attendance.scheduler.course.dto.StudentClassDTO;
 import com.attendance.scheduler.course.repository.ClassJpaRepository;
 import com.attendance.scheduler.course.repository.ClassRepository;
-import com.attendance.scheduler.infra.email.FindPasswordDTO;
 import com.attendance.scheduler.student.domain.StudentEntity;
 import com.attendance.scheduler.student.repository.StudentJpaRepository;
 import com.attendance.scheduler.teacher.domain.TeacherEntity;
-import com.attendance.scheduler.teacher.dto.PwdEditDTO;
 import com.attendance.scheduler.teacher.dto.TeacherDTO;
 import com.attendance.scheduler.teacher.repository.TeacherJpaRepository;
 import com.attendance.scheduler.teacher.repository.TeacherRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,8 +33,6 @@ public class AdminServiceImpl implements AdminService {
     private final TeacherRepository teacherRepository;
     private final StudentJpaRepository studentJpaRepository;
     private final ClassRepository classRepository;
-    private final PasswordEncoder adminEncoder;
-
 
     @Override
     public List<TeacherDTO> getTeacherList() {
@@ -145,33 +139,5 @@ public class AdminServiceImpl implements AdminService {
             classJpaRepository.deleteByTeacherEntity(teacherEntity.get());
             teacherJpaRepository.deleteByUsernameIs(teacherId);
         }
-    }
-
-
-
-
-
-    @Override
-    public boolean emailConfirmation(FindPasswordDTO findPasswordDTO) {
-        return adminJpaRepository.existsByEmail(findPasswordDTO.getEmail());
-    }
-
-
-
-    @Override
-    @Transactional
-    public void initializePassword(PwdEditDTO pwdEditDTO) {
-        final String encodePassword = adminEncoder.encode(pwdEditDTO.getPassword());
-        AdminEntity adminEntity = adminJpaRepository.findByUsernameIs(pwdEditDTO.getUsername());
-        adminEntity.updatePassword(encodePassword);
-        adminJpaRepository.save(adminEntity);
-    }
-
-    @Override
-    @Transactional
-    public void updateEmail(EditEmailDTO editEmailDTO) {
-        AdminEntity adminEntity = adminJpaRepository.findByUsernameIs(editEmailDTO.getUsername());
-        adminEntity.updateEmail(editEmailDTO);
-        adminJpaRepository.save(adminEntity);
     }
 }

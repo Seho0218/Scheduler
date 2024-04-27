@@ -22,7 +22,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static com.attendance.scheduler.config.TestDataSet.*;
+import static com.attendance.scheduler.testDataSet.TestDataSet.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 

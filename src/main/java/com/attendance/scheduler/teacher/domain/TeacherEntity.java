@@ -1,7 +1,7 @@
 package com.attendance.scheduler.teacher.domain;
 
-import com.attendance.scheduler.Notification.domain.NotificationEntity;
 import com.attendance.scheduler.course.domain.ClassEntity;
+import com.attendance.scheduler.notification.domain.NotificationEntity;
 import com.attendance.scheduler.student.domain.StudentEntity;
 import com.attendance.scheduler.teacher.dto.EditEmailDTO;
 import com.attendance.scheduler.teacher.dto.PwdEditDTO;

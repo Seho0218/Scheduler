@@ -1,7 +1,7 @@
-package com.attendance.scheduler.Notification.application;
+package com.attendance.scheduler.notification.application;
 
-import com.attendance.scheduler.Notification.domain.NotificationEntity;
-import com.attendance.scheduler.Notification.dto.NotificationDTO;
+import com.attendance.scheduler.notification.domain.NotificationEntity;
+import com.attendance.scheduler.notification.dto.NotificationDTO;
 import com.attendance.scheduler.teacher.domain.TeacherEntity;
 
 import java.util.List;

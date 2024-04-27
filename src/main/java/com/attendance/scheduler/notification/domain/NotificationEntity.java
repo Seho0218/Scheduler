@@ -1,4 +1,4 @@
-package com.attendance.scheduler.Notification.domain;
+package com.attendance.scheduler.notification.domain;
 
 import com.attendance.scheduler.teacher.domain.TeacherEntity;
 import jakarta.annotation.Nullable;
@@ -25,8 +25,6 @@ public class NotificationEntity {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
-
-    private String teacherId;
 
     private String message;
 

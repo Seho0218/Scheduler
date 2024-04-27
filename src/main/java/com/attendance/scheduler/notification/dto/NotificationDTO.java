@@ -1,6 +1,6 @@
-package com.attendance.scheduler.Notification.dto;
+package com.attendance.scheduler.notification.dto;
 
-import com.attendance.scheduler.Notification.domain.NotificationEntity;
+import com.attendance.scheduler.notification.domain.NotificationEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

@@ -1,8 +1,8 @@
-package com.attendance.scheduler.Notification.event;
+package com.attendance.scheduler.notification.event;
 
-import com.attendance.scheduler.Notification.domain.NotificationEntity;
-import com.attendance.scheduler.Notification.repository.NotificationJpaRepository;
 import com.attendance.scheduler.course.event.CourseEvent;
+import com.attendance.scheduler.notification.domain.NotificationEntity;
+import com.attendance.scheduler.notification.repository.NotificationJpaRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;

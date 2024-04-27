@@ -11,8 +11,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Optional;
 
-import static com.attendance.scheduler.config.TestDataSet.testStudentInformationDTO;
-import static com.attendance.scheduler.config.TestDataSet.testTeacherDataSet;
+import static com.attendance.scheduler.testDataSet.TestDataSet.testStudentInformationDTO;
+import static com.attendance.scheduler.testDataSet.TestDataSet.testTeacherDataSet;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @SpringBootTest

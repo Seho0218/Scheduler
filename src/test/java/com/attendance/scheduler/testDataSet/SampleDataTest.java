@@ -1,4 +1,4 @@
-package com.attendance.scheduler.config;
+package com.attendance.scheduler.testDataSet;
 
 import com.attendance.scheduler.course.application.ClassService;
 import com.attendance.scheduler.course.dto.ClassDTO;

@@ -16,7 +16,7 @@ import java.util.Optional;
 public class Admin implements ApplicationRunner{
 
     private final AdminJpaRepository adminJpaRepository;
-    private final PasswordEncoder adminEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -28,7 +28,7 @@ public class Admin implements ApplicationRunner{
                         .username("admin")
                         .email("adminTest@gmail.com")
                         .name("관리자")
-                        .password(adminEncoder.encode("root123!@#"))
+                        .password(passwordEncoder.encode("root123!@#"))
                         .build()));
     }
 
@@ -39,7 +39,7 @@ public class Admin implements ApplicationRunner{
                         .findByUsernameIs("admin"));
         optionalAdminEntity.ifPresent(
                 adminEntity -> {
-                    adminEntity.updatePassword(adminEncoder.encode("root123!@#"));
+                    adminEntity.updatePassword(passwordEncoder.encode("root123!@#"));
                     adminJpaRepository.save(adminEntity);
         });
     }
