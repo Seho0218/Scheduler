@@ -1,4 +1,4 @@
-package com.attendance.scheduler.notification.domain.notice;
+package com.attendance.scheduler.board.domain;
 
 import com.attendance.scheduler.admin.domain.AdminEntity;
 import com.attendance.scheduler.comment.domain.entity.CommentEntity;
@@ -22,12 +22,12 @@ import static lombok.AccessLevel.PROTECTED;
 @Getter
 @DynamicUpdate
 @DynamicInsert
-@Table(name = "notice")
+@Table(name = "board")
 @NoArgsConstructor(access = PROTECTED)
-public class NoticeEntity {
+public class BoardEntity {
 
     @Id @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "notice_id")
+    @Column(name = "board_id")
     private Long id;
 
     private String title;
@@ -50,7 +50,7 @@ public class NoticeEntity {
 
     public void setAdminEntity(AdminEntity adminEntity) {
         if (this.adminEntity != null) {
-            this.adminEntity.getNoticeEntityList().remove(this);
+            this.adminEntity.getBoardEntityList().remove(this);
         }
         this.adminEntity = adminEntity;
         if(adminEntity != null){
@@ -58,7 +58,7 @@ public class NoticeEntity {
         }
     }
 
-    @OneToMany(mappedBy = "noticeEntity")
+    @OneToMany(mappedBy = "boardEntity")
     List<CommentEntity> commentEntityList = new ArrayList<>();
 
     public void setCommentEntity(CommentEntity commentEntity) {
@@ -74,7 +74,7 @@ public class NoticeEntity {
 
 
     @Builder
-    public NoticeEntity(Long id, String title, String content, Integer views, Timestamp creationTimestamp, Timestamp modifiedDate, AdminEntity adminEntity, List<CommentEntity> commentEntityList) {
+    public BoardEntity(Long id, String title, String content, Integer views, Timestamp creationTimestamp, Timestamp modifiedDate, AdminEntity adminEntity, List<CommentEntity> commentEntityList) {
         this.id = id;
         this.title = title;
         this.content = content;

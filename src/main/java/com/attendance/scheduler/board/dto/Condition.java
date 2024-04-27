@@ -1,4 +1,4 @@
-package com.attendance.scheduler.notification.dto;
+package com.attendance.scheduler.board.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

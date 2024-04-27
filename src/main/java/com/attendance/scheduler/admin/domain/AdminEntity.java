@@ -1,7 +1,7 @@
 package com.attendance.scheduler.admin.domain;
 
 import com.attendance.scheduler.admin.dto.EditEmailDTO;
-import com.attendance.scheduler.notification.domain.notice.NoticeEntity;
+import com.attendance.scheduler.board.domain.BoardEntity;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -44,10 +44,10 @@ public class AdminEntity {
     }
 
     @OneToMany(mappedBy = "adminEntity")
-    List<NoticeEntity> noticeEntityList = new ArrayList<>();
+    List<BoardEntity> boardEntityList = new ArrayList<>();
 
-    public void setBoardEntity(NoticeEntity noticeEntity) {
-        this.noticeEntityList.add(noticeEntity);
+    public void setBoardEntity(BoardEntity boardEntity) {
+        this.boardEntityList.add(boardEntity);
     }
 
     public void updatePassword(String newPassword) {

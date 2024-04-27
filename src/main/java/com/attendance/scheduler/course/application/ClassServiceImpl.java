@@ -3,12 +3,14 @@ package com.attendance.scheduler.course.application;
 import com.attendance.scheduler.course.domain.ClassEntity;
 import com.attendance.scheduler.course.dto.ClassDTO;
 import com.attendance.scheduler.course.dto.StudentClassDTO;
+import com.attendance.scheduler.course.event.CourseEvent;
 import com.attendance.scheduler.course.repository.ClassJpaRepository;
 import com.attendance.scheduler.course.repository.ClassRepository;
 import com.attendance.scheduler.student.domain.StudentEntity;
 import com.attendance.scheduler.student.dto.ClassListDTO;
 import com.attendance.scheduler.student.repository.StudentJpaRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +25,8 @@ public class ClassServiceImpl implements ClassService {
     private final ClassJpaRepository classJpaRepository;
     private final StudentJpaRepository studentJpaRepository;
     private final ClassRepository classRepository;
+
+    private final ApplicationEventPublisher eventPublisher;
 
     @Override
     @Transactional
@@ -65,17 +69,14 @@ public class ClassServiceImpl implements ClassService {
 
         classValidator(classDTO);
 
-        boolean existsByStudentNameIs = studentJpaRepository.existsByStudentNameIs(classDTO.getStudentName());
+        StudentEntity studentEntity = studentJpaRepository.findStudentEntityByStudentName(classDTO.getStudentName());
 
-        if (existsByStudentNameIs) {
+        ClassEntity classEntity = classDTO.toEntity();
+        classEntity.setTeacherEntity(studentEntity.getTeacherEntity());
+        classEntity.setStudentEntity(studentEntity);
+        classJpaRepository.save(classEntity);
 
-            StudentEntity studentEntity = studentJpaRepository.findStudentEntityByStudentName(classDTO.getStudentName());
-
-            ClassEntity classEntity = classDTO.toEntity();
-            classEntity.setTeacherEntity(studentEntity.getTeacherEntity());
-            classEntity.setStudentEntity(studentEntity);
-            classJpaRepository.save(classEntity);
-        }
+        eventPublisher.publishEvent(new CourseEvent(classEntity.getTeacherEntity(), classDTO.getStudentName()+ "의 수업 등록(혹은 변경)이 있습니다."));
     }
 
     private void classValidator(ClassDTO classDTO) {
@@ -83,7 +84,7 @@ public class ClassServiceImpl implements ClassService {
 
         if (studentEntityByStudentName.isEmpty()) {
             duplicateClassValidator(classDTO);
-        }else {
+        } else {
             classJpaRepository.deleteById(studentEntityByStudentName.get().getId());
             duplicateClassValidator(classDTO);
         }

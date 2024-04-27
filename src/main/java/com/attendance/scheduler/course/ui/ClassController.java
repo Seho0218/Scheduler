@@ -65,6 +65,7 @@ public class ClassController {
             classService.saveClassTable(classDTO);
             return "redirect:completion";
         }catch (Exception e){
+
             StudentClassDTO studentClassesList = new StudentClassDTO();
             studentClassesList.setStudentName(classDTO.getStudentName());
             Optional<StudentClassDTO> studentClasses = classService.findStudentClasses(classDTO.getStudentName());

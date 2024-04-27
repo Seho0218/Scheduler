@@ -1,6 +1,6 @@
 package com.attendance.scheduler.comment.domain.entity;
 
-import com.attendance.scheduler.notification.domain.notice.NoticeEntity;
+import com.attendance.scheduler.board.domain.BoardEntity;
 import com.attendance.scheduler.student.domain.StudentEntity;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -35,15 +35,15 @@ public class CommentEntity {
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "notice_id")
-    private NoticeEntity noticeEntity;
+    private BoardEntity boardEntity;
 
-    public void setNoticeEntity(NoticeEntity noticeEntity) {
-        if (this.noticeEntity != null) {
-            this.noticeEntity.getCommentEntityList().remove(this);
+    public void setBoardEntity(BoardEntity boardEntity) {
+        if (this.boardEntity != null) {
+            this.boardEntity.getCommentEntityList().remove(this);
         }
-        this.noticeEntity = noticeEntity;
-        if (noticeEntity != null) {
-            noticeEntity.setCommentEntity(this);
+        this.boardEntity = boardEntity;
+        if (boardEntity != null) {
+            boardEntity.setCommentEntity(this);
         }
     }
 
@@ -62,12 +62,12 @@ public class CommentEntity {
     }
 
     @Builder
-    public CommentEntity(Long id, String commentAuthor, String comment, Timestamp creationTimeStamp, NoticeEntity noticeEntity, StudentEntity studentEntity) {
+    public CommentEntity(Long id, String commentAuthor, String comment, Timestamp creationTimeStamp, BoardEntity boardEntity, StudentEntity studentEntity) {
         this.id = id;
         this.commentAuthor = commentAuthor;
         this.comment = comment;
         this.creationTimeStamp = creationTimeStamp;
-        this.noticeEntity = noticeEntity;
+        this.boardEntity = boardEntity;
         this.studentEntity = studentEntity;
     }
 }

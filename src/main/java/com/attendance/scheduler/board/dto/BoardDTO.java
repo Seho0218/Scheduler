@@ -1,6 +1,6 @@
-package com.attendance.scheduler.notification.dto;
+package com.attendance.scheduler.board.dto;
 
-import com.attendance.scheduler.notification.domain.notice.NoticeEntity;
+import com.attendance.scheduler.board.domain.BoardEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,7 +11,7 @@ import java.sql.Timestamp;
 @Getter @Setter
 @ToString
 @NoArgsConstructor
-public class NoticeDTO {
+public class BoardDTO {
 
     private Long id;
     private String title;
@@ -21,8 +21,8 @@ public class NoticeDTO {
     private Timestamp creationTimestamp;
     private Timestamp modifiedDate;
 
-    public NoticeEntity toEntity(){
-        return NoticeEntity.builder()
+    public BoardEntity toEntity(){
+        return BoardEntity.builder()
                 .id(id)
                 .title(title)
                 .content(content)

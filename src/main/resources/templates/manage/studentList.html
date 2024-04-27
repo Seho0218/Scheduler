@@ -36,7 +36,7 @@
             <table>
                 <tr>
                     <th><a th:href ="@{/manage/class}"><button class="btn btn-primary" sec:authorize="isAuthenticated()">수업 관리</button></a></th>
-                    <th><a th:href ="@{/manage/registerStudentInformation}"><button class="btn btn-primary" sec:authorize="isAuthenticated()">학생 등록</button></a></th>
+                    <th><a th:href ="@{/manage/registerStudentInformation}"><button class="btn btn-primary" sec:authorize="hasRole('ROLE_TEACHER')">학생 등록</button></a></th>
                     <th><a th:href ="@{/logout}"><button class="btn btn-primary" sec:authorize="isAuthenticated()">Logout</button></a></th>
                 </tr>
             </table>

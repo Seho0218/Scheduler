@@ -1,5 +1,6 @@
 package com.attendance.scheduler.teacher.domain;
 
+import com.attendance.scheduler.Notification.domain.NotificationEntity;
 import com.attendance.scheduler.course.domain.ClassEntity;
 import com.attendance.scheduler.student.domain.StudentEntity;
 import com.attendance.scheduler.teacher.dto.EditEmailDTO;
@@ -46,17 +47,25 @@ public class TeacherEntity {
     @OneToMany(mappedBy = "teacherEntity", cascade = CascadeType.PERSIST)
     List<StudentEntity> studentEntityList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "teacherEntity", cascade = CascadeType.ALL)
-    List<ClassEntity> classEntityList = new ArrayList<>();
-
     public void setClassEntity(ClassEntity classEntity) {
         if(classEntityList == null) classEntityList = new ArrayList<>();
         this.classEntityList.add(classEntity);
     }
 
+    @OneToMany(mappedBy = "teacherEntity", cascade = CascadeType.ALL)
+    List<ClassEntity> classEntityList = new ArrayList<>();
+
     public void setStudentEntity(StudentEntity studentEntity) {
         if(studentEntityList == null) studentEntityList = new ArrayList<>();
         this.studentEntityList.add(studentEntity);
+    }
+
+    @OneToMany(mappedBy = "teacherEntity", cascade = CascadeType.ALL)
+    List<NotificationEntity> notificationEntityList = new ArrayList<>();
+
+    public void setNotificationEntity(NotificationEntity notificationEntity) {
+        if(notificationEntityList == null) notificationEntityList = new ArrayList<>();
+        this.notificationEntityList.add(notificationEntity);
     }
 
     public void updatePassword(PwdEditDTO pwdEditDTO) {

@@ -1,10 +1,10 @@
-package com.attendance.scheduler.notification.controller;
+package com.attendance.scheduler.board.controller;
 
+import com.attendance.scheduler.board.application.BoardService;
+import com.attendance.scheduler.board.dto.BoardDTO;
+import com.attendance.scheduler.board.dto.Condition;
 import com.attendance.scheduler.comment.application.CommentService;
 import com.attendance.scheduler.comment.dto.CommentDTO;
-import com.attendance.scheduler.notification.application.NotificationService;
-import com.attendance.scheduler.notification.dto.Condition;
-import com.attendance.scheduler.notification.dto.NoticeDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -23,14 +23,14 @@ import java.util.Optional;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/board")
-public class NotificationController {
+public class BoardController {
 
-    public final NotificationService notificationService;
+    public final BoardService boardService;
     public final CommentService commentService;
 
     @GetMapping("")
     public String getNoticeList(Condition condition, Pageable pageable, Model model){
-        Page<NoticeDTO> allBoardList = notificationService.pageNoticeList(condition, pageable);
+        Page<BoardDTO> allBoardList = boardService.pageNoticeList(condition, pageable);
         model.addAttribute("noticeList", allBoardList);
         model.addAttribute("maxPage", 5);
         return "board/list";
@@ -39,17 +39,17 @@ public class NotificationController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/createNotice")
     public String writeNoticeForm(Model model){
-        model.addAttribute("noticeObject", new NoticeDTO());
+        model.addAttribute("noticeObject", new BoardDTO());
         return "board/createNotice";
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/write")
-    public  String writeNotice(NoticeDTO noticeDTO, Model model) {
+    public  String writeNotice(BoardDTO boardDTO, Model model) {
         final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         try {
-            noticeDTO.setName(auth.getName());
-            notificationService.writeNotice(noticeDTO);
+            boardDTO.setName(auth.getName());
+            boardService.writeNotice(boardDTO);
             return "redirect:/board";
         } catch (Exception e) {
             model.addAttribute("errorMessage", e.getMessage());
@@ -59,7 +59,7 @@ public class NotificationController {
 
     @GetMapping("/{id}")
     public String noticeForm(@PathVariable("id") Long id, Model model){
-        Optional<NoticeDTO> noticeById = Optional.ofNullable(notificationService.findNoticeById(id));
+        Optional<BoardDTO> noticeById = Optional.ofNullable(boardService.findNoticeById(id));
         List<CommentDTO> commentList = commentService.getCommentList(id);
         System.out.println("commentList = " + commentList);
         if(noticeById.isPresent()) {
@@ -74,9 +74,9 @@ public class NotificationController {
     @GetMapping("/edit/")
     public String editNoticeForm(@RequestParam(name = "id") Long id, Model model) {
 
-        Optional<NoticeDTO> noticeById = Optional.ofNullable(notificationService.editNoticeForm(id));
+        Optional<BoardDTO> noticeById = Optional.ofNullable(boardService.editNoticeForm(id));
         if(noticeById.isPresent()) {
-            model.addAttribute("noticeObject", new NoticeDTO());
+            model.addAttribute("noticeObject", new BoardDTO());
             model.addAttribute("notice", noticeById.get());
             return "board/editNotice";
         }
@@ -85,16 +85,16 @@ public class NotificationController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/edit/")
-    public String editNotice(@RequestParam(name = "id") Long id, NoticeDTO noticeDTO){
-        noticeDTO.setId(id);
-        notificationService.editNotice(noticeDTO);
+    public String editNotice(@RequestParam(name = "id") Long id, BoardDTO boardDTO){
+        boardDTO.setId(id);
+        boardService.editNotice(boardDTO);
         return "redirect:/board";
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/delete/")
     public String deleteNotice(@RequestParam(name = "id") Long id){
-        notificationService.deleteNotice(id);
+        boardService.deleteNotice(id);
         return "redirect:/board";
     }
 }

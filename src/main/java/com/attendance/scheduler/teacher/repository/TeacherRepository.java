@@ -10,10 +10,10 @@ import java.util.List;
 
 import static com.attendance.scheduler.teacher.domain.QTeacherEntity.teacherEntity;
 
-
 @Repository
 @RequiredArgsConstructor
 public class TeacherRepository {
+
     public final JPAQueryFactory queryFactory;
 
     public List<TeacherDTO> getTeacherList(){
@@ -22,8 +22,7 @@ public class TeacherRepository {
                         teacherEntity.id,
                         teacherEntity.username,
                         teacherEntity.teacherName,
-                        teacherEntity.approved
-                        ))
+                        teacherEntity.approved))
                 .from(teacherEntity)
                 .fetch();
     }
@@ -34,8 +33,7 @@ public class TeacherRepository {
                         teacherEntity.id,
                         teacherEntity.username,
                         teacherEntity.teacherName,
-                        teacherEntity.approved
-                ))
+                        teacherEntity.approved))
                 .from(teacherEntity)
                 .where(teacherEntity.username.eq(username))
                 .fetch();

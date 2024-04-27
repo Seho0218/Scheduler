@@ -24,7 +24,7 @@ public class CommentRepository {
                         commentEntity.comment,
                         commentEntity.creationTimeStamp))
                 .from(commentEntity)
-                .where(commentEntity.noticeEntity.id.eq(id))
+                .where(commentEntity.boardEntity.id.eq(id))
                 .fetch();
     }
 }
