@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
-import java.util.stream.Stream;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Controller
@@ -49,10 +49,11 @@ public class TeacherController {
 
         if(auth.getAuthorities().toString().equals("[ROLE_TEACHER]")){
             List<TeacherDTO> teacherInformation = adminService.findTeacherInformation(auth.getName());
-            Stream<ClassDTO> stream = classTable
+            List<ClassDTO> collect = classTable
                     .stream().filter(h -> h.getTeacherName()
-                            .equals(teacherInformation.get(0).getTeacherName()));
-            model.addAttribute("findClassTable", stream);
+                            .equals(teacherInformation.get(0).getTeacherName()))
+                    .collect(Collectors.toList());
+            model.addAttribute("findClassTable", collect);
             return "manage/class";
         }
 
