@@ -66,6 +66,10 @@ public class BoardRepository {
         return hasText(content) ? boardEntity.content.eq(content) : null;
     }
 
+
+
+
+
     public BoardDTO findNoticeById(Long id) {
 
         queryFactory

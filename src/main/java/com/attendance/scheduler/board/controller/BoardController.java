@@ -61,7 +61,7 @@ public class BoardController {
     public String noticeForm(@PathVariable("id") Long id, Model model){
         Optional<BoardDTO> noticeById = Optional.ofNullable(boardService.findNoticeById(id));
         List<CommentDTO> commentList = commentService.getCommentList(id);
-        System.out.println("commentList = " + commentList);
+
         if(noticeById.isPresent()) {
             model.addAttribute("notice", noticeById.get());
             model.addAttribute("commentList", commentList);
