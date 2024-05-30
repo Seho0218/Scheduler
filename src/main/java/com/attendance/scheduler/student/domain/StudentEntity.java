@@ -24,12 +24,10 @@ import static lombok.AccessLevel.PROTECTED;
 @Getter
 @DynamicUpdate
 @DynamicInsert
-@Table(name = "student")
 @NoArgsConstructor(access = PROTECTED)
 public class StudentEntity {
 
     @Id @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "student_id")
     private Long id;
 
     private String studentName;
@@ -43,7 +41,6 @@ public class StudentEntity {
 
     @NotNull
     @ManyToOne(fetch = LAZY, optional = false, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "teacher_id")
     private TeacherEntity teacherEntity;
 
     public void setTeacherEntity(TeacherEntity teacherEntity) {
@@ -72,16 +69,12 @@ public class StudentEntity {
     }
 
     @Builder
-    public StudentEntity(Long id, String studentName, String studentPhoneNumber, String studentAddress, String studentDetailedAddress, String studentParentPhoneNumber, Timestamp creationTimestamp, TeacherEntity teacherEntity, List<CommentEntity> commentEntityList, ClassEntity classEntity) {
-        this.id = id;
+    public StudentEntity(String studentName, String studentPhoneNumber, String studentAddress, String studentDetailedAddress, String studentParentPhoneNumber, Timestamp creationTimestamp) {
         this.studentName = studentName;
         this.studentPhoneNumber = studentPhoneNumber;
         this.studentAddress = studentAddress;
         this.studentDetailedAddress = studentDetailedAddress;
         this.studentParentPhoneNumber = studentParentPhoneNumber;
         this.creationTimestamp = creationTimestamp;
-        this.teacherEntity = teacherEntity;
-        this.commentEntityList = commentEntityList;
-        this.classEntity = classEntity;
     }
 }

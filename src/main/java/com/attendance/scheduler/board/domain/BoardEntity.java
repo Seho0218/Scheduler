@@ -22,12 +22,10 @@ import static lombok.AccessLevel.PROTECTED;
 @Getter
 @DynamicUpdate
 @DynamicInsert
-@Table(name = "board")
 @NoArgsConstructor(access = PROTECTED)
 public class BoardEntity {
 
     @Id @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "board_id")
     private Long id;
 
     private String title;
@@ -45,7 +43,6 @@ public class BoardEntity {
 
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "admin_id")
     private AdminEntity adminEntity;
 
     public void setAdminEntity(AdminEntity adminEntity) {
@@ -74,14 +71,11 @@ public class BoardEntity {
 
 
     @Builder
-    public BoardEntity(Long id, String title, String content, Integer views, Timestamp creationTimestamp, Timestamp modifiedDate, AdminEntity adminEntity, List<CommentEntity> commentEntityList) {
-        this.id = id;
+    public BoardEntity(String title, String content, Integer views, Timestamp creationTimestamp, Timestamp modifiedDate) {
         this.title = title;
         this.content = content;
         this.views = views;
         this.creationTimestamp = creationTimestamp;
         this.modifiedDate = modifiedDate;
-        this.adminEntity = adminEntity;
-        this.commentEntityList = commentEntityList;
     }
 }

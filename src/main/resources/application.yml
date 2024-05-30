@@ -25,6 +25,7 @@ spring:
     database-platform: org.hibernate.dialect.H2Dialect
     database: h2
     open-in-view: false
+    defer-datasource-initialization: true
     hibernate:
       ddl-auto: validate
     properties:
@@ -32,7 +33,6 @@ spring:
         format_sql: true
         show_sql: true
         highlight_sql: true
-      defer-datasource-initialization: true
 
   thymeleaf:
     cache: true #운영시 true

@@ -22,12 +22,10 @@ import static lombok.AccessLevel.PROTECTED;
 @Getter
 @DynamicUpdate
 @DynamicInsert
-@Table(name = "teacher")
 @NoArgsConstructor(access = PROTECTED)
 public class TeacherEntity {
 
     @Id @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "teacher_id")
     private Long id;
 
     private String username;
@@ -44,7 +42,7 @@ public class TeacherEntity {
     @Column(columnDefinition = "boolean default '0'")
     private boolean approved;
 
-    @OneToMany(mappedBy = "teacherEntity", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "teacherEntity", cascade = CascadeType.ALL, orphanRemoval = true)
     List<StudentEntity> studentEntityList = new ArrayList<>();
 
     public void setClassEntity(ClassEntity classEntity) {
@@ -52,7 +50,7 @@ public class TeacherEntity {
         this.classEntityList.add(classEntity);
     }
 
-    @OneToMany(mappedBy = "teacherEntity", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "teacherEntity", cascade = CascadeType.ALL, orphanRemoval = true)
     List<ClassEntity> classEntityList = new ArrayList<>();
 
     public void setStudentEntity(StudentEntity studentEntity) {
@@ -81,15 +79,12 @@ public class TeacherEntity {
     }
 
     @Builder
-    public TeacherEntity(Long id, String username, String teacherName, String password, String email, String role, boolean approved, List<StudentEntity> studentEntityList, List<ClassEntity> classEntityList) {
-        this.id = id;
+    public TeacherEntity(String username, String teacherName, String password, String email, String role, boolean approved) {
         this.username = username;
         this.teacherName = teacherName;
         this.password = password;
         this.email = email;
         this.role = role;
         this.approved = approved;
-        this.studentEntityList = studentEntityList;
-        this.classEntityList = classEntityList;
     }
 }

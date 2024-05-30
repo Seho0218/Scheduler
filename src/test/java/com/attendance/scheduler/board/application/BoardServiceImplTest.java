@@ -5,8 +5,6 @@ import com.attendance.scheduler.admin.repository.AdminJpaRepository;
 import com.attendance.scheduler.board.domain.BoardEntity;
 import com.attendance.scheduler.board.dto.BoardDTO;
 import com.attendance.scheduler.board.repository.BoardJpaRepository;
-import com.attendance.scheduler.board.repository.BoardRepository;
-import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -20,9 +18,7 @@ import java.util.List;
 class BoardServiceImplTest {
 
     @Autowired private BoardJpaRepository boardJpaRepository;
-    @Autowired private BoardRepository boardRepository;
     @Autowired private AdminJpaRepository adminJpaRepository;
-    @Autowired private EntityManager entityManager;
 
     @Test
     @Transactional
@@ -39,10 +35,8 @@ class BoardServiceImplTest {
             BoardEntity entity = boardDTO.toEntity();
             entity.setAdminEntity(admin);
             boardJpaRepository.save(entity);
-            entityManager.flush();
 
         }
-        entityManager.clear();
     }
 
     @Test

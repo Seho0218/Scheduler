@@ -3,7 +3,6 @@ package com.attendance.scheduler.course.application;
 import com.attendance.scheduler.course.domain.ClassEntity;
 import com.attendance.scheduler.course.dto.ClassDTO;
 import com.attendance.scheduler.course.dto.StudentClassDTO;
-import com.attendance.scheduler.course.event.CourseEvent;
 import com.attendance.scheduler.course.repository.ClassJpaRepository;
 import com.attendance.scheduler.course.repository.ClassRepository;
 import com.attendance.scheduler.student.domain.StudentEntity;
@@ -76,7 +75,7 @@ public class ClassServiceImpl implements ClassService {
         classEntity.setStudentEntity(studentEntity);
         classJpaRepository.save(classEntity);
 
-        eventPublisher.publishEvent(new CourseEvent(classEntity.getTeacherEntity(), classDTO.getStudentName()+ "의 수업 등록(혹은 변경)이 있습니다."));
+//        eventPublisher.publishEvent(new CourseEvent(classEntity.getTeacherEntity(), classDTO.getStudentName()+ "의 수업 등록(혹은 변경)이 있습니다."));
     }
 
     private void classValidator(ClassDTO classDTO) {

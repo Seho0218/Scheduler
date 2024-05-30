@@ -18,7 +18,6 @@ import static lombok.AccessLevel.PROTECTED;
 @Entity
 @Getter
 @DynamicUpdate
-@Table(name = "class_table")
 @NoArgsConstructor(access = PROTECTED)
 public class ClassEntity {
 
@@ -39,7 +38,6 @@ public class ClassEntity {
 
     @NotNull
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "teacher_id")
     private TeacherEntity teacherEntity;
 
     public void setTeacherEntity(TeacherEntity teacherEntity) {
@@ -52,9 +50,8 @@ public class ClassEntity {
         }
     }
 
-    @OneToOne(fetch = LAZY)
     @MapsId
-    @JoinColumn(name = "student_id")
+    @OneToOne(fetch = LAZY)
     private StudentEntity studentEntity;
 
     public void setStudentEntity(StudentEntity studentEntity) {
@@ -68,15 +65,12 @@ public class ClassEntity {
     }
 
     @Builder
-    public ClassEntity(Long id, Integer monday, Integer tuesday, Integer wednesday, Integer thursday, Integer friday, Timestamp updateTimeStamp, TeacherEntity teacherEntity, StudentEntity studentEntity) {
-        this.id = id;
+    public ClassEntity(Integer monday, Integer tuesday, Integer wednesday, Integer thursday, Integer friday, Timestamp updateTimeStamp) {
         this.monday = monday;
         this.tuesday = tuesday;
         this.wednesday = wednesday;
         this.thursday = thursday;
         this.friday = friday;
         this.updateTimeStamp = updateTimeStamp;
-        this.teacherEntity = teacherEntity;
-        this.studentEntity = studentEntity;
     }
 }

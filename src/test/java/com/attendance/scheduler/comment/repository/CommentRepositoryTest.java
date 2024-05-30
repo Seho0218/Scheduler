@@ -30,7 +30,5 @@ class CommentRepositoryTest {
                 .from(commentEntity)
                 .where(commentEntity.boardEntity.id.eq(1L))
                 .fetch();
-
-        System.out.println("fetch = " + fetch);
     }
 }

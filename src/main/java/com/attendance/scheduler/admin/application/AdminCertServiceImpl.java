@@ -27,7 +27,8 @@ public class AdminCertServiceImpl implements AdminCertService{
     @Transactional
     public void initializePassword(PwdEditDTO pwdEditDTO) {
         final String encodePassword = passwordEncoder.encode(pwdEditDTO.getPassword());
-        AdminEntity adminEntity = adminJpaRepository.findByUsernameIs(pwdEditDTO.getUsername());
+        AdminEntity adminEntity = adminJpaRepository
+                .findByUsernameIs(pwdEditDTO.getUsername());
         adminEntity.updatePassword(encodePassword);
         adminJpaRepository.save(adminEntity);
     }
@@ -35,7 +36,8 @@ public class AdminCertServiceImpl implements AdminCertService{
     @Override
     @Transactional
     public void updateEmail(EditEmailDTO editEmailDTO) {
-        AdminEntity adminEntity = adminJpaRepository.findByUsernameIs(editEmailDTO.getUsername());
+        AdminEntity adminEntity = adminJpaRepository
+                .findByUsernameIs(editEmailDTO.getUsername());
         adminEntity.updateEmail(editEmailDTO);
         adminJpaRepository.save(adminEntity);
     }

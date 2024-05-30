@@ -23,7 +23,6 @@ public class BoardDTO {
 
     public BoardEntity toEntity(){
         return BoardEntity.builder()
-                .id(id)
                 .title(title)
                 .content(content)
                 .views(views)
